@@ -87,11 +87,23 @@ class TestQuestProgression(unittest.TestCase):
         self.player.class_def = self.game.classes.require("paladin")
         self.player.level = 35
         self.player._recalculate_base_stats()
-        self.objective = self.game.quests.require("trial_of_the_dawn").objectives[0]
+        definition = self.game.quests.require("trial_of_the_dawn")
+        self.objective = definition.objectives[0]
+        self.game.world.current_area_id = definition.start_area_id
 
     def test_level_and_class_gate_availability(self):
         ids = {quest.id for quest in self.game.available_quests()}
         self.assertEqual(ids, {"trial_of_the_dawn"})
+
+    def test_quest_requires_its_giver_location(self):
+        self.game.world.current_area_id = "town_ashvale"
+        self.assertNotIn("trial_of_the_dawn", {quest.id for quest in self.game.available_quests()})
+        self.assertFalse(self.game.accept_quest("trial_of_the_dawn")[0])
+
+    def test_quests_from_returns_only_that_npcs_offers(self):
+        offered = {quest.id for quest in self.game.quests_from("reeve_marta")}
+        self.assertEqual(offered, {"trial_of_the_dawn"})
+        self.assertEqual(self.game.quests_from("miner_joss"), [])
 
     def test_accept_quest_once(self):
         ok, _ = self.game.accept_quest("trial_of_the_dawn")
@@ -126,12 +138,30 @@ class TestQuestProgression(unittest.TestCase):
         self.game.finish_battle()
         ready, _ = self.game.quest_completion_check("trial_of_the_dawn")
         self.assertTrue(ready)
+        self.assertIn(self.objective.target_id, self.game.world.defeated_bosses)
 
     def test_cannot_complete_before_objective(self):
         self.game.accept_quest("trial_of_the_dawn")
         ok, lines = self.game.complete_quest("trial_of_the_dawn")
         self.assertFalse(ok)
         self.assertIn("0/1", lines[0])
+
+    def test_turn_in_requires_returning_to_quest_giver_town(self):
+        definition = self.game.quests.require("trial_of_the_dawn")
+        self.game.accept_quest(definition.id)
+        self.game.quests.record_defeats(self.player, [self.objective.target_id])
+        self.game.world.current_area_id = "crystal_mines"
+        ok, lines = self.game.complete_quest(definition.id)
+        self.assertFalse(ok)
+        self.assertIn("Stonehaven", lines[0])
+        self.game.world.current_area_id = definition.turn_in_area_id
+        self.assertTrue(self.game.complete_quest(definition.id)[0])
+
+    def test_previously_defeated_boss_counts_when_quest_is_accepted(self):
+        definition = self.game.quests.require("trial_of_the_dawn")
+        self.game.world.defeated_bosses.add(self.objective.target_id)
+        self.assertTrue(self.game.accept_quest(definition.id)[0])
+        self.assertTrue(self.game.quest_completion_check(definition.id)[0])
 
     def test_complete_quest_grants_rewards_and_calls_player_flow(self):
         definition = self.game.quests.require("trial_of_the_dawn")
@@ -160,6 +190,7 @@ class TestQuestProgression(unittest.TestCase):
             game.player.class_def = game.classes.require("paladin")
             game.player.level = 35
             game.player._recalculate_base_stats()
+            game.world.current_area_id = game.quests.require("trial_of_the_dawn").start_area_id
             game.accept_quest("trial_of_the_dawn")
             objective = game.quests.require("trial_of_the_dawn").objectives[0]
             game.quests.record_defeats(game.player, [objective.target_id])
@@ -193,7 +224,7 @@ class TestPromotionItemLoot(unittest.TestCase):
         }
         for enemy_id, item_id in expected.items():
             drops = dict(game.enemies.spawn(enemy_id).roll_loot(game.rng))
-            self.assertIn(item_id, drops)
+            self.assertEqual(drops.get(item_id), 3)
             self.assertTrue(game.items.require(item_id).stackable)
 
 

@@ -1325,6 +1325,7 @@ class TestSaveLoad(unittest.TestCase):
         self.assertTrue(ok)
         self.assertEqual(fresh.player.name, "Aria")
         self.assertEqual(fresh.player.completed_quests, [])
+        self.assertEqual(fresh.world.defeated_bosses, set())
 
     def test_save_written_atomically_leaves_no_temp_file(self):
         game = self._prepared_game()

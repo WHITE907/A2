@@ -26,7 +26,7 @@ class TalkWindow(tk.Toplevel):
         self.npc_name = npc.name if npc else "Stranger"
 
         theme.style_window(self, f"Project Ascension - {self.npc_name}")
-        theme.center_window(self, 620, 520)
+        theme.center_window(self, 620, 600)
         self.transient(app.root)
 
         body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
@@ -42,6 +42,9 @@ class TalkWindow(tk.Toplevel):
         self.requirements = StatPanel(body, title="", wrap=560)
         self.requirements.pack(fill=tk.X, pady=(6, 0))
 
+        self.quest_info = StatPanel(body, title="", wrap=560)
+        self.quest_info.pack(fill=tk.X, pady=(6, 0))
+
         self.log = LogPanel(body, title="Conversation", height=8)
         self.log.pack(fill=tk.BOTH, expand=True, pady=(12, 0))
 
@@ -51,6 +54,8 @@ class TalkWindow(tk.Toplevel):
         theme.flat_button(buttons, "Give Gift", self._gift, width=10).pack(side=tk.LEFT, padx=8)
         self.marry_button = theme.flat_button(buttons, "Propose", self._propose, width=10)
         self.marry_button.pack(side=tk.LEFT)
+        self.quest_button = theme.flat_button(buttons, "Quests", self.app.open_quests, width=10)
+        self.quest_button.pack(side=tk.LEFT, padx=(8, 0))
         theme.flat_button(buttons, "Close", self._close, width=10).pack(side=tk.RIGHT)
 
         self.refresh()
@@ -81,6 +86,10 @@ class TalkWindow(tk.Toplevel):
             self.requirements.set_lines(["To propose:", *[f"  {item}" for item in check.unmet]])
         else:
             self.requirements.set_lines([])
+
+        quest_lines = game.quest_giver_lines(self.npc_id)
+        self.quest_info.set_lines(["Quests:", *quest_lines] if quest_lines else [])
+        self.quest_button.configure(state=tk.NORMAL if quest_lines else tk.DISABLED)
 
     # ------------------------------------------------------------------
     def _talk(self) -> None:

@@ -80,8 +80,13 @@ class QuestManager:
         self.load()
         return sorted(self._definitions.values(), key=lambda quest: (quest.min_level, quest.name))
 
-    def available_for(self, player) -> list[QuestDefinition]:
-        """Quests the player may accept now, excluding active/completed ones."""
+    def available_for(
+        self,
+        player,
+        area_id: str = "",
+        giver_id: str | None = None,
+    ) -> list[QuestDefinition]:
+        """Quests this player can accept from the current place and giver."""
         available: list[QuestDefinition] = []
         for definition in self.all_definitions():
             if definition.id in player.active_quests or definition.id in player.completed_quests:
@@ -89,6 +94,10 @@ class QuestManager:
             if player.level < definition.min_level:
                 continue
             if definition.required_class_ids and player.class_def.id not in definition.required_class_ids:
+                continue
+            if definition.start_area_id and definition.start_area_id != area_id:
+                continue
+            if giver_id is not None and definition.giver_id != giver_id:
                 continue
             if any(quest_id not in player.completed_quests for quest_id in definition.prerequisite_quest_ids):
                 continue

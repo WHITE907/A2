@@ -7,16 +7,17 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-**The level-40 world expansion is complete on the current branch.** v0.4.0
-extends the map to 17 connected areas with three new towns, 19 new enemies,
-three regional bosses, 38 new items, 18 new skills, five statuses, six
-companions, nine NPCs, and six shops. The full suite contains 398 tests.
+**Quest givers, persistent bosses, and the level-40 balance pass are complete on
+the current branch.** v0.5.0 ties every quest to a validated NPC and town,
+requires returning to turn it in, persists one-time boss victories in save
+schema v4, and removes defeated bosses from random encounters. The measured
+balance pass and results are in `docs/BALANCE_REPORT_LEVEL_40.md`. The full suite
+contains 406 tests.
 
-The next world milestone is **levels 41–70**, including content that supports
-the level-50 and level-70 promotions. Tier-5+ quest definitions still use the
-old Shadow Warden as a temporary objective; replace those objectives with new
-regional bosses as the areas are added. Keep content in JSON and preserve the
-startup cross-validation and reciprocal-map checks.
+The next implementation milestone is still **world content for levels 41–70**.
+Tier-5+ quest entries currently reuse the one-time Shadow Warden; persistent
+victory credit prevents a dead end, but those objectives must be replaced by
+level-appropriate regional bosses as new areas are added.
 
 Before handing off changes, run:
 
@@ -35,12 +36,13 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 398 tests
+python3 -m unittest discover -s tests    # 406 tests
 ```
 
 **Current state:** v0.1.0 is merged in PR #1 and v0.2.0 is merged in PR #2.
-v0.3.0 quests and v0.4.0 level-40 world content are implemented on the current
-branch. The next unsupported promotion band begins at level 50.
+v0.3.0 quests, v0.4.0 level-40 world content, and v0.5.0 quest/world-state and
+balance work are implemented on the current branch. The next unsupported
+promotion band begins at level 50.
 
 ---
 
@@ -111,6 +113,7 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `docs/ENGINE_DESIGN.md` | The composition pattern and why it exists. |
 | `docs/GUI_STYLE_REFERENCE.md` | Exact palette, fonts, layout conventions. |
 | `docs/GUI_VERIFICATION.md` | Hard-won Tkinter gotchas. Read before GUI work. |
+| `docs/BALANCE_REPORT_LEVEL_40.md` | Executed EXP, economy, and combat baselines. |
 | `README.md` | Current state, known limitations. |
 | `CHANGELOG.md` | What shipped when (bible §18 requires updating this). |
 
@@ -195,40 +198,47 @@ a checkbox.
 
 ## 7. Known limitations — verified, not guessed
 
-The game now has a continuous world route through level 40. The first three
-quest-gated promotions use regional bosses: Mire Oracle (27), Iron Colossus
-(34), and Dawn Tyrant (40). Their class-line promotion items are guaranteed
-regional drops rather than rewards from the old level-15 boss.
+The game has a connected, measured route through level 40. Quests now come from
+NPCs in towns, boss victories persist, and one-time bosses stop appearing in
+random encounters. A boss defeated before quest acceptance receives retroactive
+objective credit, so old or exploratory saves do not dead-end.
 
 **The remaining progression limit begins at level 50.** No level-41+ areas or
-enemies exist yet, while later promotions require levels 50 / 70 / 99. The
-Tier-5+ quest entries remain mechanically valid but temporarily reuse the
-Shadow Warden. New content should replace those objectives with bosses in the
-same level band rather than changing quest engine code.
+enemies exist yet, while later promotions require levels 50 / 70 / 99. Tier-5+
+quest entries still name the Shadow Warden as a placeholder. Because that boss
+is one-time, those quests recognise its saved defeat immediately; replace them
+with new regional objectives when level-41–70 bosses exist.
 
-The Bandit Chief still drops all three tier-3 path items together. This is safe
-and keeps every starter path open, but future level-20 class-themed encounters
-could distribute those drops more naturally.
+The Bandit Chief still drops all three tier-3 path items together. This safely
+keeps every starter path open, but future level-20 class-themed encounters could
+distribute those drops more naturally.
+
+Balance findings and exact executed baselines are in
+`docs/BALANCE_REPORT_LEVEL_40.md`. Companion parties and future multi-phase boss
+behaviours still need separate balance passes.
 ## 8. Roadmap
 
 ### Completed
-- ✅ **Playable foundation (v0.1.0, PR #1):** data engine, combat, equipment,
-  exploration, world, saves, and the initial GUI.
+- ✅ **Playable foundation (v0.1.0, PR #1):** engine, combat, equipment,
+  exploration, saves, and initial GUI.
 - ✅ **Companions and relationships (v0.2.0, PR #2):** party, affinity,
   marriage, party combat, GUI, and tests.
-- ✅ **Quests and promotion progression (v0.3.0):** ten promotion quests, Quest
-  Log, persisted progress, cross-validation, and obtainable promotion items.
+- ✅ **Quests and promotion progression (v0.3.0):** quest engine, Quest Log,
+  persisted progress, cross-validation, and promotion items.
 - ✅ **World through level 40 (v0.4.0):** 17 areas, four towns, 30 enemies, five
-  bosses, 79 items, 60 skills, 10 companions, and dense regional content.
+  bosses, 79 items, 60 skills, and 10 companions.
+- ✅ **Quest givers, persistent bosses, and balance (v0.5.0):** town/NPC quest
+  flow, one-time world bosses, save v4, and measured level-40 pacing.
 
 ### Next
-1. **Extend the world through levels 41–70.** Add at least two level bands with
-   populated towns, distinct enemy families, equipment progression, companions,
-   and bosses for the level-50 and level-70 quest/promotion gates.
-2. **Balance by execution.** Run representative tier-3/4 characters through the
-   new route and verify EXP pacing, enemy time-to-kill, shop prices, loot rates,
-   mastery gain, and boss difficulty rather than judging numbers in isolation.
-3. **Future features after the playable progression path is complete:** guilds,
+1. **Extend the world through levels 41–70.** Add populated towns, distinct
+   enemy families, equipment progression, companions, and bosses for the
+   level-50 and level-70 quest/promotion gates.
+2. **Replace placeholder Tier-5+ objectives** with those bosses and assign
+   appropriate NPC givers in the new towns.
+3. **Run party and phased-boss balance passes** using real companion line-ups and
+   new boss behaviours, then update the balance report with executed results.
+4. **Future features after the playable progression path is complete:** guilds,
    housing, fishing, mining, smithing, cooking, alchemy, arena, legendary
    classes, NG+, world events, and pets (bible §20).
 

@@ -2,6 +2,44 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.5.0 - Quest Givers, World State, and Balance
+
+### Quests and NPCs
+- Every quest now defines a validated NPC giver, acceptance town, and turn-in
+  town. Quests are only offered while visiting the correct location.
+- NPC Talk windows show available/in-progress quests and link directly to the
+  Quest Log; quest details name the giver and both required locations.
+- Completed objectives can only be turned in after returning to the giver's
+  town.
+- Defeating a one-time boss before accepting its quest is handled safely: the
+  saved world deed is applied retroactively on acceptance instead of creating a
+  permanently blocked quest.
+
+### Persistent bosses
+- Boss encounters now carry a stable boss id and disappear from random encounter
+  tables after victory while ordinary encounters in the area remain repeatable.
+- Defeated boss ids persist in save schema v4 and migrate safely from older
+  saves.
+- Content validation rejects boss encounters whose boss id is absent or points
+  to a non-boss enemy.
+- Regional bosses grant three promotion tokens, covering the cumulative tier-4
+  and tier-5 requirements despite being one-time fights.
+
+### Balance
+- Executed seeded real-battle passes with Templar, Nightblade, and Archon builds,
+  plus measured EXP and economy pacing across all level-16–40 regions.
+- Reduced normal-enemy EXP where early regions required only 1.5–2.4 encounters
+  per level. The measured range is now 2.7–5.6 encounters per level.
+- Shop prices and enemy/boss HP were retained after measured upgrade times and
+  real combat outcomes fell within the intended range.
+- Added `docs/BALANCE_REPORT_LEVEL_40.md` with methodology, results, changes,
+  and known follow-up risks.
+
+### Tests
+- 406 tests pass. New coverage includes giver/location gates, return-to-giver
+  turn-in, retroactive boss credit, boss encounter removal, world-state
+  persistence, promotion-token quantities, NPC quest UI, and EXP pacing bounds.
+
 ## v0.4.0 - The Road to Skyreach
 
 ### World

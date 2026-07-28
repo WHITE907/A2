@@ -67,6 +67,9 @@ class QuestDefinition:
     name: str
     description: str
     min_level: int = 1
+    giver_id: str = ""
+    start_area_id: str = ""
+    turn_in_area_id: str = ""
     required_class_ids: tuple[str, ...] = ()
     prerequisite_quest_ids: tuple[str, ...] = ()
     objectives: tuple[QuestObjective, ...] = ()
@@ -92,6 +95,9 @@ class QuestDefinition:
             name=name,
             description=str(payload.get("description", "")),
             min_level=min_level,
+            giver_id=str(payload.get("giver_id", "")),
+            start_area_id=str(payload.get("start_area_id", "")),
+            turn_in_area_id=str(payload.get("turn_in_area_id", payload.get("start_area_id", ""))),
             required_class_ids=tuple(str(value) for value in payload.get("required_class_ids", [])),
             prerequisite_quest_ids=tuple(str(value) for value in payload.get("prerequisite_quest_ids", [])),
             objectives=objectives,

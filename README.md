@@ -49,7 +49,7 @@ ProjectAscension/
 │   └── screens/         one module per screen
 ├── data/                all gameplay content
 ├── docs/                design notes
-├── tests/               398 tests
+├── tests/               406 tests
 ├── tools/               dev utilities
 └── saves/               JSON save slots (created on first save)
 ```
@@ -140,11 +140,12 @@ items. Where a requirement genuinely cannot be checked, `PromotionCheck`
 reports it under `unenforced` rather than silently ignoring it — the behaviour
 `ENGINE_DESIGN.md` asked for.
 
-**Quests** are accepted and turned in through the Quest Log. `QuestManager`
-loads ten class-gated promotion quests, records data-driven enemy-defeat
-objectives after victories, and grants JSON-defined EXP, gold, and item rewards.
-Active objectives and progress are save-versioned, and every class, enemy, item,
-and prerequisite reference is cross-validated at startup.
+**Quests** come from named NPCs in specific towns and must be turned in by
+returning to that location. NPC Talk windows surface their available and active
+quests and link to the Quest Log. `QuestManager` loads ten class-gated promotion
+quests, records data-driven enemy-defeat objectives, and grants JSON-defined
+rewards. Active progress is save-versioned, and giver, location, class, enemy,
+item, and prerequisite references are cross-validated at startup.
 
 **Companions** are recruited with gold, items, level and affinity, then either
 fight in the active roster (capped, so battles stay readable) or wait in
@@ -167,11 +168,17 @@ townspeople, companions, and a safe staging point between distinct regional
 enemy families and bosses. Connections, encounters, shops, NPCs, loot, and
 quest targets are cross-validated before play begins.
 
+**Boss victories** are persistent world events. Once defeated, a boss is removed
+from its area's random encounter table while ordinary fights remain available.
+The world remembers defeated boss ids, quests recognise victories earned before
+acceptance, and one-time regional bosses drop enough tokens for later promotion
+requirements.
+
 **Saves** are versioned and migrated forward (`SAVE_VERSION`), so a save from an
 older build still loads (§5, backwards compatibility). Writes go to a temp file
 and are atomically replaced, so a crash mid-write cannot corrupt a slot. The RNG
-state is serialised too, meaning a reloaded save resumes the exact roll stream.
-A corrupt file is listed as a damaged slot rather than vanishing.
+and defeated-boss state are serialised too. A corrupt file is listed as a damaged
+slot rather than vanishing.
 
 ## GUI
 
@@ -191,7 +198,7 @@ testing anything.
 
 ## Testing
 
-398 tests, no third-party dependencies:
+406 tests, no third-party dependencies:
 
 ```
 python3 -m unittest discover -s tests        # everything
@@ -209,6 +216,10 @@ guards on the architectural rules above.
 `tests/test_gui.py` builds the real screens and invokes the same handlers a
 click would trigger. It runs headlessly on `tests/tk_stub.py`, a recording
 stand-in for Tkinter, so the GUI is covered on machines without a display.
+
+[`docs/BALANCE_REPORT_LEVEL_40.md`](docs/BALANCE_REPORT_LEVEL_40.md) records the
+executed EXP, economy, normal-enemy, and three-class boss baselines used for the
+level-40 balance pass.
 
 ### Seeing the UI without a display
 
@@ -253,8 +264,9 @@ Rebalancing is a JSON edit. Run `python3 main.py --check` afterwards.
 
 - Content now supports the full route through level 40, including regional
   bosses for the first quest-gated promotions, but still stops before the level
-  50/70/99 gates. Tier-5+ quests temporarily reuse the Shadow Warden until the
-  next world region supplies suitable bosses.
+  50/70/99 gates. Tier-5+ quests temporarily reuse the one-time Shadow Warden;
+  persistent victory credit prevents a dead end, but those are placeholder
+  objectives until the next world region supplies suitable bosses.
 - The three tier-3 class-line items still drop together from the Bandit Chief.
   This guarantees every starter path remains open, but a future level-20 region
   could distribute them among class-themed encounters.

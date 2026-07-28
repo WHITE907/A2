@@ -27,7 +27,7 @@ from engine.managers.data_loader import PROJECT_ROOT
 __all__ = ["SaveManager", "SaveSlotInfo", "SAVE_VERSION"]
 
 #: Bump when the payload shape changes; add a matching step in ``_migrate``.
-SAVE_VERSION: int = 3
+SAVE_VERSION: int = 4
 
 _AUTOSAVE_PREFIX = "autosave"
 
@@ -230,6 +230,12 @@ class SaveManager:
                 player.setdefault("active_quests", [])
                 player.setdefault("quest_progress", {})
             version = 3
+
+        if version < 4:
+            world = payload.setdefault("world", {})
+            if isinstance(world, dict):
+                world.setdefault("defeated_bosses", [])
+            version = 4
 
         payload["save_version"] = max(version, SAVE_VERSION)
         return payload

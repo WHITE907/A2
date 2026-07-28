@@ -56,7 +56,7 @@
         { "enemy_ids": ["bandit"], "weight": 3, "level_min": 3, "level_max": 6 },
         { "enemy_ids": ["grey_wolf", "grey_wolf"], "weight": 2, "level_min": 3, "level_max": 5 },
         { "enemy_ids": ["bandit", "field_rat"], "weight": 1, "level_min": 4, "level_max": 6 },
-        { "enemy_ids": ["bandit_chief", "bandit"], "weight": 1, "level_min": 8, "level_max": 10, "is_boss": true }
+        { "enemy_ids": ["bandit_chief", "bandit"], "weight": 1, "level_min": 8, "level_max": 10, "is_boss": true, "boss_id": "bandit_chief" }
       ]
     },
     {
@@ -87,7 +87,7 @@
         { "enemy_ids": ["hill_troll"], "weight": 2, "level_min": 11, "level_max": 14 },
         { "enemy_ids": ["frost_wisp"], "weight": 2, "level_min": 12, "level_max": 15 },
         { "enemy_ids": ["skeleton", "skeleton", "dark_acolyte"], "weight": 1, "level_min": 10, "level_max": 13 },
-        { "enemy_ids": ["shadow_warden"], "weight": 1, "level_min": 15, "level_max": 18, "is_boss": true }
+        { "enemy_ids": ["shadow_warden"], "weight": 1, "level_min": 15, "level_max": 18, "is_boss": true, "boss_id": "shadow_warden" }
       ]
     },
     {
@@ -268,7 +268,8 @@
           "weight": 1,
           "level_min": 27,
           "level_max": 27,
-          "is_boss": true
+          "is_boss": true,
+          "boss_id": "mire_oracle"
         }
       ]
     },
@@ -371,7 +372,8 @@
           "weight": 1,
           "level_min": 34,
           "level_max": 34,
-          "is_boss": true
+          "is_boss": true,
+          "boss_id": "iron_colossus"
         }
       ]
     },
@@ -511,7 +513,8 @@
           "weight": 1,
           "level_min": 40,
           "level_max": 40,
-          "is_boss": true
+          "is_boss": true,
+          "boss_id": "dawn_tyrant"
         }
       ]
     }

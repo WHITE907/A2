@@ -69,6 +69,30 @@ class TestExpandedWorld(unittest.TestCase):
         self.assertEqual(bosses["mire_oracle"], 27)
         self.assertEqual(bosses["iron_colossus"], 34)
         self.assertEqual(bosses["dawn_tyrant"], 40)
+        for area in self.world.areas.values():
+            for encounter in area.encounters:
+                if encounter.is_boss:
+                    self.assertIn(encounter.boss_id, encounter.enemy_ids)
+
+    def test_defeated_boss_is_removed_from_random_encounters(self):
+        self.world.current_area_id = "obsidian_gate"
+        area = self.world.current_area
+        original_quiet = area.quiet_chance
+        area.quiet_chance = 0.0
+        self.world.defeated_bosses.add("dawn_tyrant")
+        try:
+            results = [self.world.explore(self.game.rng, 40) for _ in range(80)]
+        finally:
+            area.quiet_chance = original_quiet
+        spawned = {enemy_id for result in results for enemy_id, _ in result.spawns}
+        self.assertNotIn("dawn_tyrant", spawned)
+        self.assertTrue(spawned)
+
+    def test_defeated_bosses_round_trip_with_world_state(self):
+        self.world.defeated_bosses = {"mire_oracle", "iron_colossus"}
+        restored = self.game.world_manager.create_world()
+        restored.load_dict(self.world.to_dict())
+        self.assertEqual(restored.defeated_bosses, self.world.defeated_bosses)
 
 
 class TestExpandedContent(unittest.TestCase):
@@ -122,6 +146,28 @@ class TestExpandedContent(unittest.TestCase):
         }
         self.assertTrue(materials)
         self.assertEqual(materials - dropped, set())
+
+    def test_normal_encounter_exp_pacing_stays_in_measured_band(self):
+        game = self.game
+        game.create_character("Balance", "male", "squire")
+        for area_id in (
+            "emberwatch_road", "mosswood", "glassmarsh", "drowned_archive",
+            "red_pass", "crystal_mines", "storm_plateau", "cloud_ruins", "obsidian_gate",
+        ):
+            area = game.world_manager.get_area(area_id)
+            weighted: list[tuple[float, float]] = []
+            for encounter in area.encounters:
+                if encounter.is_boss:
+                    continue
+                reward = sum(game.enemies.get_template(enemy_id).exp_reward for enemy_id in encounter.enemy_ids)
+                weighted.append((encounter.weight, reward))
+            average = sum(weight * reward for weight, reward in weighted) / sum(
+                weight for weight, _ in weighted
+            )
+            game.player.level = area.recommended_level
+            fights = game.player.exp_to_next_level() / average
+            self.assertGreaterEqual(fights, 2.5, area_id)
+            self.assertLessEqual(fights, 6.0, area_id)
 
     def test_level_35_quests_use_regional_bosses(self):
         targets = {

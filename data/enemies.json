@@ -219,7 +219,7 @@
         "enemy_howl"
       ],
       "ai_behavior_id": "opportunist",
-      "exp_reward": 520,
+      "exp_reward": 300,
       "gold_reward": 150,
       "loot": [
         {
@@ -255,7 +255,7 @@
         "enemy_howl"
       ],
       "ai_behavior_id": "tactical",
-      "exp_reward": 580,
+      "exp_reward": 340,
       "gold_reward": 210,
       "loot": [
         {
@@ -294,7 +294,7 @@
         "enemy_mend"
       ],
       "ai_behavior_id": "tactical",
-      "exp_reward": 650,
+      "exp_reward": 380,
       "gold_reward": 190,
       "loot": [
         {
@@ -330,7 +330,7 @@
         "enemy_howl"
       ],
       "ai_behavior_id": "berserk",
-      "exp_reward": 730,
+      "exp_reward": 420,
       "gold_reward": 130,
       "loot": [
         {
@@ -366,7 +366,7 @@
         "enemy_spit"
       ],
       "ai_behavior_id": "opportunist",
-      "exp_reward": 800,
+      "exp_reward": 460,
       "gold_reward": 160,
       "loot": [
         {
@@ -404,7 +404,7 @@
         "enemy_spit"
       ],
       "ai_behavior_id": "opportunist",
-      "exp_reward": 900,
+      "exp_reward": 520,
       "gold_reward": 180,
       "loot": [
         {
@@ -440,7 +440,7 @@
         "enemy_bog_hex"
       ],
       "ai_behavior_id": "defensive",
-      "exp_reward": 1150,
+      "exp_reward": 650,
       "gold_reward": 260,
       "modifiers": {
         "flat": {
@@ -482,7 +482,7 @@
         "enemy_mend"
       ],
       "ai_behavior_id": "tactical",
-      "exp_reward": 1300,
+      "exp_reward": 720,
       "gold_reward": 300,
       "loot": [
         {
@@ -542,7 +542,8 @@
         },
         {
           "item_id": "void_shard",
-          "chance": 1.0
+          "chance": 1.0,
+          "quantity": 3
         }
       ]
     },
@@ -570,7 +571,7 @@
         "enemy_howl"
       ],
       "ai_behavior_id": "berserk",
-      "exp_reward": 1650,
+      "exp_reward": 850,
       "gold_reward": 440,
       "loot": [
         {
@@ -608,7 +609,7 @@
         "enemy_crush"
       ],
       "ai_behavior_id": "defensive",
-      "exp_reward": 1900,
+      "exp_reward": 950,
       "gold_reward": 360,
       "modifiers": {
         "flat": {
@@ -649,7 +650,7 @@
         "enemy_bite"
       ],
       "ai_behavior_id": "defensive",
-      "exp_reward": 2050,
+      "exp_reward": 1050,
       "gold_reward": 390,
       "loot": [
         {
@@ -686,7 +687,7 @@
         "enemy_mend"
       ],
       "ai_behavior_id": "tactical",
-      "exp_reward": 2200,
+      "exp_reward": 1100,
       "gold_reward": 520,
       "loot": [
         {
@@ -753,7 +754,8 @@
         },
         {
           "item_id": "sacred_relic",
-          "chance": 1.0
+          "chance": 1.0,
+          "quantity": 3
         }
       ]
     },
@@ -780,7 +782,7 @@
         "enemy_tempest"
       ],
       "ai_behavior_id": "opportunist",
-      "exp_reward": 2700,
+      "exp_reward": 2100,
       "gold_reward": 580,
       "loot": [
         {
@@ -817,7 +819,7 @@
         "enemy_tempest"
       ],
       "ai_behavior_id": "berserk",
-      "exp_reward": 3200,
+      "exp_reward": 2600,
       "gold_reward": 720,
       "loot": [
         {
@@ -854,7 +856,7 @@
         "enemy_mend"
       ],
       "ai_behavior_id": "tactical",
-      "exp_reward": 3500,
+      "exp_reward": 2700,
       "gold_reward": 820,
       "loot": [
         {
@@ -891,7 +893,7 @@
         "enemy_crystal_burst"
       ],
       "ai_behavior_id": "defensive",
-      "exp_reward": 3900,
+      "exp_reward": 3000,
       "gold_reward": 900,
       "modifiers": {
         "flat": {
@@ -966,7 +968,8 @@
         },
         {
           "item_id": "codex_infinite",
-          "chance": 1.0
+          "chance": 1.0,
+          "quantity": 3
         }
       ]
     }

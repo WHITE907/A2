@@ -1077,6 +1077,8 @@ class TestQuestUI(unittest.TestCase):
         self.app.game.player.class_def = self.app.game.classes.require("paladin")
         self.app.game.player.level = 35
         self.app.game.player._recalculate_base_stats()
+        quest = self.app.game.quests.require("trial_of_the_dawn")
+        self.app.game.world.current_area_id = quest.start_area_id
         self.app.show_world()
 
     def test_world_screen_has_quest_button(self):
@@ -1087,6 +1089,12 @@ class TestQuestUI(unittest.TestCase):
         window = self.app.open_quests()
         self.assertEqual(window.available_list.count, 1)
         self.assertIn("Trial of the Dawn", window.details._label.options["text"])
+        self.assertIn("Reeve Marta", window.details._label.options["text"])
+
+    def test_quest_giver_talk_window_links_to_quest_log(self):
+        window = self.app.open_talk("reeve_marta")
+        self.assertIn("Trial of the Dawn", window.quest_info._label.options["text"])
+        self.assertEqual(window.quest_button.options["state"], tk.NORMAL)
 
     def test_accept_quest_through_window(self):
         window = self.app.open_quests()

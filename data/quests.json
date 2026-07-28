@@ -6,6 +6,9 @@
       "name": "Trial of the Dawn",
       "description": "Face the darkness beneath the shrine and return with your oath intact.",
       "min_level": 30,
+      "giver_id": "reeve_marta",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
       "required_class_ids": ["paladin"],
       "objectives": [
         { "kind": "defeat_enemy", "target_id": "iron_colossus", "quantity": 1 }
@@ -17,6 +20,9 @@
       "name": "The Silent Contract",
       "description": "Prove that even the shrine's unseen warden can be reached.",
       "min_level": 30,
+      "giver_id": "alchemist_pell",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
       "required_class_ids": ["assassin"],
       "objectives": [
         { "kind": "defeat_enemy", "target_id": "mire_oracle", "quantity": 1 }
@@ -28,6 +34,9 @@
       "name": "The Unwritten Page",
       "description": "Defeat the keeper below the shrine and record what waits beyond it.",
       "min_level": 30,
+      "giver_id": "abbess_sol",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
       "required_class_ids": ["archmage"],
       "objectives": [
         { "kind": "defeat_enemy", "target_id": "dawn_tyrant", "quantity": 1 }
@@ -39,10 +48,13 @@
       "name": "The Last Bastion",
       "description": "Break the shrine's guardian twice and show that endurance can become victory.",
       "min_level": 45,
+      "giver_id": "reeve_marta",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
       "required_class_ids": ["templar"],
       "prerequisite_quest_ids": ["trial_of_the_dawn"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 2 }
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
       ],
       "rewards": { "exp": 6000, "gold": 3000 }
     },
@@ -51,10 +63,13 @@
       "name": "The Moonless Night",
       "description": "Hunt the thing below the shrine until the dark itself learns caution.",
       "min_level": 45,
+      "giver_id": "archivist_lume",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
       "required_class_ids": ["nightblade"],
       "prerequisite_quest_ids": ["the_silent_contract"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 2 }
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
       ],
       "rewards": { "exp": 6000, "gold": 3000 }
     },
@@ -63,10 +78,13 @@
       "name": "The Hollow Crown",
       "description": "Unmake the shrine's warden twice and claim authority over what remains.",
       "min_level": 45,
+      "giver_id": "runekeeper_ada",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
       "required_class_ids": ["archon"],
       "prerequisite_quest_ids": ["the_unwritten_page"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 2 }
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
       ],
       "rewards": { "exp": 6000, "gold": 3000 }
     },
@@ -75,10 +93,13 @@
       "name": "The Final Oath",
       "description": "Return to the deepest dark three times. Let each victory renew the vow.",
       "min_level": 65,
+      "giver_id": "abbess_sol",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
       "required_class_ids": ["crusader"],
       "prerequisite_quest_ids": ["the_last_bastion"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 3 }
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
       ],
       "rewards": { "exp": 15000, "gold": 7500 }
     },
@@ -87,10 +108,13 @@
       "name": "The Devouring Dark",
       "description": "Feed the dark its own guardian until nothing remains but your shadow.",
       "min_level": 65,
+      "giver_id": "archivist_lume",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
       "required_class_ids": ["shadowlord"],
       "prerequisite_quest_ids": ["the_moonless_night"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 3 }
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
       ],
       "rewards": { "exp": 15000, "gold": 7500 }
     },
@@ -99,10 +123,13 @@
       "name": "The First Word",
       "description": "Silence the shrine's answer three times and speak the word that remains.",
       "min_level": 65,
+      "giver_id": "runekeeper_ada",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
       "required_class_ids": ["sorcerer_king"],
       "prerequisite_quest_ids": ["the_hollow_crown"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 3 }
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
       ],
       "rewards": { "exp": 15000, "gold": 7500 }
     },
@@ -111,9 +138,12 @@
       "name": "Ascension",
       "description": "Overcome the last guardian five times. There is no witness left to name what follows.",
       "min_level": 90,
+      "giver_id": "abbess_sol",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
       "required_class_ids": ["godsworn", "eclipse", "worldweaver"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 5 }
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
       ],
       "rewards": { "exp": 50000, "gold": 25000 }
     }

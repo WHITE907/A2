@@ -50,7 +50,7 @@ from engine.world.world import WorldState
 __all__ = ["Game", "GAME_VERSION", "QuestDefinition", "SaveSlotInfo"]
 
 #: Shown on the main menu under the title (per the GUI style reference).
-GAME_VERSION = "0.4.0"
+GAME_VERSION = "0.5.0"
 
 
 class Game:
@@ -156,6 +156,19 @@ class Game:
                 )
 
         for quest in self.quests.all_definitions():
+            giver = self.world_manager.get_npc(quest.giver_id)
+            if giver is None:
+                problems.append(f"quest {quest.id!r} has unknown giver {quest.giver_id!r}")
+            for field_name, area_id in (
+                ("start_area_id", quest.start_area_id),
+                ("turn_in_area_id", quest.turn_in_area_id),
+            ):
+                if self.world_manager.get_area(area_id) is None:
+                    problems.append(f"quest {quest.id!r} has unknown {field_name} {area_id!r}")
+            if giver is not None and giver.location_id != quest.start_area_id:
+                problems.append(
+                    f"quest {quest.id!r} giver {giver.id!r} is not in start area {quest.start_area_id!r}"
+                )
             for class_id in quest.required_class_ids:
                 if self.classes.get(class_id) is None:
                     problems.append(f"quest {quest.id!r} requires unknown class {class_id!r}")
@@ -174,6 +187,16 @@ class Game:
                 for enemy_id in encounter.enemy_ids:
                     if self.enemies.get_template(enemy_id) is None:
                         problems.append(f"area {area.id!r} spawns unknown enemy {enemy_id!r}")
+                if encounter.is_boss:
+                    boss = self.enemies.get_template(encounter.boss_id)
+                    if encounter.boss_id not in encounter.enemy_ids:
+                        problems.append(
+                            f"area {area.id!r} boss encounter names {encounter.boss_id!r} outside enemy_ids"
+                        )
+                    elif boss is None or not boss.is_boss:
+                        problems.append(
+                            f"area {area.id!r} marks non-boss enemy {encounter.boss_id!r} as a boss encounter"
+                        )
 
         for shop_id in {s for a in self.world_manager.all_areas() for s in a.shop_ids}:
             shop = self.world_manager.get_shop(shop_id)
@@ -401,7 +424,18 @@ class Game:
     # Quests
     # ==================================================================
     def available_quests(self) -> list[QuestDefinition]:
-        return self.quests.available_for(self.player) if self.player else []
+        if not self.player or not self.world:
+            return []
+        return self.quests.available_for(self.player, self.world.current_area_id)
+
+    def quests_from(self, giver_id: str) -> list[QuestDefinition]:
+        if not self.player or not self.world:
+            return []
+        return self.quests.available_for(
+            self.player,
+            self.world.current_area_id,
+            giver_id=giver_id,
+        )
 
     def active_quests(self) -> list[QuestDefinition]:
         return self.quests.active_for(self.player) if self.player else []
@@ -421,11 +455,33 @@ class Game:
         definition = self.quests.get(quest_id)
         if definition is None:
             return False, "Unknown quest."
-        if definition not in self.quests.available_for(self.player):
-            return False, "That quest is not currently available."
+        if not self.world or definition not in self.quests.available_for(
+            self.player, self.world.current_area_id
+        ):
+            return False, "That quest is not available from anyone here."
         if not self.player.accept_quest(quest_id):
             return False, "That quest is already active or completed."
-        return True, f"Accepted quest: {definition.name}."
+        # A save must not dead-end if the player defeated a one-time boss before
+        # speaking to its quest giver. The giver recognises the existing deed.
+        if self.world.defeated_bosses:
+            self.quests.record_defeats(self.player, self.world.defeated_bosses)
+        return True, f"Accepted quest from {self._quest_giver_name(definition)}: {definition.name}."
+
+    def _quest_giver_name(self, definition: QuestDefinition) -> str:
+        giver = self.world_manager.get_npc(definition.giver_id)
+        return giver.name if giver else definition.giver_id.replace("_", " ").title()
+
+    def quest_giver_lines(self, giver_id: str) -> list[str]:
+        """Quest summary shown while speaking to one NPC."""
+        available = self.quests_from(giver_id)
+        active = [quest for quest in self.active_quests() if quest.giver_id == giver_id]
+        lines: list[str] = []
+        lines.extend(f"Available quest: {quest.name}" for quest in available)
+        for quest in active:
+            ready, _ = self.quest_completion_check(quest.id)
+            state = "Ready to turn in" if ready else "In progress"
+            lines.append(f"{state}: {quest.name}")
+        return lines
 
     def quest_detail_lines(self, quest_id: str) -> list[str]:
         definition = self.quests.get(quest_id)
@@ -435,6 +491,14 @@ class Game:
         if definition.description:
             lines.append(definition.description)
         lines.append(f"Minimum level: {definition.min_level}")
+        if definition.giver_id:
+            lines.append(f"Quest giver: {self._quest_giver_name(definition)}")
+        if definition.start_area_id:
+            area = self.world_manager.get_area(definition.start_area_id)
+            lines.append(f"Accept in: {area.name if area else definition.start_area_id}")
+        if definition.turn_in_area_id:
+            area = self.world_manager.get_area(definition.turn_in_area_id)
+            lines.append(f"Return to: {area.name if area else definition.turn_in_area_id}")
         progress = self.player.quest_progress.get(quest_id, {}) if self.player else {}
         lines.append("Objectives:")
         lines.extend(definition.progress_lines(progress))
@@ -451,9 +515,19 @@ class Game:
         return lines
 
     def quest_completion_check(self, quest_id: str) -> tuple[bool, list[str]]:
-        if not self.player:
+        if not self.player or not self.world:
             return False, ["No character loaded."]
-        return self.quests.can_complete(self.player, quest_id)
+        ready, unmet = self.quests.can_complete(self.player, quest_id)
+        definition = self.quests.get(quest_id)
+        if (
+            ready
+            and definition is not None
+            and definition.turn_in_area_id
+            and self.world.current_area_id != definition.turn_in_area_id
+        ):
+            area = self.world_manager.get_area(definition.turn_in_area_id)
+            return False, [f"Return to {area.name if area else definition.turn_in_area_id}."]
+        return ready, unmet
 
     def complete_quest(self, quest_id: str) -> tuple[bool, list[str]]:
         if not self.player:
@@ -568,10 +642,14 @@ class Game:
         if battle.state is CombatState.VICTORY:
             lines.extend(battle.grant_loot(self.items))
             lines.extend(battle.rewards.summary_lines())
+            defeated_ids = [enemy.template.id for enemy in battle.enemies]
+            if self.world:
+                for enemy in battle.enemies:
+                    if enemy.is_boss and enemy.template.id not in self.world.defeated_bosses:
+                        self.world.defeated_bosses.add(enemy.template.id)
+                        lines.append(f"World updated: {enemy.template.name} has been defeated.")
             if self.player:
-                changed = self.quests.record_defeats(
-                    self.player, (enemy.template.id for enemy in battle.enemies)
-                )
+                changed = self.quests.record_defeats(self.player, defeated_ids)
                 for quest_id in changed:
                     definition = self.quests.require(quest_id)
                     progress = self.player.quest_progress.get(quest_id, {})
