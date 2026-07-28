@@ -515,6 +515,448 @@
         { "type": "damage", "damage_type": "magic", "base": 14, "power_ratio": 1.5 },
         { "type": "apply_status", "status_id": "frozen", "chance": 0.3 }
       ]
+    },
+    {
+      "id": "radiant_aegis",
+      "name": "Radiant Aegis",
+      "category": "active",
+      "description": "Conviction becomes a brilliant barrier.",
+      "targeting": "self",
+      "mp_cost": 20,
+      "cooldown": 4,
+      "required_level": 20,
+      "required_class_ids": [
+        "paladin",
+        "templar",
+        "crusader",
+        "godsworn"
+      ],
+      "mastery_track": "light",
+      "effects": [
+        {
+          "type": "shield",
+          "name": "Radiant Aegis",
+          "base": 45,
+          "scaling": {
+            "END": 1.5,
+            "INT": 1.2
+          },
+          "duration": 3
+        },
+        {
+          "type": "apply_status",
+          "status_id": "valor",
+          "resistible": false
+        }
+      ]
+    },
+    {
+      "id": "executioners_arc",
+      "name": "Executioner's Arc",
+      "category": "weapon",
+      "description": "A disciplined sweep that leaves no safe approach.",
+      "targeting": "all_enemies",
+      "mp_cost": 18,
+      "cooldown": 3,
+      "required_level": 24,
+      "required_weapon_types": [
+        "sword",
+        "axe"
+      ],
+      "mastery_track": "sword",
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 16,
+          "power_ratio": 1.35,
+          "penetration_pct": 0.2
+        }
+      ]
+    },
+    {
+      "id": "guardian_resolve",
+      "name": "Guardian's Resolve",
+      "category": "passive",
+      "description": "A protector becomes hardest to move when others depend on them.",
+      "required_level": 22,
+      "required_class_ids": [
+        "paladin",
+        "templar",
+        "crusader",
+        "godsworn"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_hp": 80,
+          "armor": 12,
+          "status_resist": 0.1
+        }
+      }
+    },
+    {
+      "id": "smoke_veil",
+      "name": "Smoke Veil",
+      "category": "active",
+      "description": "Vanish into smoke and return with the wind at your back.",
+      "targeting": "self",
+      "mp_cost": 14,
+      "cooldown": 4,
+      "required_level": 20,
+      "required_class_ids": [
+        "assassin",
+        "nightblade",
+        "shadowlord",
+        "eclipse"
+      ],
+      "mastery_track": "shadow",
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "resistible": false
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stormguard",
+          "resistible": false
+        }
+      ]
+    },
+    {
+      "id": "heartseeker",
+      "name": "Heartseeker",
+      "category": "weapon",
+      "description": "One patient strike through the smallest opening.",
+      "targeting": "enemy",
+      "mp_cost": 16,
+      "cooldown": 3,
+      "required_level": 24,
+      "required_weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "mastery_track": "dagger",
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 20,
+          "power_ratio": 1.8,
+          "accuracy_bonus": 0.12,
+          "penetration_pct": 0.35
+        },
+        {
+          "type": "apply_status",
+          "status_id": "bleed",
+          "chance": 0.75,
+          "stacks": 2
+        }
+      ]
+    },
+    {
+      "id": "predatory_focus",
+      "name": "Predatory Focus",
+      "category": "passive",
+      "description": "Motion, distance, weakness: all reduced to one clean line.",
+      "required_level": 22,
+      "required_class_ids": [
+        "assassin",
+        "nightblade",
+        "shadowlord",
+        "eclipse"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.07,
+          "accuracy": 0.05,
+          "speed": 6
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      }
+    },
+    {
+      "id": "chain_lightning",
+      "name": "Chain Lightning",
+      "category": "active",
+      "description": "A forked bolt hunts every hostile heartbeat.",
+      "targeting": "all_enemies",
+      "mp_cost": 24,
+      "cooldown": 3,
+      "required_level": 20,
+      "required_class_ids": [
+        "archmage",
+        "archon",
+        "sorcerer_king",
+        "worldweaver"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 18,
+          "power_ratio": 1.45
+        },
+        {
+          "type": "apply_status",
+          "status_id": "electrified",
+          "chance": 0.55
+        }
+      ]
+    },
+    {
+      "id": "glacial_prison",
+      "name": "Glacial Prison",
+      "category": "active",
+      "description": "Layered ice seals movement and cracks magical defences.",
+      "targeting": "enemy",
+      "mp_cost": 22,
+      "cooldown": 4,
+      "required_level": 24,
+      "required_class_ids": [
+        "archmage",
+        "archon",
+        "sorcerer_king",
+        "worldweaver"
+      ],
+      "mastery_track": "ice",
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 16,
+          "power_ratio": 1.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "frozen",
+          "chance": 0.5
+        },
+        {
+          "type": "apply_status",
+          "status_id": "brittle",
+          "chance": 0.8
+        }
+      ]
+    },
+    {
+      "id": "ley_attunement",
+      "name": "Ley Attunement",
+      "category": "passive",
+      "description": "The world's hidden current becomes another vein.",
+      "required_level": 22,
+      "required_class_ids": [
+        "archmage",
+        "archon",
+        "sorcerer_king",
+        "worldweaver"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 70,
+          "magic_power": 12,
+          "magic_resist": 8
+        },
+        "pct": {
+          "magic_power": 0.12
+        }
+      }
+    },
+    {
+      "id": "enemy_ember_bite",
+      "name": "Ember Bite",
+      "category": "active",
+      "targeting": "enemy",
+      "mp_cost": 8,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 12,
+          "power_ratio": 1.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.55
+        }
+      ]
+    },
+    {
+      "id": "enemy_thorn_lash",
+      "name": "Thorn Lash",
+      "category": "active",
+      "targeting": "enemy",
+      "mp_cost": 10,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 11,
+          "power_ratio": 1.15
+        },
+        {
+          "type": "apply_status",
+          "status_id": "rooted",
+          "chance": 0.3
+        }
+      ]
+    },
+    {
+      "id": "enemy_bog_hex",
+      "name": "Bog Hex",
+      "category": "active",
+      "targeting": "enemy",
+      "mp_cost": 14,
+      "cooldown": 3,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 14,
+          "power_ratio": 1.2
+        },
+        {
+          "type": "apply_status",
+          "status_id": "cursed",
+          "chance": 0.7
+        },
+        {
+          "type": "apply_status",
+          "status_id": "slowed",
+          "chance": 0.5
+        }
+      ]
+    },
+    {
+      "id": "enemy_spectral_touch",
+      "name": "Spectral Touch",
+      "category": "active",
+      "targeting": "enemy",
+      "mp_cost": 12,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 16,
+          "power_ratio": 1.35,
+          "penetration_pct": 0.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "weakened",
+          "chance": 0.5
+        }
+      ]
+    },
+    {
+      "id": "enemy_stone_fist",
+      "name": "Stone Fist",
+      "category": "active",
+      "targeting": "enemy",
+      "mp_cost": 14,
+      "cooldown": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 22,
+          "power_ratio": 1.55,
+          "penetration_flat": 30
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stunned",
+          "chance": 0.25
+        }
+      ]
+    },
+    {
+      "id": "enemy_crystal_burst",
+      "name": "Crystal Burst",
+      "category": "active",
+      "targeting": "all_enemies",
+      "mp_cost": 20,
+      "cooldown": 3,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 18,
+          "power_ratio": 1.35
+        },
+        {
+          "type": "apply_status",
+          "status_id": "brittle",
+          "chance": 0.55
+        }
+      ]
+    },
+    {
+      "id": "enemy_lightning_dive",
+      "name": "Lightning Dive",
+      "category": "active",
+      "targeting": "enemy",
+      "mp_cost": 16,
+      "cooldown": 2,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 20,
+          "power_ratio": 1.5
+        },
+        {
+          "type": "apply_status",
+          "status_id": "electrified",
+          "chance": 0.65
+        }
+      ]
+    },
+    {
+      "id": "enemy_tempest",
+      "name": "Tempest",
+      "category": "active",
+      "targeting": "all_enemies",
+      "mp_cost": 26,
+      "cooldown": 4,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 24,
+          "power_ratio": 1.7
+        },
+        {
+          "type": "apply_status",
+          "status_id": "electrified",
+          "chance": 0.7
+        }
+      ]
+    },
+    {
+      "id": "enemy_sunfire",
+      "name": "Sunfire",
+      "category": "active",
+      "targeting": "all_enemies",
+      "mp_cost": 30,
+      "cooldown": 4,
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 30,
+          "power_ratio": 1.9,
+          "penetration_pct": 0.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.8
+        }
+      ]
     }
   ]
 }

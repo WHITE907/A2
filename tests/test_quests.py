@@ -87,6 +87,7 @@ class TestQuestProgression(unittest.TestCase):
         self.player.class_def = self.game.classes.require("paladin")
         self.player.level = 35
         self.player._recalculate_base_stats()
+        self.objective = self.game.quests.require("trial_of_the_dawn").objectives[0]
 
     def test_level_and_class_gate_availability(self):
         ids = {quest.id for quest in self.game.available_quests()}
@@ -100,7 +101,7 @@ class TestQuestProgression(unittest.TestCase):
 
     def test_defeat_event_advances_and_clamps_progress(self):
         self.game.accept_quest("trial_of_the_dawn")
-        self.game.quests.record_defeats(self.player, ["shadow_warden", "shadow_warden"])
+        self.game.quests.record_defeats(self.player, [self.objective.target_id, self.objective.target_id])
         definition = self.game.quests.require("trial_of_the_dawn")
         self.assertEqual(self.player.quest_progress_value(definition.id, definition.objectives[0].key), 1)
 
@@ -110,7 +111,11 @@ class TestQuestProgression(unittest.TestCase):
 
     def test_finished_victory_records_defeated_enemies(self):
         self.game.accept_quest("trial_of_the_dawn")
-        battle = self.game.start_battle([("shadow_warden", 15)])
+        self.player.allocated_stats["STR"] = 1000
+        self.player.allocated_stats["END"] = 1000
+        self.player._recalculate_base_stats()
+        self.player.restore_fully()
+        battle = self.game.start_battle([(self.objective.target_id, 34)])
         for _ in range(300):
             if battle.is_over:
                 break
@@ -131,7 +136,7 @@ class TestQuestProgression(unittest.TestCase):
     def test_complete_quest_grants_rewards_and_calls_player_flow(self):
         definition = self.game.quests.require("trial_of_the_dawn")
         self.game.accept_quest(definition.id)
-        self.game.quests.record_defeats(self.player, ["shadow_warden"])
+        self.game.quests.record_defeats(self.player, [self.objective.target_id])
         gold_before = self.player.inventory.gold
 
         ok, lines = self.game.complete_quest(definition.id)
@@ -156,7 +161,8 @@ class TestQuestProgression(unittest.TestCase):
             game.player.level = 35
             game.player._recalculate_base_stats()
             game.accept_quest("trial_of_the_dawn")
-            game.quests.record_defeats(game.player, ["shadow_warden"])
+            objective = game.quests.require("trial_of_the_dawn").objectives[0]
+            game.quests.record_defeats(game.player, [objective.target_id])
             game.save_game("quest-test")
 
             restored = new_game(tmp)
@@ -164,7 +170,7 @@ class TestQuestProgression(unittest.TestCase):
             self.assertTrue(ok)
             self.assertEqual(restored.player.active_quests, ["trial_of_the_dawn"])
             self.assertEqual(
-                restored.player.quest_progress["trial_of_the_dawn"]["defeat_enemy:shadow_warden"],
+                restored.player.quest_progress["trial_of_the_dawn"][objective.key],
                 1,
             )
 
@@ -178,13 +184,17 @@ class TestPromotionItemLoot(unittest.TestCase):
         self.assertTrue(item_ids <= drops.keys())
         self.assertTrue(all(game.items.require(item_id).stackable for item_id in item_ids))
 
-    def test_shadow_warden_drops_all_upper_promotion_items(self):
+    def test_regional_bosses_drop_upper_promotion_items(self):
         game = new_game()
-        enemy = game.enemies.spawn("shadow_warden")
-        drops = dict(enemy.roll_loot(game.rng))
-        item_ids = {"sacred_relic", "void_shard", "codex_infinite"}
-        self.assertTrue(item_ids <= drops.keys())
-        self.assertTrue(all(game.items.require(item_id).stackable for item_id in item_ids))
+        expected = {
+            "iron_colossus": "sacred_relic",
+            "mire_oracle": "void_shard",
+            "dawn_tyrant": "codex_infinite",
+        }
+        for enemy_id, item_id in expected.items():
+            drops = dict(game.enemies.spawn(enemy_id).roll_loot(game.rng))
+            self.assertIn(item_id, drops)
+            self.assertTrue(game.items.require(item_id).stackable)
 
 
 if __name__ == "__main__":

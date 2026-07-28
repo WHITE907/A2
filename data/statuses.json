@@ -135,6 +135,73 @@
       "category": "stun",
       "duration": 1,
       "description": "Encased in ice, unable to move."
+    },
+    {
+      "id": "electrified",
+      "name": "Electrified",
+      "category": "dot",
+      "duration": 3,
+      "per_turn_hp": -18,
+      "damage_type": "true",
+      "stacking": "refresh",
+      "modifiers": {
+        "pct": {
+          "speed": -0.15
+        }
+      },
+      "description": "Lightning crawls across armour and skin."
+    },
+    {
+      "id": "brittle",
+      "name": "Brittle",
+      "category": "debuff",
+      "duration": 3,
+      "modifiers": {
+        "pct": {
+          "armor": -0.25,
+          "magic_resist": -0.25
+        }
+      },
+      "description": "Cold and crystal fractures leave every defence fragile."
+    },
+    {
+      "id": "rooted",
+      "name": "Rooted",
+      "category": "stun",
+      "duration": 1,
+      "description": "Thorns lock every limb in place."
+    },
+    {
+      "id": "valor",
+      "name": "Valor",
+      "category": "buff",
+      "duration": 4,
+      "modifiers": {
+        "pct": {
+          "physical_power": 0.2,
+          "armor": 0.25
+        },
+        "flat": {
+          "status_resist": 0.1
+        }
+      },
+      "description": "Purpose steadies both weapon and guard."
+    },
+    {
+      "id": "stormguard",
+      "name": "Stormguard",
+      "category": "buff",
+      "duration": 3,
+      "modifiers": {
+        "pct": {
+          "magic_resist": 0.4
+        },
+        "flat": {
+          "speed": 6,
+          "evasion": 0.06
+        }
+      },
+      "description": "The wind turns hostile magic aside."
     }
   ]
 }

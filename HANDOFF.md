@@ -7,16 +7,16 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-**Quests and promotion-item availability are complete on the current branch.**
-The v0.3.0 work adds `QuestManager`, ten data-driven promotion quests, a Quest
-Log GUI, persisted objective progress, save migration, and guaranteed drops for
-all six previously unobtainable promotion items. The full suite contains 385
-tests and content validation reports 10 quests.
+**The level-40 world expansion is complete on the current branch.** v0.4.0
+extends the map to 17 connected areas with three new towns, 19 new enemies,
+three regional bosses, 38 new items, 18 new skills, five statuses, six
+companions, nine NPCs, and six shops. The full suite contains 398 tests.
 
-The next implementation task is to **extend world, enemy, boss, and reward
-content toward level 99**. Existing content ends around level 18, so the upper
-quest and promotion gates are mechanically reachable but require repetitive
-low-level grinding. Preserve JSON-driven content and startup cross-validation.
+The next world milestone is **levels 41–70**, including content that supports
+the level-50 and level-70 promotions. Tier-5+ quest definitions still use the
+old Shadow Warden as a temporary objective; replace those objectives with new
+regional bosses as the areas are added. Keep content in JSON and preserve the
+startup cross-validation and reciprocal-map checks.
 
 Before handing off changes, run:
 
@@ -35,12 +35,12 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 385 tests
+python3 -m unittest discover -s tests    # 398 tests
 ```
 
 **Current state:** v0.1.0 is merged in PR #1 and v0.2.0 is merged in PR #2.
-v0.3.0 quests and promotion progression are implemented on the current branch;
-world progression beyond level 18 is next.
+v0.3.0 quests and v0.4.0 level-40 world content are implemented on the current
+branch. The next unsupported promotion band begins at level 50.
 
 ---
 
@@ -81,13 +81,13 @@ From `docs/ENGINE_DESIGN.md`. Class count scales with **behaviour**, not
 
 | Concept | Python classes | JSON entries |
 |---|---|---|
-| Skills | 1 (`Skill`) | 42 |
+| Skills | 1 (`Skill`) | 60 |
 | Effects | 5 strategies | — |
 | Classes | 1 (`ClassDefinition`) | 19 |
-| Enemies | 1 (`Enemy`) | 11 |
-| Items | 1 (`Item`) | 41 |
-| Statuses | 1 (`StatusEffect`) | 16 |
-| Companions | 1 (`Companion`) | 4 |
+| Enemies | 1 (`Enemy`) | 30 |
+| Items | 1 (`Item`) | 79 |
+| Statuses | 1 (`StatusEffect`) | 21 |
+| Companions | 1 (`Companion`) | 10 |
 
 Fireball is **not** a Python class. It is a JSON entry composing a
 `DamageEffect` and an `ApplyStatusEffect`.
@@ -161,6 +161,7 @@ area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 | `tests/test_gui.py` | 116 tests. Builds real screens, invokes real handlers. |
 | `tests/test_companions.py` | *(v0.2.0)* 76 tests. |
 | `tests/test_quests.py` | *(v0.3.0)* Quest progression, persistence, and loot. |
+| `tests/test_world_expansion.py` | *(v0.4.0)* Level-40 density, reachability, and content. |
 | `tests/tk_stub.py` | Recording Tkinter stand-in for headless GUI testing. |
 | `tools/render_mockups.py` | Renders screen layouts via Pillow. |
 
@@ -194,38 +195,39 @@ a checkbox.
 
 ## 7. Known limitations — verified, not guessed
 
-The two hard progression blockers are resolved in v0.3.0:
+The game now has a continuous world route through level 40. The first three
+quest-gated promotions use regional bosses: Mire Oracle (27), Iron Colossus
+(34), and Dawn Tyrant (40). Their class-line promotion items are guaranteed
+regional drops rather than rewards from the old level-15 boss.
 
-- `QuestManager` and `data/quests.json` cover all ten unique quest ids used by
-  the 12 quest-gated promotions. Victory events update persisted objectives and
-  `Game.complete_quest()` calls the existing `Player.complete_quest()` flow.
-- The Bandit Chief guarantees the three tier-3 promotion items; the Shadow
-  Warden guarantees the three repeatable upper-tier promotion items.
+**The remaining progression limit begins at level 50.** No level-41+ areas or
+enemies exist yet, while later promotions require levels 50 / 70 / 99. The
+Tier-5+ quest entries remain mechanically valid but temporarily reuse the
+Shadow Warden. New content should replace those objectives with bosses in the
+same level band rather than changing quest engine code.
 
-**The remaining progression limitation is content depth.** Areas and enemies
-still top out around level 18, against promotion gates of 35 / 50 / 70 / 99.
-Players can grind the existing repeatable encounters, but upper-tier quests all
-reuse the Shadow Warden because no level-35+ bosses exist yet. When extending
-the world, move each class-line reward and quest objective to thematically
-appropriate bosses instead of changing the quest engine.
-
+The Bandit Chief still drops all three tier-3 path items together. This is safe
+and keeps every starter path open, but future level-20 class-themed encounters
+could distribute those drops more naturally.
 ## 8. Roadmap
 
 ### Completed
 - ✅ **Playable foundation (v0.1.0, PR #1):** data engine, combat, equipment,
   exploration, world, saves, and the initial GUI.
-- ✅ **Companions and relationships (v0.2.0, PR #2):** four companions, active
-  party and reserve bench, affinity, marriage, party combat, GUI, and tests.
+- ✅ **Companions and relationships (v0.2.0, PR #2):** party, affinity,
+  marriage, party combat, GUI, and tests.
 - ✅ **Quests and promotion progression (v0.3.0):** ten promotion quests, Quest
-  Log, persisted progress, cross-validation, and six obtainable promotion items.
+  Log, persisted progress, cross-validation, and obtainable promotion items.
+- ✅ **World through level 40 (v0.4.0):** 17 areas, four towns, 30 enemies, five
+  bosses, 79 items, 60 skills, 10 companions, and dense regional content.
 
 ### Next
-1. **Extend world, enemy, boss, and reward content toward level 99.** Add content
-   in JSON, distribute class-line promotion drops among suitable bosses, and
-   replace the temporary repeated Shadow Warden objectives.
-2. **Balance the full seven-tier progression path** by execution once content
-   exists at each level band; verify EXP pacing, mastery gain, loot frequency,
-   and promotion costs rather than guessing.
+1. **Extend the world through levels 41–70.** Add at least two level bands with
+   populated towns, distinct enemy families, equipment progression, companions,
+   and bosses for the level-50 and level-70 quest/promotion gates.
+2. **Balance by execution.** Run representative tier-3/4 characters through the
+   new route and verify EXP pacing, enemy time-to-kill, shop prices, loot rates,
+   mastery gain, and boss difficulty rather than judging numbers in isolation.
 3. **Future features after the playable progression path is complete:** guilds,
    housing, fishing, mining, smithing, cooking, alchemy, arena, legendary
    classes, NG+, world events, and pets (bible §20).

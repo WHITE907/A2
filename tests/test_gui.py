@@ -1099,7 +1099,8 @@ class TestQuestUI(unittest.TestCase):
         window = self.app.open_quests()
         window._show_available(window.available_list.selected_value)
         window._accept()
-        self.app.game.quests.record_defeats(self.app.game.player, ["shadow_warden"])
+        objective = self.app.game.quests.require("trial_of_the_dawn").objectives[0]
+        self.app.game.quests.record_defeats(self.app.game.player, [objective.target_id])
         window._show_active(window.active_list.selected_value)
         self.assertEqual(window.complete_button.options["state"], tk.NORMAL)
 

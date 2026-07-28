@@ -96,6 +96,329 @@
         "I have three theories. Two of them end badly for us.",
         "Knowledge first, safety somewhere after. It's a working order."
       ]
+    },
+    {
+      "id": "captain_brann",
+      "name": "Captain Brann",
+      "role": "vanguard",
+      "description": "Emberwatch's captain, off duty only by technicality.",
+      "location_id": "town_emberwatch",
+      "base_stats": {
+        "STR": 16,
+        "END": 18,
+        "INT": 6,
+        "AGI": 8
+      },
+      "growth": {
+        "STR": 3,
+        "END": 4,
+        "INT": 1,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "executioners_arc",
+        "radiant_aegis",
+        "rallying_cry"
+      ],
+      "ai_behavior_id": "defensive",
+      "weapon_type": "sword",
+      "modifiers": {
+        "flat": {
+          "armor": 14,
+          "max_hp": 70
+        }
+      },
+      "recruit": {
+        "level": 18,
+        "affinity": 20,
+        "gold": 1200,
+        "items": {
+          "ember_scale": 3
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "embersteel_blade",
+        "ember_scale",
+        "greater_potion"
+      ],
+      "dialogue": [
+        "A wall is just a promise made from stone.",
+        "The western road burns because nobody has convinced it to stop.",
+        "Stand your watch. Even when nobody thanks you.",
+        "Ash gets into everything. Discipline keeps it out of the important parts."
+      ]
+    },
+    {
+      "id": "nyra_reed",
+      "name": "Nyra Reed",
+      "role": "ranger",
+      "description": "A marsh guide who can identify danger by how quiet the frogs become.",
+      "location_id": "town_emberwatch",
+      "base_stats": {
+        "STR": 10,
+        "END": 10,
+        "INT": 8,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 1,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "pierce",
+        "hunters_mark",
+        "heartseeker",
+        "smoke_veil"
+      ],
+      "ai_behavior_id": "opportunist",
+      "weapon_type": "bow",
+      "modifiers": {
+        "flat": {
+          "accuracy": 0.08,
+          "evasion": 0.06
+        }
+      },
+      "recruit": {
+        "level": 20,
+        "affinity": 15,
+        "items": {
+          "briar_heart": 2
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "gift_item_ids": [
+        "briar_bow",
+        "briar_heart",
+        "marsh_ichor"
+      ],
+      "dialogue": [
+        "If the reeds stop moving, you should too.",
+        "Maps are apologies for not knowing the ground.",
+        "The marsh isn't cruel. Cruelty requires interest.",
+        "Follow exactly. Heroics sink faster than boots."
+      ]
+    },
+    {
+      "id": "orren_quill",
+      "name": "Orren Quill",
+      "role": "battlemage",
+      "description": "Stonehaven's runesmith keeps testing inscriptions on live problems.",
+      "location_id": "town_stonehaven",
+      "base_stats": {
+        "STR": 7,
+        "END": 13,
+        "INT": 22,
+        "AGI": 10
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 4,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "chain_lightning",
+        "glacial_prison",
+        "mind_over_matter"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 14,
+          "magic_resist": 12
+        }
+      },
+      "recruit": {
+        "level": 28,
+        "affinity": 25,
+        "gold": 2500,
+        "items": {
+          "crystal_carapace": 2
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": [
+        "crystal_staff",
+        "crystal_carapace",
+        "wraith_lantern"
+      ],
+      "dialogue": [
+        "A rune is an argument reality has agreed to lose.",
+        "Do not touch the blue chisel.",
+        "The crystals sing. Mostly complaints.",
+        "If this explodes, remember the pattern. The pattern is valuable."
+      ]
+    },
+    {
+      "id": "tala_stone",
+      "name": "Tala Stone",
+      "role": "breaker",
+      "description": "A forewoman who negotiates with cave-ins using an axe.",
+      "location_id": "town_stonehaven",
+      "base_stats": {
+        "STR": 22,
+        "END": 19,
+        "INT": 5,
+        "AGI": 9
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "cleave",
+        "executioners_arc",
+        "sunder_armor"
+      ],
+      "ai_behavior_id": "berserk",
+      "weapon_type": "axe",
+      "modifiers": {
+        "flat": {
+          "physical_power": 12,
+          "armor": 10
+        }
+      },
+      "recruit": {
+        "level": 28,
+        "affinity": 20,
+        "items": {
+          "granite_core": 3
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "stonecleaver",
+        "granite_core",
+        "runic_gauntlets"
+      ],
+      "dialogue": [
+        "Rock talks. Usually right before it falls.",
+        "Nobody is trapped until I say the tunnel is closed.",
+        "A bigger hammer is a kind of planning.",
+        "Stonehaven stands because we keep putting it back."
+      ]
+    },
+    {
+      "id": "seraphine_gale",
+      "name": "Seraphine Gale",
+      "role": "stormcaller",
+      "description": "A weather scholar whose forecasts occasionally fight beside her.",
+      "location_id": "town_skyreach",
+      "base_stats": {
+        "STR": 5,
+        "END": 12,
+        "INT": 26,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 0,
+        "END": 2,
+        "INT": 5,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "chain_lightning",
+        "flame_wave",
+        "renewal"
+      ],
+      "ai_behavior_id": "aggressive",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 18,
+          "speed": 8,
+          "max_mp": 60
+        }
+      },
+      "recruit": {
+        "level": 35,
+        "affinity": 30,
+        "gold": 4000,
+        "items": {
+          "storm_feather": 3
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 90,
+      "gift_item_ids": [
+        "stormglass_pendant",
+        "storm_feather",
+        "greater_ether"
+      ],
+      "dialogue": [
+        "The forecast says pain with scattered thunder.",
+        "Clouds are just rivers nobody can stand in.",
+        "Count after the flash. If you reach three, it wasn't mine.",
+        "Skyreach teaches perspective and very secure knots."
+      ]
+    },
+    {
+      "id": "cael_sunward",
+      "name": "Cael Sunward",
+      "role": "spellblade",
+      "description": "The last ruin guide willing to cross the Obsidian Gate twice.",
+      "location_id": "town_skyreach",
+      "base_stats": {
+        "STR": 20,
+        "END": 16,
+        "INT": 16,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 3,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "smite",
+        "radiant_aegis",
+        "heartseeker",
+        "second_wind"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "sword",
+      "modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "magic_power": 10,
+          "crit_chance": 0.05
+        }
+      },
+      "recruit": {
+        "level": 38,
+        "affinity": 35,
+        "items": {
+          "sun_fragment": 2
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 90,
+      "gift_item_ids": [
+        "dawnblade",
+        "sun_fragment",
+        "dawn_signet"
+      ],
+      "dialogue": [
+        "The gate opens for confidence. It closes for arrogance.",
+        "Morning is beautiful from up here. Dangerous, but beautiful.",
+        "The ruins remember footsteps. Walk like you want to be remembered kindly.",
+        "I've crossed twice. The third time should be almost sensible."
+      ]
     }
   ]
 }

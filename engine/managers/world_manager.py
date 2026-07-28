@@ -64,6 +64,10 @@ class WorldManager:
             for target in area.connections:
                 if target not in self._areas:
                     raise ContentError(f"area {area.id!r} connects to unknown area {target!r}")
+                if area.id not in self._areas[target].connections:
+                    raise ContentError(
+                        f"area connection {area.id!r} -> {target!r} is not reciprocal"
+                    )
             for shop_id in area.shop_ids:
                 if shop_id not in self._shops:
                     raise ContentError(f"area {area.id!r} references unknown shop {shop_id!r}")

@@ -8,7 +8,7 @@
       "min_level": 30,
       "required_class_ids": ["paladin"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
+        { "kind": "defeat_enemy", "target_id": "iron_colossus", "quantity": 1 }
       ],
       "rewards": { "exp": 2500, "gold": 1200 }
     },
@@ -19,7 +19,7 @@
       "min_level": 30,
       "required_class_ids": ["assassin"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
+        { "kind": "defeat_enemy", "target_id": "mire_oracle", "quantity": 1 }
       ],
       "rewards": { "exp": 2500, "gold": 1200 }
     },
@@ -30,7 +30,7 @@
       "min_level": 30,
       "required_class_ids": ["archmage"],
       "objectives": [
-        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
+        { "kind": "defeat_enemy", "target_id": "dawn_tyrant", "quantity": 1 }
       ],
       "rewards": { "exp": 2500, "gold": 1200 }
     },

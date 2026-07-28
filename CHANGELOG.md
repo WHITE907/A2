@@ -2,6 +2,43 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.4.0 - The Road to Skyreach
+
+### World
+- Expanded the connected map from 5 to 17 areas, covering level bands 1–40.
+- Added three populated towns: Emberwatch, Stonehaven, and Skyreach. Each has
+  its own description, routes, two shops, three NPCs, and two companions.
+- Added nine wilderness/dungeon areas across burning roads, living woods,
+  marshes, a drowned archive, mountain passes, crystal mines, stormlands,
+  cloud ruins, and the Obsidian Gate.
+- Added eight exploration flavour events and enforced reciprocal connections at
+  content validation so one-way map mistakes fail at startup.
+
+### Encounters and progression
+- Added 19 enemy templates across beasts, plants, undead, constructs, insects,
+  dragons, celestials, and humanoids, bringing the total to 30.
+- Added regional bosses at levels 27, 34, and 40: the Mire Oracle, Iron
+  Colossus, and Dawn Tyrant.
+- Moved the three upper promotion drops from the level-15 Shadow Warden to those
+  regional bosses, and updated the first branch quests to use those encounters.
+- Added 38 items (79 total): six weapon families, armour for seven equipment
+  slots, high-level consumables, and nine region-specific materials. Every new
+  material has a loot source and every equipment band has shop or boss support.
+
+### Skills and party
+- Added 18 skills (60 total), including three new passives and two advanced
+  actions for each tier-3/4 class line, plus nine enemy abilities.
+- Added five statuses: Electrified, Brittle, Rooted, Valor, and Stormguard.
+- Added six recruitable, marriageable companions (10 total), with distinct
+  roles, stat growth, AI styles, requirements, gifts, and dialogue.
+- Added nine townspeople with local dialogue and relationship content.
+
+### Validation and tests
+- Startup now validates skill class requirements and reciprocal map links.
+- 398 tests pass, including 13 expansion tests for reachability, town density,
+  encounter variety, boss coverage, equipment bands, material availability,
+  class passives, and regional quest targets.
+
 ## v0.3.0 - Quests and Promotion Progression
 
 ### Quests

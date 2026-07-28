@@ -49,7 +49,7 @@ ProjectAscension/
 │   └── screens/         one module per screen
 ├── data/                all gameplay content
 ├── docs/                design notes
-├── tests/               385 tests
+├── tests/               398 tests
 ├── tools/               dev utilities
 └── saves/               JSON save slots (created on first save)
 ```
@@ -78,13 +78,13 @@ Per [`docs/ENGINE_DESIGN.md`](docs/ENGINE_DESIGN.md), class count scales with
 
 | Concept | Python classes | JSON entries |
 |---|---|---|
-| Skills | 1 (`Skill`) | 42 |
+| Skills | 1 (`Skill`) | 60 |
 | Effects | 5 (`damage`, `heal`, `resource`, `shield`, `apply_status`) | — |
 | Classes | 1 (`ClassDefinition`) | 19 |
-| Enemies | 1 (`Enemy`) | 11 |
-| Items | 1 (`Item`) | 41 |
-| Statuses | 1 (`StatusEffect`) | 16 |
-| Companions | 1 (`Companion`) | 4 |
+| Enemies | 1 (`Enemy`) | 30 |
+| Items | 1 (`Item`) | 79 |
+| Statuses | 1 (`StatusEffect`) | 21 |
+| Companions | 1 (`Companion`) | 10 |
 | Quests | 1 (`QuestDefinition`) | 10 |
 
 Fireball is not a Python class. It is a JSON entry composing a `DamageEffect`
@@ -161,6 +161,12 @@ never consulted anywhere in that module — the cleanest way to honour §15 is t
 have nothing to remove. Marrying a companion grants them a real combat bonus,
 so it is a system rather than a checkbox.
 
+**The world** is a connected 17-area route from Ashvale to the level-40
+Obsidian Gate. Emberwatch, Stonehaven, and Skyreach each provide shops,
+townspeople, companions, and a safe staging point between distinct regional
+enemy families and bosses. Connections, encounters, shops, NPCs, loot, and
+quest targets are cross-validated before play begins.
+
 **Saves** are versioned and migrated forward (`SAVE_VERSION`), so a save from an
 older build still loads (§5, backwards compatibility). Writes go to a temp file
 and are atomically replaced, so a crash mid-write cannot corrupt a slot. The RNG
@@ -185,12 +191,13 @@ testing anything.
 
 ## Testing
 
-385 tests, no third-party dependencies:
+398 tests, no third-party dependencies:
 
 ```
 python3 -m unittest discover -s tests        # everything
 python3 -m unittest tests.test_engine        # core engine tests
 python3 -m unittest tests.test_quests        # quest/progression tests
+python3 -m unittest tests.test_world_expansion # level-40 content tests
 python3 -m unittest tests.test_gui           # headless GUI tests
 ```
 
@@ -231,25 +238,26 @@ is reported as a `ContentError` with the exact ids, not discovered mid-battle.
 | File | Contents |
 |---|---|
 | `config.json` | every formula coefficient, progression, mastery thresholds |
-| `skills.json` | 42 skills across all six categories |
-| `statuses.json` | 16 buffs, debuffs, DOTs, HOTs, stuns |
+| `skills.json` | 60 skills across all six categories |
+| `statuses.json` | 21 buffs, debuffs, DOTs, HOTs, stuns |
 | `classes.json` | 19 classes, tiers 1–7, full promotion chains |
-| `items.json` | 41 items: weapons, armour, consumables, key items |
-| `enemies.json` | 11 enemies including 2 bosses |
+| `items.json` | 79 items: weapons, armour, consumables, materials, key items |
+| `enemies.json` | 30 enemies including 5 bosses |
 | `quests.json` | 10 class-gated promotion quests |
-| `companions.json` | 4 recruitable allies, all marriageable |
-| `world.json` | 5 areas, 2 shops, 3 NPCs, encounter tables |
+| `companions.json` | 10 recruitable allies, all marriageable |
+| `world.json` | 17 areas, 8 shops, 12 NPCs, encounter tables |
 
 Rebalancing is a JSON edit. Run `python3 main.py --check` afterwards.
 
 ## Known limitations
 
-- Content tops out around level 18, well short of the level 35/50/70/99 gates
-  on the upper tiers. The quest and promotion gates now work, but reaching them
-  naturally means repeatedly grinding low-level areas and the Shadow Warden.
-- All three class-line promotion items currently drop together from each of the
-  two existing bosses. This guarantees no class is blocked, but future
-  class-specific bosses should distribute those rewards more naturally.
+- Content now supports the full route through level 40, including regional
+  bosses for the first quest-gated promotions, but still stops before the level
+  50/70/99 gates. Tier-5+ quests temporarily reuse the Shadow Warden until the
+  next world region supplies suitable bosses.
+- The three tier-3 class-line items still drop together from the Bandit Chief.
+  This guarantees every starter path remains open, but a future level-20 region
+  could distribute them among class-themed encounters.
 - The §20 features (guilds, housing, crafting, arena, NG+) are not implemented;
   the roadmap places them after v1.0.
 - `gui/theme.py` produces type-checker warnings on its `**options` widget

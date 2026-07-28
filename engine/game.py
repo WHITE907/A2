@@ -50,7 +50,7 @@ from engine.world.world import WorldState
 __all__ = ["Game", "GAME_VERSION", "QuestDefinition", "SaveSlotInfo"]
 
 #: Shown on the main menu under the title (per the GUI style reference).
-GAME_VERSION = "0.3.0"
+GAME_VERSION = "0.4.0"
 
 
 class Game:
@@ -115,6 +115,11 @@ class Game:
             for entry in template.loot:
                 if entry.item_id and self.items.get(entry.item_id) is None:
                     problems.append(f"enemy {template.id!r} drops unknown item {entry.item_id!r}")
+
+        for skill in self.skills.all_skills():
+            for class_id in skill.required_class_ids:
+                if self.classes.get(class_id) is None:
+                    problems.append(f"skill {skill.id!r} requires unknown class {class_id!r}")
 
         for definition in self.classes.all_classes():
             for item_id in definition.starting_items:
