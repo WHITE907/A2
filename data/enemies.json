@@ -167,6 +167,9 @@
         { "item_id": "steel_sword", "chance": 0.5 },
         { "item_id": "knights_seal", "chance": 1.0 },
         { "item_id": "duelists_token", "chance": 1.0 },
+        { "item_id": "oath_sigil", "chance": 1.0 },
+        { "item_id": "shadow_pact", "chance": 1.0 },
+        { "item_id": "grimoire_of_ages", "chance": 1.0 },
         { "item_id": "bandit_coin", "chance": 1.0, "min_quantity": 5, "max_quantity": 10 }
       ]
     },
@@ -187,6 +190,9 @@
       "modifiers": { "flat": { "armor": 15, "magic_resist": 15, "max_hp": 260 } },
       "loot": [
         { "item_id": "arcane_focus", "chance": 1.0 },
+        { "item_id": "sacred_relic", "chance": 1.0 },
+        { "item_id": "void_shard", "chance": 1.0 },
+        { "item_id": "codex_infinite", "chance": 1.0 },
         { "item_id": "shadow_fang", "chance": 0.4 },
         { "item_id": "runed_staff", "chance": 0.4 },
         { "item_id": "shadow_essence", "chance": 1.0, "min_quantity": 2, "max_quantity": 4 }

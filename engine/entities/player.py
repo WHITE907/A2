@@ -80,6 +80,8 @@ class Player(Entity):
         self.affinity: dict[str, int] = {}
         self.spouse_id: str | None = None
         self.completed_quests: list[str] = []
+        self.active_quests: list[str] = []
+        self.quest_progress: dict[str, dict[str, int]] = {}
         self.flags: dict[str, Any] = {}
 
         super().__init__(name=name, level=level, base_stats=StatBlock(), formulas=formulas)
@@ -341,9 +343,29 @@ class Player(Entity):
     # ------------------------------------------------------------------
     # Quests
     # ------------------------------------------------------------------
+    def accept_quest(self, quest_id: str) -> bool:
+        if quest_id in self.completed_quests or quest_id in self.active_quests:
+            return False
+        self.active_quests.append(quest_id)
+        self.quest_progress[quest_id] = {}
+        return True
+
+    def quest_progress_value(self, quest_id: str, objective_key: str) -> int:
+        return int(self.quest_progress.get(quest_id, {}).get(objective_key, 0))
+
+    def advance_quest(self, quest_id: str, objective_key: str, amount: int, *, maximum: int) -> int:
+        if quest_id not in self.active_quests or amount <= 0:
+            return self.quest_progress_value(quest_id, objective_key)
+        progress = self.quest_progress.setdefault(quest_id, {})
+        progress[objective_key] = min(maximum, int(progress.get(objective_key, 0)) + int(amount))
+        return progress[objective_key]
+
     def complete_quest(self, quest_id: str) -> bool:
         if quest_id in self.completed_quests:
             return False
+        if quest_id in self.active_quests:
+            self.active_quests.remove(quest_id)
+        self.quest_progress.pop(quest_id, None)
         self.completed_quests.append(quest_id)
         return True
 
@@ -400,6 +422,10 @@ class Player(Entity):
                 "affinity": dict(self.affinity),
                 "spouse_id": self.spouse_id,
                 "completed_quests": list(self.completed_quests),
+                "active_quests": list(self.active_quests),
+                "quest_progress": {
+                    quest_id: dict(progress) for quest_id, progress in self.quest_progress.items()
+                },
                 "flags": dict(self.flags),
             }
         )

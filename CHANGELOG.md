@@ -2,6 +2,36 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.3.0 - Quests and Promotion Progression
+
+### Quests
+- Added one data-driven `QuestDefinition` content class and `QuestManager`, with
+  ten class-gated quests covering every quest requirement across 12 upper-tier
+  promotions.
+- Enemy-defeat objectives advance after victories, clamp at their configured
+  quantity, and grant JSON-defined EXP, gold, and item rewards on turn-in.
+- Active quests and objective progress persist in save schema v3; older saves
+  migrate forward with an empty quest log.
+- Startup validation now checks promotion, companion, prerequisite, class,
+  enemy, and reward references across quest content.
+
+### Progression
+- The Bandit Chief now guarantees `oath_sigil`, `shadow_pact`, and
+  `grimoire_of_ages`, unblocking all tier-3 class lines.
+- The Shadow Warden now guarantees `sacred_relic`, `void_shard`, and
+  `codex_infinite`, supplying the repeatable quantities upper promotions need.
+- Promotion tokens now stack to 99 so repeatable guaranteed boss drops do not
+  consume a new inventory slot on every victory.
+
+### GUI
+- Added a Quest Log for available, active, and completed quests, with objective
+  progress, reward details, acceptance, and turn-in controls.
+
+### Tests
+- 385 tests total. New coverage includes quest content validation, class/level
+  and prerequisite gates, objective progression, rewards, save round-trips,
+  guaranteed promotion loot, and headless Quest Log interactions.
+
 ## v0.2.0 - Companions and Relationships
 
 Implements roadmap v0.0.9 (Companions) and completes bible §15.

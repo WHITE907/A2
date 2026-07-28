@@ -1,0 +1,121 @@
+{
+  "_comment": "Promotion quests are class-gated and data-driven. defeat_enemy objective behaviour is implemented once by QuestManager; quest-specific ids and values live only here.",
+  "quests": [
+    {
+      "id": "trial_of_the_dawn",
+      "name": "Trial of the Dawn",
+      "description": "Face the darkness beneath the shrine and return with your oath intact.",
+      "min_level": 30,
+      "required_class_ids": ["paladin"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
+      ],
+      "rewards": { "exp": 2500, "gold": 1200 }
+    },
+    {
+      "id": "the_silent_contract",
+      "name": "The Silent Contract",
+      "description": "Prove that even the shrine's unseen warden can be reached.",
+      "min_level": 30,
+      "required_class_ids": ["assassin"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
+      ],
+      "rewards": { "exp": 2500, "gold": 1200 }
+    },
+    {
+      "id": "the_unwritten_page",
+      "name": "The Unwritten Page",
+      "description": "Defeat the keeper below the shrine and record what waits beyond it.",
+      "min_level": 30,
+      "required_class_ids": ["archmage"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 1 }
+      ],
+      "rewards": { "exp": 2500, "gold": 1200 }
+    },
+    {
+      "id": "the_last_bastion",
+      "name": "The Last Bastion",
+      "description": "Break the shrine's guardian twice and show that endurance can become victory.",
+      "min_level": 45,
+      "required_class_ids": ["templar"],
+      "prerequisite_quest_ids": ["trial_of_the_dawn"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 2 }
+      ],
+      "rewards": { "exp": 6000, "gold": 3000 }
+    },
+    {
+      "id": "the_moonless_night",
+      "name": "The Moonless Night",
+      "description": "Hunt the thing below the shrine until the dark itself learns caution.",
+      "min_level": 45,
+      "required_class_ids": ["nightblade"],
+      "prerequisite_quest_ids": ["the_silent_contract"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 2 }
+      ],
+      "rewards": { "exp": 6000, "gold": 3000 }
+    },
+    {
+      "id": "the_hollow_crown",
+      "name": "The Hollow Crown",
+      "description": "Unmake the shrine's warden twice and claim authority over what remains.",
+      "min_level": 45,
+      "required_class_ids": ["archon"],
+      "prerequisite_quest_ids": ["the_unwritten_page"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 2 }
+      ],
+      "rewards": { "exp": 6000, "gold": 3000 }
+    },
+    {
+      "id": "the_final_oath",
+      "name": "The Final Oath",
+      "description": "Return to the deepest dark three times. Let each victory renew the vow.",
+      "min_level": 65,
+      "required_class_ids": ["crusader"],
+      "prerequisite_quest_ids": ["the_last_bastion"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 3 }
+      ],
+      "rewards": { "exp": 15000, "gold": 7500 }
+    },
+    {
+      "id": "the_devouring_dark",
+      "name": "The Devouring Dark",
+      "description": "Feed the dark its own guardian until nothing remains but your shadow.",
+      "min_level": 65,
+      "required_class_ids": ["shadowlord"],
+      "prerequisite_quest_ids": ["the_moonless_night"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 3 }
+      ],
+      "rewards": { "exp": 15000, "gold": 7500 }
+    },
+    {
+      "id": "the_first_word",
+      "name": "The First Word",
+      "description": "Silence the shrine's answer three times and speak the word that remains.",
+      "min_level": 65,
+      "required_class_ids": ["sorcerer_king"],
+      "prerequisite_quest_ids": ["the_hollow_crown"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 3 }
+      ],
+      "rewards": { "exp": 15000, "gold": 7500 }
+    },
+    {
+      "id": "ascension",
+      "name": "Ascension",
+      "description": "Overcome the last guardian five times. There is no witness left to name what follows.",
+      "min_level": 90,
+      "required_class_ids": ["godsworn", "eclipse", "worldweaver"],
+      "objectives": [
+        { "kind": "defeat_enemy", "target_id": "shadow_warden", "quantity": 5 }
+      ],
+      "rewards": { "exp": 50000, "gold": 25000 }
+    }
+  ]
+}

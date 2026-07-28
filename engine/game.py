@@ -17,6 +17,7 @@ It owns:
 from __future__ import annotations
 
 import time
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -31,11 +32,13 @@ from engine.managers.companion_manager import CompanionManager
 from engine.managers.data_loader import ContentError, DataLoader
 from engine.managers.enemy_manager import EnemyManager
 from engine.managers.item_manager import ItemManager
+from engine.managers.quest_manager import QuestManager
 from engine.managers.save_manager import SaveManager, SaveSlotInfo
 from engine.managers.skill_manager import SkillManager
 from engine.managers.world_manager import WorldManager
 from engine.mastery import MasteryBook
 from engine.party import Party
+from engine.quests import QuestDefinition
 from engine.relationships import MarriageCheck, RelationshipRules
 from engine.rng import GameRandom
 from engine.stats import Formulas, ModifierSet, StatBlock
@@ -44,10 +47,10 @@ from engine.world.world import WorldState
 #: Re-exported so GUI screens can type-annotate what :meth:`Game.save_slots`
 #: returns without importing from ``engine.managers`` - the facade stays the
 #: single seam between the UI and the engine (bible section 5/18).
-__all__ = ["Game", "GAME_VERSION", "SaveSlotInfo"]
+__all__ = ["Game", "GAME_VERSION", "QuestDefinition", "SaveSlotInfo"]
 
 #: Shown on the main menu under the title (per the GUI style reference).
-GAME_VERSION = "0.2.0"
+GAME_VERSION = "0.3.0"
 
 
 class Game:
@@ -68,6 +71,7 @@ class Game:
         self.classes = ClassManager(self.loader, self.skills)
         self.items = ItemManager(self.loader)
         self.enemies = EnemyManager(self.loader, self.skills, self.formulas)
+        self.quests = QuestManager(self.loader)
         self.companions = CompanionManager(self.loader, self.skills, self.formulas)
         self.world_manager = WorldManager(self.loader)
         self.saves = SaveManager(save_dir)
@@ -95,6 +99,7 @@ class Game:
         self.classes.load()
         self.items.load()
         self.enemies.load()
+        self.quests.load()
         self.companions.load()
         self.world_manager.load()
         self._validate_cross_references()
@@ -121,6 +126,11 @@ class Game:
                         problems.append(
                             f"class {definition.id!r} promotion to {target!r} needs unknown item {item_id!r}"
                         )
+                for quest_id in requirement.quests:
+                    if self.quests.get(quest_id) is None:
+                        problems.append(
+                            f"class {definition.id!r} promotion to {target!r} needs unknown quest {quest_id!r}"
+                        )
 
         for companion in self.companions.all_definitions():
             for skill_id in companion.skill_ids:
@@ -132,10 +142,27 @@ class Game:
             for item_id in companion.gift_item_ids:
                 if self.items.get(item_id) is None:
                     problems.append(f"companion {companion.id!r} likes unknown gift {item_id!r}")
+            for quest_id in companion.recruit.quests:
+                if self.quests.get(quest_id) is None:
+                    problems.append(f"companion {companion.id!r} needs unknown quest {quest_id!r}")
             if companion.location_id and self.world_manager.get_area(companion.location_id) is None:
                 problems.append(
                     f"companion {companion.id!r} is in unknown area {companion.location_id!r}"
                 )
+
+        for quest in self.quests.all_definitions():
+            for class_id in quest.required_class_ids:
+                if self.classes.get(class_id) is None:
+                    problems.append(f"quest {quest.id!r} requires unknown class {class_id!r}")
+            for objective in quest.objectives:
+                if (
+                    objective.kind == self.quests.DEFEAT_OBJECTIVE
+                    and self.enemies.get_template(objective.target_id) is None
+                ):
+                    problems.append(f"quest {quest.id!r} targets unknown enemy {objective.target_id!r}")
+            for item_id in quest.rewards.items:
+                if self.items.get(item_id) is None:
+                    problems.append(f"quest {quest.id!r} rewards unknown item {item_id!r}")
 
         for area in self.world_manager.all_areas():
             for encounter in area.encounters:
@@ -161,6 +188,7 @@ class Game:
             f"Skills: {self.skills.count()}",
             f"Items: {self.items.count()}",
             f"Enemies: {self.enemies.count()}",
+            f"Quests: {self.quests.count()}",
             f"Companions: {self.companions.count()}",
             f"Areas: {self.world_manager.count()}",
         ]
@@ -365,6 +393,95 @@ class Game:
         return self.classes.promote(self.player, target_class_id)
 
     # ==================================================================
+    # Quests
+    # ==================================================================
+    def available_quests(self) -> list[QuestDefinition]:
+        return self.quests.available_for(self.player) if self.player else []
+
+    def active_quests(self) -> list[QuestDefinition]:
+        return self.quests.active_for(self.player) if self.player else []
+
+    def completed_quests(self) -> list[QuestDefinition]:
+        if not self.player:
+            return []
+        return [
+            definition
+            for quest_id in self.player.completed_quests
+            if (definition := self.quests.get(quest_id)) is not None
+        ]
+
+    def accept_quest(self, quest_id: str) -> tuple[bool, str]:
+        if not self.player:
+            return False, "No character loaded."
+        definition = self.quests.get(quest_id)
+        if definition is None:
+            return False, "Unknown quest."
+        if definition not in self.quests.available_for(self.player):
+            return False, "That quest is not currently available."
+        if not self.player.accept_quest(quest_id):
+            return False, "That quest is already active or completed."
+        return True, f"Accepted quest: {definition.name}."
+
+    def quest_detail_lines(self, quest_id: str) -> list[str]:
+        definition = self.quests.get(quest_id)
+        if definition is None:
+            return ["Unknown quest."]
+        lines = [definition.name]
+        if definition.description:
+            lines.append(definition.description)
+        lines.append(f"Minimum level: {definition.min_level}")
+        progress = self.player.quest_progress.get(quest_id, {}) if self.player else {}
+        lines.append("Objectives:")
+        lines.extend(definition.progress_lines(progress))
+        reward_parts: list[str] = []
+        if definition.rewards.exp:
+            reward_parts.append(f"{definition.rewards.exp:.0f} EXP")
+        if definition.rewards.gold:
+            reward_parts.append(f"{definition.rewards.gold} gold")
+        for item_id, quantity in definition.rewards.items.items():
+            item = self.items.get(item_id)
+            name = item.name if item else item_id.replace("_", " ").title()
+            reward_parts.append(f"{name} x{quantity}")
+        lines.append("Rewards: " + (", ".join(reward_parts) if reward_parts else "None"))
+        return lines
+
+    def quest_completion_check(self, quest_id: str) -> tuple[bool, list[str]]:
+        if not self.player:
+            return False, ["No character loaded."]
+        return self.quests.can_complete(self.player, quest_id)
+
+    def complete_quest(self, quest_id: str) -> tuple[bool, list[str]]:
+        if not self.player:
+            return False, ["No character loaded."]
+        ready, unmet = self.quest_completion_check(quest_id)
+        if not ready:
+            return False, unmet
+
+        definition = self.quests.require(quest_id)
+        # Turning in is atomic: a full bag must not consume the quest and lose
+        # an item reward that can never be claimed again.
+        trial_inventory = deepcopy(self.player.inventory)
+        for item_id, quantity in definition.rewards.items.items():
+            item = self.items.require(item_id)
+            if trial_inventory.add(item, quantity) != quantity:
+                return False, ["Make room in your inventory before completing this quest."]
+
+        if not self.player.complete_quest(quest_id):
+            return False, ["Quest already completed."]
+
+        lines = [f"Quest completed: {definition.name}."]
+        if definition.rewards.gold:
+            self.player.inventory.add_gold(definition.rewards.gold)
+            lines.append(f"Received {definition.rewards.gold} gold.")
+        if definition.rewards.exp:
+            report = self.player.gain_exp(definition.rewards.exp)
+            lines.append(f"Gained {definition.rewards.exp:.0f} EXP.")
+            lines.extend(report.messages)
+        for item_line in self.items.grant_many(self.player.inventory, definition.rewards.items):
+            lines.append(f"Received {item_line}.")
+        return True, lines
+
+    # ==================================================================
     # World
     # ==================================================================
     def world_lines(self) -> list[str]:
@@ -446,6 +563,15 @@ class Game:
         if battle.state is CombatState.VICTORY:
             lines.extend(battle.grant_loot(self.items))
             lines.extend(battle.rewards.summary_lines())
+            if self.player:
+                changed = self.quests.record_defeats(
+                    self.player, (enemy.template.id for enemy in battle.enemies)
+                )
+                for quest_id in changed:
+                    definition = self.quests.require(quest_id)
+                    progress = self.player.quest_progress.get(quest_id, {})
+                    lines.append(f"Quest progress — {definition.name}:")
+                    lines.extend(definition.progress_lines(progress))
         elif battle.state is CombatState.DEFEAT:
             lines.extend(self.handle_death())
 
@@ -905,6 +1031,14 @@ class Game:
         player.affinity = {str(k): int(v) for k, v in (player_data.get("affinity") or {}).items()}
         player.spouse_id = player_data.get("spouse_id")
         player.completed_quests = [str(q) for q in player_data.get("completed_quests", [])]
+        player.active_quests = [
+            str(q) for q in player_data.get("active_quests", []) if self.quests.get(str(q)) is not None
+        ]
+        raw_progress = player_data.get("quest_progress") or {}
+        player.quest_progress = {
+            quest_id: {str(key): int(value) for key, value in (raw_progress.get(quest_id) or {}).items()}
+            for quest_id in player.active_quests
+        }
         player.flags = dict(player_data.get("flags") or {})
 
         player._recalculate_base_stats()

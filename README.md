@@ -33,6 +33,7 @@ ProjectAscension/
 │   ├── classes.py       ClassDefinition + promotion rules
 │   ├── mastery.py       F..Master tracks
 │   ├── party.py         active roster + reserve bench
+│   ├── quests.py        quest definitions and objective data
 │   ├── relationships.py affinity and marriage (NPCs and companions)
 │   ├── rng.py           seedable, serialisable RNG
 │   ├── entities/        Entity -> Player, Enemy, Companion
@@ -48,7 +49,7 @@ ProjectAscension/
 │   └── screens/         one module per screen
 ├── data/                all gameplay content
 ├── docs/                design notes
-├── tests/               267 tests
+├── tests/               385 tests
 ├── tools/               dev utilities
 └── saves/               JSON save slots (created on first save)
 ```
@@ -84,6 +85,7 @@ Per [`docs/ENGINE_DESIGN.md`](docs/ENGINE_DESIGN.md), class count scales with
 | Items | 1 (`Item`) | 41 |
 | Statuses | 1 (`StatusEffect`) | 16 |
 | Companions | 1 (`Companion`) | 4 |
+| Quests | 1 (`QuestDefinition`) | 10 |
 
 Fireball is not a Python class. It is a JSON entry composing a `DamageEffect`
 and an `ApplyStatusEffect`:
@@ -127,6 +129,7 @@ never crashes a battle.
 | 12 | Physical/magic/true, crits, armour, penetration, evasion, DOT/HOT, shields, reflect | `skills/effects.py`, `stats.py` |
 | 13 | JSON enemies with growth, AI, loot, scaling | `entities/enemy.py` |
 | 14 | Mastery F→Master, earned by use | `mastery.py` |
+| 6, 10 | Data-driven quests and promotion quest gates | `quests.py`, `managers/quest_manager.py` |
 | 6 | Companions, party roster | `entities/companion.py`, `party.py` |
 | 15 | Affinity and gender-agnostic marriage | `relationships.py` |
 | 16 | Multiple slots, morning autosave, inn respawn | `managers/save_manager.py` |
@@ -136,6 +139,12 @@ the core skill, keeps every other learned skill, and consumes the required
 items. Where a requirement genuinely cannot be checked, `PromotionCheck`
 reports it under `unenforced` rather than silently ignoring it — the behaviour
 `ENGINE_DESIGN.md` asked for.
+
+**Quests** are accepted and turned in through the Quest Log. `QuestManager`
+loads ten class-gated promotion quests, records data-driven enemy-defeat
+objectives after victories, and grants JSON-defined EXP, gold, and item rewards.
+Active objectives and progress are save-versioned, and every class, enemy, item,
+and prerequisite reference is cross-validated at startup.
 
 **Companions** are recruited with gold, items, level and affinity, then either
 fight in the active roster (capped, so battles stay readable) or wait in
@@ -176,17 +185,18 @@ testing anything.
 
 ## Testing
 
-267 tests, no third-party dependencies:
+385 tests, no third-party dependencies:
 
 ```
 python3 -m unittest discover -s tests        # everything
-python3 -m unittest tests.test_engine        # 178 engine tests
-python3 -m unittest tests.test_gui           #  89 GUI tests
+python3 -m unittest tests.test_engine        # core engine tests
+python3 -m unittest tests.test_quests        # quest/progression tests
+python3 -m unittest tests.test_gui           # headless GUI tests
 ```
 
 `tests/test_engine.py` exercises the real chain — JSON on disk → managers →
 entities → `Skill.use()` → effects → combat log — including full DOT lifecycles
-(apply → tick → tick → expire), save/load round-trips, v1→v2 migration, and
+(apply → tick → tick → expire), save/load round-trips, forward migration, and
 guards on the architectural rules above.
 
 `tests/test_gui.py` builds the real screens and invokes the same handlers a
@@ -226,6 +236,7 @@ is reported as a `ContentError` with the exact ids, not discovered mid-battle.
 | `classes.json` | 19 classes, tiers 1–7, full promotion chains |
 | `items.json` | 41 items: weapons, armour, consumables, key items |
 | `enemies.json` | 11 enemies including 2 bosses |
+| `quests.json` | 10 class-gated promotion quests |
 | `companions.json` | 4 recruitable allies, all marriageable |
 | `world.json` | 5 areas, 2 shops, 3 NPCs, encounter tables |
 
@@ -233,15 +244,12 @@ Rebalancing is a JSON edit. Run `python3 main.py --check` afterwards.
 
 ## Known limitations
 
-- **Quests are not implemented.** `QuestManager` (bible §6) does not exist and
-  nothing can complete a quest, so the 12 promotions that require one are
-  currently unreachable. This blocks tiers 4–7 outright.
-- **Six promotion items are unobtainable** (`oath_sigil`, `shadow_pact`,
-  `grimoire_of_ages`, `sacred_relic`, `void_shard`, `codex_infinite`) — they
-  appear in no loot table, shop or starting kit, which blocks tier 3.
-  Together with the above, the game is currently playable to tier 2.
 - Content tops out around level 18, well short of the level 35/50/70/99 gates
-  on the upper tiers.
+  on the upper tiers. The quest and promotion gates now work, but reaching them
+  naturally means repeatedly grinding low-level areas and the Shadow Warden.
+- All three class-line promotion items currently drop together from each of the
+  two existing bosses. This guarantees no class is blocked, but future
+  class-specific bosses should distribute those rewards more naturally.
 - The §20 features (guilds, housing, crafting, arena, NG+) are not implemented;
   the roadmap places them after v1.0.
 - `gui/theme.py` produces type-checker warnings on its `**options` widget

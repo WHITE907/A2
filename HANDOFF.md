@@ -7,18 +7,18 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-**Companions and relationships are complete.** The v0.2.0 patch was applied,
-verified, and merged in PR #2. The repository now loads four companions and the
-full suite contains 366 tests. `v0.2.0-companions.patch` remains only as a
-historical recovery artifact; do not apply it again or rebuild the feature.
+**Quests and promotion-item availability are complete on the current branch.**
+The v0.3.0 work adds `QuestManager`, ten data-driven promotion quests, a Quest
+Log GUI, persisted objective progress, save migration, and guaranteed drops for
+all six previously unobtainable promotion items. The full suite contains 385
+tests and content validation reports 10 quests.
 
-The next implementation task is **`QuestManager` + `data/quests.json`**. Quests
-must be data-driven, integrated through the `Game` facade, and call the existing
-`Player.complete_quest()` flow. This is the largest progression blocker because
-all 12 tier-4+ promotions require completed quests. Follow the manager and
-content-validation patterns already used by the other content types.
+The next implementation task is to **extend world, enemy, boss, and reward
+content toward level 99**. Existing content ends around level 18, so the upper
+quest and promotion gates are mechanically reachable but require repetitive
+low-level grinding. Preserve JSON-driven content and startup cross-validation.
 
-After implementation, run:
+Before handing off changes, run:
 
 ```bash
 python3 -m unittest discover -s tests
@@ -35,12 +35,12 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 366 tests
+python3 -m unittest discover -s tests    # 385 tests
 ```
 
-**Current state:** v0.1.0 is merged in PR #1. v0.2.0 (companions and
-relationships) is merged in PR #2. Quest and upper-tier progression work is
-next.
+**Current state:** v0.1.0 is merged in PR #1 and v0.2.0 is merged in PR #2.
+v0.3.0 quests and promotion progression are implemented on the current branch;
+world progression beyond level 18 is next.
 
 ---
 
@@ -117,7 +117,7 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 ### Engine — the single entry point
 | File | Responsibility |
 |---|---|
-| **`engine/game.py`** (956 ln) | **The facade. The GUI's only contact with the engine.** Start here. |
+| **`engine/game.py`** | **The facade. The GUI's only contact with the engine.** Start here. |
 | `engine/stats.py` | `StatBlock`, `ModifierSet`, `DerivedStats`, `Formulas`. All combat maths. |
 | `engine/skills/effects.py` | The 5 composable effect strategies. New behaviours go here. |
 | `engine/skills/skill.py` | The one `Skill` class. |
@@ -130,6 +130,8 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `engine/combat/ai.py` | Behaviour registry: 5 strategies selected by id. |
 | `engine/classes.py` | `ClassDefinition` + promotion requirement checks. |
 | `engine/mastery.py` | F→Master tracks, earned by use. |
+| `engine/quests.py` | *(v0.3.0)* Quest definitions and objective data. |
+| `engine/managers/quest_manager.py` | *(v0.3.0)* Quest loading and progression. |
 | `engine/relationships.py` | *(v0.2.0)* Affinity + marriage, shared by NPCs and companions. |
 | `engine/party.py` | *(v0.2.0)* Active roster + reserve bench. |
 | `engine/managers/*.py` | **The only code that reads JSON.** One per content type. |
@@ -146,7 +148,8 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient) · `skills.json` · `statuses.json` ·
-`classes.json` · `items.json` · `enemies.json` · `companions.json` · `world.json`
+`classes.json` · `items.json` · `enemies.json` · `quests.json` ·
+`companions.json` · `world.json`
 
 All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
@@ -155,8 +158,9 @@ area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 | File | Coverage |
 |---|---|
 | `tests/test_engine.py` | 178 tests. Real chain: JSON → managers → entities → `Skill.use()` → effects → log. |
-| `tests/test_gui.py` | 112 tests. Builds real screens, invokes real handlers. |
+| `tests/test_gui.py` | 116 tests. Builds real screens, invokes real handlers. |
 | `tests/test_companions.py` | *(v0.2.0)* 76 tests. |
+| `tests/test_quests.py` | *(v0.3.0)* Quest progression, persistence, and loot. |
 | `tests/tk_stub.py` | Recording Tkinter stand-in for headless GUI testing. |
 | `tools/render_mockups.py` | Renders screen layouts via Pillow. |
 
@@ -188,44 +192,22 @@ a checkbox.
 
 ---
 
-## 7. Known blockers — verified, not guessed
+## 7. Known limitations — verified, not guessed
 
-An earlier summary claimed tiers 4–7 were "reachable but under-supported."
-**That was wrong.** Re-audited by execution:
+The two hard progression blockers are resolved in v0.3.0:
 
-**The game is currently playable to tier 2 only.**
+- `QuestManager` and `data/quests.json` cover all ten unique quest ids used by
+  the 12 quest-gated promotions. Victory events update persisted objectives and
+  `Game.complete_quest()` calls the existing `Player.complete_quest()` flow.
+- The Bandit Chief guarantees the three tier-3 promotion items; the Shadow
+  Warden guarantees the three repeatable upper-tier promotion items.
 
-1. **Quests do not exist.** `QuestManager` (bible §6) was never built.
-   `Player.complete_quest()` exists with **zero callers** — verified by grep —
-   so no quest can ever complete. All 12 tier-4+ promotions require one, making
-   them permanently ineligible.
-
-2. **Six promotion items are unobtainable** — `oath_sigil`, `shadow_pact`,
-   `grimoire_of_ages`, `sacred_relic`, `void_shard`, `codex_infinite` appear in
-   no loot table, shop, starting kit or recruit cost. **This blocks tier 3.**
-
-3. **Content tops out at level 18**, against gates of 35 / 50 / 70 / 99.
-
-Reproduce blocker 2 in seconds (this exact snippet is verified — note the
-promotion chain must be walked in order, Squire → Knight → Paladin):
-
-```python
-from engine.game import Game
-g = Game(seed=1); g.load_content(); g.create_character('P','male','squire')
-p = g.player
-p.level = 25
-p.allocated_stats['STR'] = 60; p.allocated_stats['END'] = 60
-p.allocated_stats['INT'] = 40; p._recalculate_base_stats()
-p.mastery.gain('sword', 5000); p.mastery.gain('light', 5000)
-p.inventory.add_gold(9999)
-
-# Tier 1 -> 2 works: knights_seal drops from bandit_chief.
-g.items.grant(p.inventory, 'knights_seal', 1)
-print(g.promote('knight')[0])        # -> True
-
-# Tier 2 -> 3 is impossible: nothing in the game yields oath_sigil.
-print(g.promote('paladin'))          # -> (False, ['Needs: Oath Sigil x1 (have 0)'])
-```
+**The remaining progression limitation is content depth.** Areas and enemies
+still top out around level 18, against promotion gates of 35 / 50 / 70 / 99.
+Players can grind the existing repeatable encounters, but upper-tier quests all
+reuse the Shadow Warden because no level-35+ bosses exist yet. When extending
+the world, move each class-line reward and quest objective to thematically
+appropriate bosses instead of changing the quest engine.
 
 ## 8. Roadmap
 
@@ -234,18 +216,17 @@ print(g.promote('paladin'))          # -> (False, ['Needs: Oath Sigil x1 (have 0
   exploration, world, saves, and the initial GUI.
 - ✅ **Companions and relationships (v0.2.0, PR #2):** four companions, active
   party and reserve bench, affinity, marriage, party combat, GUI, and tests.
+- ✅ **Quests and promotion progression (v0.3.0):** ten promotion quests, Quest
+  Log, persisted progress, cross-validation, and six obtainable promotion items.
 
 ### Next
-1. **`QuestManager` + `data/quests.json`** — unblocks 12 promotions. The
-   *checking* side already exists: `ClassDefinition.check_promotion()` accepts
-   and enforces `completed_quests`, and `Player.complete_quest()` is waiting for
-   a caller. Follow the existing manager shape and expose all GUI interaction
-   through `Game`.
-2. **Add the 6 promotion items to boss loot** — JSON only, no Python. This
-   unblocks tier 3.
-3. **Extend world, enemy, and reward content toward level 99** — primarily JSON
-   content, with startup cross-validation preserved.
-4. **Future features after the playable progression path is complete:** guilds,
+1. **Extend world, enemy, boss, and reward content toward level 99.** Add content
+   in JSON, distribute class-line promotion drops among suitable bosses, and
+   replace the temporary repeated Shadow Warden objectives.
+2. **Balance the full seven-tier progression path** by execution once content
+   exists at each level band; verify EXP pacing, mastery gain, loot frequency,
+   and promotion costs rather than guessing.
+3. **Future features after the playable progression path is complete:** guilds,
    housing, fishing, mining, smithing, cooking, alchemy, arena, legendary
    classes, NG+, world events, and pets (bible §20).
 

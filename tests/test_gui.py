@@ -163,6 +163,7 @@ class TestExportSelectionRegression(unittest.TestCase):
             app.open_inventory,
             app.open_equipment,
             app.open_skills,
+            app.open_quests,
             app.open_party,
             app.open_status,
             app.open_settings,
@@ -1067,6 +1068,40 @@ class TestCompanionMarriageUI(unittest.TestCase):
         window = self.app.open_talk("innkeeper_mara")
         window._talk()
         self.assertGreater(self.app.game.player.affinity_with("innkeeper_mara"), 0)
+
+
+# ======================================================================
+class TestQuestUI(unittest.TestCase):
+    def setUp(self):
+        self.app = make_app_with_character()
+        self.app.game.player.class_def = self.app.game.classes.require("paladin")
+        self.app.game.player.level = 35
+        self.app.game.player._recalculate_base_stats()
+        self.app.show_world()
+
+    def test_world_screen_has_quest_button(self):
+        screen = self.app.show_world()
+        self.assertIsNotNone(button_labelled(screen, "Quests"))
+
+    def test_quest_window_lists_available_quest(self):
+        window = self.app.open_quests()
+        self.assertEqual(window.available_list.count, 1)
+        self.assertIn("Trial of the Dawn", window.details._label.options["text"])
+
+    def test_accept_quest_through_window(self):
+        window = self.app.open_quests()
+        window._show_available(window.available_list.selected_value)
+        window._accept()
+        self.assertIn("trial_of_the_dawn", self.app.game.player.active_quests)
+        self.assertEqual(window.active_list.count, 1)
+
+    def test_complete_button_enables_when_ready(self):
+        window = self.app.open_quests()
+        window._show_available(window.available_list.selected_value)
+        window._accept()
+        self.app.game.quests.record_defeats(self.app.game.player, ["shadow_warden"])
+        window._show_active(window.active_list.selected_value)
+        self.assertEqual(window.complete_button.options["state"], tk.NORMAL)
 
 
 if __name__ == "__main__":

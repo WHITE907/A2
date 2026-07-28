@@ -78,6 +78,7 @@ class WorldScreen(tk.Frame):
         self.menus.add("inventory", "Inventory", self.app.open_inventory)
         self.menus.add("equipment", "Equipment", self.app.open_equipment)
         self.menus.add("skills", "Skills", self.app.open_skills)
+        self.menus.add("quests", "Quests", self.app.open_quests)
         self.menus.add("party", "Party", self.app.open_party)
         self.menus.add("save", "Save Game", lambda: self.app.open_save_browser("save"))
         self.menus.add("menu", "Main Menu", self._main_menu)

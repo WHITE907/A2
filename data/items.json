@@ -313,7 +313,7 @@
       "kind": "key",
       "description": "It hums faintly when a promise is broken nearby.",
       "value": 1500,
-      "stack_size": 1
+      "stack_size": 99
     },
     {
       "id": "shadow_pact",
@@ -321,7 +321,7 @@
       "kind": "key",
       "description": "Signed in something darker than ink.",
       "value": 1500,
-      "stack_size": 1
+      "stack_size": 99
     },
     {
       "id": "grimoire_of_ages",
@@ -329,7 +329,7 @@
       "kind": "key",
       "description": "The pages are older than the binding.",
       "value": 1500,
-      "stack_size": 1
+      "stack_size": 99
     },
     {
       "id": "sacred_relic",
@@ -337,7 +337,7 @@
       "kind": "key",
       "description": "Nobody agrees on what it was. Everybody agrees it matters.",
       "value": 5000,
-      "stack_size": 4
+      "stack_size": 99
     },
     {
       "id": "void_shard",
@@ -345,7 +345,7 @@
       "kind": "key",
       "description": "A piece of an absence.",
       "value": 5000,
-      "stack_size": 4
+      "stack_size": 99
     },
     {
       "id": "codex_infinite",
@@ -353,7 +353,7 @@
       "kind": "key",
       "description": "It has one more page than it had yesterday.",
       "value": 5000,
-      "stack_size": 4
+      "stack_size": 99
     },
     {
       "id": "eternal_band",

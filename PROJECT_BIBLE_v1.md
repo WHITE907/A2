@@ -76,7 +76,7 @@ Managers:
 - EnemyManager
 - SaveManager
 - ItemManager (planned)
-- QuestManager (planned)
+- QuestManager
 
 ## 7. GUI
 Framework:
