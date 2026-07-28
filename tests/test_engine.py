@@ -223,9 +223,9 @@ class TestEffectsAndCombatMath(unittest.TestCase):
         self.ctx = self.game.skills.make_context(self.game.rng, self.game.formulas)
         self.enemy = self.game.enemies.spawn("green_slime", 1)
 
-    def test_all_five_effect_types_are_registered(self):
-        self.assertEqual(
-            set(known_effect_types()), {"damage", "heal", "resource", "shield", "apply_status"}
+    def test_core_effect_types_are_registered(self):
+        self.assertTrue(
+            {"damage", "heal", "resource", "shield", "apply_status"} <= set(known_effect_types())
         )
 
     def test_unknown_effect_type_raises(self):

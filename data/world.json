@@ -709,7 +709,8 @@
         "eternal_band",
         "wanderers_knot",
         "bridgewalkers_charm"
-      ]
+      ],
+      "faction_id": "merchant_caravans"
     },
     {
       "id": "ashvale_smith",
@@ -727,7 +728,8 @@
         "iron_helm",
         "chain_mail",
         "steel_sword"
-      ]
+      ],
+      "faction_id": "ashvale_council"
     },
     {
       "id": "emberwatch_outfitter",
@@ -743,7 +745,8 @@
         "briar_grips",
         "mossweave_coat",
         "marshwalker_boots"
-      ]
+      ],
+      "faction_id": "emberwatch_wardens"
     },
     {
       "id": "emberwatch_apothecary",
@@ -757,7 +760,20 @@
         "greater_ether",
         "antidote",
         "elixir_of_might"
-      ]
+      ],
+      "faction_id": "merchant_caravans",
+      "race_item_ids": {
+        "tiefling": [
+          "infernal_compass"
+        ],
+        "demon": [
+          "ashcourt_seal"
+        ]
+      },
+      "race_buy_rates": {
+        "tiefling": 0.92,
+        "demon": 0.9
+      }
     },
     {
       "id": "stonehaven_forge",
@@ -771,7 +787,8 @@
         "stoneguard_mail",
         "runic_gauntlets",
         "warden_charm"
-      ]
+      ],
+      "faction_id": "stonehaven_clans"
     },
     {
       "id": "stonehaven_arcanist",
@@ -785,7 +802,8 @@
         "crystal_circlet",
         "greater_ether",
         "stormglass_pendant"
-      ]
+      ],
+      "faction_id": "stonehaven_clans"
     },
     {
       "id": "skyreach_quartermaster",
@@ -799,7 +817,8 @@
         "gale_boots",
         "greater_potion",
         "greater_ether"
-      ]
+      ],
+      "faction_id": "skyreach_archivists"
     },
     {
       "id": "skyreach_reliquary",
@@ -813,7 +832,8 @@
         "greater_potion",
         "greater_ether",
         "wildclaw_pendant"
-      ]
+      ],
+      "faction_id": "skyreach_archivists"
     }
   ],
   "npcs": [

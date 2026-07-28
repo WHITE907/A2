@@ -78,6 +78,8 @@ Managers:
 - ItemManager (planned)
 - QuestManager
 - RaceManager
+- StoryManager
+- EnchantmentManager
 
 ## 7. GUI
 Framework:

@@ -5,15 +5,11 @@ content volume.  A skill is a list of these objects; "Fireball" is not a
 Python class, it is a JSON entry whose ``effects`` array contains one
 :class:`DamageEffect` and maybe one :class:`ApplyStatusEffect`.
 
-The five shipped behaviours:
-
-===================  ==========================================================
-``damage``           Physical / magic / true damage, with hit + crit rolls.
-``heal``             Restore HP, optionally scaling off a caster stat.
-``resource``         Restore or drain MP.
-``shield``           Attach an absorb pool.
-``apply_status``     Attach any buff/debuff/DOT/HOT from ``data/statuses.json``.
-===================  ==========================================================
+Five core behaviours cover ordinary skills (damage, heal, resource, shield,
+status). Advanced registered strategies add drain, cleanse/dispel, revive,
+taunt, cooldown shifts, execute, counters, transfer, delayed attacks, damage
+redirection, and explicit resource drain without introducing content-specific
+classes.
 
 Adding a genuinely new *behaviour* means adding one class here and one
 ``@register_effect`` line.  Adding new *content* means editing JSON only.
@@ -557,3 +553,95 @@ class ApplyStatusEffect(Effect):
         if self.duration_override:
             text += f" for {self.duration_override} turns"
         return text + self._suffix()
+
+
+@register_effect("life_drain")
+class LifeDrainEffect(DamageEffect):
+    def __init__(self, payload=None):
+        super().__init__(payload); self.drain_ratio=float((payload or {}).get("drain_ratio",0.5))
+    def apply(self,caster,target,ctx):
+        result=super().apply(caster,target,ctx)
+        if result and result.amount>0: caster.heal(result.amount*self.drain_ratio)
+        return result
+    def describe(self): return super().describe()+f"; heals {self.drain_ratio*100:.0f}% dealt"
+
+@register_effect("cleanse")
+class CleanseEffect(Effect):
+    def apply(self,caster,target,ctx):
+        removed=target.clear_debuffs();return EffectResult(target.name,"status",message=f"{target.name} is cleansed of {', '.join(removed) if removed else 'nothing'}.")
+    def describe(self):return "Removes all debuffs"
+
+@register_effect("dispel")
+class DispelEffect(Effect):
+    def apply(self,caster,target,ctx):
+        removed=[s.name for s in target.statuses if s.is_buff];target.statuses=[s for s in target.statuses if not s.is_buff];target.invalidate_stats();return EffectResult(target.name,"status",message=f"{target.name}'s {', '.join(removed) if removed else 'magic'} is dispelled.")
+    def describe(self):return "Removes all buffs"
+
+@register_effect("revive")
+class ReviveEffect(Effect):
+    def __init__(self,payload=None):super().__init__(payload);self.percent=float((payload or {}).get('percent_max_hp',0.25))
+    def apply(self,caster,target,ctx):
+        if target.is_alive:return None
+        target.current_hp=max(1,target.max_hp*self.percent);return EffectResult(target.name,"heal",amount=target.current_hp,message=f"{target.name} returns with {target.current_hp:.0f} HP.")
+    def describe(self):return f"Revives with {self.percent*100:.0f}% HP"
+
+@register_effect("taunt")
+class TauntEffect(Effect):
+    def __init__(self,payload=None):super().__init__(payload);self.duration=int((payload or {}).get('duration',2))
+    def apply(self,caster,target,ctx):target.taunted_by=caster;target.taunt_turns=self.duration;return EffectResult(target.name,"status",message=f"{target.name} is forced to focus {caster.name}.")
+    def describe(self):return f"Forces attacks for {self.duration} turns"
+
+@register_effect("cooldown")
+class CooldownEffect(Effect):
+    def __init__(self,payload=None):super().__init__(payload);self.amount=int((payload or {}).get('amount',-1))
+    def apply(self,caster,target,ctx):
+        for key in list(getattr(target,'cooldowns',{})):target.cooldowns[key]=max(0,target.cooldowns[key]+self.amount)
+        return EffectResult(target.name,"resource",message=f"{target.name}'s cooldowns shift by {self.amount}.")
+    def describe(self):return f"Changes cooldowns by {self.amount}"
+
+@register_effect("execute")
+class ExecuteEffect(DamageEffect):
+    def __init__(self,payload=None):super().__init__(payload);self.threshold=float((payload or {}).get('threshold',0.3));self.execute_multiplier=float((payload or {}).get('execute_multiplier',2.0))
+    def apply(self,caster,target,ctx):
+        old=self.multiplier
+        if target.hp_fraction<=self.threshold:self.multiplier*=self.execute_multiplier
+        result=super().apply(caster,target,ctx);self.multiplier=old;return result
+    def describe(self):return super().describe()+f"; {self.execute_multiplier:g}x below {self.threshold*100:.0f}% HP"
+
+@register_effect("counter")
+class CounterEffect(Effect):
+    def __init__(self,payload=None):super().__init__(payload);self.reflect=float((payload or {}).get('reflect_pct',0.5));self.duration=int((payload or {}).get('duration',2))
+    def apply(self,caster,target,ctx):
+        from engine.skills.status import StatusEffect
+        status=StatusEffect(id='counter_stance',name='Counter Stance',duration=self.duration,category='buff',reflect_pct=self.reflect,source_name=caster.name);target.apply_status(status);return EffectResult(target.name,'status',message=f"{target.name} prepares to counter.")
+    def describe(self):return f"Counters {self.reflect*100:.0f}% damage"
+
+@register_effect("status_transfer")
+class StatusTransferEffect(Effect):
+    def apply(self,caster,target,ctx):
+        status=next((s for s in caster.statuses if s.is_debuff),None)
+        if not status:return None
+        caster.remove_status(status.id);target.apply_status(status.clone());return EffectResult(target.name,'status',message=f"{caster.name} transfers {status.name} to {target.name}.")
+    def describe(self):return "Transfers one debuff to the target"
+
+@register_effect("delayed_attack")
+class DelayedAttackEffect(Effect):
+    def __init__(self,payload=None):super().__init__(payload);self.base=float((payload or {}).get('base',10));self.delay=int((payload or {}).get('delay',1));self.name=str((payload or {}).get('name','Delayed Strike'))
+    def apply(self,caster,target,ctx):
+        from engine.skills.status import StatusEffect
+        status=StatusEffect(id='delayed_'+self.name.lower().replace(' ','_'),name=self.name,duration=self.delay,category='dot',per_turn_hp=-self.base,damage_type='true',source_name=caster.name);target.apply_status(status);return EffectResult(target.name,'status',message=f"{self.name} is set to strike {target.name}.")
+    def describe(self):return f"Deals {self.base:.0f} delayed damage"
+
+
+@register_effect("damage_redirect")
+class DamageRedirectEffect(Effect):
+    def __init__(self,payload=None):super().__init__(payload);self.percent=float((payload or {}).get('percent',0.4));self.duration=int((payload or {}).get('duration',3))
+    def apply(self,caster,target,ctx):
+        from engine.skills.status import StatusEffect
+        status=StatusEffect(id='damage_redirect',name='Protected',duration=self.duration,category='buff',redirect_pct=self.percent,redirect_target=caster,source_name=caster.name);target.apply_status(status);return EffectResult(target.name,'status',message=f"{caster.name} redirects {self.percent*100:.0f}% of damage from {target.name}.")
+    def describe(self):return f"Redirects {self.percent*100:.0f}% damage to caster"
+
+@register_effect("resource_drain")
+class ResourceDrainEffect(ResourceEffect):
+    def __init__(self,payload=None):
+        data=dict(payload or {});data['amount']=-abs(float(data.get('amount',0)));data['percent_max_mp']=-abs(float(data.get('percent_max_mp',0)));data.setdefault('target','enemy');super().__init__(data)

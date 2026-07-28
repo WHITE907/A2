@@ -16,7 +16,12 @@ class QuestManager:
 
     QUEST_FILE = "quests.json"
     DEFEAT_OBJECTIVE = "defeat_enemy"
-    SUPPORTED_OBJECTIVES = frozenset({DEFEAT_OBJECTIVE})
+    SUPPORTED_OBJECTIVES = frozenset({
+        DEFEAT_OBJECTIVE,
+        "collect_item", "visit_area", "talk_to", "recruit_companion",
+        "travel_with_companion", "equip_item_type", "affinity",
+        "battle_no_downs", "battle_turn_limit", "choice",
+    })
 
     def __init__(self, loader: DataLoader) -> None:
         self._loader = loader
@@ -108,25 +113,33 @@ class QuestManager:
         self.load()
         return [self._definitions[quest_id] for quest_id in player.active_quests if quest_id in self._definitions]
 
-    def record_defeats(self, player, enemy_ids: Iterable[str]) -> list[str]:
-        """Advance all matching active objectives and return changed quest ids."""
-        defeated = Counter(str(enemy_id) for enemy_id in enemy_ids)
+    def record_event(
+        self, player, kind: str, target_id: str, amount: int = 1, *, absolute: bool = False
+    ) -> list[str]:
+        """Apply one generic gameplay event to every matching active objective."""
         changed: list[str] = []
         for definition in self.active_for(player):
             quest_changed = False
             for objective in definition.objectives:
-                if objective.kind != self.DEFEAT_OBJECTIVE or objective.target_id not in defeated:
+                if objective.kind != kind or objective.target_id != str(target_id):
                     continue
                 before = player.quest_progress_value(definition.id, objective.key)
+                delta = max(0, int(amount) - before) if absolute else int(amount)
                 after = player.advance_quest(
-                    definition.id,
-                    objective.key,
-                    defeated[objective.target_id],
-                    maximum=objective.quantity,
+                    definition.id, objective.key, delta, maximum=objective.quantity
                 )
                 quest_changed = quest_changed or after != before
             if quest_changed:
                 changed.append(definition.id)
+        return changed
+
+    def record_defeats(self, player, enemy_ids: Iterable[str]) -> list[str]:
+        """Advance defeat objectives, preserving group kill counts."""
+        changed: list[str] = []
+        for enemy_id, count in Counter(str(value) for value in enemy_ids).items():
+            for quest_id in self.record_event(player, self.DEFEAT_OBJECTIVE, enemy_id, count):
+                if quest_id not in changed:
+                    changed.append(quest_id)
         return changed
 
     def can_complete(self, player, quest_id: str) -> tuple[bool, list[str]]:

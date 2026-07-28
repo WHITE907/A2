@@ -64,6 +64,8 @@ class EnemyTemplate:
     family: str = "beast"
     is_boss: bool = False
     mastery_reward: float = 0.0
+    boss_phases: list[dict[str, Any]] = field(default_factory=list)
+    boss_rules: dict[str, Any] = field(default_factory=dict)
 
     def stats_at_level(self, level: int) -> StatBlock:
         result = self.base_stats.copy()
@@ -99,6 +101,8 @@ class EnemyTemplate:
             family=str(payload.get("family", "beast")),
             is_boss=bool(payload.get("is_boss", False)),
             mastery_reward=float(payload.get("mastery_reward", 0.0)),
+            boss_phases=[dict(value) for value in payload.get("boss_phases", [])],
+            boss_rules=dict(payload.get("boss_rules") or {}),
         )
 
 
@@ -120,6 +124,8 @@ class Enemy(Entity):
         #: Set by CombatManager when several of the same monster are present
         #: ("Slime A", "Slime B") so the player can tell targets apart.
         self.name_suffix = name_suffix
+        self.boss_phase: int = 0
+        self._phase_modifiers = ModifierSet()
 
         display_name = f"{template.name} {name_suffix}".strip()
         super().__init__(
@@ -134,7 +140,13 @@ class Enemy(Entity):
         """Enemies have no gear; template modifiers stand in for it."""
         combined = ModifierSet()
         combined.merge(self.template.modifiers)
+        combined.merge(self._phase_modifiers)
         return combined
+
+    def enter_boss_phase(self, index: int, modifiers: Mapping[str, Any] | None = None) -> None:
+        self.boss_phase = index
+        self._phase_modifiers = ModifierSet.from_dict(modifiers)
+        self.invalidate_stats()
 
     @property
     def is_boss(self) -> bool:

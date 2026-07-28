@@ -1,0 +1,147 @@
+{
+  "banter": [
+    {
+      "id": "rook_old_road",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "old_road"
+        ],
+        "companions": [
+          "rook"
+        ]
+      },
+      "lines": [
+        "Rook: ‘Still badly paved. Comforting that some failures are permanent.’"
+      ],
+      "once": false
+    },
+    {
+      "id": "kess_rook",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "rook",
+          "kess"
+        ]
+      },
+      "lines": [
+        "Kess: ‘Shortcut?’",
+        "Rook: ‘No.’",
+        "Kess: ‘You did not even look.’",
+        "Rook: ‘Experience.’"
+      ]
+    },
+    {
+      "id": "tiefling_veyra",
+      "trigger": "rest",
+      "conditions": {
+        "player_race_ids": [
+          "tiefling"
+        ],
+        "companions": [
+          "veyra_ashhorn"
+        ]
+      },
+      "lines": [
+        "Veyra compares horn-care oils with you until the innkeeper asks both of you to stop."
+      ]
+    },
+    {
+      "id": "brokk_mines",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "crystal_mines"
+        ],
+        "companions": [
+          "brokk_embervein"
+        ]
+      },
+      "lines": [
+        "Brokk hums one low note. The mine answers with two."
+      ]
+    },
+    {
+      "id": "boss_aftermath",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "cael_sunward"
+        ]
+      },
+      "lines": [
+        "Cael: ‘We lived. I had prepared a much more dignified final sentence.’"
+      ]
+    },
+    {
+      "id": "spouse_rest",
+      "trigger": "rest",
+      "conditions": {
+        "spouse_in_party": true
+      },
+      "lines": [
+        "Your spouse saves you a seat near the fire without making a ceremony of it."
+      ]
+    },
+    {
+      "id": "kess_humanoids",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "humanoid"
+        ],
+        "companions": [
+          "kess"
+        ]
+      },
+      "lines": [
+        "Kess checks the fallen purses, then looks offended that you noticed."
+      ]
+    },
+    {
+      "id": "elen_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "sister_elen"
+        ],
+        "companions": [
+          "rook"
+        ]
+      },
+      "lines": [
+        "Rook: ‘Elen is down. End this now.’"
+      ]
+    },
+    {
+      "id": "rook_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companion_ids": [
+          "rook"
+        ]
+      },
+      "lines": [
+        "Kess loudly loses a bet about whether Rook would ever propose first."
+      ]
+    },
+    {
+      "id": "mage_voss",
+      "trigger": "travel",
+      "conditions": {
+        "player_class_ids": [
+          "mage",
+          "archmage",
+          "archon"
+        ],
+        "companions": [
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Voss critiques your spell posture for three uninterrupted miles."
+      ]
+    }
+  ]
+}

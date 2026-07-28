@@ -84,6 +84,10 @@ class Item:
     #: Marks the marriage item from bible section 15.
     tags: list[str] = field(default_factory=list)
     rarity: str = "common"
+    set_id: str = ""
+    enchant_slots: int = 0
+    bound_skill_id: str = ""
+    conditional_modifiers: list[dict[str, Any]] = field(default_factory=list)
 
     @property
     def is_equipment(self) -> bool:
@@ -156,6 +160,10 @@ class Item:
             required_stats={str(k).upper(): int(v) for k, v in (payload.get("required_stats") or {}).items()},
             tags=[str(t) for t in payload.get("tags", [])],
             rarity=str(payload.get("rarity", "common")),
+            set_id=str(payload.get("set_id", "")),
+            enchant_slots=int(payload.get("enchant_slots", 1 if kind == ItemKind.EQUIPMENT else 0)),
+            bound_skill_id=str(payload.get("bound_skill_id", "")),
+            conditional_modifiers=[dict(value) for value in payload.get("conditional_modifiers", [])],
         )
 
 

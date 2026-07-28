@@ -329,6 +329,41 @@
         "exp": 7000,
         "gold": 2800
       }
+    },
+    {
+      "id": "systems_field_test",
+      "name": "A Practical Education",
+      "description": "Mara asks for proof that heroism includes listening, travelling, and carrying things.",
+      "min_level": 1,
+      "giver_id": "innkeeper_mara",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "greenfields",
+          "quantity": 1
+        },
+        {
+          "kind": "talk_to",
+          "target_id": "innkeeper_mara",
+          "quantity": 1
+        },
+        {
+          "kind": "collect_item",
+          "target_id": "slime_core",
+          "quantity": 3
+        },
+        {
+          "kind": "affinity",
+          "target_id": "innkeeper_mara",
+          "quantity": 20
+        }
+      ],
+      "rewards": {
+        "exp": 250,
+        "gold": 100
+      }
     }
   ]
 }

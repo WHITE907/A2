@@ -26,7 +26,7 @@ class TalkWindow(tk.Toplevel):
         self.npc_name = npc.name if npc else "Stranger"
 
         theme.style_window(self, f"Project Ascension - {self.npc_name}")
-        theme.center_window(self, 620, 600)
+        theme.center_window(self, 720, 600)
         self.transient(app.root)
 
         body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
@@ -56,6 +56,8 @@ class TalkWindow(tk.Toplevel):
         self.marry_button.pack(side=tk.LEFT)
         self.quest_button = theme.flat_button(buttons, "Quests", self.app.open_quests, width=10)
         self.quest_button.pack(side=tk.LEFT, padx=(8, 0))
+        self.story_button = theme.flat_button(buttons, "Story", self._story, width=8)
+        self.story_button.pack(side=tk.LEFT, padx=(8, 0))
         theme.flat_button(buttons, "Close", self._close, width=10).pack(side=tk.RIGHT)
 
         self.refresh()
@@ -92,8 +94,15 @@ class TalkWindow(tk.Toplevel):
         quest_lines = game.quest_giver_lines(self.npc_id)
         self.quest_info.set_lines(["Quests:", *quest_lines] if quest_lines else [])
         self.quest_button.configure(state=tk.NORMAL if quest_lines else tk.DISABLED)
+        stories = game.dialogues_for_speaker(self.npc_id)
+        self.story_button.configure(state=tk.NORMAL if stories else tk.DISABLED)
 
     # ------------------------------------------------------------------
+    def _story(self) -> None:
+        stories = self.app.game.dialogues_for_speaker(self.npc_id)
+        if stories:
+            self.app.open_dialogue(stories[0]["id"])
+
     def _talk(self) -> None:
         ok, lines = self.app.game.talk_to(self.npc_id)
         for line in lines:

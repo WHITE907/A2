@@ -83,6 +83,9 @@ class Shop:
     item_ids: list[str] = field(default_factory=list)
     buy_rate: float = 1.0
     sell_rate: float = 0.4
+    faction_id: str = ""
+    race_item_ids: dict[str, list[str]] = field(default_factory=dict)
+    race_buy_rates: dict[str, float] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "Shop":
@@ -92,6 +95,9 @@ class Shop:
             item_ids=[str(i) for i in payload.get("item_ids", [])],
             buy_rate=float(payload.get("buy_rate", 1.0)),
             sell_rate=float(payload.get("sell_rate", 0.4)),
+            faction_id=str(payload.get("faction_id", "")),
+            race_item_ids={str(k): [str(v) for v in values] for k, values in (payload.get("race_item_ids") or {}).items()},
+            race_buy_rates={str(k): float(v) for k, v in (payload.get("race_buy_rates") or {}).items()},
         )
 
 

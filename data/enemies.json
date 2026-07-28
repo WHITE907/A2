@@ -971,7 +971,65 @@
           "chance": 1.0,
           "quantity": 3
         }
-      ]
+      ],
+      "boss_phases": [
+        {
+          "name": "Crowned Sunrise",
+          "hp_fraction": 1.0,
+          "modifiers": {}
+        },
+        {
+          "name": "Broken Horizon",
+          "hp_fraction": 0.5,
+          "shield_hp": 500,
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.25,
+              "speed": 0.15
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "ruin_sentinel",
+              "level": 38
+            }
+          ]
+        },
+        {
+          "name": "Black Noon",
+          "hp_fraction": 0.2,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.35,
+              "magic_power": 0.35
+            },
+            "flat": {
+              "armor": 25,
+              "magic_resist": 25
+            }
+          }
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 10,
+        "enrage_modifiers": {
+          "pct": {
+            "physical_power": 0.6,
+            "magic_power": 0.6
+          }
+        },
+        "environment": {
+          "per_round_damage": 18,
+          "message": "Solar fractures burn across the arena."
+        },
+        "telegraph": {
+          "interval": 3,
+          "warning": "The Dawn Tyrant gathers the horizon into one burning point. Defend!",
+          "damage": 180,
+          "counter_damage": 120,
+          "impact": "The stolen sunrise detonates across the arena."
+        }
+      }
     }
   ]
 }

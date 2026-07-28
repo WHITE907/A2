@@ -103,7 +103,7 @@ class TestExpandedContent(unittest.TestCase):
     def test_new_content_volume(self):
         self.assertEqual(self.game.enemies.count(), 30)
         self.assertEqual(self.game.skills.count(), 60)
-        self.assertEqual(self.game.items.count(), 87)
+        self.assertEqual(self.game.items.count(), 88)
         self.assertEqual(self.game.companions.count(), 14)
 
     def test_new_passives_are_learnable_from_class_trees(self):

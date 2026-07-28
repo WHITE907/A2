@@ -1,0 +1,6 @@
+{"enchantments":[
+{"id":"keen","name":"Keen","gold_cost":600,"modifiers":{"flat":{"physical_power":8,"crit_chance":0.03}}},
+{"id":"warded","name":"Warded","gold_cost":600,"modifiers":{"flat":{"armor":8,"magic_resist":8}}},
+{"id":"sages","name":"Sage's","gold_cost":700,"modifiers":{"flat":{"magic_power":10,"max_mp":25}}},
+{"id":"vital","name":"Vital","gold_cost":650,"modifiers":{"flat":{"max_hp":60}}}
+]}

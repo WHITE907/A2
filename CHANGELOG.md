@@ -2,6 +2,61 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.7.0 - Living Systems
+
+A broad engine expansion focused on reusable behaviours rather than one-off
+content branches.
+
+### Quest objectives and branching dialogue
+- QuestManager now supports 11 generic objective behaviours: enemy defeats,
+  item collection, area visits, NPC conversations, recruitment, companion
+  travel, equipment types, affinity thresholds, no-down victories, turn-limit
+  victories, and story choices.
+- Added data-driven dialogue trees with conditional responses over race, class,
+  flags, reputation, affinity, party composition, and marriage.
+- Dialogue actions can set flags, change affinity/loyalty/reputation, accept
+  quests, grant items, and record mutually exclusive choices.
+- Added a branching Story window and an intentionally morally-grey Ash Court
+  contract with factional, hostile, and class/race-reactive outcomes.
+
+### Loyalty, banter, and tactics
+- Added Wary/Trusted/Devoted/Sworn companion loyalty ranks, combat bonuses,
+  skill unlocks, titles, and outfit ids.
+- Severe disagreements cause temporary departures with a guaranteed rejoin
+  date rather than permanent companion loss.
+- Added contextual banter triggers for travel, areas, party combinations,
+  player race/class, enemy families, boss victories, rests, marriage, and
+  downed companions.
+- Companion tactics persist per save: stance, preferred target, MP preservation,
+  healing threshold, ultimate policy, and protect target. A Tactics GUI exposes
+  the principal controls without moving decision calculations into the UI.
+
+### Boss framework and combat effects
+- Boss JSON now supports HP phases, changing modifiers/resistances, phase
+  shields, summoned reinforcements, enrages, environmental damage, telegraphed
+  attacks with defend counters, and survive-round victory conditions.
+- The Dawn Tyrant now uses three phases, a summon, arena damage, enrage, and a
+  defend-counter telegraph as the reference encounter.
+- Added 12 effect strategies: life drain, cleanse, dispel, revive, taunt,
+  cooldown manipulation, execute, counter, status transfer, delayed attack,
+  damage redirection, and explicit resource drain.
+
+### Factions, race reactivity, and equipment
+- Added eight independent factions with rival reputation changes and
+  reputation-based shop discounts.
+- Shops can expose race-specific stock and prices; dialogue and banter also
+  support race-specific conditions without hardcoded race ids.
+- Equipment now supports JSON set bonuses, enchantment slots, five upgrade
+  levels, item-bound skills, and low-health conditional modifiers.
+- Added four enchantments, an Emberwatch set reference implementation, a
+  boss-bound skill item, and the Blood-Oath Ring conditional item.
+- Faction, loyalty, tactics, enchantments, and upgrades persist in save v6.
+
+### Tests
+- 442 tests pass. New integration coverage exercises every system above,
+  persistence, GUI story/tactics entry points, boss phases, advanced effects,
+  objective events, and mutually exclusive faction choices.
+
 ## v0.6.0 - Races and Companion Stories
 
 ### Races

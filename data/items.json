@@ -470,7 +470,8 @@
           "crit_chance": 0.04
         }
       },
-      "rarity": "uncommon"
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
     },
     {
       "id": "watchman_mace",
@@ -686,7 +687,8 @@
           "magic_resist": 8
         }
       },
-      "rarity": "uncommon"
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
     },
     {
       "id": "ember_helm",
@@ -702,7 +704,8 @@
           "max_hp": 45
         }
       },
-      "rarity": "uncommon"
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
     },
     {
       "id": "briar_grips",
@@ -719,7 +722,8 @@
           "crit_chance": 0.03
         }
       },
-      "rarity": "uncommon"
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
     },
     {
       "id": "mossweave_coat",
@@ -923,7 +927,8 @@
           "max_mp": 60
         }
       },
-      "rarity": "legendary"
+      "rarity": "legendary",
+      "bound_skill_id": "radiant_aegis"
     },
     {
       "id": "wanderers_knot",
@@ -1115,6 +1120,32 @@
           }
         }
       },
+      "rarity": "epic"
+    },
+    {
+      "id": "blood_oath_ring",
+      "name": "Blood-Oath Ring",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "It rewards desperation and remembers every broken promise.",
+      "value": 3200,
+      "required_level": 25,
+      "modifiers": {
+        "flat": {
+          "max_hp": 30
+        }
+      },
+      "conditional_modifiers": [
+        {
+          "below_hp_fraction": 0.3,
+          "modifiers": {
+            "flat": {
+              "physical_power": 25,
+              "magic_power": 25
+            }
+          }
+        }
+      ],
       "rarity": "epic"
     }
   ]

@@ -50,7 +50,7 @@ ProjectAscension/
 │   └── screens/         one module per screen
 ├── data/                all gameplay content
 ├── docs/                design notes
-├── tests/               422 tests
+├── tests/               442 tests
 ├── tools/               dev utilities
 └── saves/               JSON save slots (created on first save)
 ```
@@ -80,14 +80,14 @@ Per [`docs/ENGINE_DESIGN.md`](docs/ENGINE_DESIGN.md), class count scales with
 | Concept | Python classes | JSON entries |
 |---|---|---|
 | Skills | 1 (`Skill`) | 60 |
-| Effects | 5 (`damage`, `heal`, `resource`, `shield`, `apply_status`) | — |
+| Effects | 17 reusable strategies | — |
 | Classes | 1 (`ClassDefinition`) | 19 |
 | Enemies | 1 (`Enemy`) | 30 |
-| Items | 1 (`Item`) | 87 |
+| Items | 1 (`Item`) | 88 |
 | Statuses | 1 (`StatusEffect`) | 21 |
 | Races | 1 (`RaceDefinition`) | 8 |
 | Companions | 1 (`Companion`) | 14 |
-| Quests | 1 (`QuestDefinition`) | 18 |
+| Quests | 1 (`QuestDefinition`) | 19 |
 
 Fireball is not a Python class. It is a JSON entry composing a `DamageEffect`
 and an `ApplyStatusEffect`:
@@ -156,17 +156,26 @@ chapters of their personal stories on the road. NPC Talk windows surface their a
 quests and link to the Quest Log. `QuestManager` loads ten class-gated promotion
 quests, records data-driven enemy-defeat objectives, and grants JSON-defined
 rewards. Active progress is save-versioned, and giver, location, class, enemy,
-item, and prerequisite references are cross-validated at startup.
+item, and prerequisite references are cross-validated at startup. Eleven
+objective strategies cover combat, collection, travel, social, equipment,
+party, challenge, and mutually exclusive story-choice goals.
+
+**Dialogue and factions** are data-driven. Response visibility can react to
+race, class, flags, reputation, affinity, companions, and marriage; actions
+apply consequences through the Game facade. Eight rival reputation tracks
+alter dialogue and shop prices without making a single faction mandatory.
 
 **Companions** are recruited with gold, items, level, affinity, and sometimes a
 personal introductory quest, then either fight in the active roster (capped, so
 battles stay readable) or wait in reserve. Four companions have two-part
 questlines: the first earns their trust and unlocks recruitment; the second
 requires them in the party and continues while travelling. They level with the player rather than earning separate EXP — a
-companion that falls behind is one you bench, which defeats the point. They act
-through the existing AI registry, so `Battle` needed no companion-shaped
-special case. Downed companions revive at 25% HP after a fight rather than
-dying permanently.
+companion that falls behind is one you bench, which defeats the point. Loyalty
+ranks grant bonuses, skills, titles, and outfit ids; severe disagreements cause
+recoverable temporary departures. Contextual banter reacts to travel, parties,
+races/classes, enemies, bosses, rest, marriage, and downed allies. Persisted
+tactical policies influence AI stance, targeting, MP, healing, ultimate use,
+and protection priorities. Downed companions revive after battle.
 
 **Affinity and marriage** live in one module, `engine/relationships.py`, used by
 townspeople and companions alike: both satisfy the same `Suitor` shape, so a
@@ -174,6 +183,16 @@ companion is marriageable on exactly the same terms as an innkeeper. Gender is
 never consulted anywhere in that module — the cleanest way to honour §15 is to
 have nothing to remove. Marrying a companion grants them a real combat bonus,
 so it is a system rather than a checkbox.
+
+**Equipment progression** supports JSON set thresholds, enchantments, upgrade
+levels, item-bound skills, race bonuses, and conditional effects such as the
+Blood-Oath Ring's low-health power. The base Item class remains unchanged per
+piece of content.
+
+**Boss encounters** support reusable phases, summons, enrage timers, phase
+shields, resistance changes, environmental damage, telegraph/counter attacks,
+and survive-round victory conditions. The Dawn Tyrant is the reference phased
+fight.
 
 **The world** is a connected 17-area route from Ashvale to the level-40
 Obsidian Gate. Emberwatch, Stonehaven, and Skyreach each provide shops,
@@ -211,13 +230,14 @@ testing anything.
 
 ## Testing
 
-422 tests, no third-party dependencies:
+442 tests, no third-party dependencies:
 
 ```
 python3 -m unittest discover -s tests        # everything
 python3 -m unittest tests.test_engine        # core engine tests
 python3 -m unittest tests.test_quests        # quest/progression tests
 python3 -m unittest tests.test_races_storylines # races + companion stories
+python3 -m unittest tests.test_systems_expansion # dialogue, factions, loyalty, gear, bosses
 python3 -m unittest tests.test_world_expansion # level-40 content tests
 python3 -m unittest tests.test_gui           # headless GUI tests
 ```
@@ -266,10 +286,14 @@ is reported as a `ContentError` with the exact ids, not discovered mid-battle.
 | `skills.json` | 60 skills across all six categories |
 | `statuses.json` | 21 buffs, debuffs, DOTs, HOTs, stuns |
 | `classes.json` | 19 classes, tiers 1–7, full promotion chains |
-| `items.json` | 87 items: weapons, armour, consumables, racial heirlooms, materials, key items |
+| `items.json` | 88 items: weapons, armour, sets, conditional gear, racial heirlooms, materials |
+| `enchantments.json` | 4 reusable equipment enchantments |
 | `races.json` | 8 playable/world races with stats, modifiers, and traits |
-| `enemies.json` | 30 enemies including 5 bosses |
-| `quests.json` | 18 promotion and companion-story quests |
+| `enemies.json` | 30 enemies including 5 bosses and a phased reference boss |
+| `quests.json` | 19 promotion, companion-story, and multi-objective quests |
+| `dialogues.json` | branching conversations and consequence actions |
+| `factions.json` | 8 reputation tracks and rivalries |
+| `banter.json` | contextual companion conversations |
 | `companions.json` | 14 recruitable allies, all marriageable |
 | `world.json` | 17 areas, 8 shops, 18 NPCs, encounter tables |
 

@@ -1084,6 +1084,20 @@ class TestCompanionMarriageUI(unittest.TestCase):
         window._talk()
         self.assertGreater(self.app.game.player.affinity_with("innkeeper_mara"), 0)
 
+    def test_story_button_opens_branching_dialogue(self):
+        app = make_app_with_character()
+        window = app.open_talk("mother_sable")
+        self.assertEqual(window.story_button.options["state"], tk.NORMAL)
+        window._story()
+        self.assertIn("dialogue", app._toplevels)
+
+    def test_companion_tactics_window_updates_policy(self):
+        app = make_app_with_party()
+        window = app.open_tactics("rook")
+        before = app.game.party.get("rook").tactics["preserve_mp"]
+        window.toggle_mp()
+        self.assertNotEqual(app.game.party.get("rook").tactics["preserve_mp"], before)
+
 
 # ======================================================================
 class TestQuestUI(unittest.TestCase):

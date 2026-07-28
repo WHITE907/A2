@@ -31,11 +31,13 @@ from engine.managers.class_manager import ClassManager
 from engine.managers.companion_manager import CompanionManager
 from engine.managers.data_loader import ContentError, DataLoader
 from engine.managers.enemy_manager import EnemyManager
+from engine.managers.enchantment_manager import EnchantmentManager
 from engine.managers.item_manager import ItemManager
 from engine.managers.quest_manager import QuestManager
 from engine.managers.race_manager import RaceManager
 from engine.managers.save_manager import SaveManager, SaveSlotInfo
 from engine.managers.skill_manager import SkillManager
+from engine.managers.story_manager import StoryManager
 from engine.managers.world_manager import WorldManager
 from engine.mastery import MasteryBook
 from engine.party import Party
@@ -52,7 +54,7 @@ from engine.world.world import WorldState
 __all__ = ["Game", "GAME_VERSION", "QuestDefinition", "RaceDefinition", "SaveSlotInfo"]
 
 #: Shown on the main menu under the title (per the GUI style reference).
-GAME_VERSION = "0.6.0"
+GAME_VERSION = "0.7.0"
 
 
 class Game:
@@ -72,11 +74,13 @@ class Game:
         self.skills = SkillManager(self.loader)
         self.classes = ClassManager(self.loader, self.skills)
         self.items = ItemManager(self.loader)
+        self.enchantments = EnchantmentManager(self.loader)
         self.races = RaceManager(self.loader)
         self.enemies = EnemyManager(self.loader, self.skills, self.formulas)
         self.quests = QuestManager(self.loader)
         self.companions = CompanionManager(self.loader, self.skills, self.races, self.formulas)
         self.world_manager = WorldManager(self.loader)
+        self.story = StoryManager(self.loader)
         self.saves = SaveManager(save_dir)
         self.ai_registry = default_registry()
         self.relationships = RelationshipRules(self.config)
@@ -101,11 +105,13 @@ class Game:
         self.skills.load()
         self.classes.load()
         self.items.load()
+        self.enchantments.load()
         self.races.load()
         self.enemies.load()
         self.quests.load()
         self.companions.load()
         self.world_manager.load()
+        self.story.load()
         self._validate_cross_references()
 
     def _validate_cross_references(self) -> None:
@@ -119,6 +125,10 @@ class Game:
             for entry in template.loot:
                 if entry.item_id and self.items.get(entry.item_id) is None:
                     problems.append(f"enemy {template.id!r} drops unknown item {entry.item_id!r}")
+            for phase in template.boss_phases:
+                for summon in phase.get("summons", []):
+                    if self.enemies.get_template(str(summon.get("enemy_id", ""))) is None:
+                        problems.append(f"enemy {template.id!r} phase summons unknown enemy {summon.get('enemy_id')!r}")
 
         for skill in self.skills.all_skills():
             for class_id in skill.required_class_ids:
@@ -129,6 +139,10 @@ class Game:
             for race_id in item.race_modifiers:
                 if self.races.get(race_id) is None:
                     problems.append(f"item {item.id!r} has a bonus for unknown race {race_id!r}")
+            if item.bound_skill_id and self.skills.get(item.bound_skill_id) is None:
+                problems.append(f"item {item.id!r} grants unknown skill {item.bound_skill_id!r}")
+            if item.set_id and item.set_id not in (self.config.get("equipment_sets") or {}):
+                problems.append(f"item {item.id!r} uses unknown equipment set {item.set_id!r}")
 
         for definition in self.classes.all_classes():
             for item_id in definition.starting_items:
@@ -221,10 +235,28 @@ class Game:
             shop = self.world_manager.get_shop(shop_id)
             if shop is None:
                 continue
-            for item_id in shop.item_ids:
+            for item_id in [*shop.item_ids, *[i for values in shop.race_item_ids.values() for i in values]]:
                 if self.items.get(item_id) is None:
                     problems.append(f"shop {shop_id!r} sells unknown item {item_id!r}")
+            for race_id in [*shop.race_item_ids, *shop.race_buy_rates]:
+                if self.races.get(race_id) is None:
+                    problems.append(f"shop {shop_id!r} has rules for unknown race {race_id!r}")
+            if shop.faction_id and self.story.faction(shop.faction_id) is None:
+                problems.append(f"shop {shop_id!r} serves unknown faction {shop.faction_id!r}")
 
+        for faction in self.story.factions.values():
+            for rival in faction.rivals:
+                if self.story.faction(rival) is None:
+                    problems.append(f"faction {faction.id!r} names unknown rival {rival!r}")
+        for tree in self.story.dialogues.values():
+            if self._find_suitor(tree.speaker_id) is None:
+                problems.append(f"dialogue {tree.id!r} has unknown speaker {tree.speaker_id!r}")
+            if tree.start_node_id not in tree.nodes:
+                problems.append(f"dialogue {tree.id!r} has unknown start node {tree.start_node_id!r}")
+            for node in tree.nodes.values():
+                for option in node.options:
+                    if option.next_node_id and option.next_node_id not in tree.nodes:
+                        problems.append(f"dialogue {tree.id!r} option {option.id!r} has unknown next node")
         if problems:
             raise ContentError("content validation failed:\n  - " + "\n  - ".join(problems))
 
@@ -237,6 +269,8 @@ class Game:
             f"Races: {self.races.count()}",
             f"Enemies: {self.enemies.count()}",
             f"Quests: {self.quests.count()}",
+            f"Dialogues: {self.story.count_dialogues()}",
+            f"Factions: {len(self.story.factions)}",
             f"Companions: {self.companions.count()}",
             f"Areas: {self.world_manager.count()}",
         ]
@@ -298,6 +332,8 @@ class Game:
             formulas=self.formulas,
             level=int(progression.get("starting_level", 1)),
             progression=progression,
+            equipment_config=self.config,
+            enchantments=self.enchantments.definitions,
         )
         player.mastery = self._new_mastery_book()
 
@@ -420,12 +456,66 @@ class Game:
         item = self.items.get(item_id)
         if item is None:
             return False, "Unknown item."
-        return self.player.equip(item)
+        ok, message = self.player.equip(item)
+        if ok:
+            if item.bound_skill_id:
+                skill = self.skills.get(item.bound_skill_id)
+                if skill and skill.id not in self.player.known_skills:
+                    self.player.known_skills[skill.id] = skill
+                    self.player.equipment_granted_skills.add(skill.id)
+            for target in (item.id, item.slot, item.weapon_type, item.kind):
+                if target:
+                    self.quests.record_event(self.player, "equip_item_type", target)
+        return ok, message
 
     def unequip_slot(self, slot: str) -> tuple[bool, str]:
         if not self.player:
             return False, "No character loaded."
-        return self.player.unequip(slot)
+        item = self.player.equipment.get(slot)
+        ok, message = self.player.unequip(slot)
+        if ok and item and item.bound_skill_id in self.player.equipment_granted_skills:
+            still_granted = any(
+                equipped and equipped.bound_skill_id == item.bound_skill_id
+                for equipped in self.player.equipment.values()
+            )
+            if not still_granted:
+                self.player.known_skills.pop(item.bound_skill_id, None)
+                self.player.equipment_granted_skills.discard(item.bound_skill_id)
+        return ok, message
+
+    def enchant_item(self, item_id: str, enchantment_id: str) -> tuple[bool, str]:
+        if not self.player:
+            return False, "No character loaded."
+        item = self.items.get(item_id)
+        enchantment = self.enchantments.get(enchantment_id)
+        if item is None or enchantment is None or not item.is_equipment:
+            return False, "Invalid item or enchantment."
+        if item.enchant_slots < 1:
+            return False, f"{item.name} cannot be enchanted."
+        if not (self.player.inventory.has(item_id) or item in self.player.equipment.values()):
+            return False, f"You do not own {item.name}."
+        if not self.player.inventory.spend_gold(enchantment.gold_cost):
+            return False, f"You need {enchantment.gold_cost} gold."
+        self.player.item_enchantments[item_id] = enchantment_id
+        self.player.invalidate_stats()
+        return True, f"Applied {enchantment.name} to {item.name}."
+
+    def upgrade_item(self, item_id: str) -> tuple[bool, str]:
+        if not self.player:
+            return False, "No character loaded."
+        item = self.items.get(item_id)
+        if item is None or not item.is_equipment:
+            return False, "Invalid equipment."
+        current = self.player.item_upgrades.get(item_id, 0)
+        cfg = self.config.get("equipment_upgrade") or {}
+        if current >= int(cfg.get("max_level", 0)):
+            return False, "That item is fully upgraded."
+        cost = int(cfg.get("base_gold", 0)) * (current + 1)
+        if not self.player.inventory.spend_gold(cost):
+            return False, f"You need {cost} gold."
+        self.player.item_upgrades[item_id] = current + 1
+        self.player.invalidate_stats()
+        return True, f"Upgraded {item.name} to +{current + 1}."
 
     def use_item(self, item_id: str) -> tuple[bool, list[str]]:
         """Use a consumable outside combat."""
@@ -566,9 +656,32 @@ class Game:
         lines.append("Rewards: " + (", ".join(reward_parts) if reward_parts else "None"))
         return lines
 
+    def refresh_quest_objectives(self) -> None:
+        """Refresh objectives sourced from current character state."""
+        if not self.player:
+            return
+        collected: dict[str, int] = {}
+        for entry in self.player.inventory.entries:
+            collected[entry.item.id] = collected.get(entry.item.id, 0) + entry.quantity
+        for item_id, quantity in collected.items():
+            self.quests.record_event(
+                self.player, "collect_item", item_id, quantity, absolute=True
+            )
+        for target_id, affinity in self.player.affinity.items():
+            self.quests.record_event(
+                self.player, "affinity", target_id, affinity, absolute=True
+            )
+        for item in self.player.equipment.values():
+            if item is None:
+                continue
+            for target in (item.id, item.slot, item.weapon_type, item.kind):
+                if target:
+                    self.quests.record_event(self.player, "equip_item_type", target, 1, absolute=True)
+
     def quest_completion_check(self, quest_id: str) -> tuple[bool, list[str]]:
         if not self.player or not self.world:
             return False, ["No character loaded."]
+        self.refresh_quest_objectives()
         ready, unmet = self.quests.can_complete(self.player, quest_id)
         definition = self.quests.get(quest_id)
         if (
@@ -635,7 +748,15 @@ class Game:
     def travel_to(self, area_id: str) -> tuple[bool, str]:
         if not self.world or not self.player:
             return False, "No character loaded."
-        return self.world.travel_to(area_id, self.player.level)
+        ok, message = self.world.travel_to(area_id, self.player.level)
+        if ok:
+            self.quests.record_event(self.player, "visit_area", area_id)
+            for companion in self.party.active:
+                self.quests.record_event(self.player, "travel_with_companion", companion.id)
+            banter = self.trigger_banter("travel", area_id=area_id)
+            if banter:
+                message += "\n" + "\n".join(banter)
+        return ok, message
 
     def explore(self) -> tuple[str, Battle | None]:
         """Take one exploration step; starts a battle on an encounter.
@@ -673,6 +794,7 @@ class Game:
             ai_registry=self.ai_registry,
             flee_base_chance=float(combat_config.get("flee_base_chance", 0.45)),
             mastery_per_action=float(combat_config.get("mastery_per_action", 6.0)),
+            summon_factory=lambda enemy_id, level: self.enemies.spawn(enemy_id, level),
         )
         # Fast enemies may act before the player's first turn.
         self.battle.run_until_player_turn()
@@ -695,9 +817,11 @@ class Game:
             lines.extend(battle.grant_loot(self.items))
             lines.extend(battle.rewards.summary_lines())
             defeated_ids = [enemy.template.id for enemy in battle.enemies]
+            boss_victory = False
             if self.world:
                 for enemy in battle.enemies:
                     if enemy.is_boss and enemy.template.id not in self.world.defeated_bosses:
+                        boss_victory = True
                         self.world.defeated_bosses.add(enemy.template.id)
                         lines.append(f"World updated: {enemy.template.name} has been defeated.")
             if self.player:
@@ -707,6 +831,17 @@ class Game:
                     progress = self.player.quest_progress.get(quest_id, {})
                     lines.append(f"Quest progress — {definition.name}:")
                     lines.extend(definition.progress_lines(progress))
+                if not any(not companion.is_alive for companion in self.party.active):
+                    self.quests.record_event(self.player, "battle_no_downs", "any")
+                if battle.round <= 5:
+                    self.quests.record_event(self.player, "battle_turn_limit", "5")
+                if boss_victory:
+                    lines.extend(self.trigger_banter("boss_victory"))
+                for family in {enemy.template.family for enemy in battle.enemies}:
+                    lines.extend(self.trigger_banter("enemy_family", enemy_family=family))
+                for companion in self.party.active:
+                    if not companion.is_alive:
+                        lines.extend(self.trigger_banter("companion_downed", companion_id=companion.id))
         elif battle.state is CombatState.DEFEAT:
             lines.extend(self.handle_death())
 
@@ -715,6 +850,7 @@ class Game:
         if battle.state is CombatState.VICTORY and self.player:
             for companion in self.party.active:
                 self.player.change_affinity(companion.id, self.relationships.per_battle)
+                self.change_loyalty(companion.id, 3 if any(enemy.is_boss for enemy in battle.enemies) else 1)
         lines.extend(self.party.revive_fallen())
         self.party.clear_battle_state()
         if self.player:
@@ -768,22 +904,27 @@ class Game:
 
         slot, saved = self.autosave()
         lines.append(f"Autosaved to '{slot}'." if saved else "Autosave failed.")
+        lines.extend(self.trigger_banter("rest", area_id=self.world.current_area_id))
         return True, lines
 
     def shop_stock(self, shop_id: str) -> list[Item]:
         shop = self.world_manager.get_shop(shop_id)
         if shop is None:
             return []
-        return [item for item in (self.items.get(i) for i in shop.item_ids) if item is not None]
+        ids = list(shop.item_ids)
+        if self.player:
+            ids.extend(shop.race_item_ids.get(self.player.race_id, []))
+        return [item for item in (self.items.get(i) for i in ids) if item is not None]
 
     def buy_item(self, shop_id: str, item_id: str) -> tuple[bool, str]:
         if not self.player:
             return False, "No character loaded."
         shop = self.world_manager.get_shop(shop_id)
         item = self.items.get(item_id)
-        if shop is None or item is None or item_id not in shop.item_ids:
+        available_ids = {item.id for item in self.shop_stock(shop_id)}
+        if shop is None or item is None or item_id not in available_ids:
             return False, "That item is not for sale here."
-        price = max(1, int(item.value * shop.buy_rate))
+        price = self.shop_price(shop_id, item_id)
         if not self.player.inventory.spend_gold(price):
             return False, f"You need {price} gold."
         if self.player.inventory.add(item, 1) <= 0:
@@ -831,6 +972,9 @@ class Game:
 
         requirement = definition.recruit
         unmet: list[str] = []
+        unavailable_until = self.player.companion_unavailable_until.get(companion_id, 0)
+        if self.world and self.world.day < unavailable_until:
+            unmet.append(f"Needs time alone until day {unavailable_until}")
         if self.player.level < requirement.level:
             unmet.append(f"Level {requirement.level} (have {self.player.level})")
         affinity = self.player.affinity_with(companion_id)
@@ -865,6 +1009,9 @@ class Game:
         companion = self.companions.create(companion_id, self.player.level)
         self._apply_spouse_bonus(companion)
         joined, message = self.party.recruit(companion)
+        if joined:
+            self.quests.record_event(self.player, "recruit_companion", companion_id)
+            self.player.companion_loyalty.setdefault(companion_id, 0)
         return joined, [message]
 
     def dismiss_companion(self, companion_id: str) -> tuple[bool, str]:
@@ -877,6 +1024,14 @@ class Game:
 
     def set_companion_active(self, companion_id: str, active: bool) -> tuple[bool, str]:
         return self.party.set_active(companion_id, active)
+
+    def set_companion_tactics(self, companion_id: str, tactics: Mapping[str, Any]) -> tuple[bool, str]:
+        companion = self.party.get(companion_id)
+        if companion is None:
+            return False, "They are not in your party."
+        allowed = {"stance", "preferred_target", "preserve_mp", "healing_threshold", "ultimate_policy", "protect_target"}
+        companion.set_tactics({key: value for key, value in tactics.items() if key in allowed})
+        return True, f"Updated tactics for {companion.name}."
 
     def party_lines(self) -> list[str]:
         return self.party.summary_lines()
@@ -901,6 +1056,11 @@ class Game:
         affinity = self.player.affinity_with(companion_id)
         lines.append("")
         lines.append(f"Affinity: {affinity} ({self.relationships.tier_label(affinity)})")
+        lines.append(f"Loyalty: {self.player.companion_loyalty.get(companion_id, 0)} ({self.loyalty_rank(companion_id)})")
+        if member and member.loyalty_title:
+            lines.append(f"Title: {member.loyalty_title}")
+        if member and member.outfit_id != "default":
+            lines.append(f"Outfit: {member.outfit_id.replace('_', ' ').title()}")
         if self.player.spouse_id == companion_id:
             lines.append("Married to you")
         elif definition.marriageable:
@@ -968,6 +1128,8 @@ class Game:
         talked[key] = times + 1
 
         value = self.player.change_affinity(target_id, self.relationships.talk_gain(times))
+        self.quests.record_event(self.player, "talk_to", target_id)
+        self.quests.record_event(self.player, "affinity", target_id, value, absolute=True)
         line = self.rng.choice(suitor.dialogue) if suitor.dialogue else f"{suitor.name} nods at you."
         lines = [
             f'{suitor.name}: "{line}"',
@@ -1051,7 +1213,183 @@ class Game:
             member = self.party.get(target_id)
             if member is not None:
                 self._apply_spouse_bonus(member)
+            self.notices.extend(self.trigger_banter("marriage", companion_id=target_id))
         return ok, message
+
+    # ==================================================================
+    # Story, factions, loyalty, and banter
+    # ==================================================================
+    def change_reputation(self, faction_id: str, amount: int) -> int:
+        if not self.player or self.story.faction(faction_id) is None:
+            return 0
+        value = max(-100, min(100, self.player.faction_reputation.get(faction_id, 0) + int(amount)))
+        self.player.faction_reputation[faction_id] = value
+        if amount > 0:
+            for rival in self.story.faction(faction_id).rivals:
+                self.player.faction_reputation[rival] = max(
+                    -100, self.player.faction_reputation.get(rival, 0) - max(1, amount // 2)
+                )
+        return value
+
+    def shop_price(self, shop_id: str, item_id: str) -> int:
+        shop = self.world_manager.get_shop(shop_id)
+        item = self.items.get(item_id)
+        if shop is None or item is None:
+            return 0
+        discount = 0.0
+        faction = self.story.faction(shop.faction_id)
+        if faction and self.player:
+            reputation = max(0, self.player.faction_reputation.get(faction.id, 0))
+            discount = min(faction.max_discount, reputation * faction.shop_discount_per_point)
+        race_rate = shop.race_buy_rates.get(self.player.race_id, 1.0) if self.player else 1.0
+        return max(1, int(item.value * shop.buy_rate * race_rate * (1.0 - discount)))
+
+    def _story_conditions_met(self, conditions: Mapping[str, Any]) -> bool:
+        if not self.player:
+            return False
+        checks = (
+            ("race_ids", self.player.race_id),
+            ("class_ids", self.player.class_def.id),
+        )
+        for key, value in checks:
+            allowed = conditions.get(key)
+            if allowed and value not in allowed:
+                return False
+        for key, expected in (conditions.get("flags") or {}).items():
+            if self.player.flags.get(key) != expected:
+                return False
+        for faction_id, minimum in (conditions.get("reputation_min") or {}).items():
+            if self.player.faction_reputation.get(faction_id, 0) < int(minimum):
+                return False
+        for target_id, minimum in (conditions.get("affinity_min") or {}).items():
+            if self.player.affinity_with(target_id) < int(minimum):
+                return False
+        if conditions.get("requires_spouse") and not self.player.spouse_id:
+            return False
+        if conditions.get("spouse_ids") and self.player.spouse_id not in conditions["spouse_ids"]:
+            return False
+        if conditions.get("companions") and not all(self.party.has(x) for x in conditions["companions"]):
+            return False
+        return True
+
+    def _dialogue_view(self, tree_id: str, node_id: str) -> dict[str, Any]:
+        tree = self.story.dialogue(tree_id)
+        node = tree.nodes.get(node_id) if tree else None
+        if node is None:
+            return {"tree_id": tree_id, "node_id": "", "text": "", "options": []}
+        options = [
+            {"id": option.id, "text": option.text}
+            for option in node.options if self._story_conditions_met(option.conditions)
+        ]
+        return {"tree_id": tree_id, "node_id": node.id, "text": node.text, "options": options}
+
+    def dialogues_for_speaker(self, speaker_id: str) -> list[dict[str, str]]:
+        self.story.load()
+        return [
+            {"id": tree.id, "title": tree.id.replace("_", " ").title()}
+            for tree in self.story.dialogues.values() if tree.speaker_id == speaker_id
+        ]
+
+    def start_dialogue(self, tree_id: str) -> dict[str, Any]:
+        tree = self.story.dialogue(tree_id)
+        return self._dialogue_view(tree_id, tree.start_node_id if tree else "")
+
+    def choose_dialogue(self, tree_id: str, option_id: str) -> dict[str, Any]:
+        tree = self.story.dialogue(tree_id)
+        if tree is None:
+            return self._dialogue_view(tree_id, "")
+        option = next(
+            (o for node in tree.nodes.values() for o in node.options if o.id == option_id), None
+        )
+        if option is None or not self._story_conditions_met(option.conditions):
+            return self._dialogue_view(tree_id, tree.start_node_id)
+        for action in option.actions:
+            kind = action.get("type")
+            if kind == "flag":
+                self.player.flags[str(action.get("key"))] = action.get("value", True)
+            elif kind == "affinity":
+                self.player.change_affinity(str(action.get("target_id")), int(action.get("amount", 0)))
+            elif kind == "reputation":
+                self.change_reputation(str(action.get("faction_id")), int(action.get("amount", 0)))
+            elif kind == "loyalty":
+                self.change_loyalty(str(action.get("companion_id")), int(action.get("amount", 0)))
+            elif kind == "quest_accept":
+                self.accept_quest(str(action.get("quest_id")))
+            elif kind == "choice":
+                self.quests.record_event(self.player, "choice", str(action.get("choice_id")))
+            elif kind == "item":
+                self.items.grant(self.player.inventory, str(action.get("item_id")), int(action.get("quantity", 1)))
+        return self._dialogue_view(tree_id, option.next_node_id)
+
+    def loyalty_rank(self, companion_id: str) -> str:
+        value = self.player.companion_loyalty.get(companion_id, 0) if self.player else 0
+        thresholds = (self.config.get("loyalty") or {}).get("thresholds", {})
+        rank = "Wary"
+        for label, minimum in sorted(thresholds.items(), key=lambda pair: int(pair[1])):
+            if value >= int(minimum):
+                rank = label
+        return rank
+
+    def change_loyalty(self, companion_id: str, amount: int) -> int:
+        if not self.player:
+            return 0
+        value = max(-100, min(100, self.player.companion_loyalty.get(companion_id, 0) + int(amount)))
+        self.player.companion_loyalty[companion_id] = value
+        member = self.party.get(companion_id)
+        if member:
+            bonuses = (self.config.get("loyalty") or {}).get("bonuses", {})
+            rank = self.loyalty_rank(companion_id)
+            member.set_loyalty_bonus(ModifierSet.from_dict(bonuses.get(rank)))
+            member.loyalty_title = member.definition.loyalty_titles.get(rank, member.loyalty_title)
+            member.outfit_id = member.definition.loyalty_outfits.get(rank, member.outfit_id)
+            for skill_id in member.definition.loyalty_skill_ids.get(rank, []):
+                skill = self.skills.get(skill_id)
+                if skill and all(existing.id != skill.id for existing in member.skills):
+                    member.skills.append(skill)
+        return value
+
+    def companion_disagrees(self, companion_id: str, severity: int = 25) -> tuple[bool, str]:
+        if not self.player or not self.world:
+            return False, "No character loaded."
+        self.change_loyalty(companion_id, -abs(severity))
+        member = self.party.get(companion_id)
+        if member is None:
+            return False, "They are not travelling with you."
+        if severity >= int((self.config.get("loyalty") or {}).get("leave_severity", 75)):
+            self.party.dismiss(companion_id)
+            days = int((self.config.get("loyalty") or {}).get("leave_days", 3))
+            self.player.companion_unavailable_until[companion_id] = self.world.day + days
+            return True, f"{member.name} leaves to cool off."
+        return True, f"{member.name} strongly disagrees."
+
+    def can_rejoin_companion(self, companion_id: str) -> bool:
+        return bool(self.world and self.player and self.world.day >= self.player.companion_unavailable_until.get(companion_id, 0))
+
+    def trigger_banter(self, trigger: str, **context: Any) -> list[str]:
+        if not self.player:
+            return []
+        seen = self.player.flags.setdefault("banter_seen", {})
+        for entry in self.story.banter:
+            if entry.trigger != trigger or (entry.once and seen.get(entry.id)):
+                continue
+            cond = entry.conditions
+            if cond.get("area_ids") and context.get("area_id") not in cond["area_ids"]:
+                continue
+            if cond.get("player_race_ids") and self.player.race_id not in cond["player_race_ids"]:
+                continue
+            if cond.get("player_class_ids") and self.player.class_def.id not in cond["player_class_ids"]:
+                continue
+            if cond.get("enemy_families") and context.get("enemy_family") not in cond["enemy_families"]:
+                continue
+            if cond.get("companion_ids") and context.get("companion_id") not in cond["companion_ids"]:
+                continue
+            if cond.get("companions") and not all(self.party.has(cid) for cid in cond["companions"]):
+                continue
+            if cond.get("spouse_in_party") and not (self.player.spouse_id and self.party.has(self.player.spouse_id)):
+                continue
+            seen[entry.id] = True
+            return list(entry.lines)
+        return []
 
     # ==================================================================
     # Save / load
@@ -1136,6 +1474,8 @@ class Game:
             formulas=self.formulas,
             level=int(player_data.get("level", 1)),
             progression=progression,
+            equipment_config=self.config,
+            enchantments=self.enchantments.definitions,
         )
 
         player.class_history = [str(c) for c in player_data.get("class_history", [class_id])]
@@ -1168,6 +1508,11 @@ class Game:
                 item = self.items.get(str(item_id))
                 if item is not None:
                     player.equipment[slot_name] = item
+                    if item.bound_skill_id:
+                        skill = self.skills.get(item.bound_skill_id)
+                        if skill and skill.id not in player.known_skills:
+                            player.known_skills[skill.id] = skill
+                            player.equipment_granted_skills.add(skill.id)
 
         player.affinity = {str(k): int(v) for k, v in (player_data.get("affinity") or {}).items()}
         player.spouse_id = player_data.get("spouse_id")
@@ -1180,6 +1525,11 @@ class Game:
             quest_id: {str(key): int(value) for key, value in (raw_progress.get(quest_id) or {}).items()}
             for quest_id in player.active_quests
         }
+        player.faction_reputation = {str(k): int(v) for k, v in (player_data.get("faction_reputation") or {}).items()}
+        player.companion_loyalty = {str(k): int(v) for k, v in (player_data.get("companion_loyalty") or {}).items()}
+        player.companion_unavailable_until = {str(k): int(v) for k, v in (player_data.get("companion_unavailable_until") or {}).items()}
+        player.item_enchantments = {str(k): str(v) for k, v in (player_data.get("item_enchantments") or {}).items()}
+        player.item_upgrades = {str(k): int(v) for k, v in (player_data.get("item_upgrades") or {}).items()}
         player.flags = dict(player_data.get("flags") or {})
 
         player._recalculate_base_stats()
@@ -1215,6 +1565,22 @@ class Game:
                     continue
                 companion = self.companions.create(companion_id, player.level)
                 companion.cooldowns = {str(k): int(v) for k, v in (entry.get("cooldowns") or {}).items()}
+                companion.set_tactics(entry.get("tactics") or {})
+                loyalty = player.companion_loyalty.get(companion_id, 0)
+                thresholds = (self.config.get("loyalty") or {}).get("thresholds", {})
+                rank = "Wary"
+                for label, minimum in sorted(thresholds.items(), key=lambda pair: int(pair[1])):
+                    if loyalty >= int(minimum):
+                        rank = label
+                companion.set_loyalty_bonus(
+                    ModifierSet.from_dict((self.config.get("loyalty") or {}).get("bonuses", {}).get(rank))
+                )
+                companion.loyalty_title = companion.definition.loyalty_titles.get(rank, "")
+                companion.outfit_id = companion.definition.loyalty_outfits.get(rank, "default")
+                for skill_id in companion.definition.loyalty_skill_ids.get(rank, []):
+                    skill = self.skills.get(skill_id)
+                    if skill and all(existing.id != skill.id for existing in companion.skills):
+                        companion.skills.append(skill)
                 if player.spouse_id == companion_id:
                     companion.set_married_bonus(
                         ModifierSet.from_dict({"flat": self.relationships.spouse_modifiers()})

@@ -19,6 +19,9 @@
       "marriageable": true,
       "marriage_affinity": 70,
       "gift_item_ids": ["troll_hide", "steel_sword", "potion"],
+      "loyalty_skill_ids": {"Devoted": ["sunder_armor"], "Sworn": ["titans_wrath"]},
+      "loyalty_titles": {"Trusted": "Old Shield", "Devoted": "Road Captain", "Sworn": "The Unbroken Rook"},
+      "loyalty_outfits": {"Devoted": "veteran_mail", "Sworn": "oathplate"},
       "dialogue": [
         "Stay behind me and this stays simple.",
         "I've buried better fighters than either of us. Keep your guard up.",

@@ -7,16 +7,17 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-**Playable races and companion storylines are complete on the current branch.**
-v0.6.0 adds eight data-driven races, race selection in Character Creation,
-racial traits and equipment bonuses, save schema v5, four new companions, six
-new NPCs, eight companion-story quests, and expanded dialogue for every
-companion. Tests were written first and the full suite now contains 422 tests.
+**The high-value systems expansion is complete on the current branch.** v0.7.0
+adds eleven quest objective strategies, branching dialogue, eight factions,
+companion loyalty and banter, recoverable disagreements, persisted combat
+tactics, phased bosses, twelve advanced combat effects, race-reactive shops,
+and equipment sets/enchantments/upgrades/conditional effects. The full suite
+contains 442 tests.
 
-The next major milestone remains **world content for levels 41–70**. When adding
-it, continue the multi-racial population rather than clustering each race in a
-single town, and add later personal chapters for companions whose stories
-intersect the new regions.
+The next milestone should use these systems in **levels 41–70 content** rather
+than adding another disconnected framework: faction quest hubs, multiple
+branching conversations, loyalty chapters, set drops, and level-50/70 phased
+bosses should all ship together.
 
 Before handing off changes, run:
 
@@ -35,13 +36,13 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 422 tests
+python3 -m unittest discover -s tests    # 442 tests
 ```
 
-**Current state:** v0.1.0 is merged in PR #1 and v0.2.0 is merged in PR #2.
-v0.3.0–v0.6.0 are implemented on the current branch: quests, the level-40
-world, persistent bosses/balance, and races with companion stories. The next
-unsupported promotion band begins at level 50.
+**Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.7.0 are implemented
+on the current branch: quests, level-40 world content, persistent bosses,
+races/stories, and the Living Systems expansion. The next unsupported
+promotion band begins at level 50.
 
 ---
 
@@ -83,10 +84,10 @@ From `docs/ENGINE_DESIGN.md`. Class count scales with **behaviour**, not
 | Concept | Python classes | JSON entries |
 |---|---|---|
 | Skills | 1 (`Skill`) | 60 |
-| Effects | 5 strategies | — |
+| Effects | 17 strategies | — |
 | Classes | 1 (`ClassDefinition`) | 19 |
 | Enemies | 1 (`Enemy`) | 30 |
-| Items | 1 (`Item`) | 87 |
+| Items | 1 (`Item`) | 88 |
 | Statuses | 1 (`StatusEffect`) | 21 |
 | Races | 1 (`RaceDefinition`) | 8 |
 | Companions | 1 (`Companion`) | 14 |
@@ -135,6 +136,7 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `engine/mastery.py` | F→Master tracks, earned by use. |
 | `engine/quests.py` | *(v0.3.0)* Quest definitions and objective data. |
 | `engine/races.py` | *(v0.6.0)* Race stats, modifiers, and traits. |
+| `engine/story.py` | *(v0.7.0)* Dialogue, faction, and banter definitions. |
 | `engine/managers/race_manager.py` | *(v0.6.0)* Race content loading. |
 | `engine/managers/quest_manager.py` | *(v0.3.0)* Quest loading and progression. |
 | `engine/relationships.py` | *(v0.2.0)* Affinity + marriage, shared by NPCs and companions. |
@@ -167,6 +169,7 @@ area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 | `tests/test_companions.py` | *(v0.2.0)* 76 tests. |
 | `tests/test_quests.py` | *(v0.3.0)* Quest progression, persistence, and loot. |
 | `tests/test_races_storylines.py` | *(v0.6.0)* Races, heirlooms, and companion stories. |
+| `tests/test_systems_expansion.py` | *(v0.7.0)* Objectives, story, loyalty, gear, effects, bosses. |
 | `tests/test_world_expansion.py` | *(v0.4.0)* Level-40 density, reachability, and content. |
 | `tests/tk_stub.py` | Recording Tkinter stand-in for headless GUI testing. |
 | `tools/render_mockups.py` | Renders screen layouts via Pillow. |
@@ -201,49 +204,42 @@ a checkbox.
 
 ## 7. Known limitations — verified, not guessed
 
-The game has a connected, measured route through level 40, eight playable races,
-NPC/companion quest givers, and persistent one-time bosses. Race modifiers and
-racial item bonuses are generic data maps: adding a ninth race does not require
-branching engine code.
+The reusable systems now cover the requested behaviours, but content breadth is
+intentionally smaller than engine breadth: one branching dialogue is the
+reference tree, one equipment set demonstrates thresholds, and the Dawn Tyrant
+is the reference phased boss. New content should copy those data patterns, not
+add NPC-, item-, or boss-specific Python.
 
-**The remaining progression limit begins at level 50.** No level-41+ areas or
-enemies exist yet, while later promotions require levels 50 / 70 / 99. Tier-5+
-quest entries still name the Shadow Warden as a placeholder and should move to
-new regional bosses.
+**The progression limit still begins at level 50.** Tier-5+ quest entries use
+placeholder objectives until level-41–70 regions and bosses exist. The next
+content pass should exercise factions, race reactions, companion loyalty,
+branching outcomes, set gear, advanced effects, and phased bosses together.
 
-Four companions have two-part personal questlines; the other ten currently have
-expanded dialogue and recruitment stories but no dedicated quests. Later world
-regions are the right place to continue both groups without forcing all personal
-stories into the existing level bands.
-
-The Bandit Chief still drops all three tier-3 path items together. Balance
-findings and executed baselines remain in `docs/BALANCE_REPORT_LEVEL_40.md`.
+Damage redirection stores its protector as battle-only runtime state, so it is
+not intended to persist outside combat. Temporary companion departures are
+recoverable after the configured number of days; do not turn them into permanent
+loss without a clear restoration path.
 ## 8. Roadmap
 
 ### Completed
-- ✅ **Playable foundation (v0.1.0, PR #1):** engine, combat, equipment,
-  exploration, saves, and initial GUI.
-- ✅ **Companions and relationships (v0.2.0, PR #2):** party, affinity,
-  marriage, party combat, GUI, and tests.
-- ✅ **Quests and promotion progression (v0.3.0):** quest engine, Quest Log,
-  persisted progress, cross-validation, and promotion items.
-- ✅ **World through level 40 (v0.4.0):** 17 areas, four towns, enemies, bosses,
-  equipment, skills, NPCs, and companions.
-- ✅ **Quest givers, persistent bosses, and balance (v0.5.0):** town/NPC quest
-  flow, one-time world bosses, save v4, and measured pacing.
-- ✅ **Races and companion stories (v0.6.0):** eight races, racial heirlooms,
-  race selection, save v5, 14 companions, 18 NPCs, and eight personal quests.
+- ✅ v0.1–v0.2: playable foundation, companions, relationships.
+- ✅ v0.3: quest engine and promotion progression.
+- ✅ v0.4: connected world and content through level 40.
+- ✅ v0.5: NPC quest givers, persistent bosses, measured balance.
+- ✅ v0.6: eight races, racial heirlooms, companion stories.
+- ✅ v0.7: generic objectives, branching dialogue, loyalty/banter/tactics,
+  factions, advanced gear/effects, and phased boss framework.
 
 ### Next
-1. **Extend the world through levels 41–70** with mixed-race towns, distinct
-   enemy families, equipment progression, companions, and promotion bosses.
-2. **Replace placeholder Tier-5+ objectives** and assign NPC/companion givers in
-   the new settlements.
-3. **Continue companion stories** for the ten companions without dedicated
-   questlines and add later chapters where existing stories fit naturally.
-4. **Run party and phased-boss balance passes**, then update the balance report.
-5. **Future features after the progression path is complete:** guilds, housing,
-   gathering, crafting, arena, legendary classes, NG+, world events, and pets.
+1. **Build levels 41–55** around a factional capital using branching quest
+   outcomes, reputation shops, loyalty chapters, set gear, and a phased level-50
+   promotion boss.
+2. **Build levels 56–70** with hostile/otherworldly settlements, heritage quests,
+   advanced enchantments, and level-70 promotion bosses.
+3. Add several dialogue trees per settlement so race/class/faction reactivity is
+   a normal part of play rather than a single reference conversation.
+4. Run party, faction-economy, advanced-effect, and phased-boss balance passes.
+5. Continue toward level 99 before post-game guild/housing/crafting systems.
 
 ---
 
