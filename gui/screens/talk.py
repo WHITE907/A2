@@ -70,6 +70,8 @@ class TalkWindow(tk.Toplevel):
         npc = game._find_suitor(self.npc_id)
         affinity = game.player.affinity_with(self.npc_id)
         lines = [f"Affinity: {affinity} ({game.relationships.tier_label(affinity)})"]
+        if npc and getattr(npc, "race_id", ""):
+            lines.append(f"Race: {game.race_name(npc.race_id)}")
         if npc and getattr(npc, "marriageable", False):
             lines.append(f"Marriage at: {npc.marriage_affinity}")
         if game.player.spouse_id == self.npc_id:

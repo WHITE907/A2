@@ -11,6 +11,7 @@ import tkinter as tk
 
 from gui import theme
 from engine.classes import ClassDefinition
+from engine.game import RaceDefinition
 from gui.widgets import SelectList, StatPanel
 
 __all__ = ["CharacterCreationWindow"]
@@ -24,7 +25,7 @@ class CharacterCreationWindow(tk.Toplevel):
         self.app = app
 
         theme.style_window(self, "Project Ascension - New Game")
-        theme.center_window(self, 620, 600)
+        theme.center_window(self, 820, 640)
         self.transient(app.root)
 
         body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
@@ -77,13 +78,23 @@ class CharacterCreationWindow(tk.Toplevel):
         columns = tk.Frame(body, bg=theme.BG)
         columns.pack(fill=tk.BOTH, expand=True, pady=(16, 0))
 
+        self.race_list: SelectList[RaceDefinition] = SelectList(
+            columns, title="Race", height=9, on_select=lambda _race: self._refresh_preview()
+        )
+        races = self.app.game.race_options()
+        self.race_list.set_items([(race.name, race) for race in races], keep_selection=False)
+        default_id = self.app.game.default_race_id()
+        default_index = next((i for i, race in enumerate(races) if race.id == default_id), 0)
+        self.race_list.select_index(default_index, notify=False)
+        self.race_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
         self.class_list: SelectList[ClassDefinition] = SelectList(
             columns, title="Starting Class", height=9, on_select=self._on_class_selected
         )
-        self.class_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.class_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(14, 0))
 
-        self.preview = StatPanel(columns, title="Details", wrap=280)
-        self.preview.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(18, 0))
+        self.preview = StatPanel(columns, title="Details", wrap=300)
+        self.preview.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(14, 0))
 
         # -- actions -----------------------------------------------------
         buttons = tk.Frame(body, bg=theme.BG)
@@ -101,20 +112,33 @@ class CharacterCreationWindow(tk.Toplevel):
         self._on_class_selected(self.class_list.selected_value)
 
     def _on_class_selected(self, definition: ClassDefinition | None) -> None:
-        if definition is None:
-            self.preview.set_lines(["No classes available."])
-            return
-        self.preview.set_lines(definition.detail_lines())
+        self._refresh_preview()
+
+    def _refresh_preview(self) -> None:
+        definition = self.class_list.selected_value
+        race = self.race_list.selected_value
+        lines: list[str] = []
+        if race is not None:
+            lines.extend(self.app.game.race_detail_lines(race.id))
+        if race is not None and definition is not None:
+            lines.append("")
+        if definition is not None:
+            lines.extend(definition.detail_lines())
+        self.preview.set_lines(lines or ["Choose a race and class."])
 
     # ------------------------------------------------------------------
     def _create(self) -> None:
         definition = self.class_list.selected_value
+        race = self.race_list.selected_value
         if definition is None:
             self.app.notify("Choose a class.")
             return
+        if race is None:
+            self.app.notify("Choose a race.")
+            return
 
         ok, message = self.app.game.create_character(
-            self.name_var.get(), self.gender_var.get(), definition.id
+            self.name_var.get(), self.gender_var.get(), definition.id, race.id
         )
         self.app.notify(message)
         if ok:

@@ -1,0 +1,69 @@
+{
+  "_comment": "Playable and world races. Primary adjustments are added to class stats; modifiers are always-on racial traits. Race ids are content, never special-cased in Python.",
+  "races": [
+    {
+      "id": "human",
+      "name": "Human",
+      "description": "Adaptable people found in every settlement and profession.",
+      "base_stats": {},
+      "modifiers": {},
+      "traits": ["Versatile: no fixed strengths or penalties", "Open Roads: no culture treats you as wholly unfamiliar"]
+    },
+    {
+      "id": "elf",
+      "name": "Elf",
+      "description": "Long-lived keepers of songs that remember landscapes before roads.",
+      "base_stats": { "STR": -1, "END": 0, "INT": 2, "AGI": 3 },
+      "modifiers": { "flat": { "max_mp": 15, "evasion": 0.03, "accuracy": 0.02 } },
+      "traits": ["Keen Senses: improved accuracy and evasion", "Long Memory: strong affinity for magic and old places"]
+    },
+    {
+      "id": "half_elf",
+      "name": "Half-Elf",
+      "description": "Heirs to two histories, frequently asked to explain both and belonging fully to neither.",
+      "base_stats": { "STR": 0, "END": 1, "INT": 1, "AGI": 2 },
+      "modifiers": { "flat": { "status_resist": 0.08, "speed": 2, "max_mp": 8 } },
+      "traits": ["Between Worlds: increased status resistance", "Quick Study: balanced physical and magical aptitude"]
+    },
+    {
+      "id": "dwarf",
+      "name": "Dwarf",
+      "description": "Stonewise clans whose promises are expected to outlast the halls where they were made.",
+      "base_stats": { "STR": 2, "END": 3, "INT": 0, "AGI": -2 },
+      "modifiers": { "flat": { "armor": 8, "max_hp": 30, "status_resist": 0.06 } },
+      "traits": ["Stoneborn: increased armour and health", "Unyielding: improved resistance to hostile effects"]
+    },
+    {
+      "id": "dragonkin",
+      "name": "Dragonkin",
+      "description": "Scaled descendants of old draconic pacts, carrying heat in their blood and pride in their posture.",
+      "base_stats": { "STR": 2, "END": 2, "INT": 1, "AGI": -1 },
+      "modifiers": { "flat": { "armor": 5, "magic_resist": 8, "physical_power": 3 } },
+      "traits": ["Scaled Hide: increased physical and magical defence", "Drakeblood: increased physical power"]
+    },
+    {
+      "id": "demon",
+      "name": "Demon",
+      "description": "People of the Ash Courts, defined by fierce contracts rather than the frightening stories told about them.",
+      "base_stats": { "STR": 2, "END": -2, "INT": 3, "AGI": 1 },
+      "modifiers": { "flat": { "magic_power": 6, "crit_damage": 0.08, "max_hp": -15 } },
+      "traits": ["Ashborn: increased magical force", "Dangerous Ambition: greater critical damage at the cost of resilience"]
+    },
+    {
+      "id": "tiefling",
+      "name": "Tiefling",
+      "description": "Mortal bloodlines touched by the outer realms, marked by horns, tails, unusual eyes, and endless assumptions.",
+      "base_stats": { "STR": 0, "END": -1, "INT": 2, "AGI": 2 },
+      "modifiers": { "flat": { "magic_resist": 7, "crit_chance": 0.03, "max_mp": 10 } },
+      "traits": ["Planar Blood: increased magic resistance", "Devil's Luck: increased critical chance"]
+    },
+    {
+      "id": "beastkin",
+      "name": "Beastkin",
+      "description": "Many furred, feathered, and keen-eared peoples joined by shared migration routes rather than one ancestry.",
+      "base_stats": { "STR": 2, "END": 0, "INT": -1, "AGI": 3 },
+      "modifiers": { "flat": { "speed": 5, "crit_chance": 0.02, "evasion": 0.02 } },
+      "traits": ["Wild Instinct: increased speed and evasion", "Hunter's Blood: increased critical chance"]
+    }
+  ]
+}

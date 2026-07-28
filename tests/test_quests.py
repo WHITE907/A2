@@ -35,7 +35,7 @@ class TestQuestContent(unittest.TestCase):
 
     def test_quest_count_is_reported(self):
         game = new_game()
-        self.assertIn("Quests: 10", game.content_summary())
+        self.assertIn("Quests: 18", game.content_summary())
 
     def test_unsupported_objective_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -93,7 +93,9 @@ class TestQuestProgression(unittest.TestCase):
 
     def test_level_and_class_gate_availability(self):
         ids = {quest.id for quest in self.game.available_quests()}
-        self.assertEqual(ids, {"trial_of_the_dawn"})
+        self.assertIn("trial_of_the_dawn", ids)
+        self.assertNotIn("the_silent_contract", ids)
+        self.assertNotIn("the_unwritten_page", ids)
 
     def test_quest_requires_its_giver_location(self):
         self.game.world.current_area_id = "town_ashvale"

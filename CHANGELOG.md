@@ -2,6 +2,46 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.6.0 - Races and Companion Stories
+
+### Races
+- Added one data-driven `RaceDefinition` content class and `RaceManager`, with
+  eight playable/world races: Human, Elf, Half-Elf, Dwarf, Dragonkin, Demon,
+  Tiefling, and Beastkin.
+- Character Creation now includes race selection and a combined race/class
+  preview. Human remains the backwards-compatible default.
+- Racial primary adjustments, derived modifiers, and traits apply to players
+  and companions without race-specific branches in engine logic.
+- Player race persists in save schema v5; older saves migrate to the configured
+  default race.
+
+### Racial equipment and world population
+- Added eight obtainable racial heirlooms (87 items total). Their base effects
+  work for everyone and their JSON `race_modifiers` grant an additional bonus
+  to the matching race.
+- Assigned races to all companions and NPCs and added six new multi-racial
+  townspeople with local lore, humour, and relationship content.
+- Added four recruitable, marriageable companions (14 total): Lethira Vale,
+  Brokk Embervein, Veyra Ashhorn, and Rhazek Dawnscale.
+- Expanded every existing companion from four dialogue lines to at least seven,
+  including lore, personality, jokes, food opinions, and questionable advice.
+
+### Companion questlines
+- Added four two-part personal questlines (eight quests; 18 total). Intro quests
+  are offered by unrecruited companions at home and unlock recruitment; second
+  chapters require that companion to be in the party and can travel with them.
+- Companion quest rewards include racial heirlooms, EXP, gold, and story
+  resolution, all using the existing objective/reward engine.
+- Quest-giver validation now accepts both NPCs and companion definitions, and
+  validates required companion references.
+
+### Tests
+- Tests were written first to prove the previous engine lacked race selection,
+  racial modifiers, race persistence, mixed-race world content, and companion
+  story support.
+- 422 tests pass after implementation, including 14 new race/storyline tests
+  plus GUI race-selection and legacy-save coverage.
+
 ## v0.5.0 - Quest Givers, World State, and Balance
 
 ### Quests and NPCs

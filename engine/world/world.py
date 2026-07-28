@@ -51,6 +51,7 @@ class NPC:
     id: str
     name: str
     description: str = ""
+    race_id: str = ""
     dialogue: list[str] = field(default_factory=list)
     #: Affinity needed before marriage is offered (bible section 15).
     marriage_affinity: int = 80
@@ -64,6 +65,7 @@ class NPC:
             id=str(payload.get("id", "npc")),
             name=str(payload.get("name", "Stranger")),
             description=str(payload.get("description", "")),
+            race_id=str(payload.get("race_id", "")),
             dialogue=[str(line) for line in payload.get("dialogue", [])],
             marriage_affinity=int(payload.get("marriage_affinity", 80)),
             gift_item_ids=[str(i) for i in payload.get("gift_item_ids", [])],

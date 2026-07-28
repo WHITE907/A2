@@ -33,12 +33,14 @@ from engine.managers.data_loader import ContentError, DataLoader
 from engine.managers.enemy_manager import EnemyManager
 from engine.managers.item_manager import ItemManager
 from engine.managers.quest_manager import QuestManager
+from engine.managers.race_manager import RaceManager
 from engine.managers.save_manager import SaveManager, SaveSlotInfo
 from engine.managers.skill_manager import SkillManager
 from engine.managers.world_manager import WorldManager
 from engine.mastery import MasteryBook
 from engine.party import Party
 from engine.quests import QuestDefinition
+from engine.races import RaceDefinition
 from engine.relationships import MarriageCheck, RelationshipRules
 from engine.rng import GameRandom
 from engine.stats import Formulas, ModifierSet, StatBlock
@@ -47,10 +49,10 @@ from engine.world.world import WorldState
 #: Re-exported so GUI screens can type-annotate what :meth:`Game.save_slots`
 #: returns without importing from ``engine.managers`` - the facade stays the
 #: single seam between the UI and the engine (bible section 5/18).
-__all__ = ["Game", "GAME_VERSION", "QuestDefinition", "SaveSlotInfo"]
+__all__ = ["Game", "GAME_VERSION", "QuestDefinition", "RaceDefinition", "SaveSlotInfo"]
 
 #: Shown on the main menu under the title (per the GUI style reference).
-GAME_VERSION = "0.5.0"
+GAME_VERSION = "0.6.0"
 
 
 class Game:
@@ -70,9 +72,10 @@ class Game:
         self.skills = SkillManager(self.loader)
         self.classes = ClassManager(self.loader, self.skills)
         self.items = ItemManager(self.loader)
+        self.races = RaceManager(self.loader)
         self.enemies = EnemyManager(self.loader, self.skills, self.formulas)
         self.quests = QuestManager(self.loader)
-        self.companions = CompanionManager(self.loader, self.skills, self.formulas)
+        self.companions = CompanionManager(self.loader, self.skills, self.races, self.formulas)
         self.world_manager = WorldManager(self.loader)
         self.saves = SaveManager(save_dir)
         self.ai_registry = default_registry()
@@ -98,6 +101,7 @@ class Game:
         self.skills.load()
         self.classes.load()
         self.items.load()
+        self.races.load()
         self.enemies.load()
         self.quests.load()
         self.companions.load()
@@ -121,6 +125,11 @@ class Game:
                 if self.classes.get(class_id) is None:
                     problems.append(f"skill {skill.id!r} requires unknown class {class_id!r}")
 
+        for item in self.items.all_items():
+            for race_id in item.race_modifiers:
+                if self.races.get(race_id) is None:
+                    problems.append(f"item {item.id!r} has a bonus for unknown race {race_id!r}")
+
         for definition in self.classes.all_classes():
             for item_id in definition.starting_items:
                 if self.items.get(item_id) is None:
@@ -138,6 +147,8 @@ class Game:
                         )
 
         for companion in self.companions.all_definitions():
+            if self.races.get(companion.race_id) is None:
+                problems.append(f"companion {companion.id!r} has unknown race {companion.race_id!r}")
             for skill_id in companion.skill_ids:
                 if self.skills.get(skill_id) is None:
                     problems.append(f"companion {companion.id!r} references unknown skill {skill_id!r}")
@@ -155,19 +166,27 @@ class Game:
                     f"companion {companion.id!r} is in unknown area {companion.location_id!r}"
                 )
 
+        for npc in self.world_manager.create_world().npcs.values():
+            if self.races.get(npc.race_id) is None:
+                problems.append(f"npc {npc.id!r} has unknown race {npc.race_id!r}")
+
         for quest in self.quests.all_definitions():
-            giver = self.world_manager.get_npc(quest.giver_id)
+            giver = self.world_manager.get_npc(quest.giver_id) or self.companions.get(quest.giver_id)
             if giver is None:
                 problems.append(f"quest {quest.id!r} has unknown giver {quest.giver_id!r}")
             for field_name, area_id in (
                 ("start_area_id", quest.start_area_id),
                 ("turn_in_area_id", quest.turn_in_area_id),
             ):
-                if self.world_manager.get_area(area_id) is None:
+                if area_id and self.world_manager.get_area(area_id) is None:
                     problems.append(f"quest {quest.id!r} has unknown {field_name} {area_id!r}")
-            if giver is not None and giver.location_id != quest.start_area_id:
+            if giver is not None and quest.start_area_id and giver.location_id != quest.start_area_id:
                 problems.append(
                     f"quest {quest.id!r} giver {giver.id!r} is not in start area {quest.start_area_id!r}"
+                )
+            if quest.required_companion_id and self.companions.get(quest.required_companion_id) is None:
+                problems.append(
+                    f"quest {quest.id!r} requires unknown companion {quest.required_companion_id!r}"
                 )
             for class_id in quest.required_class_ids:
                 if self.classes.get(class_id) is None:
@@ -215,6 +234,7 @@ class Game:
             f"Classes: {self.classes.count()}",
             f"Skills: {self.skills.count()}",
             f"Items: {self.items.count()}",
+            f"Races: {self.races.count()}",
             f"Enemies: {self.enemies.count()}",
             f"Quests: {self.quests.count()}",
             f"Companions: {self.companions.count()}",
@@ -230,7 +250,27 @@ class Game:
     def genders(self) -> list[str]:
         return list(self.config.get("genders", ["male", "female"]))
 
-    def create_character(self, name: str, gender: str, class_id: str) -> tuple[bool, str]:
+    def race_options(self) -> list[RaceDefinition]:
+        return self.races.all_definitions()
+
+    def default_race_id(self) -> str:
+        return str(self.config.get("default_race_id", ""))
+
+    def race_detail_lines(self, race_id: str) -> list[str]:
+        race = self.races.get(race_id)
+        return race.detail_lines() if race else ["Unknown race."]
+
+    def race_name(self, race_id: str) -> str:
+        race = self.races.get(race_id)
+        return race.name if race else race_id.replace("_", " ").title()
+
+    def create_character(
+        self,
+        name: str,
+        gender: str,
+        class_id: str,
+        race_id: str | None = None,
+    ) -> tuple[bool, str]:
         """Build a fresh player and place them in the starting area."""
         name = (name or "").strip()
         if not name:
@@ -244,11 +284,17 @@ class Game:
         if not definition.allows_gender(gender):
             return False, f"{definition.name} is not available to {gender} characters."
 
+        selected_race_id = race_id or str(self.config.get("default_race_id", ""))
+        race = self.races.get(selected_race_id)
+        if race is None:
+            return False, "Please choose a race."
+
         progression = self.config.get("progression", {})
         player = Player(
             name=name,
             gender=gender,
             class_def=definition,
+            race_def=race,
             formulas=self.formulas,
             level=int(progression.get("starting_level", 1)),
             progression=progression,
@@ -270,7 +316,7 @@ class Game:
         self.world = self.world_manager.create_world()
         self.battle = None
         self.current_slot = None
-        return True, f"{name} the {definition.name} begins their ascension."
+        return True, f"{name}, {race.name} {definition.name}, begins their ascension."
 
     def _new_mastery_book(self) -> MasteryBook:
         mastery_config = self.config.get("mastery", {})
@@ -426,16 +472,24 @@ class Game:
     def available_quests(self) -> list[QuestDefinition]:
         if not self.player or not self.world:
             return []
-        return self.quests.available_for(self.player, self.world.current_area_id)
+        return [
+            quest
+            for quest in self.quests.available_for(self.player, self.world.current_area_id)
+            if not quest.required_companion_id or self.party.has(quest.required_companion_id)
+        ]
 
     def quests_from(self, giver_id: str) -> list[QuestDefinition]:
         if not self.player or not self.world:
             return []
-        return self.quests.available_for(
-            self.player,
-            self.world.current_area_id,
-            giver_id=giver_id,
-        )
+        return [
+            quest
+            for quest in self.quests.available_for(
+                self.player,
+                self.world.current_area_id,
+                giver_id=giver_id,
+            )
+            if not quest.required_companion_id or self.party.has(quest.required_companion_id)
+        ]
 
     def active_quests(self) -> list[QuestDefinition]:
         return self.quests.active_for(self.player) if self.player else []
@@ -455,9 +509,7 @@ class Game:
         definition = self.quests.get(quest_id)
         if definition is None:
             return False, "Unknown quest."
-        if not self.world or definition not in self.quests.available_for(
-            self.player, self.world.current_area_id
-        ):
+        if not self.world or definition not in self.available_quests():
             return False, "That quest is not available from anyone here."
         if not self.player.accept_quest(quest_id):
             return False, "That quest is already active or completed."
@@ -468,7 +520,7 @@ class Game:
         return True, f"Accepted quest from {self._quest_giver_name(definition)}: {definition.name}."
 
     def _quest_giver_name(self, definition: QuestDefinition) -> str:
-        giver = self.world_manager.get_npc(definition.giver_id)
+        giver = self._find_suitor(definition.giver_id)
         return giver.name if giver else definition.giver_id.replace("_", " ").title()
 
     def quest_giver_lines(self, giver_id: str) -> list[str]:
@@ -1071,10 +1123,16 @@ class Game:
             return False, f"This save uses class '{class_id}', which no longer exists."
 
         progression = self.config.get("progression", {})
+        default_race_id = str(self.config.get("default_race_id", ""))
+        race_id = str(player_data.get("race_id", default_race_id))
+        race = self.races.get(race_id) or self.races.get(default_race_id)
+        if race is None:
+            return False, f"This save uses race '{race_id}', which no longer exists."
         player = Player(
             name=str(player_data.get("name", "Hero")),
             gender=str(player_data.get("gender", "male")),
             class_def=definition,
+            race_def=race,
             formulas=self.formulas,
             level=int(player_data.get("level", 1)),
             progression=progression,

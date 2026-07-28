@@ -7,17 +7,16 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-**Quest givers, persistent bosses, and the level-40 balance pass are complete on
-the current branch.** v0.5.0 ties every quest to a validated NPC and town,
-requires returning to turn it in, persists one-time boss victories in save
-schema v4, and removes defeated bosses from random encounters. The measured
-balance pass and results are in `docs/BALANCE_REPORT_LEVEL_40.md`. The full suite
-contains 406 tests.
+**Playable races and companion storylines are complete on the current branch.**
+v0.6.0 adds eight data-driven races, race selection in Character Creation,
+racial traits and equipment bonuses, save schema v5, four new companions, six
+new NPCs, eight companion-story quests, and expanded dialogue for every
+companion. Tests were written first and the full suite now contains 422 tests.
 
-The next implementation milestone is still **world content for levels 41–70**.
-Tier-5+ quest entries currently reuse the one-time Shadow Warden; persistent
-victory credit prevents a dead end, but those objectives must be replaced by
-level-appropriate regional bosses as new areas are added.
+The next major milestone remains **world content for levels 41–70**. When adding
+it, continue the multi-racial population rather than clustering each race in a
+single town, and add later personal chapters for companions whose stories
+intersect the new regions.
 
 Before handing off changes, run:
 
@@ -36,13 +35,13 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 406 tests
+python3 -m unittest discover -s tests    # 422 tests
 ```
 
 **Current state:** v0.1.0 is merged in PR #1 and v0.2.0 is merged in PR #2.
-v0.3.0 quests, v0.4.0 level-40 world content, and v0.5.0 quest/world-state and
-balance work are implemented on the current branch. The next unsupported
-promotion band begins at level 50.
+v0.3.0–v0.6.0 are implemented on the current branch: quests, the level-40
+world, persistent bosses/balance, and races with companion stories. The next
+unsupported promotion band begins at level 50.
 
 ---
 
@@ -87,9 +86,10 @@ From `docs/ENGINE_DESIGN.md`. Class count scales with **behaviour**, not
 | Effects | 5 strategies | — |
 | Classes | 1 (`ClassDefinition`) | 19 |
 | Enemies | 1 (`Enemy`) | 30 |
-| Items | 1 (`Item`) | 79 |
+| Items | 1 (`Item`) | 87 |
 | Statuses | 1 (`StatusEffect`) | 21 |
-| Companions | 1 (`Companion`) | 10 |
+| Races | 1 (`RaceDefinition`) | 8 |
+| Companions | 1 (`Companion`) | 14 |
 
 Fireball is **not** a Python class. It is a JSON entry composing a
 `DamageEffect` and an `ApplyStatusEffect`.
@@ -134,6 +134,8 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `engine/classes.py` | `ClassDefinition` + promotion requirement checks. |
 | `engine/mastery.py` | F→Master tracks, earned by use. |
 | `engine/quests.py` | *(v0.3.0)* Quest definitions and objective data. |
+| `engine/races.py` | *(v0.6.0)* Race stats, modifiers, and traits. |
+| `engine/managers/race_manager.py` | *(v0.6.0)* Race content loading. |
 | `engine/managers/quest_manager.py` | *(v0.3.0)* Quest loading and progression. |
 | `engine/relationships.py` | *(v0.2.0)* Affinity + marriage, shared by NPCs and companions. |
 | `engine/party.py` | *(v0.2.0)* Active roster + reserve bench. |
@@ -151,8 +153,8 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient) · `skills.json` · `statuses.json` ·
-`classes.json` · `items.json` · `enemies.json` · `quests.json` ·
-`companions.json` · `world.json`
+`classes.json` · `items.json` · `races.json` · `enemies.json` ·
+`quests.json` · `companions.json` · `world.json`
 
 All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
@@ -164,6 +166,7 @@ area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 | `tests/test_gui.py` | 116 tests. Builds real screens, invokes real handlers. |
 | `tests/test_companions.py` | *(v0.2.0)* 76 tests. |
 | `tests/test_quests.py` | *(v0.3.0)* Quest progression, persistence, and loot. |
+| `tests/test_races_storylines.py` | *(v0.6.0)* Races, heirlooms, and companion stories. |
 | `tests/test_world_expansion.py` | *(v0.4.0)* Level-40 density, reachability, and content. |
 | `tests/tk_stub.py` | Recording Tkinter stand-in for headless GUI testing. |
 | `tools/render_mockups.py` | Renders screen layouts via Pillow. |
@@ -198,24 +201,23 @@ a checkbox.
 
 ## 7. Known limitations — verified, not guessed
 
-The game has a connected, measured route through level 40. Quests now come from
-NPCs in towns, boss victories persist, and one-time bosses stop appearing in
-random encounters. A boss defeated before quest acceptance receives retroactive
-objective credit, so old or exploratory saves do not dead-end.
+The game has a connected, measured route through level 40, eight playable races,
+NPC/companion quest givers, and persistent one-time bosses. Race modifiers and
+racial item bonuses are generic data maps: adding a ninth race does not require
+branching engine code.
 
 **The remaining progression limit begins at level 50.** No level-41+ areas or
 enemies exist yet, while later promotions require levels 50 / 70 / 99. Tier-5+
-quest entries still name the Shadow Warden as a placeholder. Because that boss
-is one-time, those quests recognise its saved defeat immediately; replace them
-with new regional objectives when level-41–70 bosses exist.
+quest entries still name the Shadow Warden as a placeholder and should move to
+new regional bosses.
 
-The Bandit Chief still drops all three tier-3 path items together. This safely
-keeps every starter path open, but future level-20 class-themed encounters could
-distribute those drops more naturally.
+Four companions have two-part personal questlines; the other ten currently have
+expanded dialogue and recruitment stories but no dedicated quests. Later world
+regions are the right place to continue both groups without forcing all personal
+stories into the existing level bands.
 
-Balance findings and exact executed baselines are in
-`docs/BALANCE_REPORT_LEVEL_40.md`. Companion parties and future multi-phase boss
-behaviours still need separate balance passes.
+The Bandit Chief still drops all three tier-3 path items together. Balance
+findings and executed baselines remain in `docs/BALANCE_REPORT_LEVEL_40.md`.
 ## 8. Roadmap
 
 ### Completed
@@ -225,22 +227,23 @@ behaviours still need separate balance passes.
   marriage, party combat, GUI, and tests.
 - ✅ **Quests and promotion progression (v0.3.0):** quest engine, Quest Log,
   persisted progress, cross-validation, and promotion items.
-- ✅ **World through level 40 (v0.4.0):** 17 areas, four towns, 30 enemies, five
-  bosses, 79 items, 60 skills, and 10 companions.
+- ✅ **World through level 40 (v0.4.0):** 17 areas, four towns, enemies, bosses,
+  equipment, skills, NPCs, and companions.
 - ✅ **Quest givers, persistent bosses, and balance (v0.5.0):** town/NPC quest
-  flow, one-time world bosses, save v4, and measured level-40 pacing.
+  flow, one-time world bosses, save v4, and measured pacing.
+- ✅ **Races and companion stories (v0.6.0):** eight races, racial heirlooms,
+  race selection, save v5, 14 companions, 18 NPCs, and eight personal quests.
 
 ### Next
-1. **Extend the world through levels 41–70.** Add populated towns, distinct
-   enemy families, equipment progression, companions, and bosses for the
-   level-50 and level-70 quest/promotion gates.
-2. **Replace placeholder Tier-5+ objectives** with those bosses and assign
-   appropriate NPC givers in the new towns.
-3. **Run party and phased-boss balance passes** using real companion line-ups and
-   new boss behaviours, then update the balance report with executed results.
-4. **Future features after the playable progression path is complete:** guilds,
-   housing, fishing, mining, smithing, cooking, alchemy, arena, legendary
-   classes, NG+, world events, and pets (bible §20).
+1. **Extend the world through levels 41–70** with mixed-race towns, distinct
+   enemy families, equipment progression, companions, and promotion bosses.
+2. **Replace placeholder Tier-5+ objectives** and assign NPC/companion givers in
+   the new settlements.
+3. **Continue companion stories** for the ten companions without dedicated
+   questlines and add later chapters where existing stories fit naturally.
+4. **Run party and phased-boss balance passes**, then update the balance report.
+5. **Future features after the progression path is complete:** guilds, housing,
+   gathering, crafting, arena, legendary classes, NG+, world events, and pets.
 
 ---
 

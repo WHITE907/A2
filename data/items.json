@@ -924,6 +924,198 @@
         }
       },
       "rarity": "legendary"
+    },
+    {
+      "id": "wanderers_knot",
+      "name": "Wanderer's Knot",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A simple cord tied in eight regional styles.",
+      "value": 700,
+      "required_level": 8,
+      "modifiers": {
+        "flat": {
+          "max_hp": 20
+        }
+      },
+      "race_modifiers": {
+        "human": {
+          "flat": {
+            "physical_power": 5,
+            "magic_power": 5,
+            "max_hp": 25
+          }
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "moonleaf_brooch",
+      "name": "Moonleaf Brooch",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "A silver leaf that reflects remembered moonlight.",
+      "value": 1800,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "max_mp": 20
+        }
+      },
+      "race_modifiers": {
+        "elf": {
+          "flat": {
+            "magic_power": 15,
+            "evasion": 0.05,
+            "max_mp": 35
+          }
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "bridgewalkers_charm",
+      "name": "Bridgewalker's Charm",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "Two metals joined without a visible seam.",
+      "value": 1700,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "speed": 3
+        }
+      },
+      "race_modifiers": {
+        "half_elf": {
+          "flat": {
+            "status_resist": 0.15,
+            "accuracy": 0.05,
+            "speed": 5
+          }
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "stoneheart_clasp",
+      "name": "Stoneheart Clasp",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "Clan slate wrapped in unbreakable bronze wire.",
+      "value": 2800,
+      "required_level": 28,
+      "modifiers": {
+        "flat": {
+          "armor": 8
+        }
+      },
+      "race_modifiers": {
+        "dwarf": {
+          "flat": {
+            "armor": 18,
+            "max_hp": 80,
+            "status_resist": 0.1
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "dawnscale_torc",
+      "name": "Dawnscale Torc",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "A golden torc fitted around one ancient dragon scale.",
+      "value": 5000,
+      "required_level": 36,
+      "modifiers": {
+        "flat": {
+          "magic_resist": 10
+        }
+      },
+      "race_modifiers": {
+        "dragonkin": {
+          "flat": {
+            "physical_power": 18,
+            "armor": 14,
+            "magic_resist": 16
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "ashcourt_seal",
+      "name": "Ash Court Seal",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "An infernal office seal officially declared stolen.",
+      "value": 2600,
+      "required_level": 22,
+      "modifiers": {
+        "flat": {
+          "magic_power": 6
+        }
+      },
+      "race_modifiers": {
+        "demon": {
+          "flat": {
+            "magic_power": 20,
+            "crit_damage": 0.18,
+            "max_mp": 30
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "infernal_compass",
+      "name": "Infernal Compass",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "Points toward the nearest exploitable clause.",
+      "value": 2300,
+      "required_level": 20,
+      "modifiers": {
+        "flat": {
+          "magic_resist": 7
+        }
+      },
+      "race_modifiers": {
+        "tiefling": {
+          "flat": {
+            "magic_power": 14,
+            "crit_chance": 0.06,
+            "magic_resist": 12
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "wildclaw_pendant",
+      "name": "Wildclaw Pendant",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A polished claw from an ancestor who preferred running to portraits.",
+      "value": 2400,
+      "required_level": 24,
+      "modifiers": {
+        "flat": {
+          "speed": 4
+        }
+      },
+      "race_modifiers": {
+        "beastkin": {
+          "flat": {
+            "physical_power": 12,
+            "speed": 10,
+            "evasion": 0.06
+          }
+        }
+      },
+      "rarity": "epic"
     }
   ]
 }

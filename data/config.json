@@ -4,6 +4,7 @@
     "male",
     "female"
   ],
+  "default_race_id": "human",
   "starting_gold": 50,
   "inn_cost": 10,
   "death_gold_penalty": 0.1,

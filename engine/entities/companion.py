@@ -25,6 +25,7 @@ from dataclasses import dataclass, field
 from typing import Any, Mapping, Sequence
 
 from engine.entities.entity import Entity
+from engine.races import RaceDefinition
 from engine.skills.skill import Skill
 from engine.stats import Formulas, ModifierSet, StatBlock
 
@@ -87,6 +88,7 @@ class CompanionDefinition:
     name: str
     description: str = ""
     role: str = "fighter"
+    race_id: str = ""
     base_stats: StatBlock = field(default_factory=StatBlock)
     growth: StatBlock = field(default_factory=StatBlock)
     skill_ids: list[str] = field(default_factory=list)
@@ -119,6 +121,8 @@ class CompanionDefinition:
         if self.description:
             lines.append(self.description)
         lines.append(f"Role: {self.role.title()}")
+        if self.race_id:
+            lines.append(f"Race: {self.race_id.replace('_', ' ').title()}")
         if self.weapon_type:
             lines.append(f"Fights with: {self.weapon_type.title()}")
         return lines
@@ -133,6 +137,7 @@ class CompanionDefinition:
             name=str(payload.get("name", companion_id)),
             description=str(payload.get("description", "")),
             role=str(payload.get("role", "fighter")),
+            race_id=str(payload.get("race_id", "")),
             base_stats=StatBlock.from_dict(payload.get("base_stats")),
             growth=StatBlock.from_dict(payload.get("growth")),
             skill_ids=[str(s) for s in payload.get("skill_ids", [])],
@@ -156,10 +161,12 @@ class Companion(Entity):
         self,
         definition: CompanionDefinition,
         level: int,
+        race_def: RaceDefinition,
         formulas: Formulas,
         skills: Sequence[Skill] = (),
     ) -> None:
         self.definition = definition
+        self.race_def = race_def
         self.skills: list[Skill] = list(skills)
         self.cooldowns: dict[str, int] = {}
         self.ai_behavior_id = definition.ai_behavior_id
@@ -169,7 +176,7 @@ class Companion(Entity):
         super().__init__(
             name=definition.name,
             level=level,
-            base_stats=definition.stats_at_level(level),
+            base_stats=definition.stats_at_level(level).add(race_def.base_stats),
             formulas=formulas,
         )
 
@@ -182,6 +189,7 @@ class Companion(Entity):
         """Companions carry no gear; template + marriage bonuses stand in."""
         combined = ModifierSet()
         combined.merge(self.definition.modifiers)
+        combined.merge(self.race_def.modifiers)
         if self._married_bonus is not None:
             combined.merge(self._married_bonus)
         return combined

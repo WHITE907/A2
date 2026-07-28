@@ -34,6 +34,7 @@ ProjectAscension/
 │   ├── mastery.py       F..Master tracks
 │   ├── party.py         active roster + reserve bench
 │   ├── quests.py        quest definitions and objective data
+│   ├── races.py         race definitions, stats, modifiers, traits
 │   ├── relationships.py affinity and marriage (NPCs and companions)
 │   ├── rng.py           seedable, serialisable RNG
 │   ├── entities/        Entity -> Player, Enemy, Companion
@@ -49,7 +50,7 @@ ProjectAscension/
 │   └── screens/         one module per screen
 ├── data/                all gameplay content
 ├── docs/                design notes
-├── tests/               406 tests
+├── tests/               422 tests
 ├── tools/               dev utilities
 └── saves/               JSON save slots (created on first save)
 ```
@@ -82,10 +83,11 @@ Per [`docs/ENGINE_DESIGN.md`](docs/ENGINE_DESIGN.md), class count scales with
 | Effects | 5 (`damage`, `heal`, `resource`, `shield`, `apply_status`) | — |
 | Classes | 1 (`ClassDefinition`) | 19 |
 | Enemies | 1 (`Enemy`) | 30 |
-| Items | 1 (`Item`) | 79 |
+| Items | 1 (`Item`) | 87 |
 | Statuses | 1 (`StatusEffect`) | 21 |
-| Companions | 1 (`Companion`) | 10 |
-| Quests | 1 (`QuestDefinition`) | 10 |
+| Races | 1 (`RaceDefinition`) | 8 |
+| Companions | 1 (`Companion`) | 14 |
+| Quests | 1 (`QuestDefinition`) | 18 |
 
 Fireball is not a Python class. It is a JSON entry composing a `DamageEffect`
 and an `ApplyStatusEffect`:
@@ -130,6 +132,7 @@ never crashes a battle.
 | 13 | JSON enemies with growth, AI, loot, scaling | `entities/enemy.py` |
 | 14 | Mastery F→Master, earned by use | `mastery.py` |
 | 6, 10 | Data-driven quests and promotion quest gates | `quests.py`, `managers/quest_manager.py` |
+| 6 | Data-driven races, traits, and racial equipment bonuses | `races.py`, `managers/race_manager.py` |
 | 6 | Companions, party roster | `entities/companion.py`, `party.py` |
 | 15 | Affinity and gender-agnostic marriage | `relationships.py` |
 | 16 | Multiple slots, morning autosave, inn respawn | `managers/save_manager.py` |
@@ -140,16 +143,26 @@ items. Where a requirement genuinely cannot be checked, `PromotionCheck`
 reports it under `unenforced` rather than silently ignoring it — the behaviour
 `ENGINE_DESIGN.md` asked for.
 
-**Quests** come from named NPCs in specific towns and must be turned in by
-returning to that location. NPC Talk windows surface their available and active
+**Races** are selected during character creation and loaded entirely from
+`data/races.json`. Eight playable races provide modest primary adjustments,
+always-on combat modifiers, and described traits. The same definitions power
+companion racial traits. Equipment may define a base bonus for everyone plus an
+additional `race_modifiers` block for matching characters; no race id is
+special-cased in Python.
+
+**Quests** come from named NPCs or companions. Town quests must be turned in by
+returning to that location, while recruited companions can offer the later
+chapters of their personal stories on the road. NPC Talk windows surface their available and active
 quests and link to the Quest Log. `QuestManager` loads ten class-gated promotion
 quests, records data-driven enemy-defeat objectives, and grants JSON-defined
 rewards. Active progress is save-versioned, and giver, location, class, enemy,
 item, and prerequisite references are cross-validated at startup.
 
-**Companions** are recruited with gold, items, level and affinity, then either
-fight in the active roster (capped, so battles stay readable) or wait in
-reserve. They level with the player rather than earning separate EXP — a
+**Companions** are recruited with gold, items, level, affinity, and sometimes a
+personal introductory quest, then either fight in the active roster (capped, so
+battles stay readable) or wait in reserve. Four companions have two-part
+questlines: the first earns their trust and unlocks recruitment; the second
+requires them in the party and continues while travelling. They level with the player rather than earning separate EXP — a
 companion that falls behind is one you bench, which defeats the point. They act
 through the existing AI registry, so `Battle` needed no companion-shaped
 special case. Downed companions revive at 25% HP after a fight rather than
@@ -177,8 +190,8 @@ requirements.
 **Saves** are versioned and migrated forward (`SAVE_VERSION`), so a save from an
 older build still loads (§5, backwards compatibility). Writes go to a temp file
 and are atomically replaced, so a crash mid-write cannot corrupt a slot. The RNG
-and defeated-boss state are serialised too. A corrupt file is listed as a damaged
-slot rather than vanishing.
+defeated-boss state, and selected race are serialised too. A corrupt file is
+listed as a damaged slot rather than vanishing.
 
 ## GUI
 
@@ -198,12 +211,13 @@ testing anything.
 
 ## Testing
 
-406 tests, no third-party dependencies:
+422 tests, no third-party dependencies:
 
 ```
 python3 -m unittest discover -s tests        # everything
 python3 -m unittest tests.test_engine        # core engine tests
 python3 -m unittest tests.test_quests        # quest/progression tests
+python3 -m unittest tests.test_races_storylines # races + companion stories
 python3 -m unittest tests.test_world_expansion # level-40 content tests
 python3 -m unittest tests.test_gui           # headless GUI tests
 ```
@@ -252,11 +266,12 @@ is reported as a `ContentError` with the exact ids, not discovered mid-battle.
 | `skills.json` | 60 skills across all six categories |
 | `statuses.json` | 21 buffs, debuffs, DOTs, HOTs, stuns |
 | `classes.json` | 19 classes, tiers 1–7, full promotion chains |
-| `items.json` | 79 items: weapons, armour, consumables, materials, key items |
+| `items.json` | 87 items: weapons, armour, consumables, racial heirlooms, materials, key items |
+| `races.json` | 8 playable/world races with stats, modifiers, and traits |
 | `enemies.json` | 30 enemies including 5 bosses |
-| `quests.json` | 10 class-gated promotion quests |
-| `companions.json` | 10 recruitable allies, all marriageable |
-| `world.json` | 17 areas, 8 shops, 12 NPCs, encounter tables |
+| `quests.json` | 18 promotion and companion-story quests |
+| `companions.json` | 14 recruitable allies, all marriageable |
+| `world.json` | 17 areas, 8 shops, 18 NPCs, encounter tables |
 
 Rebalancing is a JSON edit. Run `python3 main.py --check` afterwards.
 

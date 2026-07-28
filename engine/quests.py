@@ -70,6 +70,7 @@ class QuestDefinition:
     giver_id: str = ""
     start_area_id: str = ""
     turn_in_area_id: str = ""
+    required_companion_id: str = ""
     required_class_ids: tuple[str, ...] = ()
     prerequisite_quest_ids: tuple[str, ...] = ()
     objectives: tuple[QuestObjective, ...] = ()
@@ -98,6 +99,7 @@ class QuestDefinition:
             giver_id=str(payload.get("giver_id", "")),
             start_area_id=str(payload.get("start_area_id", "")),
             turn_in_area_id=str(payload.get("turn_in_area_id", payload.get("start_area_id", ""))),
+            required_companion_id=str(payload.get("required_companion_id", "")),
             required_class_ids=tuple(str(value) for value in payload.get("required_class_ids", [])),
             prerequisite_quest_ids=tuple(str(value) for value in payload.get("prerequisite_quest_ids", [])),
             objectives=objectives,

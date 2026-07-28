@@ -389,6 +389,16 @@ class TestCharacterCreation(unittest.TestCase):
     def test_lists_starting_classes(self):
         self.assertGreater(self.window.class_list.count, 0)
 
+    def test_lists_playable_races(self):
+        self.assertEqual(self.window.race_list.count, 8)
+
+    def test_selecting_a_race_shows_traits(self):
+        elf_index = next(
+            index for index, race in enumerate(self.window.race_list._values) if race.id == "elf"
+        )
+        self.window.race_list.select_index(elf_index)
+        self.assertIn("Keen Senses", self.window.preview._label.options["text"])
+
     def test_gender_switch_requeries_classes(self):
         """Bible section 10: starting classes are gender-restricted."""
         male = {label for label, _ in zip(self.window.class_list.listbox.items, range(99))}
@@ -412,10 +422,15 @@ class TestCharacterCreation(unittest.TestCase):
     def test_creating_a_character_opens_the_world(self):
         from gui.screens.world_screen import WorldScreen
 
+        elf_index = next(
+            index for index, race in enumerate(self.window.race_list._values) if race.id == "elf"
+        )
         self.window.name_var.set("Hero")
+        self.window.race_list.select_index(elf_index)
         self.window.class_list.select_index(0)
         self.window._create()
         self.assertTrue(self.app.game.has_character)
+        self.assertEqual(self.app.game.player.race_id, "elf")
         self.assertIsInstance(self.app.current_screen, WorldScreen)
 
 
@@ -1081,13 +1096,22 @@ class TestQuestUI(unittest.TestCase):
         self.app.game.world.current_area_id = quest.start_area_id
         self.app.show_world()
 
+    def _select_trial(self, window) -> None:
+        index = next(
+            index
+            for index, quest in enumerate(window.available_list._values)
+            if quest.id == "trial_of_the_dawn"
+        )
+        window.available_list.select_index(index)
+
     def test_world_screen_has_quest_button(self):
         screen = self.app.show_world()
         self.assertIsNotNone(button_labelled(screen, "Quests"))
 
     def test_quest_window_lists_available_quest(self):
         window = self.app.open_quests()
-        self.assertEqual(window.available_list.count, 1)
+        self.assertGreaterEqual(window.available_list.count, 1)
+        self._select_trial(window)
         self.assertIn("Trial of the Dawn", window.details._label.options["text"])
         self.assertIn("Reeve Marta", window.details._label.options["text"])
 
@@ -1098,14 +1122,14 @@ class TestQuestUI(unittest.TestCase):
 
     def test_accept_quest_through_window(self):
         window = self.app.open_quests()
-        window._show_available(window.available_list.selected_value)
+        self._select_trial(window)
         window._accept()
         self.assertIn("trial_of_the_dawn", self.app.game.player.active_quests)
         self.assertEqual(window.active_list.count, 1)
 
     def test_complete_button_enables_when_ready(self):
         window = self.app.open_quests()
-        window._show_available(window.available_list.selected_value)
+        self._select_trial(window)
         window._accept()
         objective = self.app.game.quests.require("trial_of_the_dawn").objectives[0]
         self.app.game.quests.record_defeats(self.app.game.player, [objective.target_id])

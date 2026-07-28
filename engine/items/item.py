@@ -74,6 +74,8 @@ class Item:
     #: ``sword`` / ``staff`` / ... - drives weapon-skill and mastery gating.
     weapon_type: str = ""
     modifiers: ModifierSet = field(default_factory=ModifierSet)
+    #: Extra equipment modifiers keyed by race id. Base modifiers still apply to everyone.
+    race_modifiers: dict[str, ModifierSet] = field(default_factory=dict)
     #: Effect payloads run on use (consumables); built lazily to avoid a cycle.
     use_effects: list[dict[str, Any]] = field(default_factory=list)
     stack_size: int = 99
@@ -113,6 +115,10 @@ class Item:
         if self.weapon_type:
             lines.append(f"Type: {self.weapon_type.title()}")
         lines.extend(self.modifiers.describe())
+        for race_id, modifiers in sorted(self.race_modifiers.items()):
+            label = race_id.replace("_", " ").title()
+            lines.append(f"{label} racial bonus:")
+            lines.extend(f"  {line}" for line in modifiers.describe())
         if self.required_level > 1:
             lines.append(f"Requires level {self.required_level}")
         for stat, amount in self.required_stats.items():
@@ -140,6 +146,10 @@ class Item:
             slot=slot,
             weapon_type=str(payload.get("weapon_type", "")).lower(),
             modifiers=ModifierSet.from_dict(payload.get("modifiers")),
+            race_modifiers={
+                str(race_id): ModifierSet.from_dict(modifiers)
+                for race_id, modifiers in (payload.get("race_modifiers") or {}).items()
+            },
             use_effects=[dict(e) for e in payload.get("use_effects", [])],
             stack_size=int(payload.get("stack_size", 99)),
             required_level=int(payload.get("required_level", 1)),

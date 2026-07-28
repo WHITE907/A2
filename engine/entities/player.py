@@ -18,6 +18,7 @@ from engine.classes import ClassDefinition
 from engine.entities.entity import Entity
 from engine.items.item import EQUIPMENT_SLOTS, Inventory, Item, SLOT_LABELS
 from engine.mastery import MasteryBook
+from engine.races import RaceDefinition
 from engine.skills.skill import Skill, SkillCategory
 from engine.stats import PRIMARY_STATS, Formulas, ModifierSet, StatBlock
 
@@ -47,6 +48,7 @@ class Player(Entity):
         name: str,
         gender: str,
         class_def: ClassDefinition,
+        race_def: RaceDefinition,
         formulas: Formulas,
         level: int = 1,
         progression: Mapping[str, Any] | None = None,
@@ -54,6 +56,7 @@ class Player(Entity):
         progression = progression or {}
         self.gender = (gender or "any").lower()
         self.class_def = class_def
+        self.race_def = race_def
         self.class_history: list[str] = [class_def.id]
 
         # Progression tuning (bible section 9) - JSON-driven, never hardcoded.
@@ -92,9 +95,17 @@ class Player(Entity):
     # ------------------------------------------------------------------
     # Stats
     # ------------------------------------------------------------------
+    @property
+    def race_id(self) -> str:
+        return self.race_def.id
+
     def _recalculate_base_stats(self) -> None:
-        """Class base + per-level growth + hand-allocated points."""
-        self.base_stats = self.class_def.stats_at_level(self.level).add(self.allocated_stats)
+        """Class growth + racial primaries + hand-allocated points."""
+        self.base_stats = (
+            self.class_def.stats_at_level(self.level)
+            .add(self.race_def.base_stats)
+            .add(self.allocated_stats)
+        )
         self.invalidate_stats()
 
     def _equipment_modifiers(self) -> ModifierSet:
@@ -107,6 +118,10 @@ class Player(Entity):
         for item in self.equipment.values():
             if item is not None:
                 combined.merge(item.modifiers)
+                racial_bonus = item.race_modifiers.get(self.race_id)
+                if racial_bonus is not None:
+                    combined.merge(racial_bonus)
+        combined.merge(self.race_def.modifiers)
         combined.merge(self.class_def.passive_modifiers)
         for skill in self.known_skills.values():
             if skill.is_passive:
@@ -378,6 +393,7 @@ class Player(Entity):
         return [
             f"Name: {self.name}",
             f"Gender: {self.gender.title()}",
+            f"Race: {self.race_def.name}",
             f"Class: {self.class_def.name}",
             f"Tier: {self.class_def.tier}",
             f"Level: {self.level}",
@@ -408,6 +424,7 @@ class Player(Entity):
         data.update(
             {
                 "gender": self.gender,
+                "race_id": self.race_id,
                 "class_id": self.class_def.id,
                 "class_history": list(self.class_history),
                 "exp": self.exp,

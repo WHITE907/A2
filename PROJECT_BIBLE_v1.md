@@ -77,6 +77,7 @@ Managers:
 - SaveManager
 - ItemManager (planned)
 - QuestManager
+- RaceManager
 
 ## 7. GUI
 Framework:
@@ -106,6 +107,8 @@ Stats:
 - AGI
 
 Progression:
+- Data-driven playable race selection
+- Race traits and racial equipment affinities
 - Unlimited levels
 - +5 stat points per level
 - +1 skill point per level
