@@ -2,6 +2,55 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.2.0 - Companions and Relationships
+
+Implements roadmap v0.0.9 (Companions) and completes bible §15.
+
+### Companions (bible §6, roadmap v0.0.9)
+- `Companion` entity extending `Entity`, plus `CompanionDefinition` -
+  one class each, four JSON entries, same pattern as Skill/Enemy/Item.
+- `CompanionManager` factory reading `data/companions.json`.
+- `Party` with an active roster (capped by `party.max_active`) and a
+  reserve bench, so battles stay readable.
+- Companions **level with the player** via `level_offset` rather than
+  earning separate EXP - a companion that falls behind is one the player
+  benches, which defeats the point of having them.
+- They fight through the existing AI registry: `Battle` already accepted
+  `allies`, so no combat special-case was needed.
+- Fallen companions revive at 25% HP after a battle instead of dying
+  permanently; resting and respawning heal the whole party.
+- Recruitment gated on level, affinity, gold, items and quests, with an
+  itemised checklist in the same style as promotion.
+
+### Relationships (bible §15)
+- New `engine/relationships.py` owns affinity and marriage **once** for
+  both NPCs and companions - both satisfy the same `Suitor` shape, so
+  companions are marriageable on identical terms.
+- Gender is never consulted anywhere in the module.
+- Affinity tiers (Hostile -> Devoted) for display.
+- Talking repeatedly in one day yields less, so the optimal play is not
+  clicking Talk a hundred times.
+- Companions gain affinity for fighting beside the player.
+- A married companion gains a real combat bonus
+  (`marriage_spouse_bonus` in config) and cannot be dismissed.
+
+### GUI
+- New Party window: roster, recruitable locals, and a detail pane.
+- Combat screen gained an Allies panel.
+- Talk window now serves companions and NPCs, and lists the exact
+  outstanding marriage requirements instead of just greying out Propose.
+
+### Tests
+366 total, up from 267: 76 new companion/relationship engine tests and
+23 new GUI tests.
+
+### Fixed
+- `can_marry` reported a generic "Requirements not met." instead of
+  naming what was missing.
+- Party window overwrote its recruitment checklist immediately after
+  showing it.
+- Long status lists overflowed the combat side panels.
+
 ## v0.1.0 - Playable Foundation
 
 First playable build. Implements the roadmap from v0.0.4 through v0.0.9 in one

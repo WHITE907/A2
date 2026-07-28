@@ -23,9 +23,11 @@ from typing import Any, Mapping, Sequence
 from engine.classes import ClassDefinition
 from engine.combat.ai import default_registry
 from engine.combat.combat import Battle, CombatState
+from engine.entities.companion import Companion
 from engine.entities.player import Player
 from engine.items.item import EQUIPMENT_SLOTS, Item
 from engine.managers.class_manager import ClassManager
+from engine.managers.companion_manager import CompanionManager
 from engine.managers.data_loader import ContentError, DataLoader
 from engine.managers.enemy_manager import EnemyManager
 from engine.managers.item_manager import ItemManager
@@ -33,8 +35,10 @@ from engine.managers.save_manager import SaveManager, SaveSlotInfo
 from engine.managers.skill_manager import SkillManager
 from engine.managers.world_manager import WorldManager
 from engine.mastery import MasteryBook
+from engine.party import Party
+from engine.relationships import MarriageCheck, RelationshipRules
 from engine.rng import GameRandom
-from engine.stats import Formulas, StatBlock
+from engine.stats import Formulas, ModifierSet, StatBlock
 from engine.world.world import WorldState
 
 #: Re-exported so GUI screens can type-annotate what :meth:`Game.save_slots`
@@ -43,7 +47,7 @@ from engine.world.world import WorldState
 __all__ = ["Game", "GAME_VERSION", "SaveSlotInfo"]
 
 #: Shown on the main menu under the title (per the GUI style reference).
-GAME_VERSION = "0.1.0"
+GAME_VERSION = "0.2.0"
 
 
 class Game:
@@ -64,11 +68,14 @@ class Game:
         self.classes = ClassManager(self.loader, self.skills)
         self.items = ItemManager(self.loader)
         self.enemies = EnemyManager(self.loader, self.skills, self.formulas)
+        self.companions = CompanionManager(self.loader, self.skills, self.formulas)
         self.world_manager = WorldManager(self.loader)
         self.saves = SaveManager(save_dir)
         self.ai_registry = default_registry()
+        self.relationships = RelationshipRules(self.config)
 
         self.player: Player | None = None
+        self.party = Party(int((self.config.get("party") or {}).get("max_active", 2)))
         self.world: WorldState | None = None
         self.battle: Battle | None = None
         self.current_slot: str | None = None
@@ -88,6 +95,7 @@ class Game:
         self.classes.load()
         self.items.load()
         self.enemies.load()
+        self.companions.load()
         self.world_manager.load()
         self._validate_cross_references()
 
@@ -114,6 +122,21 @@ class Game:
                             f"class {definition.id!r} promotion to {target!r} needs unknown item {item_id!r}"
                         )
 
+        for companion in self.companions.all_definitions():
+            for skill_id in companion.skill_ids:
+                if self.skills.get(skill_id) is None:
+                    problems.append(f"companion {companion.id!r} references unknown skill {skill_id!r}")
+            for item_id in companion.recruit.items:
+                if self.items.get(item_id) is None:
+                    problems.append(f"companion {companion.id!r} needs unknown item {item_id!r}")
+            for item_id in companion.gift_item_ids:
+                if self.items.get(item_id) is None:
+                    problems.append(f"companion {companion.id!r} likes unknown gift {item_id!r}")
+            if companion.location_id and self.world_manager.get_area(companion.location_id) is None:
+                problems.append(
+                    f"companion {companion.id!r} is in unknown area {companion.location_id!r}"
+                )
+
         for area in self.world_manager.all_areas():
             for encounter in area.encounters:
                 for enemy_id in encounter.enemy_ids:
@@ -138,6 +161,7 @@ class Game:
             f"Skills: {self.skills.count()}",
             f"Items: {self.items.count()}",
             f"Enemies: {self.enemies.count()}",
+            f"Companions: {self.companions.count()}",
             f"Areas: {self.world_manager.count()}",
         ]
 
@@ -186,6 +210,7 @@ class Game:
         player.restore_fully()
 
         self.player = player
+        self.party = Party(int((self.config.get("party") or {}).get("max_active", 2)))
         self.world = self.world_manager.create_world()
         self.battle = None
         self.current_slot = None
@@ -389,11 +414,14 @@ class Game:
         enemies = self.enemies.spawn_group(list(spawns))
         ctx = self.skills.make_context(self.rng, self.formulas)
         combat_config = self.config.get("combat", {})
+        # Companions track the player's level so they never become dead weight.
+        self.party.sync_levels(self.player.level)
         self.battle = Battle(
             player=self.player,
             enemies=enemies,
             ctx=ctx,
             rng=self.rng,
+            allies=self.party.battle_allies(),
             ai_registry=self.ai_registry,
             flee_base_chance=float(combat_config.get("flee_base_chance", 0.45)),
             mastery_per_action=float(combat_config.get("mastery_per_action", 6.0)),
@@ -422,6 +450,12 @@ class Game:
             lines.extend(self.handle_death())
 
         self.battle = None
+        # Companions earn affinity for fighting beside you.
+        if battle.state is CombatState.VICTORY and self.player:
+            for companion in self.party.active:
+                self.player.change_affinity(companion.id, self.relationships.per_battle)
+        lines.extend(self.party.revive_fallen())
+        self.party.clear_battle_state()
         if self.player:
             self.player.cooldowns.clear()
             for status in list(self.player.statuses):
@@ -443,6 +477,7 @@ class Game:
             self.world.visited.add(inn_area)
 
         self.player.restore_fully()
+        self.party.restore_all()
         return [
             f"{self.player.name} awakens at the Inn.",
             f"Lost {lost} gold." if lost else "No gold was lost.",
@@ -463,6 +498,8 @@ class Game:
             return False, [f"You need {cost} gold to rest."]
 
         self.player.restore_fully()
+        self.party.restore_all()
+        self.party.sync_levels(self.player.level)
         day = self.world.advance_day()
         lines = [f"You rest until morning. Day {day} begins.", "Fully restored."]
         if cost:
@@ -509,73 +546,251 @@ class Game:
         return True, f"Sold {item.name} for {price} gold."
 
     # ==================================================================
+    # Companions and party (bible section 6, roadmap v0.0.9)
+    # ==================================================================
+    def recruitable_here(self) -> list[Any]:
+        """Companion definitions in this area the player has not recruited."""
+        if not self.world or not self.player:
+            return []
+        return [
+            definition
+            for definition in self.companions.at_location(self.world.current_area_id)
+            if not self.party.has(definition.id)
+        ]
+
+    def check_recruit(self, companion_id: str) -> tuple[bool, list[str]]:
+        """Requirement checklist for recruiting, in the promotion-check style."""
+        if not self.player:
+            return False, ["No character loaded."]
+        definition = self.companions.get(companion_id)
+        if definition is None:
+            return False, ["Nobody by that name."]
+        if self.party.has(companion_id):
+            return False, [f"{definition.name} already travels with you."]
+
+        requirement = definition.recruit
+        unmet: list[str] = []
+        if self.player.level < requirement.level:
+            unmet.append(f"Level {requirement.level} (have {self.player.level})")
+        affinity = self.player.affinity_with(companion_id)
+        if affinity < requirement.affinity:
+            unmet.append(f"Affinity {requirement.affinity} (have {affinity})")
+        if requirement.gold and self.player.inventory.gold < requirement.gold:
+            unmet.append(f"{requirement.gold} gold (have {self.player.inventory.gold})")
+        for item_id, quantity in requirement.items.items():
+            if not self.player.inventory.has(item_id, quantity):
+                item = self.items.get(item_id)
+                label = item.name if item else item_id.replace("_", " ").title()
+                unmet.append(f"{label} x{quantity} (have {self.player.inventory.count(item_id)})")
+        for quest_id in requirement.quests:
+            if quest_id not in self.player.completed_quests:
+                unmet.append(f"Quest: {quest_id.replace('_', ' ').title()}")
+
+        return (not unmet), unmet
+
+    def recruit(self, companion_id: str) -> tuple[bool, list[str]]:
+        """Recruit a companion, consuming the required gold and items."""
+        ok, unmet = self.check_recruit(companion_id)
+        if not ok or self.player is None:
+            return False, unmet or ["They will not join you."]
+
+        definition = self.companions.require(companion_id)
+        requirement = definition.recruit
+        if requirement.gold:
+            self.player.inventory.spend_gold(requirement.gold)
+        for item_id, quantity in requirement.items.items():
+            self.player.inventory.remove(item_id, quantity)
+
+        companion = self.companions.create(companion_id, self.player.level)
+        self._apply_spouse_bonus(companion)
+        joined, message = self.party.recruit(companion)
+        return joined, [message]
+
+    def dismiss_companion(self, companion_id: str) -> tuple[bool, str]:
+        """Dismiss a companion.  Affinity is kept, so they can rejoin."""
+        if not self.player:
+            return False, "No character loaded."
+        if self.player.spouse_id == companion_id:
+            return False, "You will not send your spouse away."
+        return self.party.dismiss(companion_id)
+
+    def set_companion_active(self, companion_id: str, active: bool) -> tuple[bool, str]:
+        return self.party.set_active(companion_id, active)
+
+    def party_lines(self) -> list[str]:
+        return self.party.summary_lines()
+
+    def companion_detail_lines(self, companion_id: str) -> list[str]:
+        """Full readout for one companion, recruited or not."""
+        if not self.player:
+            return []
+        definition = self.companions.get(companion_id)
+        if definition is None:
+            return ["Nobody by that name."]
+
+        member = self.party.get(companion_id)
+        lines = list(definition.detail_lines())
+        lines.append("")
+        if member is not None:
+            lines.extend(member.summary_lines()[2:])
+            lines.append("Status: " + ("Active" if self.party.is_active(companion_id) else "Reserve"))
+        else:
+            lines.append(f"Level: {definition.level_for(self.player.level)} (joins at your level)")
+
+        affinity = self.player.affinity_with(companion_id)
+        lines.append("")
+        lines.append(f"Affinity: {affinity} ({self.relationships.tier_label(affinity)})")
+        if self.player.spouse_id == companion_id:
+            lines.append("Married to you")
+        elif definition.marriageable:
+            lines.append(f"Marriage at: {definition.marriage_affinity}")
+
+        if member is None:
+            requirements = definition.recruit.describe()
+            if requirements:
+                lines.append("")
+                lines.append("To recruit:")
+                lines.extend(f"  {line}" for line in requirements)
+        return lines
+
+    def _apply_spouse_bonus(self, companion: Any) -> None:
+        """Give a married companion their spouse bonus, and only them."""
+        if not self.player:
+            return
+        if self.player.spouse_id == companion.id:
+            bonus = ModifierSet.from_dict({"flat": self.relationships.spouse_modifiers()})
+            companion.set_married_bonus(bonus)
+        else:
+            companion.set_married_bonus(None)
+
+    # ==================================================================
     # NPCs, affinity, marriage (bible section 15)
+    #
+    # Companions and townspeople share these methods: both satisfy the
+    # `Suitor` shape, so `engine.relationships` drives them identically and
+    # a companion is marriageable on exactly the same terms as an NPC.
     # ==================================================================
     def npcs_here(self) -> list[Any]:
         return self.world.npcs_here() if self.world else []
 
-    def talk_to(self, npc_id: str) -> tuple[bool, list[str]]:
-        """Talk to an NPC: a line of dialogue and a small affinity gain."""
+    def _find_suitor(self, target_id: str) -> Any | None:
+        """Resolve an id to an NPC or a companion definition."""
+        npc = self.world_manager.get_npc(target_id)
+        if npc is not None:
+            return npc
+        return self.companions.get(target_id)
+
+    def social_targets_here(self) -> list[Any]:
+        """Everyone the player can talk to right now - NPCs and companions.
+
+        Recruited companions travel with the player, so they are always
+        available; unrecruited ones only appear in their home area.
+        """
+        targets: list[Any] = list(self.npcs_here())
+        targets.extend(self.party.all_members)
+        targets.extend(self.recruitable_here())
+        return targets
+
+    def talk_to(self, target_id: str) -> tuple[bool, list[str]]:
+        """Talk to an NPC or companion: dialogue plus a small affinity gain."""
         if not self.player or not self.world:
             return False, ["No character loaded."]
-        npc = self.world_manager.get_npc(npc_id)
-        if npc is None:
+        suitor = self._find_suitor(target_id)
+        if suitor is None:
             return False, ["There is nobody by that name here."]
 
-        gain = int(self.config.get("affinity_per_talk", 2))
-        value = self.player.change_affinity(npc_id, gain)
-        line = self.rng.choice(npc.dialogue) if npc.dialogue else f"{npc.name} nods at you."
-        lines = [f"{npc.name}: \"{line}\"", f"Affinity with {npc.name}: {value}"]
-        if npc.marriageable and value >= npc.marriage_affinity and not self.player.spouse_id:
-            lines.append(f"{npc.name} seems ready for a deeper commitment.")
+        # Repeat chatter in one day is worth less, so the optimal play is not
+        # clicking Talk a hundred times.
+        talked = self.player.flags.setdefault("talked_today", {})
+        key = f"{self.world.day}:{target_id}"
+        times = int(talked.get(key, 0))
+        talked[key] = times + 1
+
+        value = self.player.change_affinity(target_id, self.relationships.talk_gain(times))
+        line = self.rng.choice(suitor.dialogue) if suitor.dialogue else f"{suitor.name} nods at you."
+        lines = [
+            f'{suitor.name}: "{line}"',
+            f"Affinity with {suitor.name}: {value} ({self.relationships.tier_label(value)})",
+        ]
+        if (
+            getattr(suitor, "marriageable", False)
+            and value >= suitor.marriage_affinity
+            and not self.player.spouse_id
+        ):
+            lines.append(f"{suitor.name} seems ready for a deeper commitment.")
         return True, lines
 
-    def give_gift(self, npc_id: str, item_id: str) -> tuple[bool, list[str]]:
-        """Gift an item; liked gifts are worth far more affinity."""
+    def give_gift(self, target_id: str, item_id: str) -> tuple[bool, list[str]]:
+        """Gift an item; favourites are worth far more affinity."""
         if not self.player:
             return False, ["No character loaded."]
-        npc = self.world_manager.get_npc(npc_id)
+        suitor = self._find_suitor(target_id)
         item = self.items.get(item_id)
-        if npc is None or item is None:
+        if suitor is None or item is None:
             return False, ["That gift cannot be given."]
         if not self.player.inventory.has(item_id):
             return False, [f"You have no {item.name}."]
 
-        liked = item_id in npc.gift_item_ids
-        gain = int(self.config.get("affinity_gift_liked", 15) if liked else self.config.get("affinity_gift", 5))
+        gain, liked = self.relationships.gift_gain(suitor, item_id)
         self.player.inventory.remove(item_id, 1)
-        value = self.player.change_affinity(npc_id, gain)
+        value = self.player.change_affinity(target_id, gain)
         reaction = "loves" if liked else "accepts"
-        return True, [f"{npc.name} {reaction} the {item.name}.", f"Affinity with {npc.name}: {value}"]
+        return True, [
+            f"{suitor.name} {reaction} the {item.name}.",
+            f"Affinity with {suitor.name}: {value} ({self.relationships.tier_label(value)})",
+        ]
 
-    def can_marry(self, npc_id: str) -> tuple[bool, str]:
-        """Marriage needs affinity plus the special item (bible section 15)."""
+    def marriage_check(self, target_id: str) -> Any:
+        """Full marriage checklist for an NPC or companion."""
+        suitor = self._find_suitor(target_id)
+        if suitor is None or not self.player:
+            return MarriageCheck(eligible=False, target_id=target_id, reason="Unknown person.")
+
+        ring_id = self.relationships.marriage_item_id
+        ring = self.items.get(ring_id) if ring_id else None
+        # A companion must be travelling with you; an NPC has no such notion.
+        recruited = self.party.has(target_id) if self.companions.get(target_id) else True
+
+        return self.relationships.check_marriage(
+            suitor,
+            affinity=self.player.affinity_with(target_id),
+            has_ring=(not ring_id) or self.player.inventory.has(ring_id),
+            current_spouse_id=self.player.spouse_id,
+            ring_name=ring.name if ring else "",
+            recruited=recruited,
+        )
+
+    def can_marry(self, target_id: str) -> tuple[bool, str]:
+        """Backwards-compatible boolean form of :meth:`marriage_check`.
+
+        The unmet items are preferred over the generic ``reason`` so the caller
+        is told *what* is missing ("Affinity 70 (have 0); Eternal Band") rather
+        than just that something is.
+        """
         if not self.player:
             return False, "No character loaded."
-        npc = self.world_manager.get_npc(npc_id)
-        if npc is None:
-            return False, "Unknown person."
-        if self.player.spouse_id:
-            return False, "You are already married."
-        if not npc.marriageable:
-            return False, f"{npc.name} is not interested in marriage."
-        if self.player.affinity_with(npc_id) < npc.marriage_affinity:
-            return False, f"{npc.name} needs {npc.marriage_affinity} affinity (you have {self.player.affinity_with(npc_id)})."
+        check = self.marriage_check(target_id)
+        if check.eligible:
+            return True, "You may propose."
+        return False, "; ".join(check.unmet) or check.reason or "Requirements not met."
 
-        ring_id = str(self.config.get("marriage_item_id", ""))
-        if ring_id and not self.player.inventory.has(ring_id):
-            ring = self.items.get(ring_id)
-            return False, f"You need {ring.name if ring else ring_id} to propose."
-        return True, "You may propose."
+    def marry(self, target_id: str) -> tuple[bool, str]:
+        """Marry an NPC or companion.  Gender is never considered."""
+        check = self.marriage_check(target_id)
+        if not check.eligible or self.player is None:
+            return False, "; ".join(check.unmet) or check.reason or "Requirements not met."
 
-    def marry(self, npc_id: str) -> tuple[bool, str]:
-        ok, reason = self.can_marry(npc_id)
-        if not ok or self.player is None:
-            return False, reason
-        ring_id = str(self.config.get("marriage_item_id", ""))
+        ring_id = self.relationships.marriage_item_id
         if ring_id:
             self.player.inventory.remove(ring_id, 1)
-        return self.player.marry(npc_id)
+
+        ok, message = self.player.marry(target_id)
+        if ok:
+            # A married companion fights harder from here on.
+            member = self.party.get(target_id)
+            if member is not None:
+                self._apply_spouse_bonus(member)
+        return ok, message
 
     # ==================================================================
     # Save / load
@@ -602,8 +817,10 @@ class Game:
                 "gold": self.player.inventory.gold,
                 "mastery": self.player.mastery.highest_rank(),
                 "area_name": area.name if area else "",
+                "companions": len(self.party),
             },
             "player": self.player.to_dict(),
+            "party": self.party.to_dict(),
             "world": self.world.to_dict(),
             "rng": self.rng.to_dict(),
         }
@@ -698,10 +915,38 @@ class Game:
         self.rng.load_state(payload.get("rng"))
 
         self.player = player
+        self.party = self._load_party(payload.get("party"), player)
         self.world = world
         self.battle = None
         self.current_slot = slot
         return True, f"Loaded {player.name} (Level {player.level})."
+
+    def _load_party(self, payload: Mapping[str, Any] | None, player: Player) -> Party:
+        """Rebuild the party from a save.
+
+        Companions whose definitions no longer exist are dropped rather than
+        blocking the load - the same backwards-compatibility stance the rest of
+        the loader takes (bible section 5).
+        """
+        default_max = int((self.config.get("party") or {}).get("max_active", 2))
+        if not payload:
+            return Party(default_max)
+
+        party = Party(int(payload.get("max_active", default_max)))
+        for key, target in (("active", party.active), ("reserve", party.reserve)):
+            for entry in payload.get(key, []):
+                companion_id = str(entry.get("companion_id", ""))
+                if self.companions.get(companion_id) is None:
+                    continue
+                companion = self.companions.create(companion_id, player.level)
+                companion.cooldowns = {str(k): int(v) for k, v in (entry.get("cooldowns") or {}).items()}
+                if player.spouse_id == companion_id:
+                    companion.set_married_bonus(
+                        ModifierSet.from_dict({"flat": self.relationships.spouse_modifiers()})
+                    )
+                companion._restore_common(entry)
+                target.append(companion)
+        return party
 
     def delete_save(self, slot: str) -> tuple[bool, str]:
         if self.saves.delete(slot):

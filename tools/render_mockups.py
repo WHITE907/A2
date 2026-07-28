@@ -483,7 +483,50 @@ def main() -> int:
             written.append(name)
             app.close_all_toplevels()
 
+        # -- party (companions recruited) --------------------------------
         app.game.travel_to("town_ashvale")
+        # Recruits have level/affinity gates; meet them so the render shows a
+        # real recruited party rather than two refusals.
+        app.game.player.level = 10
+        app.game.player._recalculate_base_stats()
+        app.game.player.inventory.add_gold(3000)
+        app.game.recruit("rook")
+        app.game.player.affinity["sister_elen"] = 50
+        app.game.items.grant(app.game.player.inventory, "minor_ether", 2)
+        app.game.recruit("sister_elen")
+        party = app.open_party()
+        party.member_list.select_index(0)
+        render(party, 760, 560, "Project Ascension - Party").save(out_dir / "13_party.png")
+        written.append("13_party.png")
+        app.close_all_toplevels()
+
+        # -- companion combat --------------------------------------------
+        app.game.travel_to("greenfields")
+        app.game.start_battle([("green_slime", 2), ("grey_wolf", 3)])
+        combat2 = app.show_combat()
+        b2 = app.game.battle
+        if b2.waiting_for_player:
+            combat2.action_list.select_index(0)
+            if combat2.target_list.count:
+                combat2.target_list.select_index(0)
+            combat2._use_selected()
+        combat2.refresh()
+        render(app.root, WINDOW_W, WINDOW_H, "Project Ascension").save(out_dir / "14_combat_party.png")
+        written.append("14_combat_party.png")
+
+        # -- companion marriage ------------------------------------------
+        app.game.battle = None
+        app.show_world()
+        app.game.travel_to("town_ashvale")
+        app.game.player.affinity["rook"] = 100
+        app.game.items.grant(app.game.player.inventory, "eternal_band", 1)
+        talk_rook = app.open_talk("rook")
+        talk_rook._talk()
+        talk_rook.refresh()
+        render(talk_rook, 620, 520, "Project Ascension - Rook").save(out_dir / "15_companion_marriage.png")
+        written.append("15_companion_marriage.png")
+        app.close_all_toplevels()
+
         shop = app.open_shop("ashvale_general")
         shop.stock_list.select_index(0)
         render(shop, 720, 520, "Project Ascension - Ashvale General Goods").save(out_dir / "11_shop.png")

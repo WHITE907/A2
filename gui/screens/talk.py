@@ -1,4 +1,9 @@
-"""Talk - NPC conversation, gifts, and marriage (bible section 15)."""
+"""Talk - conversation, gifts, and marriage (bible section 15).
+
+Serves NPCs and companions alike: both satisfy the ``Suitor`` shape that
+:mod:`engine.relationships` is written against, so this screen resolves a
+target through ``Game`` and never branches on which kind it got.
+"""
 
 from __future__ import annotations
 
@@ -17,7 +22,7 @@ class TalkWindow(tk.Toplevel):
         super().__init__(app.root, bg=theme.BG)
         self.app = app
         self.npc_id = npc_id
-        npc = app.game.world_manager.get_npc(npc_id)
+        npc = app.game._find_suitor(npc_id)
         self.npc_name = npc.name if npc else "Stranger"
 
         theme.style_window(self, f"Project Ascension - {self.npc_name}")
@@ -34,7 +39,10 @@ class TalkWindow(tk.Toplevel):
         self.info = StatPanel(body, title="")
         self.info.pack(fill=tk.X, pady=(10, 0))
 
-        self.log = LogPanel(body, title="Conversation", height=9)
+        self.requirements = StatPanel(body, title="", wrap=560)
+        self.requirements.pack(fill=tk.X, pady=(6, 0))
+
+        self.log = LogPanel(body, title="Conversation", height=8)
         self.log.pack(fill=tk.BOTH, expand=True, pady=(12, 0))
 
         buttons = tk.Frame(body, bg=theme.BG)
@@ -54,18 +62,25 @@ class TalkWindow(tk.Toplevel):
             self._close()
             return
 
-        npc = game.world_manager.get_npc(self.npc_id)
+        npc = game._find_suitor(self.npc_id)
         affinity = game.player.affinity_with(self.npc_id)
-        lines = [f"Affinity: {affinity}"]
-        if npc and npc.marriageable:
+        lines = [f"Affinity: {affinity} ({game.relationships.tier_label(affinity)})"]
+        if npc and getattr(npc, "marriageable", False):
             lines.append(f"Marriage at: {npc.marriage_affinity}")
         if game.player.spouse_id == self.npc_id:
-            lines.append("Married")
+            lines.append("Married to you")
+        if game.party.has(self.npc_id):
+            lines.append("Travelling with you")
         self.info.set_lines(lines)
 
-        # The engine decides whether a proposal is possible; the UI just asks.
-        can_marry, _ = game.can_marry(self.npc_id)
-        self.marry_button.configure(state=tk.NORMAL if can_marry else tk.DISABLED)
+        # The engine decides whether a proposal is possible; the UI just asks,
+        # and shows the checklist rather than a bare disabled button.
+        check = game.marriage_check(self.npc_id)
+        self.marry_button.configure(state=tk.NORMAL if check.eligible else tk.DISABLED)
+        if not check.eligible and check.unmet:
+            self.requirements.set_lines(["To propose:", *[f"  {item}" for item in check.unmet]])
+        else:
+            self.requirements.set_lines([])
 
     # ------------------------------------------------------------------
     def _talk(self) -> None:

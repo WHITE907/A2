@@ -47,10 +47,13 @@ class CombatScreen(tk.Frame):
         left.pack(side=tk.LEFT, fill=tk.Y)
         left.pack_propagate(False)
 
-        self.player_panel = StatPanel(left, title="You")
+        self.player_panel = StatPanel(left, title="You", wrap=215)
         self.player_panel.pack(fill=tk.X, anchor="n")
 
-        self.enemy_panel = StatPanel(left, title="Enemies")
+        self.ally_panel = StatPanel(left, title="Allies", wrap=215)
+        self.ally_panel.pack(fill=tk.X, anchor="n", pady=(16, 0))
+
+        self.enemy_panel = StatPanel(left, title="Enemies", wrap=215)
         self.enemy_panel.pack(fill=tk.X, anchor="n", pady=(16, 0))
 
         # ---------------- middle: log ----------------------------------
@@ -98,6 +101,7 @@ class CombatScreen(tk.Frame):
         self.battle = battle
 
         self.player_panel.set_lines(battle.player_lines())
+        self.ally_panel.set_lines(battle.ally_lines())
         self.enemy_panel.set_lines(battle.enemy_lines())
         self._sync_log()
 

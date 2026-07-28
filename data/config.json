@@ -1,7 +1,9 @@
 {
   "_comment": "Every gameplay coefficient in the game. Bible section 5: gameplay values are never hardcoded. Edit numbers here to rebalance; no Python change is needed.",
-
-  "genders": ["male", "female"],
+  "genders": [
+    "male",
+    "female"
+  ],
   "starting_gold": 50,
   "inn_cost": 10,
   "death_gold_penalty": 0.1,
@@ -10,7 +12,6 @@
   "affinity_per_talk": 2,
   "affinity_gift": 5,
   "affinity_gift_liked": 15,
-
   "progression": {
     "_comment": "Bible section 9: unlimited levels, +5 stat points and +1 skill point per level.",
     "starting_level": 1,
@@ -20,56 +21,176 @@
     "exp_growth": 1.15,
     "exp_linear": 20.0
   },
-
   "combat": {
     "flee_base_chance": 0.45,
     "mastery_per_action": 6.0
   },
-
   "formulas": {
     "_comment": "base + per_<stat> * stat + per_level * level. Add a per_<stat> key to any block and it takes effect immediately.",
-
-    "hp":             { "base": 40, "per_end": 8.0, "per_str": 1.5, "per_level": 6.0 },
-    "mp":             { "base": 15, "per_int": 5.0, "per_level": 2.0 },
-    "physical_power": { "base": 3,  "per_str": 1.6, "per_agi": 0.4 },
-    "magic_power":    { "base": 3,  "per_int": 1.8 },
-    "armor":          { "base": 0,  "per_end": 1.4, "per_level": 0.6 },
-    "magic_resist":   { "base": 0,  "per_int": 0.8, "per_end": 0.5, "per_level": 0.4 },
-    "crit_chance":    { "base": 0.03, "per_agi": 0.004, "max": 0.75 },
-    "crit_damage":    { "base": 1.5,  "per_str": 0.004 },
-    "accuracy":       { "base": 0.88, "per_agi": 0.004, "max": 0.99 },
-    "evasion":        { "base": 0.02, "per_agi": 0.005, "max": 0.60 },
-    "speed":          { "base": 8,    "per_agi": 1.1 },
-
+    "hp": {
+      "base": 40,
+      "per_end": 8.0,
+      "per_str": 1.5,
+      "per_level": 6.0
+    },
+    "mp": {
+      "base": 15,
+      "per_int": 5.0,
+      "per_level": 2.0
+    },
+    "physical_power": {
+      "base": 3,
+      "per_str": 1.6,
+      "per_agi": 0.4
+    },
+    "magic_power": {
+      "base": 3,
+      "per_int": 1.8
+    },
+    "armor": {
+      "base": 0,
+      "per_end": 1.4,
+      "per_level": 0.6
+    },
+    "magic_resist": {
+      "base": 0,
+      "per_int": 0.8,
+      "per_end": 0.5,
+      "per_level": 0.4
+    },
+    "crit_chance": {
+      "base": 0.03,
+      "per_agi": 0.004,
+      "max": 0.75
+    },
+    "crit_damage": {
+      "base": 1.5,
+      "per_str": 0.004
+    },
+    "accuracy": {
+      "base": 0.88,
+      "per_agi": 0.004,
+      "max": 0.99
+    },
+    "evasion": {
+      "base": 0.02,
+      "per_agi": 0.005,
+      "max": 0.6
+    },
+    "speed": {
+      "base": 8,
+      "per_agi": 1.1
+    },
     "mitigation_constant": 100.0,
     "hit_floor": 0.05,
     "hit_ceiling": 0.99
   },
-
   "mastery": {
     "_comment": "Bible section 14: F, E, D, C, B, A, S, SS, Master. Thresholds are cumulative EXP to reach each rank.",
-    "thresholds": [0, 100, 300, 700, 1400, 2600, 4500, 7500, 12000],
+    "thresholds": [
+      0,
+      100,
+      300,
+      700,
+      1400,
+      2600,
+      4500,
+      7500,
+      12000
+    ],
     "rank_bonuses": {
-      "E":      { "physical_power": 1, "magic_power": 1 },
-      "D":      { "physical_power": 2, "magic_power": 2 },
-      "C":      { "physical_power": 3, "magic_power": 3, "accuracy": 0.01 },
-      "B":      { "physical_power": 4, "magic_power": 4, "accuracy": 0.01 },
-      "A":      { "physical_power": 6, "magic_power": 6, "crit_chance": 0.02 },
-      "S":      { "physical_power": 8, "magic_power": 8, "crit_chance": 0.03 },
-      "SS":     { "physical_power": 11, "magic_power": 11, "crit_chance": 0.04 },
-      "Master": { "physical_power": 15, "magic_power": 15, "crit_chance": 0.05, "crit_damage": 0.2 }
+      "E": {
+        "physical_power": 1,
+        "magic_power": 1
+      },
+      "D": {
+        "physical_power": 2,
+        "magic_power": 2
+      },
+      "C": {
+        "physical_power": 3,
+        "magic_power": 3,
+        "accuracy": 0.01
+      },
+      "B": {
+        "physical_power": 4,
+        "magic_power": 4,
+        "accuracy": 0.01
+      },
+      "A": {
+        "physical_power": 6,
+        "magic_power": 6,
+        "crit_chance": 0.02
+      },
+      "S": {
+        "physical_power": 8,
+        "magic_power": 8,
+        "crit_chance": 0.03
+      },
+      "SS": {
+        "physical_power": 11,
+        "magic_power": 11,
+        "crit_chance": 0.04
+      },
+      "Master": {
+        "physical_power": 15,
+        "magic_power": 15,
+        "crit_chance": 0.05,
+        "crit_damage": 0.2
+      }
     },
     "tracks": {
-      "sword":   { "name": "Sword",   "kind": "weapon" },
-      "axe":     { "name": "Axe",     "kind": "weapon" },
-      "dagger":  { "name": "Dagger",  "kind": "weapon" },
-      "staff":   { "name": "Staff",   "kind": "weapon" },
-      "bow":     { "name": "Bow",     "kind": "weapon" },
-      "mace":    { "name": "Mace",    "kind": "weapon" },
-      "fire":    { "name": "Fire",    "kind": "magic" },
-      "ice":     { "name": "Ice",     "kind": "magic" },
-      "light":   { "name": "Light",   "kind": "magic" },
-      "shadow":  { "name": "Shadow",  "kind": "magic" }
+      "sword": {
+        "name": "Sword",
+        "kind": "weapon"
+      },
+      "axe": {
+        "name": "Axe",
+        "kind": "weapon"
+      },
+      "dagger": {
+        "name": "Dagger",
+        "kind": "weapon"
+      },
+      "staff": {
+        "name": "Staff",
+        "kind": "weapon"
+      },
+      "bow": {
+        "name": "Bow",
+        "kind": "weapon"
+      },
+      "mace": {
+        "name": "Mace",
+        "kind": "weapon"
+      },
+      "fire": {
+        "name": "Fire",
+        "kind": "magic"
+      },
+      "ice": {
+        "name": "Ice",
+        "kind": "magic"
+      },
+      "light": {
+        "name": "Light",
+        "kind": "magic"
+      },
+      "shadow": {
+        "name": "Shadow",
+        "kind": "magic"
+      }
     }
+  },
+  "affinity_per_battle": 3,
+  "affinity_talk_falloff_after": 3,
+  "marriage_spouse_bonus": {
+    "max_hp": 25,
+    "physical_power": 3,
+    "magic_power": 3,
+    "armor": 3
+  },
+  "party": {
+    "max_active": 2
   }
 }

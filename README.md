@@ -32,8 +32,10 @@ ProjectAscension/
 │   ├── stats.py         StatBlock, ModifierSet, DerivedStats, Formulas
 │   ├── classes.py       ClassDefinition + promotion rules
 │   ├── mastery.py       F..Master tracks
+│   ├── party.py         active roster + reserve bench
+│   ├── relationships.py affinity and marriage (NPCs and companions)
 │   ├── rng.py           seedable, serialisable RNG
-│   ├── entities/        Entity -> Player, Enemy
+│   ├── entities/        Entity -> Player, Enemy, Companion
 │   ├── skills/          Skill, Effect strategies, StatusEffect
 │   ├── items/           Item, Inventory, equipment slots
 │   ├── combat/          turn loop + AI behaviour registry
@@ -81,6 +83,7 @@ Per [`docs/ENGINE_DESIGN.md`](docs/ENGINE_DESIGN.md), class count scales with
 | Enemies | 1 (`Enemy`) | 11 |
 | Items | 1 (`Item`) | 41 |
 | Statuses | 1 (`StatusEffect`) | 16 |
+| Companions | 1 (`Companion`) | 4 |
 
 Fireball is not a Python class. It is a JSON entry composing a `DamageEffect`
 and an `ApplyStatusEffect`:
@@ -124,7 +127,8 @@ never crashes a battle.
 | 12 | Physical/magic/true, crits, armour, penetration, evasion, DOT/HOT, shields, reflect | `skills/effects.py`, `stats.py` |
 | 13 | JSON enemies with growth, AI, loot, scaling | `entities/enemy.py` |
 | 14 | Mastery F→Master, earned by use | `mastery.py` |
-| 15 | Affinity and gender-agnostic marriage | `game.py`, `world/world.py` |
+| 6 | Companions, party roster | `entities/companion.py`, `party.py` |
+| 15 | Affinity and gender-agnostic marriage | `relationships.py` |
 | 16 | Multiple slots, morning autosave, inn respawn | `managers/save_manager.py` |
 
 **Promotion** requires level, stats, mastery, items, quests and gold. It swaps
@@ -132,6 +136,21 @@ the core skill, keeps every other learned skill, and consumes the required
 items. Where a requirement genuinely cannot be checked, `PromotionCheck`
 reports it under `unenforced` rather than silently ignoring it — the behaviour
 `ENGINE_DESIGN.md` asked for.
+
+**Companions** are recruited with gold, items, level and affinity, then either
+fight in the active roster (capped, so battles stay readable) or wait in
+reserve. They level with the player rather than earning separate EXP — a
+companion that falls behind is one you bench, which defeats the point. They act
+through the existing AI registry, so `Battle` needed no companion-shaped
+special case. Downed companions revive at 25% HP after a fight rather than
+dying permanently.
+
+**Affinity and marriage** live in one module, `engine/relationships.py`, used by
+townspeople and companions alike: both satisfy the same `Suitor` shape, so a
+companion is marriageable on exactly the same terms as an innkeeper. Gender is
+never consulted anywhere in that module — the cleanest way to honour §15 is to
+have nothing to remove. Marrying a companion grants them a real combat bonus,
+so it is a system rather than a checkbox.
 
 **Saves** are versioned and migrated forward (`SAVE_VERSION`), so a save from an
 older build still loads (§5, backwards compatibility). Writes go to a temp file
@@ -207,16 +226,24 @@ is reported as a `ContentError` with the exact ids, not discovered mid-battle.
 | `classes.json` | 19 classes, tiers 1–7, full promotion chains |
 | `items.json` | 41 items: weapons, armour, consumables, key items |
 | `enemies.json` | 11 enemies including 2 bosses |
+| `companions.json` | 4 recruitable allies, all marriageable |
 | `world.json` | 5 areas, 2 shops, 3 NPCs, encounter tables |
 
 Rebalancing is a JSON edit. Run `python3 main.py --check` afterwards.
 
 ## Known limitations
 
-- Companions, quests as a system, and the crafting/guild/housing features in
-  bible §20 are not implemented; the roadmap places them after v1.0.
-- The tier 4–7 classes exist and are reachable, but the content to realistically
-  reach them (higher-level areas and enemies) stops around level 18.
+- **Quests are not implemented.** `QuestManager` (bible §6) does not exist and
+  nothing can complete a quest, so the 12 promotions that require one are
+  currently unreachable. This blocks tiers 4–7 outright.
+- **Six promotion items are unobtainable** (`oath_sigil`, `shadow_pact`,
+  `grimoire_of_ages`, `sacred_relic`, `void_shard`, `codex_infinite`) — they
+  appear in no loot table, shop or starting kit, which blocks tier 3.
+  Together with the above, the game is currently playable to tier 2.
+- Content tops out around level 18, well short of the level 35/50/70/99 gates
+  on the upper tiers.
+- The §20 features (guilds, housing, crafting, arena, NG+) are not implemented;
+  the roadmap places them after v1.0.
 - `gui/theme.py` produces type-checker warnings on its `**options` widget
   factories. This is a known Tkinter/mypy variance limitation, documented in
   that file; the pattern is correct at runtime and is the only such finding in

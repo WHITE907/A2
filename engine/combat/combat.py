@@ -428,6 +428,22 @@ class Battle:
                 lines.append(f"{enemy.name}: defeated")
         return lines
 
+    def ally_lines(self) -> list[str]:
+        """``Rook: 40/60 HP`` rows for companions fighting alongside you.
+
+        Excludes the player, who has their own panel.
+        """
+        lines = []
+        for ally in self.allies:
+            if ally is self.player:
+                continue
+            if ally.is_alive:
+                status = f" [{', '.join(ally.status_summaries())}]" if ally.statuses else ""
+                lines.append(f"{ally.name}: {ally.hp_text()} HP{status}")
+            else:
+                lines.append(f"{ally.name}: down")
+        return lines or ["(none)"]
+
     def player_lines(self) -> list[str]:
         lines = [
             f"HP: {self.player.hp_text()}",
