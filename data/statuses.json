@@ -1,0 +1,140 @@
+{
+  "_comment": "Status templates. category: buff | debuff | dot | hot | shield | stun. Skills reference these by id via the apply_status effect.",
+  "statuses": [
+    {
+      "id": "poison",
+      "name": "Poison",
+      "category": "dot",
+      "duration": 3,
+      "per_turn_hp": -6,
+      "damage_type": "true",
+      "stacking": "stack",
+      "max_stacks": 3,
+      "description": "Toxins burn through the veins."
+    },
+    {
+      "id": "burn",
+      "name": "Burn",
+      "category": "dot",
+      "duration": 2,
+      "per_turn_hp": -9,
+      "damage_type": "true",
+      "stacking": "refresh",
+      "description": "Searing flames cling to the target."
+    },
+    {
+      "id": "bleed",
+      "name": "Bleed",
+      "category": "dot",
+      "duration": 3,
+      "per_turn_hp": -5,
+      "damage_type": "true",
+      "stacking": "stack",
+      "max_stacks": 4,
+      "description": "An open wound that will not close."
+    },
+    {
+      "id": "regeneration",
+      "name": "Regeneration",
+      "category": "hot",
+      "duration": 4,
+      "per_turn_hp": 8,
+      "description": "Life slowly knits itself back together."
+    },
+    {
+      "id": "meditation",
+      "name": "Meditation",
+      "category": "hot",
+      "duration": 3,
+      "per_turn_mp": 6,
+      "description": "A calm mind restores its own reserves."
+    },
+    {
+      "id": "might",
+      "name": "Might",
+      "category": "buff",
+      "duration": 3,
+      "modifiers": { "pct": { "physical_power": 0.3 } },
+      "description": "Strength surges through the body."
+    },
+    {
+      "id": "focus",
+      "name": "Focus",
+      "category": "buff",
+      "duration": 3,
+      "modifiers": { "pct": { "magic_power": 0.3 } },
+      "description": "The mind sharpens to a point."
+    },
+    {
+      "id": "haste",
+      "name": "Haste",
+      "category": "buff",
+      "duration": 3,
+      "modifiers": { "pct": { "speed": 0.4 }, "flat": { "evasion": 0.05 } },
+      "description": "Movements blur with speed."
+    },
+    {
+      "id": "iron_skin",
+      "name": "Iron Skin",
+      "category": "buff",
+      "duration": 3,
+      "modifiers": { "pct": { "armor": 0.5, "magic_resist": 0.25 } },
+      "description": "Flesh hardens against harm."
+    },
+    {
+      "id": "weakened",
+      "name": "Weakened",
+      "category": "debuff",
+      "duration": 3,
+      "modifiers": { "pct": { "physical_power": -0.25 } },
+      "description": "Muscles fail to answer."
+    },
+    {
+      "id": "sundered",
+      "name": "Sundered",
+      "category": "debuff",
+      "duration": 3,
+      "modifiers": { "pct": { "armor": -0.35 } },
+      "description": "Armour hangs broken and useless."
+    },
+    {
+      "id": "slowed",
+      "name": "Slowed",
+      "category": "debuff",
+      "duration": 2,
+      "modifiers": { "pct": { "speed": -0.3 }, "flat": { "evasion": -0.05 } },
+      "description": "Limbs drag as if through water."
+    },
+    {
+      "id": "blinded",
+      "name": "Blinded",
+      "category": "debuff",
+      "duration": 2,
+      "modifiers": { "flat": { "accuracy": -0.25 } },
+      "description": "Sight swims and blurs."
+    },
+    {
+      "id": "cursed",
+      "name": "Cursed",
+      "category": "debuff",
+      "duration": 3,
+      "per_turn_hp": -4,
+      "modifiers": { "pct": { "magic_resist": -0.3 } },
+      "description": "Dark power gnaws at body and spirit."
+    },
+    {
+      "id": "stunned",
+      "name": "Stunned",
+      "category": "stun",
+      "duration": 1,
+      "description": "Unable to act."
+    },
+    {
+      "id": "frozen",
+      "name": "Frozen",
+      "category": "stun",
+      "duration": 1,
+      "description": "Encased in ice, unable to move."
+    }
+  ]
+}

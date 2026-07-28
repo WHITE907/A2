@@ -1,0 +1,472 @@
+{
+  "_comment": "Bible section 10. Tier 1 starters are gender-restricted; tiers run 1..7. Promotion requires level, stats, mastery, items and quests. Warrior and Mage lines are built out through tier 7 as the reference implementation; new lines are added here, never in Python.",
+  "classes": [
+    {
+      "id": "squire",
+      "name": "Squire",
+      "tier": 1,
+      "gender_restriction": "male",
+      "description": "A young man trained to the blade, still learning what it costs.",
+      "base_stats": { "STR": 8, "END": 7, "INT": 3, "AGI": 5 },
+      "growth": { "STR": 2, "END": 2, "INT": 0, "AGI": 1 },
+      "core_skill_id": "strike",
+      "granted_skill_ids": ["power_strike"],
+      "skill_tree_ids": ["toughness", "sunder_armor", "keen_edge", "second_wind"],
+      "weapon_types": ["sword", "axe", "mace"],
+      "starting_items": { "iron_sword": 1, "leather_vest": 1, "minor_potion": 3 },
+      "starting_gold": 50,
+      "promotions": {
+        "knight": {
+          "level": 10,
+          "stats": { "STR": 20, "END": 18 },
+          "mastery": { "sword": "D" },
+          "items": { "knights_seal": 1 },
+          "gold": 200
+        }
+      }
+    },
+    {
+      "id": "maiden",
+      "name": "Maiden",
+      "tier": 1,
+      "gender_restriction": "female",
+      "description": "A young woman with a quick blade and quicker feet.",
+      "base_stats": { "STR": 6, "END": 5, "INT": 5, "AGI": 8 },
+      "growth": { "STR": 1, "END": 1, "INT": 1, "AGI": 3 },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": ["venom_edge"],
+      "skill_tree_ids": ["fleet_footed", "shadowstep", "keen_edge", "second_wind"],
+      "weapon_types": ["dagger", "sword", "bow"],
+      "starting_items": { "iron_dagger": 1, "leather_vest": 1, "minor_potion": 3 },
+      "starting_gold": 50,
+      "promotions": {
+        "duelist": {
+          "level": 10,
+          "stats": { "AGI": 22, "STR": 14 },
+          "mastery": { "dagger": "D" },
+          "items": { "duelists_token": 1 },
+          "gold": 200
+        }
+      }
+    },
+    {
+      "id": "acolyte",
+      "name": "Acolyte",
+      "tier": 1,
+      "gender_restriction": "any",
+      "description": "A student of the arcane, dangerous well before they are wise.",
+      "base_stats": { "STR": 3, "END": 4, "INT": 10, "AGI": 5 },
+      "growth": { "STR": 0, "END": 1, "INT": 3, "AGI": 1 },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": ["fireball"],
+      "skill_tree_ids": ["arcane_mind", "frost_lance", "mend", "steady_breath"],
+      "weapon_types": ["staff", "dagger"],
+      "starting_items": { "apprentice_staff": 1, "cloth_robe": 1, "minor_ether": 3 },
+      "starting_gold": 50,
+      "promotions": {
+        "mage": {
+          "level": 10,
+          "stats": { "INT": 24 },
+          "mastery": { "fire": "D" },
+          "items": { "arcane_focus": 1 },
+          "gold": 200
+        }
+      }
+    },
+    {
+      "id": "knight",
+      "name": "Knight",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "Sworn, armoured, and immovable.",
+      "base_stats": { "STR": 18, "END": 20, "INT": 6, "AGI": 9 },
+      "growth": { "STR": 3, "END": 3, "INT": 1, "AGI": 1 },
+      "core_skill_id": "smite",
+      "granted_skill_ids": ["shield_wall", "rallying_cry"],
+      "skill_tree_ids": ["toughness", "cleave", "warding_spirit", "sunder_armor"],
+      "weapon_types": ["sword", "axe", "mace"],
+      "passive_modifiers": { "flat": { "armor": 6 } },
+      "promotions": {
+        "paladin": {
+          "level": 20,
+          "stats": { "STR": 34, "END": 34, "INT": 16 },
+          "mastery": { "sword": "C", "light": "E" },
+          "items": { "oath_sigil": 1 },
+          "gold": 600
+        }
+      }
+    },
+    {
+      "id": "duelist",
+      "name": "Duelist",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "One blade, one opening, one answer.",
+      "base_stats": { "STR": 15, "END": 12, "INT": 8, "AGI": 24 },
+      "growth": { "STR": 2, "END": 1, "INT": 1, "AGI": 4 },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": ["shadowstep", "hunters_mark"],
+      "skill_tree_ids": ["fleet_footed", "keen_edge", "venom_edge", "aimed_shot"],
+      "weapon_types": ["dagger", "sword", "bow"],
+      "passive_modifiers": { "flat": { "evasion": 0.04 } },
+      "promotions": {
+        "assassin": {
+          "level": 20,
+          "stats": { "AGI": 40, "STR": 24 },
+          "mastery": { "dagger": "C", "shadow": "E" },
+          "items": { "shadow_pact": 1 },
+          "gold": 600
+        }
+      }
+    },
+    {
+      "id": "mage",
+      "name": "Mage",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "The arcane, understood well enough to be aimed.",
+      "base_stats": { "STR": 5, "END": 10, "INT": 26, "AGI": 10 },
+      "growth": { "STR": 0, "END": 1, "INT": 4, "AGI": 1 },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": ["flame_wave", "mind_over_matter"],
+      "skill_tree_ids": ["arcane_mind", "frost_lance", "renewal", "warding_spirit"],
+      "weapon_types": ["staff", "dagger"],
+      "passive_modifiers": { "pct": { "magic_power": 0.1 } },
+      "promotions": {
+        "archmage": {
+          "level": 20,
+          "stats": { "INT": 46 },
+          "mastery": { "fire": "C", "ice": "E" },
+          "items": { "grimoire_of_ages": 1 },
+          "gold": 600
+        }
+      }
+    },
+    {
+      "id": "paladin",
+      "name": "Paladin",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A blade held in service of something larger.",
+      "base_stats": { "STR": 36, "END": 38, "INT": 20, "AGI": 14 },
+      "growth": { "STR": 4, "END": 4, "INT": 2, "AGI": 1 },
+      "core_skill_id": "smite",
+      "granted_skill_ids": ["renewal", "shield_wall", "rallying_cry"],
+      "skill_tree_ids": ["toughness", "warding_spirit", "cleave", "mend"],
+      "ultimate_skill_ids": ["divine_judgment"],
+      "ultimate_unlock_level": 30,
+      "weapon_types": ["sword", "mace"],
+      "passive_modifiers": { "flat": { "armor": 10, "magic_resist": 8 } },
+      "promotions": {
+        "templar": {
+          "level": 35,
+          "stats": { "STR": 60, "END": 60, "INT": 34 },
+          "mastery": { "sword": "B", "light": "C" },
+          "items": { "sacred_relic": 1 },
+          "quests": ["trial_of_the_dawn"],
+          "gold": 2000
+        }
+      }
+    },
+    {
+      "id": "assassin",
+      "name": "Assassin",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "The fight ends before most people know it started.",
+      "base_stats": { "STR": 26, "END": 18, "INT": 14, "AGI": 44 },
+      "growth": { "STR": 3, "END": 2, "INT": 1, "AGI": 5 },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": ["shadow_bind", "shadowstep"],
+      "skill_tree_ids": ["fleet_footed", "keen_edge", "venom_edge"],
+      "ultimate_skill_ids": ["thousand_cuts"],
+      "ultimate_unlock_level": 30,
+      "weapon_types": ["dagger", "bow"],
+      "passive_modifiers": { "flat": { "crit_chance": 0.06, "evasion": 0.05 } },
+      "promotions": {
+        "nightblade": {
+          "level": 35,
+          "stats": { "AGI": 70, "STR": 40 },
+          "mastery": { "dagger": "B", "shadow": "C" },
+          "items": { "void_shard": 1 },
+          "quests": ["the_silent_contract"],
+          "gold": 2000
+        }
+      }
+    },
+    {
+      "id": "archmage",
+      "name": "Archmage",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "Magic no longer answers a request. It answers a command.",
+      "base_stats": { "STR": 8, "END": 18, "INT": 50, "AGI": 14 },
+      "growth": { "STR": 0, "END": 2, "INT": 6, "AGI": 1 },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": ["flame_wave", "frost_lance", "mind_over_matter"],
+      "skill_tree_ids": ["arcane_mind", "warding_spirit", "renewal"],
+      "ultimate_skill_ids": ["meteor"],
+      "ultimate_unlock_level": 30,
+      "weapon_types": ["staff"],
+      "passive_modifiers": { "pct": { "magic_power": 0.2 }, "flat": { "max_mp": 40 } },
+      "promotions": {
+        "archon": {
+          "level": 35,
+          "stats": { "INT": 80 },
+          "mastery": { "fire": "B", "ice": "B" },
+          "items": { "codex_infinite": 1 },
+          "quests": ["the_unwritten_page"],
+          "gold": 2000
+        }
+      }
+    },
+    {
+      "id": "templar",
+      "name": "Templar",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "The oath made flesh, armour and judgment.",
+      "base_stats": { "STR": 64, "END": 66, "INT": 38, "AGI": 20 },
+      "growth": { "STR": 5, "END": 5, "INT": 3, "AGI": 2 },
+      "core_skill_id": "smite",
+      "granted_skill_ids": ["divine_judgment", "renewal", "shield_wall"],
+      "skill_tree_ids": ["toughness", "warding_spirit", "cleave"],
+      "ultimate_skill_ids": ["divine_judgment", "titans_wrath"],
+      "ultimate_unlock_level": 40,
+      "weapon_types": ["sword", "mace"],
+      "passive_modifiers": { "flat": { "armor": 18, "magic_resist": 14 }, "pct": { "max_hp": 0.1 } },
+      "promotions": {
+        "crusader": {
+          "level": 50,
+          "stats": { "STR": 95, "END": 95, "INT": 55 },
+          "mastery": { "sword": "A", "light": "B" },
+          "items": { "sacred_relic": 2 },
+          "quests": ["the_last_bastion"],
+          "gold": 6000
+        }
+      }
+    },
+    {
+      "id": "nightblade",
+      "name": "Nightblade",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "Half shadow now, and the half that remains is sharp.",
+      "base_stats": { "STR": 42, "END": 30, "INT": 26, "AGI": 74 },
+      "growth": { "STR": 4, "END": 3, "INT": 2, "AGI": 7 },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": ["thousand_cuts", "shadow_bind"],
+      "skill_tree_ids": ["fleet_footed", "keen_edge", "venom_edge"],
+      "ultimate_skill_ids": ["thousand_cuts"],
+      "ultimate_unlock_level": 40,
+      "weapon_types": ["dagger", "bow"],
+      "passive_modifiers": { "flat": { "crit_chance": 0.1, "evasion": 0.08 } },
+      "promotions": {
+        "shadowlord": {
+          "level": 50,
+          "stats": { "AGI": 120, "STR": 65 },
+          "mastery": { "dagger": "A", "shadow": "B" },
+          "items": { "void_shard": 2 },
+          "quests": ["the_moonless_night"],
+          "gold": 6000
+        }
+      }
+    },
+    {
+      "id": "archon",
+      "name": "Archon",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A mind wide enough to hold a storm.",
+      "base_stats": { "STR": 12, "END": 30, "INT": 86, "AGI": 20 },
+      "growth": { "STR": 1, "END": 3, "INT": 8, "AGI": 2 },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": ["meteor", "flame_wave"],
+      "skill_tree_ids": ["arcane_mind", "warding_spirit", "renewal"],
+      "ultimate_skill_ids": ["meteor"],
+      "ultimate_unlock_level": 40,
+      "weapon_types": ["staff"],
+      "passive_modifiers": { "pct": { "magic_power": 0.35 }, "flat": { "max_mp": 80 } },
+      "promotions": {
+        "sorcerer_king": {
+          "level": 50,
+          "stats": { "INT": 140 },
+          "mastery": { "fire": "A", "ice": "A" },
+          "items": { "codex_infinite": 2 },
+          "quests": ["the_hollow_crown"],
+          "gold": 6000
+        }
+      }
+    },
+    {
+      "id": "crusader",
+      "name": "Crusader",
+      "tier": 5,
+      "gender_restriction": "any",
+      "description": "A one-person siege.",
+      "base_stats": { "STR": 100, "END": 100, "INT": 60, "AGI": 30 },
+      "growth": { "STR": 7, "END": 7, "INT": 4, "AGI": 2 },
+      "core_skill_id": "smite",
+      "granted_skill_ids": ["divine_judgment", "titans_wrath"],
+      "skill_tree_ids": ["toughness", "warding_spirit"],
+      "ultimate_skill_ids": ["divine_judgment", "titans_wrath"],
+      "ultimate_unlock_level": 55,
+      "weapon_types": ["sword", "mace", "axe"],
+      "passive_modifiers": { "flat": { "armor": 30, "magic_resist": 24 }, "pct": { "max_hp": 0.2 } },
+      "promotions": {
+        "godsworn": {
+          "level": 70,
+          "stats": { "STR": 150, "END": 150, "INT": 90 },
+          "mastery": { "sword": "S", "light": "A" },
+          "quests": ["the_final_oath"],
+          "gold": 20000
+        }
+      }
+    },
+    {
+      "id": "shadowlord",
+      "name": "Shadowlord",
+      "tier": 5,
+      "gender_restriction": "any",
+      "description": "The dark does not hide them. It obeys them.",
+      "base_stats": { "STR": 70, "END": 50, "INT": 44, "AGI": 126 },
+      "growth": { "STR": 5, "END": 4, "INT": 3, "AGI": 10 },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": ["thousand_cuts", "shadow_bind"],
+      "skill_tree_ids": ["fleet_footed", "keen_edge"],
+      "ultimate_skill_ids": ["thousand_cuts"],
+      "ultimate_unlock_level": 55,
+      "weapon_types": ["dagger", "bow"],
+      "passive_modifiers": { "flat": { "crit_chance": 0.15, "evasion": 0.12 } },
+      "promotions": {
+        "eclipse": {
+          "level": 70,
+          "stats": { "AGI": 200, "STR": 100 },
+          "mastery": { "dagger": "S", "shadow": "A" },
+          "quests": ["the_devouring_dark"],
+          "gold": 20000
+        }
+      }
+    },
+    {
+      "id": "sorcerer_king",
+      "name": "Sorcerer King",
+      "tier": 5,
+      "gender_restriction": "any",
+      "description": "Reality has learned to be polite.",
+      "base_stats": { "STR": 18, "END": 50, "INT": 150, "AGI": 30 },
+      "growth": { "STR": 1, "END": 4, "INT": 11, "AGI": 2 },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": ["meteor", "flame_wave"],
+      "skill_tree_ids": ["arcane_mind", "warding_spirit"],
+      "ultimate_skill_ids": ["meteor"],
+      "ultimate_unlock_level": 55,
+      "weapon_types": ["staff"],
+      "passive_modifiers": { "pct": { "magic_power": 0.5 }, "flat": { "max_mp": 150 } },
+      "promotions": {
+        "worldweaver": {
+          "level": 70,
+          "stats": { "INT": 240 },
+          "mastery": { "fire": "S", "ice": "S" },
+          "quests": ["the_first_word"],
+          "gold": 20000
+        }
+      }
+    },
+    {
+      "id": "godsworn",
+      "name": "Godsworn",
+      "tier": 6,
+      "gender_restriction": "any",
+      "description": "Something answered the oath. It has not left since.",
+      "base_stats": { "STR": 160, "END": 160, "INT": 100, "AGI": 45 },
+      "growth": { "STR": 10, "END": 10, "INT": 6, "AGI": 3 },
+      "core_skill_id": "smite",
+      "granted_skill_ids": ["divine_judgment", "titans_wrath"],
+      "skill_tree_ids": ["toughness", "warding_spirit"],
+      "ultimate_skill_ids": ["divine_judgment", "titans_wrath"],
+      "ultimate_unlock_level": 75,
+      "weapon_types": ["sword", "mace", "axe"],
+      "passive_modifiers": { "flat": { "armor": 55, "magic_resist": 45 }, "pct": { "max_hp": 0.35 } },
+      "promotions": {
+        "ascendant": {
+          "level": 99,
+          "stats": { "STR": 250, "END": 250, "INT": 150 },
+          "mastery": { "sword": "Master", "light": "SS" },
+          "quests": ["ascension"],
+          "gold": 100000
+        }
+      }
+    },
+    {
+      "id": "eclipse",
+      "name": "Eclipse",
+      "tier": 6,
+      "gender_restriction": "any",
+      "description": "Where they pass, the light simply declines to follow.",
+      "base_stats": { "STR": 110, "END": 80, "INT": 70, "AGI": 210 },
+      "growth": { "STR": 7, "END": 6, "INT": 5, "AGI": 14 },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": ["thousand_cuts", "shadow_bind"],
+      "skill_tree_ids": ["fleet_footed", "keen_edge"],
+      "ultimate_skill_ids": ["thousand_cuts"],
+      "ultimate_unlock_level": 75,
+      "weapon_types": ["dagger", "bow"],
+      "passive_modifiers": { "flat": { "crit_chance": 0.22, "evasion": 0.18 } },
+      "promotions": {
+        "ascendant": {
+          "level": 99,
+          "stats": { "AGI": 330, "STR": 170 },
+          "mastery": { "dagger": "Master", "shadow": "SS" },
+          "quests": ["ascension"],
+          "gold": 100000
+        }
+      }
+    },
+    {
+      "id": "worldweaver",
+      "name": "Worldweaver",
+      "tier": 6,
+      "gender_restriction": "any",
+      "description": "They do not cast spells. They revise the terrain.",
+      "base_stats": { "STR": 28, "END": 80, "INT": 250, "AGI": 45 },
+      "growth": { "STR": 2, "END": 6, "INT": 16, "AGI": 3 },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": ["meteor", "flame_wave"],
+      "skill_tree_ids": ["arcane_mind", "warding_spirit"],
+      "ultimate_skill_ids": ["meteor"],
+      "ultimate_unlock_level": 75,
+      "weapon_types": ["staff"],
+      "passive_modifiers": { "pct": { "magic_power": 0.8 }, "flat": { "max_mp": 300 } },
+      "promotions": {
+        "ascendant": {
+          "level": 99,
+          "stats": { "INT": 400 },
+          "mastery": { "fire": "Master", "ice": "SS" },
+          "quests": ["ascension"],
+          "gold": 100000
+        }
+      }
+    },
+    {
+      "id": "ascendant",
+      "name": "Ascendant",
+      "tier": 7,
+      "gender_restriction": "any",
+      "description": "The end of the climb, and the beginning of the view.",
+      "base_stats": { "STR": 280, "END": 280, "INT": 280, "AGI": 280 },
+      "growth": { "STR": 14, "END": 14, "INT": 14, "AGI": 14 },
+      "core_skill_id": "smite",
+      "granted_skill_ids": ["divine_judgment", "titans_wrath", "meteor", "thousand_cuts"],
+      "skill_tree_ids": ["toughness", "warding_spirit", "arcane_mind", "keen_edge", "fleet_footed"],
+      "ultimate_skill_ids": ["divine_judgment", "titans_wrath", "meteor", "thousand_cuts"],
+      "ultimate_unlock_level": 99,
+      "weapon_types": [],
+      "passive_modifiers": {
+        "flat": { "armor": 90, "magic_resist": 90, "crit_chance": 0.15 },
+        "pct": { "max_hp": 0.5, "physical_power": 0.4, "magic_power": 0.4 }
+      },
+      "promotions": {}
+    }
+  ]
+}
