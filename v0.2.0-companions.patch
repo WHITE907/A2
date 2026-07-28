@@ -1,0 +1,2971 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 860320f..60fd33b 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -2,6 +2,55 @@
+ 
+ Bible §18: update the changelog after versions.
+ 
++## v0.2.0 - Companions and Relationships
++
++Implements roadmap v0.0.9 (Companions) and completes bible §15.
++
++### Companions (bible §6, roadmap v0.0.9)
++- `Companion` entity extending `Entity`, plus `CompanionDefinition` -
++  one class each, four JSON entries, same pattern as Skill/Enemy/Item.
++- `CompanionManager` factory reading `data/companions.json`.
++- `Party` with an active roster (capped by `party.max_active`) and a
++  reserve bench, so battles stay readable.
++- Companions **level with the player** via `level_offset` rather than
++  earning separate EXP - a companion that falls behind is one the player
++  benches, which defeats the point of having them.
++- They fight through the existing AI registry: `Battle` already accepted
++  `allies`, so no combat special-case was needed.
++- Fallen companions revive at 25% HP after a battle instead of dying
++  permanently; resting and respawning heal the whole party.
++- Recruitment gated on level, affinity, gold, items and quests, with an
++  itemised checklist in the same style as promotion.
++
++### Relationships (bible §15)
++- New `engine/relationships.py` owns affinity and marriage **once** for
++  both NPCs and companions - both satisfy the same `Suitor` shape, so
++  companions are marriageable on identical terms.
++- Gender is never consulted anywhere in the module.
++- Affinity tiers (Hostile -> Devoted) for display.
++- Talking repeatedly in one day yields less, so the optimal play is not
++  clicking Talk a hundred times.
++- Companions gain affinity for fighting beside the player.
++- A married companion gains a real combat bonus
++  (`marriage_spouse_bonus` in config) and cannot be dismissed.
++
++### GUI
++- New Party window: roster, recruitable locals, and a detail pane.
++- Combat screen gained an Allies panel.
++- Talk window now serves companions and NPCs, and lists the exact
++  outstanding marriage requirements instead of just greying out Propose.
++
++### Tests
++366 total, up from 267: 76 new companion/relationship engine tests and
++23 new GUI tests.
++
++### Fixed
++- `can_marry` reported a generic "Requirements not met." instead of
++  naming what was missing.
++- Party window overwrote its recruitment checklist immediately after
++  showing it.
++- Long status lists overflowed the combat side panels.
++
+ ## v0.1.0 - Playable Foundation
+ 
+ First playable build. Implements the roadmap from v0.0.4 through v0.0.9 in one
+diff --git a/README.md b/README.md
+index e4bc24a..6fa850f 100644
+--- a/README.md
++++ b/README.md
+@@ -32,8 +32,10 @@ ProjectAscension/
+ │   ├── stats.py         StatBlock, ModifierSet, DerivedStats, Formulas
+ │   ├── classes.py       ClassDefinition + promotion rules
+ │   ├── mastery.py       F..Master tracks
++│   ├── party.py         active roster + reserve bench
++│   ├── relationships.py affinity and marriage (NPCs and companions)
+ │   ├── rng.py           seedable, serialisable RNG
+-│   ├── entities/        Entity -> Player, Enemy
++│   ├── entities/        Entity -> Player, Enemy, Companion
+ │   ├── skills/          Skill, Effect strategies, StatusEffect
+ │   ├── items/           Item, Inventory, equipment slots
+ │   ├── combat/          turn loop + AI behaviour registry
+@@ -81,6 +83,7 @@ Per [`docs/ENGINE_DESIGN.md`](docs/ENGINE_DESIGN.md), class count scales with
+ | Enemies | 1 (`Enemy`) | 11 |
+ | Items | 1 (`Item`) | 41 |
+ | Statuses | 1 (`StatusEffect`) | 16 |
++| Companions | 1 (`Companion`) | 4 |
+ 
+ Fireball is not a Python class. It is a JSON entry composing a `DamageEffect`
+ and an `ApplyStatusEffect`:
+@@ -124,7 +127,8 @@ never crashes a battle.
+ | 12 | Physical/magic/true, crits, armour, penetration, evasion, DOT/HOT, shields, reflect | `skills/effects.py`, `stats.py` |
+ | 13 | JSON enemies with growth, AI, loot, scaling | `entities/enemy.py` |
+ | 14 | Mastery F→Master, earned by use | `mastery.py` |
+-| 15 | Affinity and gender-agnostic marriage | `game.py`, `world/world.py` |
++| 6 | Companions, party roster | `entities/companion.py`, `party.py` |
++| 15 | Affinity and gender-agnostic marriage | `relationships.py` |
+ | 16 | Multiple slots, morning autosave, inn respawn | `managers/save_manager.py` |
+ 
+ **Promotion** requires level, stats, mastery, items, quests and gold. It swaps
+@@ -133,6 +137,21 @@ items. Where a requirement genuinely cannot be checked, `PromotionCheck`
+ reports it under `unenforced` rather than silently ignoring it — the behaviour
+ `ENGINE_DESIGN.md` asked for.
+ 
++**Companions** are recruited with gold, items, level and affinity, then either
++fight in the active roster (capped, so battles stay readable) or wait in
++reserve. They level with the player rather than earning separate EXP — a
++companion that falls behind is one you bench, which defeats the point. They act
++through the existing AI registry, so `Battle` needed no companion-shaped
++special case. Downed companions revive at 25% HP after a fight rather than
++dying permanently.
++
++**Affinity and marriage** live in one module, `engine/relationships.py`, used by
++townspeople and companions alike: both satisfy the same `Suitor` shape, so a
++companion is marriageable on exactly the same terms as an innkeeper. Gender is
++never consulted anywhere in that module — the cleanest way to honour §15 is to
++have nothing to remove. Marrying a companion grants them a real combat bonus,
++so it is a system rather than a checkbox.
++
+ **Saves** are versioned and migrated forward (`SAVE_VERSION`), so a save from an
+ older build still loads (§5, backwards compatibility). Writes go to a temp file
+ and are atomically replaced, so a crash mid-write cannot corrupt a slot. The RNG
+@@ -207,16 +226,24 @@ is reported as a `ContentError` with the exact ids, not discovered mid-battle.
+ | `classes.json` | 19 classes, tiers 1–7, full promotion chains |
+ | `items.json` | 41 items: weapons, armour, consumables, key items |
+ | `enemies.json` | 11 enemies including 2 bosses |
++| `companions.json` | 4 recruitable allies, all marriageable |
+ | `world.json` | 5 areas, 2 shops, 3 NPCs, encounter tables |
+ 
+ Rebalancing is a JSON edit. Run `python3 main.py --check` afterwards.
+ 
+ ## Known limitations
+ 
+-- Companions, quests as a system, and the crafting/guild/housing features in
+-  bible §20 are not implemented; the roadmap places them after v1.0.
+-- The tier 4–7 classes exist and are reachable, but the content to realistically
+-  reach them (higher-level areas and enemies) stops around level 18.
++- **Quests are not implemented.** `QuestManager` (bible §6) does not exist and
++  nothing can complete a quest, so the 12 promotions that require one are
++  currently unreachable. This blocks tiers 4–7 outright.
++- **Six promotion items are unobtainable** (`oath_sigil`, `shadow_pact`,
++  `grimoire_of_ages`, `sacred_relic`, `void_shard`, `codex_infinite`) — they
++  appear in no loot table, shop or starting kit, which blocks tier 3.
++  Together with the above, the game is currently playable to tier 2.
++- Content tops out around level 18, well short of the level 35/50/70/99 gates
++  on the upper tiers.
++- The §20 features (guilds, housing, crafting, arena, NG+) are not implemented;
++  the roadmap places them after v1.0.
+ - `gui/theme.py` produces type-checker warnings on its `**options` widget
+   factories. This is a known Tkinter/mypy variance limitation, documented in
+   that file; the pattern is correct at runtime and is the only such finding in
+diff --git a/data/companions.json b/data/companions.json
+new file mode 100644
+index 0000000..93f423b
+--- /dev/null
++++ b/data/companions.json
+@@ -0,0 +1,101 @@
++{
++  "_comment": "Recruitable allies (bible section 6, roadmap v0.0.9). They level with the player via level_offset and fight themselves through the AI registry in engine/combat/ai.py. Any with marriageable:true can be married on the same terms as townspeople (section 15) - gender is never considered.",
++  "companions": [
++    {
++      "id": "rook",
++      "name": "Rook",
++      "role": "guardian",
++      "description": "A retired sellsword who stayed in Ashvale because leaving cost more than staying.",
++      "location_id": "town_ashvale",
++      "base_stats": { "STR": 10, "END": 12, "INT": 3, "AGI": 5 },
++      "growth": { "STR": 2, "END": 3, "INT": 0, "AGI": 1 },
++      "skill_ids": ["strike", "power_strike", "shield_wall", "rallying_cry"],
++      "ai_behavior_id": "defensive",
++      "level_offset": 0,
++      "weapon_type": "sword",
++      "modifiers": { "flat": { "armor": 6, "max_hp": 30 } },
++      "recruit": { "level": 2, "gold": 120 },
++      "marriageable": true,
++      "marriage_affinity": 70,
++      "gift_item_ids": ["troll_hide", "steel_sword", "potion"],
++      "dialogue": [
++        "Stay behind me and this stays simple.",
++        "I've buried better fighters than either of us. Keep your guard up.",
++        "You swing like you're angry. Anger's fine. Sloppy isn't.",
++        "Quiet roads make me nervous. Loud ones make me useful."
++      ]
++    },
++    {
++      "id": "sister_elen",
++      "name": "Sister Elen",
++      "role": "healer",
++      "description": "Left the shrine when it stopped answering questions. Still keeps the vows that mattered.",
++      "location_id": "town_ashvale",
++      "base_stats": { "STR": 3, "END": 7, "INT": 12, "AGI": 6 },
++      "growth": { "STR": 0, "END": 1, "INT": 3, "AGI": 1 },
++      "skill_ids": ["arcane_bolt", "mend", "renewal", "steady_breath"],
++      "ai_behavior_id": "tactical",
++      "level_offset": -1,
++      "weapon_type": "staff",
++      "modifiers": { "flat": { "max_mp": 25, "magic_resist": 5 } },
++      "recruit": { "level": 4, "affinity": 15, "items": { "minor_ether": 2 } },
++      "marriageable": true,
++      "marriage_affinity": 80,
++      "gift_item_ids": ["minor_ether", "ether", "antidote"],
++      "dialogue": [
++        "You're hurt. Sit. That wasn't a request.",
++        "The shrine taught mercy. The road taught triage.",
++        "I can keep you standing. I can't keep you sensible.",
++        "Every prayer I know is just a very old instruction. They still work."
++      ]
++    },
++    {
++      "id": "kess",
++      "name": "Kess",
++      "role": "skirmisher",
++      "description": "Fast, cheerful, and entirely unbothered by the word 'ambush'.",
++      "location_id": "old_road",
++      "base_stats": { "STR": 7, "END": 6, "INT": 5, "AGI": 14 },
++      "growth": { "STR": 1, "END": 1, "INT": 1, "AGI": 3 },
++      "skill_ids": ["pierce", "venom_edge", "shadowstep", "hunters_mark"],
++      "ai_behavior_id": "opportunist",
++      "level_offset": 0,
++      "weapon_type": "dagger",
++      "modifiers": { "flat": { "crit_chance": 0.05, "speed": 4 } },
++      "recruit": { "level": 6, "gold": 250, "affinity": 10 },
++      "marriageable": true,
++      "marriage_affinity": 75,
++      "gift_item_ids": ["shadow_fang", "bandit_coin", "travel_boots"],
++      "dialogue": [
++        "Found you a shortcut. It's only a bit haunted.",
++        "Rook says I'm reckless. Rook is slow. Draw your own conclusions.",
++        "If it bleeds, it has a schedule. I just move it up.",
++        "Don't look behind us. Actually - do, and then run."
++      ]
++    },
++    {
++      "id": "magister_voss",
++      "name": "Magister Voss",
++      "role": "mage",
++      "description": "Studies the Sunken Shrine because nobody sensible will. Glass, but the sharp kind.",
++      "location_id": "hollow_cave",
++      "base_stats": { "STR": 2, "END": 5, "INT": 18, "AGI": 7 },
++      "growth": { "STR": 0, "END": 1, "INT": 4, "AGI": 1 },
++      "skill_ids": ["arcane_bolt", "fireball", "frost_lance", "mind_over_matter"],
++      "ai_behavior_id": "aggressive",
++      "level_offset": -1,
++      "weapon_type": "staff",
++      "modifiers": { "pct": { "magic_power": 0.15 }, "flat": { "max_hp": -10 } },
++      "recruit": { "level": 9, "affinity": 20, "gold": 400, "items": { "shadow_essence": 1 } },
++      "marriageable": true,
++      "marriage_affinity": 85,
++      "gift_item_ids": ["shadow_essence", "runed_staff", "amulet_of_insight"],
++      "dialogue": [
++        "The shrine is older than the language on it. Doesn't that trouble you?",
++        "Stand clear of the target. I mean genuinely clear.",
++        "I have three theories. Two of them end badly for us.",
++        "Knowledge first, safety somewhere after. It's a working order."
++      ]
++    }
++  ]
++}
+diff --git a/data/config.json b/data/config.json
+index 5de1e96..cc54582 100644
+--- a/data/config.json
++++ b/data/config.json
+@@ -1,7 +1,9 @@
+ {
+   "_comment": "Every gameplay coefficient in the game. Bible section 5: gameplay values are never hardcoded. Edit numbers here to rebalance; no Python change is needed.",
+-
+-  "genders": ["male", "female"],
++  "genders": [
++    "male",
++    "female"
++  ],
+   "starting_gold": 50,
+   "inn_cost": 10,
+   "death_gold_penalty": 0.1,
+@@ -10,7 +12,6 @@
+   "affinity_per_talk": 2,
+   "affinity_gift": 5,
+   "affinity_gift_liked": 15,
+-
+   "progression": {
+     "_comment": "Bible section 9: unlimited levels, +5 stat points and +1 skill point per level.",
+     "starting_level": 1,
+@@ -20,56 +21,176 @@
+     "exp_growth": 1.15,
+     "exp_linear": 20.0
+   },
+-
+   "combat": {
+     "flee_base_chance": 0.45,
+     "mastery_per_action": 6.0
+   },
+-
+   "formulas": {
+     "_comment": "base + per_<stat> * stat + per_level * level. Add a per_<stat> key to any block and it takes effect immediately.",
+-
+-    "hp":             { "base": 40, "per_end": 8.0, "per_str": 1.5, "per_level": 6.0 },
+-    "mp":             { "base": 15, "per_int": 5.0, "per_level": 2.0 },
+-    "physical_power": { "base": 3,  "per_str": 1.6, "per_agi": 0.4 },
+-    "magic_power":    { "base": 3,  "per_int": 1.8 },
+-    "armor":          { "base": 0,  "per_end": 1.4, "per_level": 0.6 },
+-    "magic_resist":   { "base": 0,  "per_int": 0.8, "per_end": 0.5, "per_level": 0.4 },
+-    "crit_chance":    { "base": 0.03, "per_agi": 0.004, "max": 0.75 },
+-    "crit_damage":    { "base": 1.5,  "per_str": 0.004 },
+-    "accuracy":       { "base": 0.88, "per_agi": 0.004, "max": 0.99 },
+-    "evasion":        { "base": 0.02, "per_agi": 0.005, "max": 0.60 },
+-    "speed":          { "base": 8,    "per_agi": 1.1 },
+-
++    "hp": {
++      "base": 40,
++      "per_end": 8.0,
++      "per_str": 1.5,
++      "per_level": 6.0
++    },
++    "mp": {
++      "base": 15,
++      "per_int": 5.0,
++      "per_level": 2.0
++    },
++    "physical_power": {
++      "base": 3,
++      "per_str": 1.6,
++      "per_agi": 0.4
++    },
++    "magic_power": {
++      "base": 3,
++      "per_int": 1.8
++    },
++    "armor": {
++      "base": 0,
++      "per_end": 1.4,
++      "per_level": 0.6
++    },
++    "magic_resist": {
++      "base": 0,
++      "per_int": 0.8,
++      "per_end": 0.5,
++      "per_level": 0.4
++    },
++    "crit_chance": {
++      "base": 0.03,
++      "per_agi": 0.004,
++      "max": 0.75
++    },
++    "crit_damage": {
++      "base": 1.5,
++      "per_str": 0.004
++    },
++    "accuracy": {
++      "base": 0.88,
++      "per_agi": 0.004,
++      "max": 0.99
++    },
++    "evasion": {
++      "base": 0.02,
++      "per_agi": 0.005,
++      "max": 0.6
++    },
++    "speed": {
++      "base": 8,
++      "per_agi": 1.1
++    },
+     "mitigation_constant": 100.0,
+     "hit_floor": 0.05,
+     "hit_ceiling": 0.99
+   },
+-
+   "mastery": {
+     "_comment": "Bible section 14: F, E, D, C, B, A, S, SS, Master. Thresholds are cumulative EXP to reach each rank.",
+-    "thresholds": [0, 100, 300, 700, 1400, 2600, 4500, 7500, 12000],
++    "thresholds": [
++      0,
++      100,
++      300,
++      700,
++      1400,
++      2600,
++      4500,
++      7500,
++      12000
++    ],
+     "rank_bonuses": {
+-      "E":      { "physical_power": 1, "magic_power": 1 },
+-      "D":      { "physical_power": 2, "magic_power": 2 },
+-      "C":      { "physical_power": 3, "magic_power": 3, "accuracy": 0.01 },
+-      "B":      { "physical_power": 4, "magic_power": 4, "accuracy": 0.01 },
+-      "A":      { "physical_power": 6, "magic_power": 6, "crit_chance": 0.02 },
+-      "S":      { "physical_power": 8, "magic_power": 8, "crit_chance": 0.03 },
+-      "SS":     { "physical_power": 11, "magic_power": 11, "crit_chance": 0.04 },
+-      "Master": { "physical_power": 15, "magic_power": 15, "crit_chance": 0.05, "crit_damage": 0.2 }
++      "E": {
++        "physical_power": 1,
++        "magic_power": 1
++      },
++      "D": {
++        "physical_power": 2,
++        "magic_power": 2
++      },
++      "C": {
++        "physical_power": 3,
++        "magic_power": 3,
++        "accuracy": 0.01
++      },
++      "B": {
++        "physical_power": 4,
++        "magic_power": 4,
++        "accuracy": 0.01
++      },
++      "A": {
++        "physical_power": 6,
++        "magic_power": 6,
++        "crit_chance": 0.02
++      },
++      "S": {
++        "physical_power": 8,
++        "magic_power": 8,
++        "crit_chance": 0.03
++      },
++      "SS": {
++        "physical_power": 11,
++        "magic_power": 11,
++        "crit_chance": 0.04
++      },
++      "Master": {
++        "physical_power": 15,
++        "magic_power": 15,
++        "crit_chance": 0.05,
++        "crit_damage": 0.2
++      }
+     },
+     "tracks": {
+-      "sword":   { "name": "Sword",   "kind": "weapon" },
+-      "axe":     { "name": "Axe",     "kind": "weapon" },
+-      "dagger":  { "name": "Dagger",  "kind": "weapon" },
+-      "staff":   { "name": "Staff",   "kind": "weapon" },
+-      "bow":     { "name": "Bow",     "kind": "weapon" },
+-      "mace":    { "name": "Mace",    "kind": "weapon" },
+-      "fire":    { "name": "Fire",    "kind": "magic" },
+-      "ice":     { "name": "Ice",     "kind": "magic" },
+-      "light":   { "name": "Light",   "kind": "magic" },
+-      "shadow":  { "name": "Shadow",  "kind": "magic" }
++      "sword": {
++        "name": "Sword",
++        "kind": "weapon"
++      },
++      "axe": {
++        "name": "Axe",
++        "kind": "weapon"
++      },
++      "dagger": {
++        "name": "Dagger",
++        "kind": "weapon"
++      },
++      "staff": {
++        "name": "Staff",
++        "kind": "weapon"
++      },
++      "bow": {
++        "name": "Bow",
++        "kind": "weapon"
++      },
++      "mace": {
++        "name": "Mace",
++        "kind": "weapon"
++      },
++      "fire": {
++        "name": "Fire",
++        "kind": "magic"
++      },
++      "ice": {
++        "name": "Ice",
++        "kind": "magic"
++      },
++      "light": {
++        "name": "Light",
++        "kind": "magic"
++      },
++      "shadow": {
++        "name": "Shadow",
++        "kind": "magic"
++      }
+     }
++  },
++  "affinity_per_battle": 3,
++  "affinity_talk_falloff_after": 3,
++  "marriage_spouse_bonus": {
++    "max_hp": 25,
++    "physical_power": 3,
++    "magic_power": 3,
++    "armor": 3
++  },
++  "party": {
++    "max_active": 2
+   }
+ }
+diff --git a/engine/combat/combat.py b/engine/combat/combat.py
+index cfbd230..aeba0c1 100644
+--- a/engine/combat/combat.py
++++ b/engine/combat/combat.py
+@@ -428,6 +428,22 @@ class Battle:
+                 lines.append(f"{enemy.name}: defeated")
+         return lines
+ 
++    def ally_lines(self) -> list[str]:
++        """``Rook: 40/60 HP`` rows for companions fighting alongside you.
++
++        Excludes the player, who has their own panel.
++        """
++        lines = []
++        for ally in self.allies:
++            if ally is self.player:
++                continue
++            if ally.is_alive:
++                status = f" [{', '.join(ally.status_summaries())}]" if ally.statuses else ""
++                lines.append(f"{ally.name}: {ally.hp_text()} HP{status}")
++            else:
++                lines.append(f"{ally.name}: down")
++        return lines or ["(none)"]
++
+     def player_lines(self) -> list[str]:
+         lines = [
+             f"HP: {self.player.hp_text()}",
+diff --git a/engine/entities/companion.py b/engine/entities/companion.py
+new file mode 100644
+index 0000000..059becc
+--- /dev/null
++++ b/engine/entities/companion.py
+@@ -0,0 +1,242 @@
++"""``Companion`` - ONE class for every recruitable ally (roadmap v0.0.9).
++
++Bible section 6 lists Companion as a planned core entity.  It follows the same
++rule as Skill/Enemy/Item (docs/ENGINE_DESIGN.md): one Python class, many JSON
++entries.  Rook the mercenary and Iven the scholar are *instances*, not
++subclasses.
++
++Two deliberate design choices, both to avoid systems that add grind without
++adding depth:
++
++**Companions level with the player**, offset by ``level_offset``, rather than
++earning separate EXP.  A companion that falls behind becomes dead weight and
++forces the player to bench them - which is exactly the opposite of what a
++companion system is for.  The offset still lets content authors ship a
++deliberately fragile healer or an over-levelled bodyguard.
++
++**Companions fight themselves**, through the existing AI registry
++(``engine/combat/ai.py``).  They are allies, so :class:`Battle` already routes
++their turns; nothing in the combat loop needed a companion-shaped special case.
++"""
++
++from __future__ import annotations
++
++from dataclasses import dataclass, field
++from typing import Any, Mapping, Sequence
++
++from engine.entities.entity import Entity
++from engine.skills.skill import Skill
++from engine.stats import Formulas, ModifierSet, StatBlock
++
++__all__ = ["Companion", "CompanionDefinition", "RecruitRequirement"]
++
++
++@dataclass
++class RecruitRequirement:
++    """What the player must satisfy before a companion will join."""
++
++    level: int = 1
++    affinity: int = 0
++    gold: int = 0
++    items: dict[str, int] = field(default_factory=dict)
++    quests: list[str] = field(default_factory=list)
++
++    @classmethod
++    def from_dict(cls, payload: Mapping[str, Any] | None) -> "RecruitRequirement":
++        payload = payload or {}
++        raw_items = payload.get("items") or {}
++        if isinstance(raw_items, Mapping):
++            items = {str(k): int(v) for k, v in raw_items.items()}
++        elif isinstance(raw_items, (str, bytes)):
++            items = {str(raw_items): 1}
++        else:
++            items = {str(item): 1 for item in raw_items}
++        return cls(
++            level=int(payload.get("level", 1)),
++            affinity=int(payload.get("affinity", 0)),
++            gold=int(payload.get("gold", 0)),
++            items=items,
++            quests=[str(q) for q in payload.get("quests", [])],
++        )
++
++    def describe(self) -> list[str]:
++        lines: list[str] = []
++        if self.level > 1:
++            lines.append(f"Level {self.level}")
++        if self.affinity:
++            lines.append(f"Affinity {self.affinity}")
++        if self.gold:
++            lines.append(f"{self.gold} gold")
++        lines.extend(f"{i.replace('_', ' ').title()} x{q}" for i, q in self.items.items())
++        lines.extend(f"Quest: {q.replace('_', ' ').title()}" for q in self.quests)
++        return lines
++
++
++@dataclass
++class CompanionDefinition:
++    """Immutable blueprint for one companion.
++
++    Satisfies the same informal "suitor" shape as
++    :class:`~engine.world.world.NPC` (``id``/``name``/``marriageable``/
++    ``marriage_affinity``/``gift_item_ids``), which is what lets
++    :mod:`engine.relationships` drive affinity and marriage for both without
++    branching on type.
++    """
++
++    id: str
++    name: str
++    description: str = ""
++    role: str = "fighter"
++    base_stats: StatBlock = field(default_factory=StatBlock)
++    growth: StatBlock = field(default_factory=StatBlock)
++    skill_ids: list[str] = field(default_factory=list)
++    ai_behavior_id: str = "aggressive"
++    #: Level relative to the player - negative is deliberately fragile.
++    level_offset: int = 0
++    modifiers: ModifierSet = field(default_factory=ModifierSet)
++    weapon_type: str = ""
++    #: Where the player can find and recruit them.
++    location_id: str = ""
++    recruit: RecruitRequirement = field(default_factory=RecruitRequirement)
++    dialogue: list[str] = field(default_factory=list)
++    #: -- relationship fields, shared shape with NPC --
++    marriageable: bool = False
++    marriage_affinity: int = 80
++    gift_item_ids: list[str] = field(default_factory=list)
++
++    def stats_at_level(self, level: int) -> StatBlock:
++        result = self.base_stats.copy()
++        steps = max(0, level - 1)
++        for key in ("STR", "END", "INT", "AGI"):
++            result[key] = result[key] + self.growth[key] * steps
++        return result
++
++    def level_for(self, player_level: int) -> int:
++        return max(1, player_level + self.level_offset)
++
++    def detail_lines(self) -> list[str]:
++        lines = [self.name]
++        if self.description:
++            lines.append(self.description)
++        lines.append(f"Role: {self.role.title()}")
++        if self.weapon_type:
++            lines.append(f"Fights with: {self.weapon_type.title()}")
++        return lines
++
++    @classmethod
++    def from_dict(cls, payload: Mapping[str, Any]) -> "CompanionDefinition":
++        companion_id = str(payload.get("id", "")).strip()
++        if not companion_id:
++            raise ValueError("companion entry is missing an 'id'")
++        return cls(
++            id=companion_id,
++            name=str(payload.get("name", companion_id)),
++            description=str(payload.get("description", "")),
++            role=str(payload.get("role", "fighter")),
++            base_stats=StatBlock.from_dict(payload.get("base_stats")),
++            growth=StatBlock.from_dict(payload.get("growth")),
++            skill_ids=[str(s) for s in payload.get("skill_ids", [])],
++            ai_behavior_id=str(payload.get("ai_behavior_id", "aggressive")),
++            level_offset=int(payload.get("level_offset", 0)),
++            modifiers=ModifierSet.from_dict(payload.get("modifiers")),
++            weapon_type=str(payload.get("weapon_type", "")).lower(),
++            location_id=str(payload.get("location_id", "")),
++            recruit=RecruitRequirement.from_dict(payload.get("recruit")),
++            dialogue=[str(line) for line in payload.get("dialogue", [])],
++            marriageable=bool(payload.get("marriageable", False)),
++            marriage_affinity=int(payload.get("marriage_affinity", 80)),
++            gift_item_ids=[str(i) for i in payload.get("gift_item_ids", [])],
++        )
++
++
++class Companion(Entity):
++    """A live recruited ally in the party."""
++
++    def __init__(
++        self,
++        definition: CompanionDefinition,
++        level: int,
++        formulas: Formulas,
++        skills: Sequence[Skill] = (),
++    ) -> None:
++        self.definition = definition
++        self.skills: list[Skill] = list(skills)
++        self.cooldowns: dict[str, int] = {}
++        self.ai_behavior_id = definition.ai_behavior_id
++        #: Set by the party when a marriage bonus applies.
++        self._married_bonus: ModifierSet | None = None
++
++        super().__init__(
++            name=definition.name,
++            level=level,
++            base_stats=definition.stats_at_level(level),
++            formulas=formulas,
++        )
++
++    # ------------------------------------------------------------------
++    @property
++    def id(self) -> str:
++        return self.definition.id
++
++    def _equipment_modifiers(self) -> ModifierSet:
++        """Companions carry no gear; template + marriage bonuses stand in."""
++        combined = ModifierSet()
++        combined.merge(self.definition.modifiers)
++        if self._married_bonus is not None:
++            combined.merge(self._married_bonus)
++        return combined
++
++    def set_married_bonus(self, bonus: ModifierSet | None) -> None:
++        """Apply (or clear) the spouse bonus and refresh derived stats."""
++        self._married_bonus = bonus
++        self.invalidate_stats()
++
++    def sync_level(self, player_level: int) -> bool:
++        """Re-level to track the player.  Returns ``True`` if it changed.
++
++        HP/MP are scaled proportionally rather than refilled, so levelling up
++        between fights is a boost without being a free heal.
++        """
++        target = self.definition.level_for(player_level)
++        if target == self.level:
++            return False
++
++        hp_fraction = self.hp_fraction if self.max_hp else 1.0
++        mp_fraction = self.mp_fraction if self.max_mp else 1.0
++
++        self.level = target
++        self.base_stats = self.definition.stats_at_level(target)
++        self.invalidate_stats()
++
++        self.current_hp = max(1.0, float(self.max_hp) * hp_fraction)
++        self.current_mp = float(self.max_mp) * mp_fraction
++        return True
++
++    # ------------------------------------------------------------------
++    def usable_skills(self) -> list[Skill]:
++        """What the AI may choose from this turn."""
++        return [s for s in self.skills if s.is_usable_in_combat and s.can_use(self)[0]]
++
++    def tick_cooldowns(self) -> None:
++        for skill_id in list(self.cooldowns):
++            self.cooldowns[skill_id] -= 1
++            if self.cooldowns[skill_id] <= 0:
++                del self.cooldowns[skill_id]
++
++    # ------------------------------------------------------------------
++    def summary_lines(self) -> list[str]:
++        lines = [
++            f"Name: {self.name}",
++            f"Role: {self.definition.role.title()}",
++            f"Level: {self.level}",
++            f"HP: {self.hp_text()}",
++            f"MP: {self.mp_text()}",
++        ]
++        if self.statuses:
++            lines.append("Status: " + ", ".join(self.status_summaries()))
++        return lines
++
++    def to_dict(self) -> dict[str, Any]:
++        data = self._serialise_common()
++        data.update({"companion_id": self.definition.id, "cooldowns": dict(self.cooldowns)})
++        return data
+diff --git a/engine/game.py b/engine/game.py
+index 0cea660..46520be 100644
+--- a/engine/game.py
++++ b/engine/game.py
+@@ -23,9 +23,11 @@ from typing import Any, Mapping, Sequence
+ from engine.classes import ClassDefinition
+ from engine.combat.ai import default_registry
+ from engine.combat.combat import Battle, CombatState
++from engine.entities.companion import Companion
+ from engine.entities.player import Player
+ from engine.items.item import EQUIPMENT_SLOTS, Item
+ from engine.managers.class_manager import ClassManager
++from engine.managers.companion_manager import CompanionManager
+ from engine.managers.data_loader import ContentError, DataLoader
+ from engine.managers.enemy_manager import EnemyManager
+ from engine.managers.item_manager import ItemManager
+@@ -33,8 +35,10 @@ from engine.managers.save_manager import SaveManager, SaveSlotInfo
+ from engine.managers.skill_manager import SkillManager
+ from engine.managers.world_manager import WorldManager
+ from engine.mastery import MasteryBook
++from engine.party import Party
++from engine.relationships import MarriageCheck, RelationshipRules
+ from engine.rng import GameRandom
+-from engine.stats import Formulas, StatBlock
++from engine.stats import Formulas, ModifierSet, StatBlock
+ from engine.world.world import WorldState
+ 
+ #: Re-exported so GUI screens can type-annotate what :meth:`Game.save_slots`
+@@ -43,7 +47,7 @@ from engine.world.world import WorldState
+ __all__ = ["Game", "GAME_VERSION", "SaveSlotInfo"]
+ 
+ #: Shown on the main menu under the title (per the GUI style reference).
+-GAME_VERSION = "0.1.0"
++GAME_VERSION = "0.2.0"
+ 
+ 
+ class Game:
+@@ -64,11 +68,14 @@ class Game:
+         self.classes = ClassManager(self.loader, self.skills)
+         self.items = ItemManager(self.loader)
+         self.enemies = EnemyManager(self.loader, self.skills, self.formulas)
++        self.companions = CompanionManager(self.loader, self.skills, self.formulas)
+         self.world_manager = WorldManager(self.loader)
+         self.saves = SaveManager(save_dir)
+         self.ai_registry = default_registry()
++        self.relationships = RelationshipRules(self.config)
+ 
+         self.player: Player | None = None
++        self.party = Party(int((self.config.get("party") or {}).get("max_active", 2)))
+         self.world: WorldState | None = None
+         self.battle: Battle | None = None
+         self.current_slot: str | None = None
+@@ -88,6 +95,7 @@ class Game:
+         self.classes.load()
+         self.items.load()
+         self.enemies.load()
++        self.companions.load()
+         self.world_manager.load()
+         self._validate_cross_references()
+ 
+@@ -114,6 +122,21 @@ class Game:
+                             f"class {definition.id!r} promotion to {target!r} needs unknown item {item_id!r}"
+                         )
+ 
++        for companion in self.companions.all_definitions():
++            for skill_id in companion.skill_ids:
++                if self.skills.get(skill_id) is None:
++                    problems.append(f"companion {companion.id!r} references unknown skill {skill_id!r}")
++            for item_id in companion.recruit.items:
++                if self.items.get(item_id) is None:
++                    problems.append(f"companion {companion.id!r} needs unknown item {item_id!r}")
++            for item_id in companion.gift_item_ids:
++                if self.items.get(item_id) is None:
++                    problems.append(f"companion {companion.id!r} likes unknown gift {item_id!r}")
++            if companion.location_id and self.world_manager.get_area(companion.location_id) is None:
++                problems.append(
++                    f"companion {companion.id!r} is in unknown area {companion.location_id!r}"
++                )
++
+         for area in self.world_manager.all_areas():
+             for encounter in area.encounters:
+                 for enemy_id in encounter.enemy_ids:
+@@ -138,6 +161,7 @@ class Game:
+             f"Skills: {self.skills.count()}",
+             f"Items: {self.items.count()}",
+             f"Enemies: {self.enemies.count()}",
++            f"Companions: {self.companions.count()}",
+             f"Areas: {self.world_manager.count()}",
+         ]
+ 
+@@ -186,6 +210,7 @@ class Game:
+         player.restore_fully()
+ 
+         self.player = player
++        self.party = Party(int((self.config.get("party") or {}).get("max_active", 2)))
+         self.world = self.world_manager.create_world()
+         self.battle = None
+         self.current_slot = None
+@@ -389,11 +414,14 @@ class Game:
+         enemies = self.enemies.spawn_group(list(spawns))
+         ctx = self.skills.make_context(self.rng, self.formulas)
+         combat_config = self.config.get("combat", {})
++        # Companions track the player's level so they never become dead weight.
++        self.party.sync_levels(self.player.level)
+         self.battle = Battle(
+             player=self.player,
+             enemies=enemies,
+             ctx=ctx,
+             rng=self.rng,
++            allies=self.party.battle_allies(),
+             ai_registry=self.ai_registry,
+             flee_base_chance=float(combat_config.get("flee_base_chance", 0.45)),
+             mastery_per_action=float(combat_config.get("mastery_per_action", 6.0)),
+@@ -422,6 +450,12 @@ class Game:
+             lines.extend(self.handle_death())
+ 
+         self.battle = None
++        # Companions earn affinity for fighting beside you.
++        if battle.state is CombatState.VICTORY and self.player:
++            for companion in self.party.active:
++                self.player.change_affinity(companion.id, self.relationships.per_battle)
++        lines.extend(self.party.revive_fallen())
++        self.party.clear_battle_state()
+         if self.player:
+             self.player.cooldowns.clear()
+             for status in list(self.player.statuses):
+@@ -443,6 +477,7 @@ class Game:
+             self.world.visited.add(inn_area)
+ 
+         self.player.restore_fully()
++        self.party.restore_all()
+         return [
+             f"{self.player.name} awakens at the Inn.",
+             f"Lost {lost} gold." if lost else "No gold was lost.",
+@@ -463,6 +498,8 @@ class Game:
+             return False, [f"You need {cost} gold to rest."]
+ 
+         self.player.restore_fully()
++        self.party.restore_all()
++        self.party.sync_levels(self.player.level)
+         day = self.world.advance_day()
+         lines = [f"You rest until morning. Day {day} begins.", "Fully restored."]
+         if cost:
+@@ -508,74 +545,252 @@ class Game:
+         self.player.inventory.add_gold(price)
+         return True, f"Sold {item.name} for {price} gold."
+ 
++    # ==================================================================
++    # Companions and party (bible section 6, roadmap v0.0.9)
++    # ==================================================================
++    def recruitable_here(self) -> list[Any]:
++        """Companion definitions in this area the player has not recruited."""
++        if not self.world or not self.player:
++            return []
++        return [
++            definition
++            for definition in self.companions.at_location(self.world.current_area_id)
++            if not self.party.has(definition.id)
++        ]
++
++    def check_recruit(self, companion_id: str) -> tuple[bool, list[str]]:
++        """Requirement checklist for recruiting, in the promotion-check style."""
++        if not self.player:
++            return False, ["No character loaded."]
++        definition = self.companions.get(companion_id)
++        if definition is None:
++            return False, ["Nobody by that name."]
++        if self.party.has(companion_id):
++            return False, [f"{definition.name} already travels with you."]
++
++        requirement = definition.recruit
++        unmet: list[str] = []
++        if self.player.level < requirement.level:
++            unmet.append(f"Level {requirement.level} (have {self.player.level})")
++        affinity = self.player.affinity_with(companion_id)
++        if affinity < requirement.affinity:
++            unmet.append(f"Affinity {requirement.affinity} (have {affinity})")
++        if requirement.gold and self.player.inventory.gold < requirement.gold:
++            unmet.append(f"{requirement.gold} gold (have {self.player.inventory.gold})")
++        for item_id, quantity in requirement.items.items():
++            if not self.player.inventory.has(item_id, quantity):
++                item = self.items.get(item_id)
++                label = item.name if item else item_id.replace("_", " ").title()
++                unmet.append(f"{label} x{quantity} (have {self.player.inventory.count(item_id)})")
++        for quest_id in requirement.quests:
++            if quest_id not in self.player.completed_quests:
++                unmet.append(f"Quest: {quest_id.replace('_', ' ').title()}")
++
++        return (not unmet), unmet
++
++    def recruit(self, companion_id: str) -> tuple[bool, list[str]]:
++        """Recruit a companion, consuming the required gold and items."""
++        ok, unmet = self.check_recruit(companion_id)
++        if not ok or self.player is None:
++            return False, unmet or ["They will not join you."]
++
++        definition = self.companions.require(companion_id)
++        requirement = definition.recruit
++        if requirement.gold:
++            self.player.inventory.spend_gold(requirement.gold)
++        for item_id, quantity in requirement.items.items():
++            self.player.inventory.remove(item_id, quantity)
++
++        companion = self.companions.create(companion_id, self.player.level)
++        self._apply_spouse_bonus(companion)
++        joined, message = self.party.recruit(companion)
++        return joined, [message]
++
++    def dismiss_companion(self, companion_id: str) -> tuple[bool, str]:
++        """Dismiss a companion.  Affinity is kept, so they can rejoin."""
++        if not self.player:
++            return False, "No character loaded."
++        if self.player.spouse_id == companion_id:
++            return False, "You will not send your spouse away."
++        return self.party.dismiss(companion_id)
++
++    def set_companion_active(self, companion_id: str, active: bool) -> tuple[bool, str]:
++        return self.party.set_active(companion_id, active)
++
++    def party_lines(self) -> list[str]:
++        return self.party.summary_lines()
++
++    def companion_detail_lines(self, companion_id: str) -> list[str]:
++        """Full readout for one companion, recruited or not."""
++        if not self.player:
++            return []
++        definition = self.companions.get(companion_id)
++        if definition is None:
++            return ["Nobody by that name."]
++
++        member = self.party.get(companion_id)
++        lines = list(definition.detail_lines())
++        lines.append("")
++        if member is not None:
++            lines.extend(member.summary_lines()[2:])
++            lines.append("Status: " + ("Active" if self.party.is_active(companion_id) else "Reserve"))
++        else:
++            lines.append(f"Level: {definition.level_for(self.player.level)} (joins at your level)")
++
++        affinity = self.player.affinity_with(companion_id)
++        lines.append("")
++        lines.append(f"Affinity: {affinity} ({self.relationships.tier_label(affinity)})")
++        if self.player.spouse_id == companion_id:
++            lines.append("Married to you")
++        elif definition.marriageable:
++            lines.append(f"Marriage at: {definition.marriage_affinity}")
++
++        if member is None:
++            requirements = definition.recruit.describe()
++            if requirements:
++                lines.append("")
++                lines.append("To recruit:")
++                lines.extend(f"  {line}" for line in requirements)
++        return lines
++
++    def _apply_spouse_bonus(self, companion: Any) -> None:
++        """Give a married companion their spouse bonus, and only them."""
++        if not self.player:
++            return
++        if self.player.spouse_id == companion.id:
++            bonus = ModifierSet.from_dict({"flat": self.relationships.spouse_modifiers()})
++            companion.set_married_bonus(bonus)
++        else:
++            companion.set_married_bonus(None)
++
+     # ==================================================================
+     # NPCs, affinity, marriage (bible section 15)
++    #
++    # Companions and townspeople share these methods: both satisfy the
++    # `Suitor` shape, so `engine.relationships` drives them identically and
++    # a companion is marriageable on exactly the same terms as an NPC.
+     # ==================================================================
+     def npcs_here(self) -> list[Any]:
+         return self.world.npcs_here() if self.world else []
+ 
+-    def talk_to(self, npc_id: str) -> tuple[bool, list[str]]:
+-        """Talk to an NPC: a line of dialogue and a small affinity gain."""
++    def _find_suitor(self, target_id: str) -> Any | None:
++        """Resolve an id to an NPC or a companion definition."""
++        npc = self.world_manager.get_npc(target_id)
++        if npc is not None:
++            return npc
++        return self.companions.get(target_id)
++
++    def social_targets_here(self) -> list[Any]:
++        """Everyone the player can talk to right now - NPCs and companions.
++
++        Recruited companions travel with the player, so they are always
++        available; unrecruited ones only appear in their home area.
++        """
++        targets: list[Any] = list(self.npcs_here())
++        targets.extend(self.party.all_members)
++        targets.extend(self.recruitable_here())
++        return targets
++
++    def talk_to(self, target_id: str) -> tuple[bool, list[str]]:
++        """Talk to an NPC or companion: dialogue plus a small affinity gain."""
+         if not self.player or not self.world:
+             return False, ["No character loaded."]
+-        npc = self.world_manager.get_npc(npc_id)
+-        if npc is None:
++        suitor = self._find_suitor(target_id)
++        if suitor is None:
+             return False, ["There is nobody by that name here."]
+ 
+-        gain = int(self.config.get("affinity_per_talk", 2))
+-        value = self.player.change_affinity(npc_id, gain)
+-        line = self.rng.choice(npc.dialogue) if npc.dialogue else f"{npc.name} nods at you."
+-        lines = [f"{npc.name}: \"{line}\"", f"Affinity with {npc.name}: {value}"]
+-        if npc.marriageable and value >= npc.marriage_affinity and not self.player.spouse_id:
+-            lines.append(f"{npc.name} seems ready for a deeper commitment.")
++        # Repeat chatter in one day is worth less, so the optimal play is not
++        # clicking Talk a hundred times.
++        talked = self.player.flags.setdefault("talked_today", {})
++        key = f"{self.world.day}:{target_id}"
++        times = int(talked.get(key, 0))
++        talked[key] = times + 1
++
++        value = self.player.change_affinity(target_id, self.relationships.talk_gain(times))
++        line = self.rng.choice(suitor.dialogue) if suitor.dialogue else f"{suitor.name} nods at you."
++        lines = [
++            f'{suitor.name}: "{line}"',
++            f"Affinity with {suitor.name}: {value} ({self.relationships.tier_label(value)})",
++        ]
++        if (
++            getattr(suitor, "marriageable", False)
++            and value >= suitor.marriage_affinity
++            and not self.player.spouse_id
++        ):
++            lines.append(f"{suitor.name} seems ready for a deeper commitment.")
+         return True, lines
+ 
+-    def give_gift(self, npc_id: str, item_id: str) -> tuple[bool, list[str]]:
+-        """Gift an item; liked gifts are worth far more affinity."""
++    def give_gift(self, target_id: str, item_id: str) -> tuple[bool, list[str]]:
++        """Gift an item; favourites are worth far more affinity."""
+         if not self.player:
+             return False, ["No character loaded."]
+-        npc = self.world_manager.get_npc(npc_id)
++        suitor = self._find_suitor(target_id)
+         item = self.items.get(item_id)
+-        if npc is None or item is None:
++        if suitor is None or item is None:
+             return False, ["That gift cannot be given."]
+         if not self.player.inventory.has(item_id):
+             return False, [f"You have no {item.name}."]
+ 
+-        liked = item_id in npc.gift_item_ids
+-        gain = int(self.config.get("affinity_gift_liked", 15) if liked else self.config.get("affinity_gift", 5))
++        gain, liked = self.relationships.gift_gain(suitor, item_id)
+         self.player.inventory.remove(item_id, 1)
+-        value = self.player.change_affinity(npc_id, gain)
++        value = self.player.change_affinity(target_id, gain)
+         reaction = "loves" if liked else "accepts"
+-        return True, [f"{npc.name} {reaction} the {item.name}.", f"Affinity with {npc.name}: {value}"]
++        return True, [
++            f"{suitor.name} {reaction} the {item.name}.",
++            f"Affinity with {suitor.name}: {value} ({self.relationships.tier_label(value)})",
++        ]
++
++    def marriage_check(self, target_id: str) -> Any:
++        """Full marriage checklist for an NPC or companion."""
++        suitor = self._find_suitor(target_id)
++        if suitor is None or not self.player:
++            return MarriageCheck(eligible=False, target_id=target_id, reason="Unknown person.")
++
++        ring_id = self.relationships.marriage_item_id
++        ring = self.items.get(ring_id) if ring_id else None
++        # A companion must be travelling with you; an NPC has no such notion.
++        recruited = self.party.has(target_id) if self.companions.get(target_id) else True
++
++        return self.relationships.check_marriage(
++            suitor,
++            affinity=self.player.affinity_with(target_id),
++            has_ring=(not ring_id) or self.player.inventory.has(ring_id),
++            current_spouse_id=self.player.spouse_id,
++            ring_name=ring.name if ring else "",
++            recruited=recruited,
++        )
++
++    def can_marry(self, target_id: str) -> tuple[bool, str]:
++        """Backwards-compatible boolean form of :meth:`marriage_check`.
+ 
+-    def can_marry(self, npc_id: str) -> tuple[bool, str]:
+-        """Marriage needs affinity plus the special item (bible section 15)."""
++        The unmet items are preferred over the generic ``reason`` so the caller
++        is told *what* is missing ("Affinity 70 (have 0); Eternal Band") rather
++        than just that something is.
++        """
+         if not self.player:
+             return False, "No character loaded."
+-        npc = self.world_manager.get_npc(npc_id)
+-        if npc is None:
+-            return False, "Unknown person."
+-        if self.player.spouse_id:
+-            return False, "You are already married."
+-        if not npc.marriageable:
+-            return False, f"{npc.name} is not interested in marriage."
+-        if self.player.affinity_with(npc_id) < npc.marriage_affinity:
+-            return False, f"{npc.name} needs {npc.marriage_affinity} affinity (you have {self.player.affinity_with(npc_id)})."
+-
+-        ring_id = str(self.config.get("marriage_item_id", ""))
+-        if ring_id and not self.player.inventory.has(ring_id):
+-            ring = self.items.get(ring_id)
+-            return False, f"You need {ring.name if ring else ring_id} to propose."
+-        return True, "You may propose."
+-
+-    def marry(self, npc_id: str) -> tuple[bool, str]:
+-        ok, reason = self.can_marry(npc_id)
+-        if not ok or self.player is None:
+-            return False, reason
+-        ring_id = str(self.config.get("marriage_item_id", ""))
++        check = self.marriage_check(target_id)
++        if check.eligible:
++            return True, "You may propose."
++        return False, "; ".join(check.unmet) or check.reason or "Requirements not met."
++
++    def marry(self, target_id: str) -> tuple[bool, str]:
++        """Marry an NPC or companion.  Gender is never considered."""
++        check = self.marriage_check(target_id)
++        if not check.eligible or self.player is None:
++            return False, "; ".join(check.unmet) or check.reason or "Requirements not met."
++
++        ring_id = self.relationships.marriage_item_id
+         if ring_id:
+             self.player.inventory.remove(ring_id, 1)
+-        return self.player.marry(npc_id)
++
++        ok, message = self.player.marry(target_id)
++        if ok:
++            # A married companion fights harder from here on.
++            member = self.party.get(target_id)
++            if member is not None:
++                self._apply_spouse_bonus(member)
++        return ok, message
+ 
+     # ==================================================================
+     # Save / load
+@@ -602,8 +817,10 @@ class Game:
+                 "gold": self.player.inventory.gold,
+                 "mastery": self.player.mastery.highest_rank(),
+                 "area_name": area.name if area else "",
++                "companions": len(self.party),
+             },
+             "player": self.player.to_dict(),
++            "party": self.party.to_dict(),
+             "world": self.world.to_dict(),
+             "rng": self.rng.to_dict(),
+         }
+@@ -698,11 +915,39 @@ class Game:
+         self.rng.load_state(payload.get("rng"))
+ 
+         self.player = player
++        self.party = self._load_party(payload.get("party"), player)
+         self.world = world
+         self.battle = None
+         self.current_slot = slot
+         return True, f"Loaded {player.name} (Level {player.level})."
+ 
++    def _load_party(self, payload: Mapping[str, Any] | None, player: Player) -> Party:
++        """Rebuild the party from a save.
++
++        Companions whose definitions no longer exist are dropped rather than
++        blocking the load - the same backwards-compatibility stance the rest of
++        the loader takes (bible section 5).
++        """
++        default_max = int((self.config.get("party") or {}).get("max_active", 2))
++        if not payload:
++            return Party(default_max)
++
++        party = Party(int(payload.get("max_active", default_max)))
++        for key, target in (("active", party.active), ("reserve", party.reserve)):
++            for entry in payload.get(key, []):
++                companion_id = str(entry.get("companion_id", ""))
++                if self.companions.get(companion_id) is None:
++                    continue
++                companion = self.companions.create(companion_id, player.level)
++                companion.cooldowns = {str(k): int(v) for k, v in (entry.get("cooldowns") or {}).items()}
++                if player.spouse_id == companion_id:
++                    companion.set_married_bonus(
++                        ModifierSet.from_dict({"flat": self.relationships.spouse_modifiers()})
++                    )
++                companion._restore_common(entry)
++                target.append(companion)
++        return party
++
+     def delete_save(self, slot: str) -> tuple[bool, str]:
+         if self.saves.delete(slot):
+             if self.current_slot == slot:
+diff --git a/engine/managers/companion_manager.py b/engine/managers/companion_manager.py
+new file mode 100644
+index 0000000..ab79ed5
+--- /dev/null
++++ b/engine/managers/companion_manager.py
+@@ -0,0 +1,80 @@
++"""``CompanionManager`` - factory for :class:`Companion` objects.
++
++Bible section 6 lists Companion as a planned core entity; this is the manager
++behind it, matching the shape of every other manager: it is the only code that
++reads ``companions.json``, and it hands out live objects.
++"""
++
++from __future__ import annotations
++
++from typing import Any, Sequence
++
++from engine.entities.companion import Companion, CompanionDefinition
++from engine.managers.data_loader import ContentError, DataLoader
++from engine.managers.skill_manager import SkillManager
++from engine.stats import Formulas
++
++__all__ = ["CompanionManager"]
++
++
++class CompanionManager:
++    """Loads companion definitions and recruits them at the right level."""
++
++    COMPANION_FILE = "companions.json"
++
++    def __init__(self, loader: DataLoader, skill_manager: SkillManager, formulas: Formulas) -> None:
++        self._loader = loader
++        self._skills = skill_manager
++        self._formulas = formulas
++        self._definitions: dict[str, CompanionDefinition] = {}
++        self._loaded = False
++
++    # ------------------------------------------------------------------
++    def load(self) -> None:
++        if self._loaded:
++            return
++        # Optional: a build with no companion content should still run.
++        for entry in self._loader.load_entries(self.COMPANION_FILE, "companions", required=False):
++            try:
++                definition = CompanionDefinition.from_dict(entry)
++            except ValueError as exc:
++                raise ContentError(f"{self.COMPANION_FILE}: {exc}") from exc
++            if definition.id in self._definitions:
++                raise ContentError(f"duplicate companion id {definition.id!r} in {self.COMPANION_FILE}")
++            self._definitions[definition.id] = definition
++        self._loaded = True
++
++    # ------------------------------------------------------------------
++    def get(self, companion_id: str) -> CompanionDefinition | None:
++        self.load()
++        return self._definitions.get(companion_id)
++
++    def require(self, companion_id: str) -> CompanionDefinition:
++        definition = self.get(companion_id)
++        if definition is None:
++            raise ContentError(f"unknown companion id {companion_id!r}")
++        return definition
++
++    def all_definitions(self) -> list[CompanionDefinition]:
++        self.load()
++        return sorted(self._definitions.values(), key=lambda c: c.name)
++
++    def at_location(self, area_id: str) -> list[CompanionDefinition]:
++        """Recruitable companions found in one area."""
++        self.load()
++        return [c for c in self.all_definitions() if c.location_id == area_id]
++
++    # ------------------------------------------------------------------
++    def create(self, companion_id: str, player_level: int) -> Companion:
++        """Instantiate a companion scaled to the player."""
++        definition = self.require(companion_id)
++        return Companion(
++            definition=definition,
++            level=definition.level_for(player_level),
++            formulas=self._formulas,
++            skills=self._skills.get_many(definition.skill_ids),
++        )
++
++    def count(self) -> int:
++        self.load()
++        return len(self._definitions)
+diff --git a/engine/party.py b/engine/party.py
+new file mode 100644
+index 0000000..f5e25b7
+--- /dev/null
++++ b/engine/party.py
+@@ -0,0 +1,159 @@
++"""``Party`` - the player's recruited companions.
++
++Split into an *active* roster that fights and a *reserve* that doesn't, because
++an uncapped party turns every battle into the player watching six AI turns.
++The cap comes from ``data/config.json`` (``party.max_active``).
++
++The Party owns roster membership only.  Affinity lives on the Player (so it
++survives dismissal) and marriage rules live in :mod:`engine.relationships`.
++"""
++
++from __future__ import annotations
++
++from typing import Any, Iterator, Mapping, Sequence
++
++from engine.entities.companion import Companion
++
++__all__ = ["Party"]
++
++
++class Party:
++    """Active and reserve companions."""
++
++    def __init__(self, max_active: int = 2) -> None:
++        self.max_active = max(0, int(max_active))
++        self.active: list[Companion] = []
++        self.reserve: list[Companion] = []
++
++    # ------------------------------------------------------------------
++    def __iter__(self) -> Iterator[Companion]:
++        """Every recruited companion, active first."""
++        return iter([*self.active, *self.reserve])
++
++    def __len__(self) -> int:
++        return len(self.active) + len(self.reserve)
++
++    @property
++    def all_members(self) -> list[Companion]:
++        return [*self.active, *self.reserve]
++
++    @property
++    def is_active_full(self) -> bool:
++        return len(self.active) >= self.max_active
++
++    def has(self, companion_id: str) -> bool:
++        return self.get(companion_id) is not None
++
++    def get(self, companion_id: str) -> Companion | None:
++        return next((c for c in self.all_members if c.id == companion_id), None)
++
++    def is_active(self, companion_id: str) -> bool:
++        return any(c.id == companion_id for c in self.active)
++
++    # ------------------------------------------------------------------
++    def recruit(self, companion: Companion) -> tuple[bool, str]:
++        """Add a companion, benching them if the active roster is full."""
++        if self.has(companion.id):
++            return False, f"{companion.name} is already with you."
++        if self.is_active_full:
++            self.reserve.append(companion)
++            return True, f"{companion.name} joins your party (in reserve)."
++        self.active.append(companion)
++        return True, f"{companion.name} joins your party!"
++
++    def dismiss(self, companion_id: str) -> tuple[bool, str]:
++        """Remove a companion entirely.
++
++        Their affinity is untouched - it lives on the Player - so re-recruiting
++        later resumes the relationship rather than resetting it.
++        """
++        companion = self.get(companion_id)
++        if companion is None:
++            return False, "They are not in your party."
++        self.active = [c for c in self.active if c.id != companion_id]
++        self.reserve = [c for c in self.reserve if c.id != companion_id]
++        return True, f"{companion.name} leaves your party."
++
++    def set_active(self, companion_id: str, active: bool) -> tuple[bool, str]:
++        """Move a companion between the active roster and the bench."""
++        companion = self.get(companion_id)
++        if companion is None:
++            return False, "They are not in your party."
++
++        if active:
++            if self.is_active(companion_id):
++                return False, f"{companion.name} is already active."
++            if self.is_active_full:
++                return False, f"Your active party is full ({self.max_active})."
++            self.reserve = [c for c in self.reserve if c.id != companion_id]
++            self.active.append(companion)
++            return True, f"{companion.name} joins the front line."
++
++        if not self.is_active(companion_id):
++            return False, f"{companion.name} is already resting."
++        self.active = [c for c in self.active if c.id != companion_id]
++        self.reserve.append(companion)
++        return True, f"{companion.name} falls back to reserve."
++
++    # ------------------------------------------------------------------
++    def battle_allies(self) -> list[Companion]:
++        """Living active companions - what :class:`Battle` receives."""
++        return [c for c in self.active if c.is_alive]
++
++    def sync_levels(self, player_level: int) -> list[str]:
++        """Keep every companion tracking the player's level."""
++        messages = []
++        for companion in self.all_members:
++            if companion.sync_level(player_level):
++                messages.append(f"{companion.name} is now level {companion.level}.")
++        return messages
++
++    def restore_all(self) -> None:
++        """Full heal - inn rest, respawn."""
++        for companion in self.all_members:
++            companion.restore_fully()
++
++    def revive_fallen(self) -> list[str]:
++        """Bring downed companions back after a battle.
++
++        They return at a fraction of max HP rather than staying dead: a
++        permanently lost companion in a game with no resurrection item would be
++        a silent dead end.
++        """
++        messages = []
++        for companion in self.all_members:
++            if not companion.is_alive:
++                companion.current_hp = max(1.0, companion.max_hp * 0.25)
++                companion.statuses.clear()
++                companion.invalidate_stats()
++                messages.append(f"{companion.name} gets back on their feet.")
++        return messages
++
++    def clear_battle_state(self) -> None:
++        """Drop cooldowns and lingering statuses between encounters."""
++        for companion in self.all_members:
++            companion.cooldowns.clear()
++            companion.statuses.clear()
++            companion.invalidate_stats()
++
++    # ------------------------------------------------------------------
++    def summary_lines(self) -> list[str]:
++        if not self.all_members:
++            return ["No companions."]
++        lines = [f"Active ({len(self.active)}/{self.max_active}):"]
++        if self.active:
++            lines.extend(f"  {c.name} - Lv {c.level} - {c.hp_text()} HP" for c in self.active)
++        else:
++            lines.append("  (none)")
++        if self.reserve:
++            lines.append("Reserve:")
++            lines.extend(f"  {c.name} - Lv {c.level}" for c in self.reserve)
++        return lines
++
++    # ------------------------------------------------------------------
++    def to_dict(self) -> dict[str, Any]:
++        return {
++            "max_active": self.max_active,
++            "active": [c.to_dict() for c in self.active],
++            "reserve": [c.to_dict() for c in self.reserve],
++        }
+diff --git a/engine/relationships.py b/engine/relationships.py
+new file mode 100644
+index 0000000..1dab518
+--- /dev/null
++++ b/engine/relationships.py
+@@ -0,0 +1,209 @@
++"""Affinity and marriage - bible section 15.
++
++*"Affinity with NPCs. Marriage possible regardless of gender using a special
++item."*
++
++Companions are romanceable on the same terms as townspeople, so the rules live
++here once rather than being duplicated per entity type.  Both
++:class:`~engine.world.world.NPC` and
++:class:`~engine.entities.companion.CompanionDefinition` expose the same handful
++of fields (``id``, ``name``, ``marriageable``, ``marriage_affinity``,
++``gift_item_ids``), and this module is written against that shape - structural
++typing, not a shared base class, because the two are otherwise unrelated: one
++is scenery, the other is a combatant.
++
++Affinity is stored on the Player keyed by id, which means a companion's
++standing survives dismissal and re-recruitment.
++
++Gender is never consulted anywhere in this module.  That is the bible's rule,
++and the cleanest way to honour it is to have nothing to remove.
++"""
++
++from __future__ import annotations
++
++from dataclasses import dataclass, field
++from typing import Any, Mapping, Protocol, runtime_checkable
++
++__all__ = [
++    "AFFINITY_MIN",
++    "AFFINITY_MAX",
++    "Suitor",
++    "AffinityTier",
++    "RelationshipRules",
++    "MarriageCheck",
++]
++
++#: Affinity is clamped to this range for everyone.
++AFFINITY_MIN = -100
++AFFINITY_MAX = 100
++
++
++@runtime_checkable
++class Suitor(Protocol):
++    """Anything the player can build a relationship with."""
++
++    id: str
++    name: str
++    marriageable: bool
++    marriage_affinity: int
++    gift_item_ids: list[str]
++
++
++@dataclass(frozen=True)
++class AffinityTier:
++    """A named band of affinity, for display."""
++
++    threshold: int
++    label: str
++
++
++#: Descending, so the first match wins.
++_DEFAULT_TIERS: tuple[AffinityTier, ...] = (
++    AffinityTier(90, "Devoted"),
++    AffinityTier(70, "Beloved"),
++    AffinityTier(50, "Close"),
++    AffinityTier(25, "Friendly"),
++    AffinityTier(5, "Warm"),
++    AffinityTier(-4, "Neutral"),
++    AffinityTier(-40, "Cool"),
++    AffinityTier(AFFINITY_MIN, "Hostile"),
++)
++
++
++@dataclass
++class MarriageCheck:
++    """Why a proposal is or isn't possible - a checklist, not a yes/no.
++
++    Mirrors :class:`~engine.classes.PromotionCheck`: the GUI shows exactly
++    what is still missing rather than a bare refusal.
++    """
++
++    eligible: bool
++    target_id: str = ""
++    target_name: str = ""
++    met: list[str] = field(default_factory=list)
++    unmet: list[str] = field(default_factory=list)
++    reason: str = ""
++
++    def summary_lines(self) -> list[str]:
++        lines = [f"{'[ok]' if self.eligible else '[--]'} {self.target_name or self.target_id}"]
++        lines.extend(f"  met   : {item}" for item in self.met)
++        lines.extend(f"  needs : {item}" for item in self.unmet)
++        if self.reason and not self.eligible:
++            lines.append(f"  {self.reason}")
++        return lines
++
++
++class RelationshipRules:
++    """Affinity gains, marriage eligibility, and the spouse bonus.
++
++    Values come from ``data/config.json`` - no number here is hardcoded
++    (bible section 5).
++    """
++
++    def __init__(self, config: Mapping[str, Any] | None = None) -> None:
++        config = config or {}
++        self.per_talk = int(config.get("affinity_per_talk", 2))
++        self.gift = int(config.get("affinity_gift", 5))
++        self.gift_liked = int(config.get("affinity_gift_liked", 15))
++        #: Affinity earned per battle a companion fights alongside the player.
++        self.per_battle = int(config.get("affinity_per_battle", 3))
++        #: Repeated chatter in one day is worth less - see :meth:`talk_gain`.
++        self.talk_falloff_after = int(config.get("affinity_talk_falloff_after", 3))
++        self.marriage_item_id = str(config.get("marriage_item_id", ""))
++        #: Stat bonus a married companion fights with.
++        self.spouse_bonus: dict[str, float] = {
++            str(k): float(v) for k, v in (config.get("marriage_spouse_bonus") or {}).items()
++        }
++        self.tiers = _DEFAULT_TIERS
++
++    # ------------------------------------------------------------------
++    def tier_label(self, affinity: int) -> str:
++        for tier in self.tiers:
++            if affinity >= tier.threshold:
++                return tier.label
++        return self.tiers[-1].label
++
++    def talk_gain(self, times_talked_today: int) -> int:
++        """Affinity from one conversation.
++
++        Falls off after a few chats in the same day so the optimal play isn't
++        clicking "Talk" a hundred times in a row.  It never reaches zero -
++        checking in daily should always be worth something.
++        """
++        if times_talked_today < self.talk_falloff_after:
++            return self.per_talk
++        return max(1, self.per_talk // 2)
++
++    def gift_gain(self, suitor: Suitor, item_id: str) -> tuple[int, bool]:
++        """``(affinity, was_a_favourite)`` for gifting ``item_id``."""
++        liked = item_id in (suitor.gift_item_ids or [])
++        return (self.gift_liked if liked else self.gift, liked)
++
++    @staticmethod
++    def clamp(value: int) -> int:
++        return max(AFFINITY_MIN, min(AFFINITY_MAX, int(value)))
++
++    # ------------------------------------------------------------------
++    def check_marriage(
++        self,
++        suitor: Suitor,
++        *,
++        affinity: int,
++        has_ring: bool,
++        current_spouse_id: str | None,
++        ring_name: str = "",
++        recruited: bool = True,
++    ) -> MarriageCheck:
++        """Full eligibility check.  Gender is deliberately never consulted."""
++        check = MarriageCheck(eligible=True, target_id=suitor.id, target_name=suitor.name)
++
++        if current_spouse_id:
++            if current_spouse_id == suitor.id:
++                return MarriageCheck(
++                    eligible=False,
++                    target_id=suitor.id,
++                    target_name=suitor.name,
++                    reason=f"You are already married to {suitor.name}.",
++                )
++            return MarriageCheck(
++                eligible=False,
++                target_id=suitor.id,
++                target_name=suitor.name,
++                reason="You are already married.",
++            )
++
++        if not suitor.marriageable:
++            return MarriageCheck(
++                eligible=False,
++                target_id=suitor.id,
++                target_name=suitor.name,
++                reason=f"{suitor.name} is not interested in marriage.",
++            )
++
++        # A companion who has left the party cannot be proposed to.
++        if not recruited:
++            check.unmet.append(f"{suitor.name} must be in your party")
++
++        needed = int(suitor.marriage_affinity)
++        (check.met if affinity >= needed else check.unmet).append(
++            f"Affinity {needed} (have {affinity})"
++        )
++
++        if self.marriage_item_id:
++            label = ring_name or self.marriage_item_id.replace("_", " ").title()
++            (check.met if has_ring else check.unmet).append(label)
++
++        check.eligible = not check.unmet
++        if not check.eligible:
++            check.reason = "Requirements not met."
++        return check
++
++    # ------------------------------------------------------------------
++    def spouse_modifiers(self) -> dict[str, float]:
++        """Flat stat bonus a married companion gains.
++
++        Marrying a companion should be felt in play, not just recorded on the
++        status screen - otherwise it is a checkbox rather than a system.
++        """
++        return dict(self.spouse_bonus)
+diff --git a/gui/app.py b/gui/app.py
+index bdd262b..88e0aff 100644
+--- a/gui/app.py
++++ b/gui/app.py
+@@ -155,6 +155,11 @@ class AscensionApp:
+ 
+         return self.open_toplevel("status", StatusWindow)
+ 
++    def open_party(self) -> tk.Toplevel:
++        from gui.screens.party import PartyWindow
++
++        return self.open_toplevel("party", PartyWindow)
++
+     def open_settings(self) -> tk.Toplevel:
+         from gui.screens.settings import SettingsWindow
+ 
+diff --git a/gui/screens/combat_screen.py b/gui/screens/combat_screen.py
+index c1af42f..bb17c04 100644
+--- a/gui/screens/combat_screen.py
++++ b/gui/screens/combat_screen.py
+@@ -47,10 +47,13 @@ class CombatScreen(tk.Frame):
+         left.pack(side=tk.LEFT, fill=tk.Y)
+         left.pack_propagate(False)
+ 
+-        self.player_panel = StatPanel(left, title="You")
++        self.player_panel = StatPanel(left, title="You", wrap=215)
+         self.player_panel.pack(fill=tk.X, anchor="n")
+ 
+-        self.enemy_panel = StatPanel(left, title="Enemies")
++        self.ally_panel = StatPanel(left, title="Allies", wrap=215)
++        self.ally_panel.pack(fill=tk.X, anchor="n", pady=(16, 0))
++
++        self.enemy_panel = StatPanel(left, title="Enemies", wrap=215)
+         self.enemy_panel.pack(fill=tk.X, anchor="n", pady=(16, 0))
+ 
+         # ---------------- middle: log ----------------------------------
+@@ -98,6 +101,7 @@ class CombatScreen(tk.Frame):
+         self.battle = battle
+ 
+         self.player_panel.set_lines(battle.player_lines())
++        self.ally_panel.set_lines(battle.ally_lines())
+         self.enemy_panel.set_lines(battle.enemy_lines())
+         self._sync_log()
+ 
+diff --git a/gui/screens/party.py b/gui/screens/party.py
+new file mode 100644
+index 0000000..c3fd647
+--- /dev/null
++++ b/gui/screens/party.py
+@@ -0,0 +1,167 @@
++"""Party - recruit, bench and inspect companions.
++
++Two Listboxes hold simultaneous selections here (party roster and recruitable
++locals), so this is another screen covered by the ``exportselection=False``
++note in docs/GUI_VERIFICATION.md - handled by :func:`gui.theme.stat_listbox`.
++
++Like every screen, this holds no rules: it asks the engine what is possible
++(``check_recruit``, ``party_lines``) and displays the answer.
++"""
++
++from __future__ import annotations
++
++import tkinter as tk
++
++from gui import theme
++from gui.widgets import SelectList, StatPanel
++
++__all__ = ["PartyWindow"]
++
++
++class PartyWindow(tk.Toplevel):
++    """Roster management and recruitment."""
++
++    def __init__(self, app) -> None:
++        super().__init__(app.root, bg=theme.BG)
++        self.app = app
++
++        theme.style_window(self, "Project Ascension - Party")
++        theme.center_window(self, 760, 560)
++        self.transient(app.root)
++
++        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
++        body.pack(fill=tk.BOTH, expand=True)
++
++        header = tk.Frame(body, bg=theme.BG)
++        header.pack(fill=tk.X)
++        theme.heading_label(header, text="Party").pack(side=tk.LEFT)
++        self.count_label = theme.body_label(header, text="", fg=theme.FG_DIM)
++        self.count_label.pack(side=tk.RIGHT)
++
++        columns = tk.Frame(body, bg=theme.BG)
++        columns.pack(fill=tk.BOTH, expand=True, pady=(12, 0))
++
++        # Listbox #1: who is already with you.
++        self.member_list: SelectList[str] = SelectList(
++            columns, title="Companions", height=13, on_select=self._on_member
++        )
++        self.member_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
++
++        # Listbox #2: who can be recruited in this area.
++        self.recruit_list: SelectList[str] = SelectList(
++            columns,
++            title="Available Here",
++            height=13,
++            on_select=self._on_recruit_target,
++            on_activate=lambda _v: self._recruit(),
++        )
++        self.recruit_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(18, 0))
++
++        self.detail = StatPanel(columns, title="Details", wrap=230)
++        self.detail.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(18, 0))
++
++        buttons = tk.Frame(body, bg=theme.BG)
++        buttons.pack(fill=tk.X, pady=(16, 0))
++        self.toggle_button = theme.flat_button(buttons, "Bench", self._toggle_active, width=10)
++        self.toggle_button.pack(side=tk.LEFT)
++        theme.flat_button(buttons, "Talk", self._talk, width=10).pack(side=tk.LEFT, padx=8)
++        theme.flat_button(buttons, "Dismiss", self._dismiss, width=10).pack(side=tk.LEFT)
++        self.recruit_button = theme.flat_button(buttons, "Recruit", self._recruit, width=10)
++        self.recruit_button.pack(side=tk.LEFT, padx=8)
++        theme.flat_button(buttons, "Close", self._close, width=10).pack(side=tk.RIGHT)
++
++        self.refresh()
++
++    # ------------------------------------------------------------------
++    def refresh(self) -> None:
++        game = self.app.game
++        if not game.has_character:
++            self._close()
++            return
++
++        party = game.party
++        self.count_label.configure(text=f"Active {len(party.active)}/{party.max_active}")
++
++        rows: list[tuple[str, str]] = []
++        for companion in party.active:
++            tag = " (spouse)" if game.player.spouse_id == companion.id else ""
++            rows.append((f"{companion.name} - Lv {companion.level}{tag}", companion.id))
++        for companion in party.reserve:
++            tag = " (spouse)" if game.player.spouse_id == companion.id else ""
++            rows.append((f"{companion.name} [reserve]{tag}", companion.id))
++        self.member_list.set_items(rows, keep_selection=True)
++
++        available = game.recruitable_here()
++        self.recruit_list.set_items([(d.name, d.id) for d in available], keep_selection=True)
++        self.recruit_button.configure(state=tk.NORMAL if available else tk.DISABLED)
++
++        if rows:
++            self._on_member(self.member_list.selected_value)
++        elif available:
++            self._on_recruit_target(self.recruit_list.selected_value)
++        else:
++            self.detail.set_lines(["No companions yet.", "Look for allies in towns and on the road."])
++            self.toggle_button.configure(state=tk.DISABLED)
++
++    def _on_member(self, companion_id: str | None) -> None:
++        if companion_id is None:
++            return
++        self.detail.set_lines(self.app.game.companion_detail_lines(companion_id))
++        active = self.app.game.party.is_active(companion_id)
++        self.toggle_button.configure(text="Bench" if active else "Activate", state=tk.NORMAL)
++
++    def _on_recruit_target(self, companion_id: str | None) -> None:
++        if companion_id is None:
++            return
++        lines = self.app.game.companion_detail_lines(companion_id)
++        ok, unmet = self.app.game.check_recruit(companion_id)
++        if not ok and unmet:
++            lines.append("")
++            lines.append("Not yet:")
++            lines.extend(f"  {item}" for item in unmet)
++        self.detail.set_lines(lines)
++
++    # ------------------------------------------------------------------
++    def _toggle_active(self) -> None:
++        companion_id = self.member_list.selected_value
++        if companion_id is None:
++            return
++        active = self.app.game.party.is_active(companion_id)
++        ok, message = self.app.game.set_companion_active(companion_id, not active)
++        self.app.notify(message)
++        self.app.refresh_active()
++
++    def _dismiss(self) -> None:
++        companion_id = self.member_list.selected_value
++        if companion_id is None:
++            return
++        companion = self.app.game.party.get(companion_id)
++        name = companion.name if companion else "them"
++        if not self.app.confirm("Dismiss", f"Send {name} away?"):
++            return
++        ok, message = self.app.game.dismiss_companion(companion_id)
++        self.app.notify(message)
++        self.app.refresh_active()
++
++    def _recruit(self) -> None:
++        companion_id = self.recruit_list.selected_value
++        if companion_id is None:
++            self.app.notify("Nobody to recruit here.")
++            return
++        ok, messages = self.app.game.recruit(companion_id)
++        self.app.notify(messages[0] if messages else "")
++        self.app.refresh_active()
++        # Redraw the checklist *after* the global refresh, which would
++        # otherwise immediately overwrite it with the plain detail view.
++        if not ok:
++            self._on_recruit_target(companion_id)
++
++    def _talk(self) -> None:
++        """Open the shared Talk window - companions use the same one as NPCs."""
++        companion_id = self.member_list.selected_value or self.recruit_list.selected_value
++        if companion_id is None:
++            return
++        self.app.open_talk(companion_id)
++
++    def _close(self) -> None:
++        self.app.close_toplevel("party")
+diff --git a/gui/screens/talk.py b/gui/screens/talk.py
+index c328ae5..06702cb 100644
+--- a/gui/screens/talk.py
++++ b/gui/screens/talk.py
+@@ -1,4 +1,9 @@
+-"""Talk - NPC conversation, gifts, and marriage (bible section 15)."""
++"""Talk - conversation, gifts, and marriage (bible section 15).
++
++Serves NPCs and companions alike: both satisfy the ``Suitor`` shape that
++:mod:`engine.relationships` is written against, so this screen resolves a
++target through ``Game`` and never branches on which kind it got.
++"""
+ 
+ from __future__ import annotations
+ 
+@@ -17,7 +22,7 @@ class TalkWindow(tk.Toplevel):
+         super().__init__(app.root, bg=theme.BG)
+         self.app = app
+         self.npc_id = npc_id
+-        npc = app.game.world_manager.get_npc(npc_id)
++        npc = app.game._find_suitor(npc_id)
+         self.npc_name = npc.name if npc else "Stranger"
+ 
+         theme.style_window(self, f"Project Ascension - {self.npc_name}")
+@@ -34,7 +39,10 @@ class TalkWindow(tk.Toplevel):
+         self.info = StatPanel(body, title="")
+         self.info.pack(fill=tk.X, pady=(10, 0))
+ 
+-        self.log = LogPanel(body, title="Conversation", height=9)
++        self.requirements = StatPanel(body, title="", wrap=560)
++        self.requirements.pack(fill=tk.X, pady=(6, 0))
++
++        self.log = LogPanel(body, title="Conversation", height=8)
+         self.log.pack(fill=tk.BOTH, expand=True, pady=(12, 0))
+ 
+         buttons = tk.Frame(body, bg=theme.BG)
+@@ -54,18 +62,25 @@ class TalkWindow(tk.Toplevel):
+             self._close()
+             return
+ 
+-        npc = game.world_manager.get_npc(self.npc_id)
++        npc = game._find_suitor(self.npc_id)
+         affinity = game.player.affinity_with(self.npc_id)
+-        lines = [f"Affinity: {affinity}"]
+-        if npc and npc.marriageable:
++        lines = [f"Affinity: {affinity} ({game.relationships.tier_label(affinity)})"]
++        if npc and getattr(npc, "marriageable", False):
+             lines.append(f"Marriage at: {npc.marriage_affinity}")
+         if game.player.spouse_id == self.npc_id:
+-            lines.append("Married")
++            lines.append("Married to you")
++        if game.party.has(self.npc_id):
++            lines.append("Travelling with you")
+         self.info.set_lines(lines)
+ 
+-        # The engine decides whether a proposal is possible; the UI just asks.
+-        can_marry, _ = game.can_marry(self.npc_id)
+-        self.marry_button.configure(state=tk.NORMAL if can_marry else tk.DISABLED)
++        # The engine decides whether a proposal is possible; the UI just asks,
++        # and shows the checklist rather than a bare disabled button.
++        check = game.marriage_check(self.npc_id)
++        self.marry_button.configure(state=tk.NORMAL if check.eligible else tk.DISABLED)
++        if not check.eligible and check.unmet:
++            self.requirements.set_lines(["To propose:", *[f"  {item}" for item in check.unmet]])
++        else:
++            self.requirements.set_lines([])
+ 
+     # ------------------------------------------------------------------
+     def _talk(self) -> None:
+diff --git a/gui/screens/world_screen.py b/gui/screens/world_screen.py
+index df01ae9..93339d3 100644
+--- a/gui/screens/world_screen.py
++++ b/gui/screens/world_screen.py
+@@ -78,6 +78,7 @@ class WorldScreen(tk.Frame):
+         self.menus.add("inventory", "Inventory", self.app.open_inventory)
+         self.menus.add("equipment", "Equipment", self.app.open_equipment)
+         self.menus.add("skills", "Skills", self.app.open_skills)
++        self.menus.add("party", "Party", self.app.open_party)
+         self.menus.add("save", "Save Game", lambda: self.app.open_save_browser("save"))
+         self.menus.add("menu", "Main Menu", self._main_menu)
+         self.menus.pack(fill=tk.X)
+diff --git a/tests/test_companions.py b/tests/test_companions.py
+new file mode 100644
+index 0000000..4fee4c3
+--- /dev/null
++++ b/tests/test_companions.py
+@@ -0,0 +1,679 @@
++"""Companion, party and relationship tests (bible sections 6 and 15).
++
++Covers the systems added in v0.2.0: recruiting, the active/reserve roster,
++companions fighting through the AI registry, affinity, and marriage - which
++works identically for townspeople and companions, and never consults gender.
++"""
++
++from __future__ import annotations
++
++import sys
++import tempfile
++import unittest
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from engine.combat.combat import CombatState
++from engine.entities.companion import Companion, CompanionDefinition, RecruitRequirement
++from engine.game import Game
++from engine.party import Party
++from engine.relationships import AFFINITY_MAX, AFFINITY_MIN, RelationshipRules
++
++PROJECT_ROOT = Path(__file__).resolve().parents[1]
++
++
++def new_game(seed: int = 4242, save_dir=None) -> Game:
++    game = Game(data_dir=PROJECT_ROOT / "data", save_dir=save_dir, seed=seed)
++    game.load_content()
++    return game
++
++
++def ready_player(game: Game, level: int = 10, gold: int = 3000) -> None:
++    """A character able to afford most recruits."""
++    game.create_character("Hero", "male", "squire")
++    game.player.level = level
++    game.player._recalculate_base_stats()
++    game.player.inventory.add_gold(gold)
++
++
++def recruit_rook(game: Game) -> None:
++    ready_player(game)
++    ok, messages = game.recruit("rook")
++    assert ok, messages
++
++
++# ======================================================================
++class TestCompanionDefinition(unittest.TestCase):
++    """The JSON-driven blueprint."""
++
++    def setUp(self):
++        self.game = new_game()
++
++    def test_content_loads(self):
++        self.assertGreater(self.game.companions.count(), 0)
++
++    def test_definition_requires_id(self):
++        with self.assertRaises(ValueError):
++            CompanionDefinition.from_dict({"name": "Nameless"})
++
++    def test_level_offset_applies(self):
++        definition = CompanionDefinition.from_dict({"id": "x", "level_offset": -2})
++        self.assertEqual(definition.level_for(10), 8)
++
++    def test_level_never_below_one(self):
++        definition = CompanionDefinition.from_dict({"id": "x", "level_offset": -50})
++        self.assertEqual(definition.level_for(3), 1)
++
++    def test_stats_grow_with_level(self):
++        definition = self.game.companions.require("rook")
++        low = definition.stats_at_level(1).total()
++        high = definition.stats_at_level(20).total()
++        self.assertGreater(high, low)
++
++    def test_every_companion_ai_id_is_registered(self):
++        from engine.combat.ai import default_registry
++
++        registry = default_registry()
++        for definition in self.game.companions.all_definitions():
++            self.assertIn(definition.ai_behavior_id, registry.ids(), definition.id)
++
++    def test_every_companion_skill_resolves(self):
++        for definition in self.game.companions.all_definitions():
++            for skill_id in definition.skill_ids:
++                self.assertIsNotNone(self.game.skills.get(skill_id), f"{definition.id}:{skill_id}")
++
++    def test_at_location_filters(self):
++        town = {d.id for d in self.game.companions.at_location("town_ashvale")}
++        self.assertIn("rook", town)
++        self.assertNotIn("kess", town)
++
++    def test_recruit_requirement_accepts_list_or_mapping(self):
++        from_list = RecruitRequirement.from_dict({"items": ["orb"]})
++        from_map = RecruitRequirement.from_dict({"items": {"orb": 2}})
++        self.assertEqual(from_list.items, {"orb": 1})
++        self.assertEqual(from_map.items, {"orb": 2})
++
++
++# ======================================================================
++class TestCompanionEntity(unittest.TestCase):
++    def setUp(self):
++        self.game = new_game()
++        ready_player(self.game)
++        self.companion = self.game.companions.create("rook", self.game.player.level)
++
++    def test_is_a_full_entity(self):
++        self.assertIsInstance(self.companion, Companion)
++        self.assertGreater(self.companion.max_hp, 0)
++        self.assertTrue(self.companion.is_alive)
++
++    def test_template_modifiers_apply(self):
++        """Rook's JSON grants +6 armor and +30 max HP."""
++        bare = self.companion.formulas.derive(self.companion.base_stats, self.companion.level)
++        self.assertEqual(self.companion.max_hp, bare.max_hp + 30)
++        self.assertAlmostEqual(self.companion.derived_stats().armor, bare.armor + 6)
++
++    def test_sync_level_tracks_the_player(self):
++        self.assertTrue(self.companion.sync_level(30))
++        self.assertEqual(self.companion.level, 30)
++
++    def test_sync_level_is_a_noop_at_same_level(self):
++        self.companion.sync_level(20)
++        self.assertFalse(self.companion.sync_level(20))
++
++    def test_sync_level_preserves_damage_proportionally(self):
++        """Levelling should not be a free full heal."""
++        self.companion.current_hp = self.companion.max_hp * 0.5
++        self.companion.sync_level(40)
++        self.assertLess(self.companion.hp_fraction, 0.75)
++        self.assertGreater(self.companion.current_hp, 0)
++
++    def test_takes_damage_and_can_fall(self):
++        self.companion.take_raw_damage(999_999, damage_type="true")
++        self.assertFalse(self.companion.is_alive)
++
++    def test_status_effects_apply(self):
++        self.companion.apply_status(self.game.skills.get_status("poison").clone())
++        self.assertTrue(self.companion.has_status("poison"))
++        self.companion.tick_status_effects()
++        self.assertLess(self.companion.current_hp, self.companion.max_hp)
++
++    def test_usable_skills_respect_mp(self):
++        self.companion.current_mp = 0
++        for skill in self.companion.usable_skills():
++            self.assertEqual(skill.mp_cost, 0)
++
++
++# ======================================================================
++class TestParty(unittest.TestCase):
++    """Roster mechanics in isolation."""
++
++    def setUp(self):
++        self.game = new_game()
++        ready_player(self.game)
++        self.party = Party(max_active=2)
++
++    def _make(self, companion_id: str) -> Companion:
++        return self.game.companions.create(companion_id, 10)
++
++    def test_recruit_fills_active_first(self):
++        self.party.recruit(self._make("rook"))
++        self.assertEqual(len(self.party.active), 1)
++        self.assertEqual(self.party.reserve, [])
++
++    def test_overflow_goes_to_reserve(self):
++        for companion_id in ("rook", "sister_elen", "kess"):
++            self.party.recruit(self._make(companion_id))
++        self.assertEqual(len(self.party.active), 2)
++        self.assertEqual(len(self.party.reserve), 1)
++
++    def test_cannot_recruit_twice(self):
++        self.party.recruit(self._make("rook"))
++        ok, _ = self.party.recruit(self._make("rook"))
++        self.assertFalse(ok)
++
++    def test_bench_and_activate(self):
++        self.party.recruit(self._make("rook"))
++        self.assertTrue(self.party.set_active("rook", False)[0])
++        self.assertFalse(self.party.is_active("rook"))
++        self.assertTrue(self.party.set_active("rook", True)[0])
++        self.assertTrue(self.party.is_active("rook"))
++
++    def test_cannot_activate_beyond_cap(self):
++        for companion_id in ("rook", "sister_elen", "kess"):
++            self.party.recruit(self._make(companion_id))
++        ok, reason = self.party.set_active("kess", True)
++        self.assertFalse(ok)
++        self.assertIn("full", reason.lower())
++
++    def test_dismiss_removes_from_either_list(self):
++        self.party.recruit(self._make("rook"))
++        self.assertTrue(self.party.dismiss("rook")[0])
++        self.assertEqual(len(self.party), 0)
++
++    def test_battle_allies_excludes_reserve_and_dead(self):
++        for companion_id in ("rook", "sister_elen", "kess"):
++            self.party.recruit(self._make(companion_id))
++        self.party.active[0].kill()
++        allies = self.party.battle_allies()
++        self.assertEqual(len(allies), 1)
++        self.assertTrue(all(a.is_alive for a in allies))
++
++    def test_revive_fallen_restores_at_partial_hp(self):
++        self.party.recruit(self._make("rook"))
++        member = self.party.active[0]
++        member.kill()
++        self.party.revive_fallen()
++        self.assertTrue(member.is_alive)
++        self.assertLess(member.hp_fraction, 0.5)
++
++    def test_sync_levels_moves_everyone(self):
++        self.party.recruit(self._make("rook"))
++        self.party.sync_levels(40)
++        self.assertTrue(all(c.level >= 39 for c in self.party.all_members))
++
++
++# ======================================================================
++class TestRecruitment(unittest.TestCase):
++    """Requirement checking through the Game facade."""
++
++    def setUp(self):
++        self.game = new_game()
++
++    def test_requirements_block_and_are_itemised(self):
++        self.game.create_character("Hero", "male", "squire")  # level 1, 50 gold
++        ok, unmet = self.game.check_recruit("rook")
++        self.assertFalse(ok)
++        self.assertTrue(any("Level" in u for u in unmet))
++        self.assertTrue(any("gold" in u for u in unmet))
++
++    def test_recruiting_consumes_gold(self):
++        ready_player(self.game, level=10, gold=1000)
++        before = self.game.player.inventory.gold
++        self.assertTrue(self.game.recruit("rook")[0])
++        self.assertEqual(self.game.player.inventory.gold, before - 120)
++
++    def test_recruiting_consumes_items(self):
++        ready_player(self.game)
++        self.game.player.affinity["sister_elen"] = 50
++        self.game.items.grant(self.game.player.inventory, "minor_ether", 2)
++        self.assertTrue(self.game.recruit("sister_elen")[0])
++        self.assertEqual(self.game.player.inventory.count("minor_ether"), 0)
++
++    def test_affinity_requirement_enforced(self):
++        ready_player(self.game)
++        self.game.items.grant(self.game.player.inventory, "minor_ether", 2)
++        ok, unmet = self.game.check_recruit("sister_elen")
++        self.assertFalse(ok)
++        self.assertTrue(any("Affinity" in u for u in unmet))
++
++    def test_failed_recruit_spends_nothing(self):
++        ready_player(self.game, level=1, gold=1000)
++        before = self.game.player.inventory.gold
++        self.game.recruit("rook")
++        self.assertEqual(self.game.player.inventory.gold, before)
++
++    def test_recruitable_here_is_location_scoped(self):
++        ready_player(self.game)
++        town = {d.id for d in self.game.recruitable_here()}
++        self.assertIn("rook", town)
++        self.game.travel_to("greenfields")
++        self.assertEqual(self.game.recruitable_here(), [])
++
++    def test_recruited_companion_disappears_from_available(self):
++        recruit_rook(self.game)
++        self.assertNotIn("rook", {d.id for d in self.game.recruitable_here()})
++
++    def test_dismissed_companion_keeps_affinity(self):
++        recruit_rook(self.game)
++        self.game.player.change_affinity("rook", 40)
++        self.game.dismiss_companion("rook")
++        self.assertEqual(self.game.player.affinity_with("rook"), 40)
++
++
++# ======================================================================
++class TestCompanionsInCombat(unittest.TestCase):
++    def setUp(self):
++        self.game = new_game(seed=31)
++        recruit_rook(self.game)
++
++    def _fight(self, spawns, max_turns: int = 120):
++        battle = self.game.start_battle(spawns)
++        turns = 0
++        while not battle.is_over and turns < max_turns:
++            if battle.waiting_for_player:
++                targets = battle.living_enemies
++                battle.player_attack(targets[0] if targets else None)
++            battle.run_until_player_turn()
++            turns += 1
++        return battle
++
++    def test_active_companion_joins_the_battle(self):
++        battle = self.game.start_battle([("green_slime", 1)])
++        self.assertIn("Rook", [a.name for a in battle.allies])
++
++    def test_reserve_companion_does_not(self):
++        self.game.set_companion_active("rook", False)
++        battle = self.game.start_battle([("green_slime", 1)])
++        self.assertNotIn("Rook", [a.name for a in battle.allies])
++
++    def test_companion_acts_on_its_own_turn(self):
++        battle = self._fight([("green_slime", 3)])
++        self.assertTrue(any("Rook" in entry.text for entry in battle.log))
++
++    def test_companion_targets_enemies_not_the_player(self):
++        """Allies must never be routed as foes by the AI turn logic."""
++        battle = self._fight([("green_slime", 2)])
++        hits_on_player = [
++            e.text for e in battle.log if e.text.startswith("Rook hits Hero")
++        ]
++        self.assertEqual(hits_on_player, [])
++
++    def test_companion_appears_in_turn_order(self):
++        battle = self.game.start_battle([("green_slime", 1)])
++        self.assertIn("Rook", [c.name for c in battle.turn_order])
++
++    def test_ally_lines_render_for_the_gui(self):
++        battle = self.game.start_battle([("green_slime", 1)])
++        self.assertTrue(any("Rook" in line for line in battle.ally_lines()))
++
++    def test_ally_lines_without_companions(self):
++        game = new_game()
++        ready_player(game)
++        battle = game.start_battle([("green_slime", 1)])
++        self.assertEqual(battle.ally_lines(), ["(none)"])
++
++    def test_victory_grants_affinity_to_active_companions(self):
++        before = self.game.player.affinity_with("rook")
++        battle = self._fight([("green_slime", 1)])
++        self.assertEqual(battle.state, CombatState.VICTORY)
++        self.game.finish_battle()
++        self.assertGreater(self.game.player.affinity_with("rook"), before)
++
++    def test_fallen_companion_revives_after_battle(self):
++        battle = self.game.start_battle([("green_slime", 1)])
++        rook = next(a for a in battle.allies if a.name == "Rook")
++        rook.kill()
++        while not battle.is_over:
++            if battle.waiting_for_player:
++                targets = battle.living_enemies
++                battle.player_attack(targets[0] if targets else None)
++            battle.run_until_player_turn()
++        self.game.finish_battle()
++        self.assertTrue(self.game.party.get("rook").is_alive)
++
++    def test_battle_statuses_cleared_from_companions(self):
++        battle = self.game.start_battle([("green_slime", 1)])
++        rook = next(a for a in battle.allies if a.name == "Rook")
++        rook.apply_status(self.game.skills.get_status("poison").clone())
++        while not battle.is_over:
++            if battle.waiting_for_player:
++                targets = battle.living_enemies
++                battle.player_attack(targets[0] if targets else None)
++            battle.run_until_player_turn()
++        self.game.finish_battle()
++        self.assertEqual(self.game.party.get("rook").statuses, [])
++
++    def test_player_death_still_ends_the_battle_with_allies_alive(self):
++        """A living companion must not keep a lost battle running."""
++        battle = self.game.start_battle([("shadow_warden", 60)])
++        turns = 0
++        while not battle.is_over and turns < 200:
++            if battle.waiting_for_player:
++                battle.player_defend()
++            battle.run_until_player_turn()
++            turns += 1
++        self.assertEqual(battle.state, CombatState.DEFEAT)
++
++    def test_resting_heals_companions(self):
++        self.game.party.active[0].current_hp = 1
++        self.game.player.inventory.add_gold(100)
++        self.game.rest_at_inn()
++        member = self.game.party.get("rook")
++        self.assertEqual(member.current_hp, float(member.max_hp))
++
++
++# ======================================================================
++class TestRelationships(unittest.TestCase):
++    """Affinity and marriage rules, shared by NPCs and companions."""
++
++    def setUp(self):
++        self.rules = RelationshipRules(
++            {
++                "affinity_per_talk": 2,
++                "affinity_gift": 5,
++                "affinity_gift_liked": 15,
++                "affinity_talk_falloff_after": 3,
++                "marriage_item_id": "eternal_band",
++            }
++        )
++
++    def test_talk_gain_falls_off_but_never_to_zero(self):
++        self.assertEqual(self.rules.talk_gain(0), 2)
++        self.assertGreaterEqual(self.rules.talk_gain(99), 1)
++        self.assertLess(self.rules.talk_gain(99), self.rules.talk_gain(0))
++
++    def test_liked_gift_is_worth_more(self):
++        suitor = type("S", (), {"id": "x", "name": "X", "marriageable": True,
++                                "marriage_affinity": 50, "gift_item_ids": ["rose"]})()
++        liked, was_liked = self.rules.gift_gain(suitor, "rose")
++        plain, not_liked = self.rules.gift_gain(suitor, "rock")
++        self.assertTrue(was_liked)
++        self.assertFalse(not_liked)
++        self.assertGreater(liked, plain)
++
++    def test_affinity_is_clamped(self):
++        self.assertEqual(self.rules.clamp(9999), AFFINITY_MAX)
++        self.assertEqual(self.rules.clamp(-9999), AFFINITY_MIN)
++
++    def test_tier_labels_ascend(self):
++        self.assertEqual(self.rules.tier_label(-100), "Hostile")
++        self.assertEqual(self.rules.tier_label(0), "Neutral")
++        self.assertEqual(self.rules.tier_label(100), "Devoted")
++
++    def test_check_lists_each_unmet_requirement(self):
++        suitor = type("S", (), {"id": "x", "name": "X", "marriageable": True,
++                                "marriage_affinity": 50, "gift_item_ids": []})()
++        check = self.rules.check_marriage(
++            suitor, affinity=0, has_ring=False, current_spouse_id=None
++        )
++        self.assertFalse(check.eligible)
++        self.assertEqual(len(check.unmet), 2)
++
++    def test_unmarriageable_is_refused(self):
++        suitor = type("S", (), {"id": "x", "name": "X", "marriageable": False,
++                                "marriage_affinity": 0, "gift_item_ids": []})()
++        check = self.rules.check_marriage(
++            suitor, affinity=100, has_ring=True, current_spouse_id=None
++        )
++        self.assertFalse(check.eligible)
++        self.assertIn("not interested", check.reason)
++
++    def test_unrecruited_companion_cannot_be_proposed_to(self):
++        suitor = type("S", (), {"id": "x", "name": "X", "marriageable": True,
++                                "marriage_affinity": 0, "gift_item_ids": []})()
++        check = self.rules.check_marriage(
++            suitor, affinity=100, has_ring=True, current_spouse_id=None, recruited=False
++        )
++        self.assertFalse(check.eligible)
++        self.assertTrue(any("party" in u for u in check.unmet))
++
++
++# ======================================================================
++class TestMarriageThroughTheGame(unittest.TestCase):
++    """End-to-end marriage, for both NPCs and companions."""
++
++    def setUp(self):
++        self.game = new_game(seed=17)
++
++    def _prepare(self, target_id: str) -> None:
++        self.game.player.affinity[target_id] = 100
++        self.game.items.grant(self.game.player.inventory, "eternal_band", 1)
++
++    def test_marrying_a_companion(self):
++        recruit_rook(self.game)
++        self._prepare("rook")
++        ok, _ = self.game.marry("rook")
++        self.assertTrue(ok)
++        self.assertEqual(self.game.player.spouse_id, "rook")
++
++    def test_marrying_an_npc_still_works(self):
++        ready_player(self.game)
++        self._prepare("innkeeper_mara")
++        self.assertTrue(self.game.marry("innkeeper_mara")[0])
++
++    def test_marriage_is_gender_agnostic_for_companions(self):
++        """Bible section 15: possible regardless of gender."""
++        for gender in ("male", "female"):
++            game = new_game()
++            game.create_character("Hero", gender, "acolyte")
++            game.player.level = 10
++            game.player._recalculate_base_stats()
++            game.player.inventory.add_gold(3000)
++            game.recruit("rook")  # Rook is male
++            game.player.affinity["rook"] = 100
++            game.items.grant(game.player.inventory, "eternal_band", 1)
++            self.assertTrue(game.marry("rook")[0], gender)
++
++    def test_marriage_consumes_the_ring(self):
++        recruit_rook(self.game)
++        self._prepare("rook")
++        self.game.marry("rook")
++        self.assertFalse(self.game.player.inventory.has("eternal_band"))
++
++    def test_marriage_requires_the_ring(self):
++        recruit_rook(self.game)
++        self.game.player.affinity["rook"] = 100
++        ok, reason = self.game.can_marry("rook")
++        self.assertFalse(ok)
++        self.assertIn("Eternal Band", reason)
++
++    def test_marriage_requires_affinity(self):
++        recruit_rook(self.game)
++        self.game.items.grant(self.game.player.inventory, "eternal_band", 1)
++        ok, reason = self.game.can_marry("rook")
++        self.assertFalse(ok)
++        self.assertIn("Affinity", reason)
++
++    def test_cannot_marry_an_unrecruited_companion(self):
++        ready_player(self.game)
++        self._prepare("rook")
++        self.assertFalse(self.game.can_marry("rook")[0])
++
++    def test_cannot_marry_twice(self):
++        recruit_rook(self.game)
++        self._prepare("rook")
++        self.game.marry("rook")
++        self.game.player.affinity["innkeeper_mara"] = 100
++        self.game.items.grant(self.game.player.inventory, "eternal_band", 1)
++        self.assertFalse(self.game.marry("innkeeper_mara")[0])
++
++    def test_spouse_gains_a_combat_bonus(self):
++        recruit_rook(self.game)
++        rook = self.game.party.get("rook")
++        before_hp = rook.max_hp
++        before_atk = rook.derived_stats().physical_power
++        self._prepare("rook")
++        self.game.marry("rook")
++        self.assertGreater(rook.max_hp, before_hp)
++        self.assertGreater(rook.derived_stats().physical_power, before_atk)
++
++    def test_only_the_spouse_gets_the_bonus(self):
++        recruit_rook(self.game)
++        self.game.player.affinity["sister_elen"] = 50
++        self.game.items.grant(self.game.player.inventory, "minor_ether", 2)
++        self.game.recruit("sister_elen")
++        elen_before = self.game.party.get("sister_elen").max_hp
++        self._prepare("rook")
++        self.game.marry("rook")
++        self.assertEqual(self.game.party.get("sister_elen").max_hp, elen_before)
++
++    def test_spouse_cannot_be_dismissed(self):
++        recruit_rook(self.game)
++        self._prepare("rook")
++        self.game.marry("rook")
++        ok, reason = self.game.dismiss_companion("rook")
++        self.assertFalse(ok)
++        self.assertIn("spouse", reason.lower())
++
++    def test_talking_raises_affinity(self):
++        recruit_rook(self.game)
++        before = self.game.player.affinity_with("rook")
++        ok, lines = self.game.talk_to("rook")
++        self.assertTrue(ok)
++        self.assertGreater(self.game.player.affinity_with("rook"), before)
++        self.assertTrue(lines)
++
++    def test_repeated_talking_yields_less(self):
++        recruit_rook(self.game)
++        gains = []
++        for _ in range(6):
++            before = self.game.player.affinity_with("rook")
++            self.game.talk_to("rook")
++            gains.append(self.game.player.affinity_with("rook") - before)
++        self.assertLess(gains[-1], gains[0])
++
++    def test_gifting_a_companion_works(self):
++        recruit_rook(self.game)
++        self.game.items.grant(self.game.player.inventory, "troll_hide", 1)
++        before = self.game.player.affinity_with("rook")
++        ok, _ = self.game.give_gift("rook", "troll_hide")
++        self.assertTrue(ok)
++        self.assertGreater(self.game.player.affinity_with("rook") - before, 5)
++
++    def test_marriage_checklist_is_itemised_for_the_gui(self):
++        recruit_rook(self.game)
++        check = self.game.marriage_check("rook")
++        self.assertFalse(check.eligible)
++        self.assertTrue(check.unmet)
++        self.assertTrue(check.summary_lines())
++
++
++# ======================================================================
++class TestCompanionPersistence(unittest.TestCase):
++    def setUp(self):
++        self._tmp = tempfile.TemporaryDirectory()
++        self.save_dir = Path(self._tmp.name)
++
++    def tearDown(self):
++        self._tmp.cleanup()
++
++    def _prepared(self) -> Game:
++        game = new_game(seed=63, save_dir=self.save_dir)
++        ready_player(game)
++        game.recruit("rook")
++        game.player.affinity["sister_elen"] = 50
++        game.items.grant(game.player.inventory, "minor_ether", 2)
++        game.recruit("sister_elen")
++        return game
++
++    def test_party_survives_a_round_trip(self):
++        game = self._prepared()
++        game.save_game("slot")
++        fresh = new_game(seed=1, save_dir=self.save_dir)
++        fresh.load_game("slot")
++        self.assertEqual(
++            {c.id for c in fresh.party.all_members},
++            {c.id for c in game.party.all_members},
++        )
++
++    def test_reserve_membership_survives(self):
++        game = self._prepared()
++        game.set_companion_active("rook", False)
++        game.save_game("slot")
++        fresh = new_game(seed=1, save_dir=self.save_dir)
++        fresh.load_game("slot")
++        self.assertFalse(fresh.party.is_active("rook"))
++        self.assertTrue(fresh.party.has("rook"))
++
++    def test_companion_hp_survives(self):
++        game = self._prepared()
++        member = game.party.get("rook")
++        member.current_hp = member.max_hp * 0.5
++        expected = member.current_hp
++        game.save_game("slot")
++        fresh = new_game(seed=1, save_dir=self.save_dir)
++        fresh.load_game("slot")
++        self.assertAlmostEqual(fresh.party.get("rook").current_hp, expected, places=2)
++
++    def test_marriage_and_spouse_bonus_survive(self):
++        game = self._prepared()
++        game.player.affinity["rook"] = 100
++        game.items.grant(game.player.inventory, "eternal_band", 1)
++        game.marry("rook")
++        expected_hp = game.party.get("rook").max_hp
++        game.save_game("slot")
++
++        fresh = new_game(seed=1, save_dir=self.save_dir)
++        fresh.load_game("slot")
++        self.assertEqual(fresh.player.spouse_id, "rook")
++        self.assertEqual(fresh.party.get("rook").max_hp, expected_hp)
++
++    def test_affinity_survives(self):
++        game = self._prepared()
++        game.player.change_affinity("rook", 33)
++        expected = game.player.affinity_with("rook")
++        game.save_game("slot")
++        fresh = new_game(seed=1, save_dir=self.save_dir)
++        fresh.load_game("slot")
++        self.assertEqual(fresh.player.affinity_with("rook"), expected)
++
++    def test_save_without_party_block_still_loads(self):
++        """Backwards compatibility: pre-companion saves (bible section 5)."""
++        import json
++
++        game = self._prepared()
++        game.save_game("legacy")
++        path = self.save_dir / "legacy.json"
++        payload = json.loads(path.read_text(encoding="utf-8"))
++        payload.pop("party", None)
++        path.write_text(json.dumps(payload), encoding="utf-8")
++
++        fresh = new_game(seed=1, save_dir=self.save_dir)
++        ok, _ = fresh.load_game("legacy")
++        self.assertTrue(ok)
++        self.assertEqual(len(fresh.party), 0)
++
++    def test_unknown_companion_id_is_dropped_not_fatal(self):
++        import json
++
++        game = self._prepared()
++        game.save_game("slot")
++        path = self.save_dir / "slot.json"
++        payload = json.loads(path.read_text(encoding="utf-8"))
++        payload["party"]["active"].append({"companion_id": "deleted_ally", "name": "Ghost"})
++        path.write_text(json.dumps(payload), encoding="utf-8")
++
++        fresh = new_game(seed=1, save_dir=self.save_dir)
++        ok, _ = fresh.load_game("slot")
++        self.assertTrue(ok)
++        self.assertIsNone(fresh.party.get("deleted_ally"))
++
++    def test_new_character_starts_with_no_party(self):
++        game = self._prepared()
++        game.create_character("Second", "female", "maiden")
++        self.assertEqual(len(game.party), 0)
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)
+diff --git a/tests/test_gui.py b/tests/test_gui.py
+index cd3470a..37957e9 100644
+--- a/tests/test_gui.py
++++ b/tests/test_gui.py
+@@ -48,6 +48,16 @@ def make_app_with_character(save_dir: Path | str | None = None, seed: int = 4242
+     return app
+ 
+ 
++def make_app_with_party(save_dir=None, seed: int = 4242) -> AscensionApp:
++    """An app whose player has a companion recruited."""
++    app = make_app_with_character(save_dir, seed)
++    app.game.player.level = 10
++    app.game.player._recalculate_base_stats()
++    app.game.player.inventory.add_gold(3000)
++    app.game.recruit("rook")
++    return app
++
++
+ def buttons_in(widget) -> list:
+     return [w for w in widget.walk() if isinstance(w, tk.Button)]
+ 
+@@ -153,6 +163,7 @@ class TestExportSelectionRegression(unittest.TestCase):
+             app.open_inventory,
+             app.open_equipment,
+             app.open_skills,
++            app.open_party,
+             app.open_status,
+             app.open_settings,
+             lambda: app.open_save_browser("load"),
+@@ -878,5 +889,185 @@ class TestFullPlaythroughThroughTheUI(unittest.TestCase):
+             )
+ 
+ 
++# ======================================================================
++class TestPartyWindow(unittest.TestCase):
++    """Companion roster UI (bible section 6)."""
++
++    def setUp(self):
++        self.app = make_app_with_party()
++        self.app.show_world()
++
++    def test_world_screen_has_a_party_button(self):
++        screen = self.app.current_screen
++        self.assertIsNotNone(button_labelled(screen, "Party"))
++
++    def test_party_button_opens_the_window(self):
++        button_labelled(self.app.current_screen, "Party").invoke()
++        self.assertIn("party", self.app._toplevels)
++
++    def test_lists_recruited_companions(self):
++        window = self.app.open_party()
++        self.assertTrue(any("Rook" in row for row in window.member_list.listbox.items))
++
++    def test_lists_recruitable_locals(self):
++        window = self.app.open_party()
++        self.assertTrue(any("Elen" in row for row in window.recruit_list.listbox.items))
++
++    def test_detail_pane_shows_affinity(self):
++        window = self.app.open_party()
++        window.member_list.select_index(0)
++        self.assertIn("Affinity", window.detail._label.options["text"])
++
++    def test_benching_through_the_ui_updates_the_engine(self):
++        window = self.app.open_party()
++        window.member_list.select_index(0)
++        window._toggle_active()
++        self.assertFalse(self.app.game.party.is_active("rook"))
++
++    def test_recruiting_through_the_ui(self):
++        self.app.game.player.affinity["sister_elen"] = 50
++        self.app.game.items.grant(self.app.game.player.inventory, "minor_ether", 2)
++        window = self.app.open_party()
++        window.refresh()
++        index = next(
++            i for i, row in enumerate(window.recruit_list.listbox.items) if "Elen" in row
++        )
++        window.recruit_list.select_index(index)
++        window._recruit()
++        self.assertTrue(self.app.game.party.has("sister_elen"))
++
++    def test_failed_recruit_shows_the_checklist(self):
++        window = self.app.open_party()
++        index = next(
++            i for i, row in enumerate(window.recruit_list.listbox.items) if "Elen" in row
++        )
++        window.recruit_list.select_index(index)
++        window._recruit()
++        self.assertIn("Not yet", window.detail._label.options["text"])
++
++    def test_dismiss_asks_for_confirmation(self):
++        tk_stub.records.clear()
++        tk_stub.records.answer_yes = True
++        window = self.app.open_party()
++        window.member_list.select_index(0)
++        window._dismiss()
++        self.assertTrue(tk_stub.records.questions)
++        self.assertFalse(self.app.game.party.has("rook"))
++
++    def test_declining_dismiss_keeps_the_companion(self):
++        tk_stub.records.clear()
++        tk_stub.records.answer_yes = False
++        window = self.app.open_party()
++        window.member_list.select_index(0)
++        window._dismiss()
++        self.assertTrue(self.app.game.party.has("rook"))
++
++    def test_empty_party_shows_recruitable_locals(self):
++        """With no companions the pane usefully previews who is available."""
++        app = make_app_with_character()
++        app.show_world()
++        window = app.open_party()
++        self.assertEqual(window.member_list.count, 0)
++        self.assertGreater(window.recruit_list.count, 0)
++        self.assertIn("To recruit", window.detail._label.options["text"])
++
++    def test_empty_party_in_an_area_with_nobody(self):
++        """Falls back to the guidance message when there is truly nobody."""
++        app = make_app_with_character()
++        app.game.travel_to("greenfields")
++        app.show_world()
++        window = app.open_party()
++        self.assertIn("No companions", window.detail._label.options["text"])
++
++
++# ======================================================================
++class TestCompanionCombatUI(unittest.TestCase):
++    def setUp(self):
++        self.app = make_app_with_party()
++
++    def test_ally_panel_shows_the_companion(self):
++        self.app.game.start_battle([("green_slime", 1)])
++        screen = self.app.show_combat()
++        self.assertIn("Rook", screen.ally_panel._label.options["text"])
++
++    def test_ally_panel_without_companions(self):
++        app = make_app_with_character()
++        app.game.start_battle([("green_slime", 1)])
++        screen = app.show_combat()
++        self.assertIn("none", screen.ally_panel._label.options["text"].lower())
++
++    def test_battle_with_a_companion_resolves_through_the_ui(self):
++        self.app.game.start_battle([("green_slime", 1)])
++        screen = self.app.show_combat()
++        for _ in range(120):
++            battle = self.app.game.battle
++            if battle is None or battle.is_over:
++                break
++            if battle.waiting_for_player:
++                screen.action_list.select_index(0)
++                if screen.target_list.count:
++                    screen.target_list.select_index(0)
++                screen._use_selected()
++            else:
++                battle.run_until_player_turn()
++                screen.refresh()
++        self.assertTrue(self.app.game.battle.is_over)
++
++
++# ======================================================================
++class TestCompanionMarriageUI(unittest.TestCase):
++    """Bible section 15 through the Talk window."""
++
++    def setUp(self):
++        self.app = make_app_with_party()
++        self.app.show_world()
++
++    def test_talk_window_opens_for_a_companion(self):
++        window = self.app.open_talk("rook")
++        self.assertEqual(window.npc_name, "Rook")
++
++    def test_talking_to_a_companion_raises_affinity(self):
++        window = self.app.open_talk("rook")
++        window._talk()
++        self.assertGreater(self.app.game.player.affinity_with("rook"), 0)
++
++    def test_propose_disabled_until_requirements_met(self):
++        window = self.app.open_talk("rook")
++        self.assertEqual(window.marry_button.options["state"], tk.DISABLED)
++
++    def test_requirements_panel_lists_what_is_missing(self):
++        window = self.app.open_talk("rook")
++        self.assertIn("Affinity", window.requirements._label.options["text"])
++
++    def test_propose_enables_once_eligible(self):
++        self.app.game.player.affinity["rook"] = 100
++        self.app.game.items.grant(self.app.game.player.inventory, "eternal_band", 1)
++        window = self.app.open_talk("rook")
++        window.refresh()
++        self.assertEqual(window.marry_button.options["state"], tk.NORMAL)
++
++    def test_marrying_a_companion_through_the_ui(self):
++        self.app.game.player.affinity["rook"] = 100
++        self.app.game.items.grant(self.app.game.player.inventory, "eternal_band", 1)
++        window = self.app.open_talk("rook")
++        window.refresh()
++        window._propose()
++        self.assertEqual(self.app.game.player.spouse_id, "rook")
++
++    def test_married_state_is_shown(self):
++        self.app.game.player.affinity["rook"] = 100
++        self.app.game.items.grant(self.app.game.player.inventory, "eternal_band", 1)
++        window = self.app.open_talk("rook")
++        window.refresh()
++        window._propose()
++        window.refresh()
++        self.assertIn("Married", window.info._label.options["text"])
++
++    def test_talk_window_still_works_for_npcs(self):
++        window = self.app.open_talk("innkeeper_mara")
++        window._talk()
++        self.assertGreater(self.app.game.player.affinity_with("innkeeper_mara"), 0)
++
++
+ if __name__ == "__main__":
+     unittest.main(verbosity=2)
+diff --git a/tools/render_mockups.py b/tools/render_mockups.py
+index fa0706f..0959c32 100644
+--- a/tools/render_mockups.py
++++ b/tools/render_mockups.py
+@@ -483,7 +483,50 @@ def main() -> int:
+             written.append(name)
+             app.close_all_toplevels()
+ 
++        # -- party (companions recruited) --------------------------------
+         app.game.travel_to("town_ashvale")
++        # Recruits have level/affinity gates; meet them so the render shows a
++        # real recruited party rather than two refusals.
++        app.game.player.level = 10
++        app.game.player._recalculate_base_stats()
++        app.game.player.inventory.add_gold(3000)
++        app.game.recruit("rook")
++        app.game.player.affinity["sister_elen"] = 50
++        app.game.items.grant(app.game.player.inventory, "minor_ether", 2)
++        app.game.recruit("sister_elen")
++        party = app.open_party()
++        party.member_list.select_index(0)
++        render(party, 760, 560, "Project Ascension - Party").save(out_dir / "13_party.png")
++        written.append("13_party.png")
++        app.close_all_toplevels()
++
++        # -- companion combat --------------------------------------------
++        app.game.travel_to("greenfields")
++        app.game.start_battle([("green_slime", 2), ("grey_wolf", 3)])
++        combat2 = app.show_combat()
++        b2 = app.game.battle
++        if b2.waiting_for_player:
++            combat2.action_list.select_index(0)
++            if combat2.target_list.count:
++                combat2.target_list.select_index(0)
++            combat2._use_selected()
++        combat2.refresh()
++        render(app.root, WINDOW_W, WINDOW_H, "Project Ascension").save(out_dir / "14_combat_party.png")
++        written.append("14_combat_party.png")
++
++        # -- companion marriage ------------------------------------------
++        app.game.battle = None
++        app.show_world()
++        app.game.travel_to("town_ashvale")
++        app.game.player.affinity["rook"] = 100
++        app.game.items.grant(app.game.player.inventory, "eternal_band", 1)
++        talk_rook = app.open_talk("rook")
++        talk_rook._talk()
++        talk_rook.refresh()
++        render(talk_rook, 620, 520, "Project Ascension - Rook").save(out_dir / "15_companion_marriage.png")
++        written.append("15_companion_marriage.png")
++        app.close_all_toplevels()
++
+         shop = app.open_shop("ashvale_general")
+         shop.stock_list.select_index(0)
+         render(shop, 720, 520, "Project Ascension - Ashvale General Goods").save(out_dir / "11_shop.png")
