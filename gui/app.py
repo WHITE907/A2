@@ -155,6 +155,11 @@ class AscensionApp:
 
         return self.open_toplevel("status", StatusWindow)
 
+    def open_party(self) -> tk.Toplevel:
+        from gui.screens.party import PartyWindow
+
+        return self.open_toplevel("party", PartyWindow)
+
     def open_settings(self) -> tk.Toplevel:
         from gui.screens.settings import SettingsWindow
 

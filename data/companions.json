@@ -1,0 +1,101 @@
+{
+  "_comment": "Recruitable allies (bible section 6, roadmap v0.0.9). They level with the player via level_offset and fight themselves through the AI registry in engine/combat/ai.py. Any with marriageable:true can be married on the same terms as townspeople (section 15) - gender is never considered.",
+  "companions": [
+    {
+      "id": "rook",
+      "name": "Rook",
+      "role": "guardian",
+      "description": "A retired sellsword who stayed in Ashvale because leaving cost more than staying.",
+      "location_id": "town_ashvale",
+      "base_stats": { "STR": 10, "END": 12, "INT": 3, "AGI": 5 },
+      "growth": { "STR": 2, "END": 3, "INT": 0, "AGI": 1 },
+      "skill_ids": ["strike", "power_strike", "shield_wall", "rallying_cry"],
+      "ai_behavior_id": "defensive",
+      "level_offset": 0,
+      "weapon_type": "sword",
+      "modifiers": { "flat": { "armor": 6, "max_hp": 30 } },
+      "recruit": { "level": 2, "gold": 120 },
+      "marriageable": true,
+      "marriage_affinity": 70,
+      "gift_item_ids": ["troll_hide", "steel_sword", "potion"],
+      "dialogue": [
+        "Stay behind me and this stays simple.",
+        "I've buried better fighters than either of us. Keep your guard up.",
+        "You swing like you're angry. Anger's fine. Sloppy isn't.",
+        "Quiet roads make me nervous. Loud ones make me useful."
+      ]
+    },
+    {
+      "id": "sister_elen",
+      "name": "Sister Elen",
+      "role": "healer",
+      "description": "Left the shrine when it stopped answering questions. Still keeps the vows that mattered.",
+      "location_id": "town_ashvale",
+      "base_stats": { "STR": 3, "END": 7, "INT": 12, "AGI": 6 },
+      "growth": { "STR": 0, "END": 1, "INT": 3, "AGI": 1 },
+      "skill_ids": ["arcane_bolt", "mend", "renewal", "steady_breath"],
+      "ai_behavior_id": "tactical",
+      "level_offset": -1,
+      "weapon_type": "staff",
+      "modifiers": { "flat": { "max_mp": 25, "magic_resist": 5 } },
+      "recruit": { "level": 4, "affinity": 15, "items": { "minor_ether": 2 } },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": ["minor_ether", "ether", "antidote"],
+      "dialogue": [
+        "You're hurt. Sit. That wasn't a request.",
+        "The shrine taught mercy. The road taught triage.",
+        "I can keep you standing. I can't keep you sensible.",
+        "Every prayer I know is just a very old instruction. They still work."
+      ]
+    },
+    {
+      "id": "kess",
+      "name": "Kess",
+      "role": "skirmisher",
+      "description": "Fast, cheerful, and entirely unbothered by the word 'ambush'.",
+      "location_id": "old_road",
+      "base_stats": { "STR": 7, "END": 6, "INT": 5, "AGI": 14 },
+      "growth": { "STR": 1, "END": 1, "INT": 1, "AGI": 3 },
+      "skill_ids": ["pierce", "venom_edge", "shadowstep", "hunters_mark"],
+      "ai_behavior_id": "opportunist",
+      "level_offset": 0,
+      "weapon_type": "dagger",
+      "modifiers": { "flat": { "crit_chance": 0.05, "speed": 4 } },
+      "recruit": { "level": 6, "gold": 250, "affinity": 10 },
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "gift_item_ids": ["shadow_fang", "bandit_coin", "travel_boots"],
+      "dialogue": [
+        "Found you a shortcut. It's only a bit haunted.",
+        "Rook says I'm reckless. Rook is slow. Draw your own conclusions.",
+        "If it bleeds, it has a schedule. I just move it up.",
+        "Don't look behind us. Actually - do, and then run."
+      ]
+    },
+    {
+      "id": "magister_voss",
+      "name": "Magister Voss",
+      "role": "mage",
+      "description": "Studies the Sunken Shrine because nobody sensible will. Glass, but the sharp kind.",
+      "location_id": "hollow_cave",
+      "base_stats": { "STR": 2, "END": 5, "INT": 18, "AGI": 7 },
+      "growth": { "STR": 0, "END": 1, "INT": 4, "AGI": 1 },
+      "skill_ids": ["arcane_bolt", "fireball", "frost_lance", "mind_over_matter"],
+      "ai_behavior_id": "aggressive",
+      "level_offset": -1,
+      "weapon_type": "staff",
+      "modifiers": { "pct": { "magic_power": 0.15 }, "flat": { "max_hp": -10 } },
+      "recruit": { "level": 9, "affinity": 20, "gold": 400, "items": { "shadow_essence": 1 } },
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": ["shadow_essence", "runed_staff", "amulet_of_insight"],
+      "dialogue": [
+        "The shrine is older than the language on it. Doesn't that trouble you?",
+        "Stand clear of the target. I mean genuinely clear.",
+        "I have three theories. Two of them end badly for us.",
+        "Knowledge first, safety somewhere after. It's a working order."
+      ]
+    }
+  ]
+}

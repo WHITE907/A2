@@ -48,6 +48,16 @@ def make_app_with_character(save_dir: Path | str | None = None, seed: int = 4242
     return app
 
 
+def make_app_with_party(save_dir=None, seed: int = 4242) -> AscensionApp:
+    """An app whose player has a companion recruited."""
+    app = make_app_with_character(save_dir, seed)
+    app.game.player.level = 10
+    app.game.player._recalculate_base_stats()
+    app.game.player.inventory.add_gold(3000)
+    app.game.recruit("rook")
+    return app
+
+
 def buttons_in(widget) -> list:
     return [w for w in widget.walk() if isinstance(w, tk.Button)]
 
@@ -153,6 +163,7 @@ class TestExportSelectionRegression(unittest.TestCase):
             app.open_inventory,
             app.open_equipment,
             app.open_skills,
+            app.open_party,
             app.open_status,
             app.open_settings,
             lambda: app.open_save_browser("load"),
@@ -876,6 +887,186 @@ class TestFullPlaythroughThroughTheUI(unittest.TestCase):
                 ),
                 snapshot,
             )
+
+
+# ======================================================================
+class TestPartyWindow(unittest.TestCase):
+    """Companion roster UI (bible section 6)."""
+
+    def setUp(self):
+        self.app = make_app_with_party()
+        self.app.show_world()
+
+    def test_world_screen_has_a_party_button(self):
+        screen = self.app.current_screen
+        self.assertIsNotNone(button_labelled(screen, "Party"))
+
+    def test_party_button_opens_the_window(self):
+        button_labelled(self.app.current_screen, "Party").invoke()
+        self.assertIn("party", self.app._toplevels)
+
+    def test_lists_recruited_companions(self):
+        window = self.app.open_party()
+        self.assertTrue(any("Rook" in row for row in window.member_list.listbox.items))
+
+    def test_lists_recruitable_locals(self):
+        window = self.app.open_party()
+        self.assertTrue(any("Elen" in row for row in window.recruit_list.listbox.items))
+
+    def test_detail_pane_shows_affinity(self):
+        window = self.app.open_party()
+        window.member_list.select_index(0)
+        self.assertIn("Affinity", window.detail._label.options["text"])
+
+    def test_benching_through_the_ui_updates_the_engine(self):
+        window = self.app.open_party()
+        window.member_list.select_index(0)
+        window._toggle_active()
+        self.assertFalse(self.app.game.party.is_active("rook"))
+
+    def test_recruiting_through_the_ui(self):
+        self.app.game.player.affinity["sister_elen"] = 50
+        self.app.game.items.grant(self.app.game.player.inventory, "minor_ether", 2)
+        window = self.app.open_party()
+        window.refresh()
+        index = next(
+            i for i, row in enumerate(window.recruit_list.listbox.items) if "Elen" in row
+        )
+        window.recruit_list.select_index(index)
+        window._recruit()
+        self.assertTrue(self.app.game.party.has("sister_elen"))
+
+    def test_failed_recruit_shows_the_checklist(self):
+        window = self.app.open_party()
+        index = next(
+            i for i, row in enumerate(window.recruit_list.listbox.items) if "Elen" in row
+        )
+        window.recruit_list.select_index(index)
+        window._recruit()
+        self.assertIn("Not yet", window.detail._label.options["text"])
+
+    def test_dismiss_asks_for_confirmation(self):
+        tk_stub.records.clear()
+        tk_stub.records.answer_yes = True
+        window = self.app.open_party()
+        window.member_list.select_index(0)
+        window._dismiss()
+        self.assertTrue(tk_stub.records.questions)
+        self.assertFalse(self.app.game.party.has("rook"))
+
+    def test_declining_dismiss_keeps_the_companion(self):
+        tk_stub.records.clear()
+        tk_stub.records.answer_yes = False
+        window = self.app.open_party()
+        window.member_list.select_index(0)
+        window._dismiss()
+        self.assertTrue(self.app.game.party.has("rook"))
+
+    def test_empty_party_shows_recruitable_locals(self):
+        """With no companions the pane usefully previews who is available."""
+        app = make_app_with_character()
+        app.show_world()
+        window = app.open_party()
+        self.assertEqual(window.member_list.count, 0)
+        self.assertGreater(window.recruit_list.count, 0)
+        self.assertIn("To recruit", window.detail._label.options["text"])
+
+    def test_empty_party_in_an_area_with_nobody(self):
+        """Falls back to the guidance message when there is truly nobody."""
+        app = make_app_with_character()
+        app.game.travel_to("greenfields")
+        app.show_world()
+        window = app.open_party()
+        self.assertIn("No companions", window.detail._label.options["text"])
+
+
+# ======================================================================
+class TestCompanionCombatUI(unittest.TestCase):
+    def setUp(self):
+        self.app = make_app_with_party()
+
+    def test_ally_panel_shows_the_companion(self):
+        self.app.game.start_battle([("green_slime", 1)])
+        screen = self.app.show_combat()
+        self.assertIn("Rook", screen.ally_panel._label.options["text"])
+
+    def test_ally_panel_without_companions(self):
+        app = make_app_with_character()
+        app.game.start_battle([("green_slime", 1)])
+        screen = app.show_combat()
+        self.assertIn("none", screen.ally_panel._label.options["text"].lower())
+
+    def test_battle_with_a_companion_resolves_through_the_ui(self):
+        self.app.game.start_battle([("green_slime", 1)])
+        screen = self.app.show_combat()
+        for _ in range(120):
+            battle = self.app.game.battle
+            if battle is None or battle.is_over:
+                break
+            if battle.waiting_for_player:
+                screen.action_list.select_index(0)
+                if screen.target_list.count:
+                    screen.target_list.select_index(0)
+                screen._use_selected()
+            else:
+                battle.run_until_player_turn()
+                screen.refresh()
+        self.assertTrue(self.app.game.battle.is_over)
+
+
+# ======================================================================
+class TestCompanionMarriageUI(unittest.TestCase):
+    """Bible section 15 through the Talk window."""
+
+    def setUp(self):
+        self.app = make_app_with_party()
+        self.app.show_world()
+
+    def test_talk_window_opens_for_a_companion(self):
+        window = self.app.open_talk("rook")
+        self.assertEqual(window.npc_name, "Rook")
+
+    def test_talking_to_a_companion_raises_affinity(self):
+        window = self.app.open_talk("rook")
+        window._talk()
+        self.assertGreater(self.app.game.player.affinity_with("rook"), 0)
+
+    def test_propose_disabled_until_requirements_met(self):
+        window = self.app.open_talk("rook")
+        self.assertEqual(window.marry_button.options["state"], tk.DISABLED)
+
+    def test_requirements_panel_lists_what_is_missing(self):
+        window = self.app.open_talk("rook")
+        self.assertIn("Affinity", window.requirements._label.options["text"])
+
+    def test_propose_enables_once_eligible(self):
+        self.app.game.player.affinity["rook"] = 100
+        self.app.game.items.grant(self.app.game.player.inventory, "eternal_band", 1)
+        window = self.app.open_talk("rook")
+        window.refresh()
+        self.assertEqual(window.marry_button.options["state"], tk.NORMAL)
+
+    def test_marrying_a_companion_through_the_ui(self):
+        self.app.game.player.affinity["rook"] = 100
+        self.app.game.items.grant(self.app.game.player.inventory, "eternal_band", 1)
+        window = self.app.open_talk("rook")
+        window.refresh()
+        window._propose()
+        self.assertEqual(self.app.game.player.spouse_id, "rook")
+
+    def test_married_state_is_shown(self):
+        self.app.game.player.affinity["rook"] = 100
+        self.app.game.items.grant(self.app.game.player.inventory, "eternal_band", 1)
+        window = self.app.open_talk("rook")
+        window.refresh()
+        window._propose()
+        window.refresh()
+        self.assertIn("Married", window.info._label.options["text"])
+
+    def test_talk_window_still_works_for_npcs(self):
+        window = self.app.open_talk("innkeeper_mara")
+        window._talk()
+        self.assertGreater(self.app.game.player.affinity_with("innkeeper_mara"), 0)
 
 
 if __name__ == "__main__":
