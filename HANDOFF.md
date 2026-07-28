@@ -7,25 +7,23 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-There is a patch file, `v0.2.0-companions.patch` (~2,971 lines, 18 files),
-containing a finished **companion + affinity/marriage system**. It was built in
-a previous session that lost GitHub access before it could push.
+**Companions and relationships are complete.** The v0.2.0 patch was applied,
+verified, and merged in PR #2. The repository now loads four companions and the
+full suite contains 366 tests. `v0.2.0-companions.patch` remains only as a
+historical recovery artifact; do not apply it again or rebuild the feature.
 
-**It is already verified**: applied against current `main` in a scratch
-worktree, full suite passed (366 tests), content validated.
+The next implementation task is **`QuestManager` + `data/quests.json`**. Quests
+must be data-driven, integrated through the `Game` facade, and call the existing
+`Player.complete_quest()` flow. This is the largest progression blocker because
+all 12 tier-4+ promotions require completed quests. Follow the manager and
+content-validation patterns already used by the other content types.
+
+After implementation, run:
 
 ```bash
-git apply v0.2.0-companions.patch          # or --3way if main has moved
-python3 -m unittest discover -s tests      # expect: 366 tests, OK
-python3 main.py --check                    # expect: v0.2.0, Companions: 4
+python3 -m unittest discover -s tests
+python3 main.py --check
 ```
-
-Then commit, push, and open a PR. **Do not rebuild this from scratch** — the
-work is done. If `git apply` fails outright, say so rather than silently
-reimplementing.
-
-If the patch is unavailable, section 6 describes what it contains well enough
-to rebuild.
 
 ---
 
@@ -40,8 +38,9 @@ python3 main.py --check                  # validate content, no GUI
 python3 -m unittest discover -s tests    # 366 tests
 ```
 
-**Current state:** v0.1.0 is merged to `main` (PR #1). v0.2.0 is the pending
-patch above.
+**Current state:** v0.1.0 is merged in PR #1. v0.2.0 (companions and
+relationships) is merged in PR #2. Quest and upper-tier progression work is
+next.
 
 ---
 
@@ -163,7 +162,7 @@ area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 
 ---
 
-## 6. What the v0.2.0 patch contains
+## 6. What v0.2.0 contains
 
 **Companions** (bible §6, roadmap v0.0.9) — `Companion` + `CompanionDefinition`
 + `CompanionManager`, and a `Party` with a capped active roster plus reserve.
@@ -228,18 +227,31 @@ print(g.promote('knight')[0])        # -> True
 print(g.promote('paladin'))          # -> (False, ['Needs: Oath Sigil x1 (have 0)'])
 ```
 
-### Suggested order
+## 8. Roadmap
+
+### Completed
+- ✅ **Playable foundation (v0.1.0, PR #1):** data engine, combat, equipment,
+  exploration, world, saves, and the initial GUI.
+- ✅ **Companions and relationships (v0.2.0, PR #2):** four companions, active
+  party and reserve bench, affinity, marriage, party combat, GUI, and tests.
+
+### Next
 1. **`QuestManager` + `data/quests.json`** — unblocks 12 promotions. The
    *checking* side already exists: `ClassDefinition.check_promotion()` accepts
    and enforces `completed_quests`, and `Player.complete_quest()` is waiting for
-   a caller. Follow the existing manager shape.
-2. **Add the 6 items to boss loot** — JSON only, no Python. Unblocks tier 3.
-3. **Extend the world toward level 99** — JSON only.
-4. Companions are done (the patch).
+   a caller. Follow the existing manager shape and expose all GUI interaction
+   through `Game`.
+2. **Add the 6 promotion items to boss loot** — JSON only, no Python. This
+   unblocks tier 3.
+3. **Extend world, enemy, and reward content toward level 99** — primarily JSON
+   content, with startup cross-validation preserved.
+4. **Future features after the playable progression path is complete:** guilds,
+   housing, fishing, mining, smithing, cooking, alchemy, arena, legendary
+   classes, NG+, world events, and pets (bible §20).
 
 ---
 
-## 8. Gotchas that will cost you time
+## 9. Gotchas that will cost you time
 
 **`exportselection=False` on every Listbox.** Documented in
 `docs/GUI_VERIFICATION.md`: two `tk.Listbox` widgets that both hold a live
@@ -268,7 +280,7 @@ demonstrate it with executed code first.
 
 ---
 
-## 9. House style
+## 10. House style
 
 - Type hints and dataclasses throughout (bible §17).
 - Comments explain **why**, not what. Non-obvious tradeoffs get a sentence.
