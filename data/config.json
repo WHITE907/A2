@@ -4,6 +4,7 @@
     "male",
     "female"
   ],
+  "default_race_id": "human",
   "starting_gold": 50,
   "inn_cost": 10,
   "death_gold_penalty": 0.1,
@@ -192,5 +193,22 @@
   },
   "party": {
     "max_active": 2
+  },
+  "loyalty": {
+    "thresholds": {"Wary": -100, "Trusted": 20, "Devoted": 50, "Sworn": 75},
+    "bonuses": {
+      "Trusted": {"flat": {"max_hp": 20, "accuracy": 0.02}},
+      "Devoted": {"flat": {"max_hp": 45, "physical_power": 4, "magic_power": 4}},
+      "Sworn": {"flat": {"max_hp": 80, "physical_power": 8, "magic_power": 8, "armor": 6}}
+    },
+    "leave_severity": 75,
+    "leave_days": 3
+  },
+  "equipment_upgrade": {"max_level": 5, "modifier_rate": 0.08, "base_gold": 500},
+  "equipment_sets": {
+    "emberwatch": {
+      "name": "Emberwatch Bulwark",
+      "bonuses": {"2": {"flat": {"armor": 12, "max_hp": 45}}, "4": {"flat": {"physical_power": 10, "status_resist": 0.1}}}
+    }
   }
 }

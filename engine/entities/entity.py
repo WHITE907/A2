@@ -57,6 +57,8 @@ class Entity(ABC):
         self.base_stats = base_stats
         self.formulas = formulas
         self.statuses: list[StatusEffect] = []
+        self.taunted_by: Entity | None = None
+        self.taunt_turns: int = 0
 
         # Derived stats are recomputed only when something that feeds them
         # changes.  Combat asks for them constantly (every hit reads accuracy,
@@ -174,6 +176,16 @@ class Entity(ABC):
             if absorbed:
                 self._drop_expired_shields()
 
+        for status in self.statuses:
+            protector = getattr(status, "redirect_target", None)
+            if remaining > 0 and status.redirect_pct > 0 and protector is not None and protector.is_alive:
+                redirected = remaining * min(1.0, status.redirect_pct)
+                protector.take_raw_damage(
+                    redirected, damage_type=damage_type, ignore_shield=False,
+                    attacker=attacker, allow_reflect=False,
+                )
+                remaining -= redirected
+
         reflected = 0.0
         if allow_reflect and attacker is not None and remaining > 0:
             reflect_pct = sum(status.reflect_pct for status in self.statuses)
@@ -181,6 +193,7 @@ class Entity(ABC):
                 reflected = remaining * reflect_pct
 
         self.current_hp = max(0.0, self.current_hp - remaining)
+        self._cached = None
         return DamageOutcome(
             damage=remaining,
             absorbed=absorbed,
@@ -194,6 +207,7 @@ class Entity(ABC):
             return 0.0
         before = self.current_hp
         self.current_hp = min(float(self.max_hp), self.current_hp + float(amount))
+        self._cached = None
         return self.current_hp - before
 
     def change_mp(self, amount: float) -> float:
@@ -312,6 +326,10 @@ class Entity(ABC):
 
         for status in self.statuses:
             status.duration -= 1
+        if self.taunt_turns > 0:
+            self.taunt_turns -= 1
+            if self.taunt_turns <= 0:
+                self.taunted_by = None
 
         expired = [s for s in self.statuses if s.expired]
         if expired:

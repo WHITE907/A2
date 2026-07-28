@@ -115,8 +115,11 @@ def _tactical(actor: Any, allies: Sequence[Any], foes: Sequence[Any], rng: Any) 
 
     healing = [s for s in usable if any(getattr(e, "type_id", "") == "heal" for e in s.effects)]
     if healing:
-        wounded = _lowest_hp_fraction(allies)
-        if wounded is not None and wounded.hp_fraction < 0.5:
+        protect_id = str(getattr(actor, "tactics", {}).get("protect_target", ""))
+        protected = next((ally for ally in _living(allies) if getattr(ally, "id", "") == protect_id or getattr(ally, "name", "") == protect_id), None)
+        wounded = protected if protected and protected.hp_fraction < 1 else _lowest_hp_fraction(allies)
+        threshold = float(getattr(actor, "tactics", {}).get("healing_threshold", 0.5))
+        if wounded is not None and wounded.hp_fraction < threshold:
             return AIDecision(skill=rng.choice(healing), targets=[wounded], note="tactical heal")
 
     support = [

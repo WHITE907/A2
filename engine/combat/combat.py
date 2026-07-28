@@ -73,6 +73,7 @@ class Battle:
         ai_registry: AIRegistry | None = None,
         flee_base_chance: float = 0.45,
         mastery_per_action: float = 6.0,
+        summon_factory: Any = None,
     ) -> None:
         self.player = player
         self.enemies: list[Any] = list(enemies)
@@ -82,6 +83,7 @@ class Battle:
         self.ai = ai_registry or default_registry()
         self.flee_base_chance = flee_base_chance
         self.mastery_per_action = mastery_per_action
+        self.summon_factory = summon_factory
 
         self.state = CombatState.ONGOING
         self.round = 0
@@ -90,6 +92,8 @@ class Battle:
         #: Recomputed each round in :meth:`begin_round`.
         self.turn_order: list[Any] = []
         self._turn_index = 0
+        self._player_defended_round = -1
+        self._telegraph_pending: dict[Any, dict[str, Any]] = {}
 
         self._say(
             "Battle start: " + ", ".join(e.name for e in self.enemies) + "!",
@@ -136,6 +140,12 @@ class Battle:
         )
         self._turn_index = 0
         self._say(f"-- Round {self.round} --", kind="system")
+        for boss in [enemy for enemy in self.living_enemies if enemy.is_boss]:
+            telegraph = boss.template.boss_rules.get("telegraph") or {}
+            interval = int(telegraph.get("interval", 0))
+            if interval and self.round % interval == 0:
+                self._telegraph_pending[boss] = telegraph
+                self._say(str(telegraph.get("warning", f"{boss.name} prepares a devastating attack!")), "system")
 
     @property
     def current_actor(self) -> Any | None:
@@ -230,6 +240,7 @@ class Battle:
         guard.modifiers.add_pct("armor", 1.0)
         guard.modifiers.add_pct("magic_resist", 1.0)
         self.player.apply_status(guard)
+        self._player_defended_round = self.round
         self._say(f"{self.player.name} braces for impact.", kind="status")
         self._after_action()
         return True
@@ -286,6 +297,14 @@ class Battle:
         friends = self.living_enemies if actor in self.enemies else self.living_allies
 
         decision = behavior.decide(actor, friends, foes, self.rng)
+        forced = getattr(actor, "taunted_by", None)
+        if forced in foes and forced.is_alive:
+            decision.targets = [forced]
+        preferred = getattr(actor, "tactics", {}).get("preferred_target", "")
+        if preferred:
+            match = next((foe for foe in foes if getattr(getattr(foe, "template", None), "id", "") == preferred), None)
+            if match is not None:
+                decision.targets = [match]
         if decision.pass_turn or decision.skill is None:
             if decision.note == "stunned":
                 self._say(f"{actor.name} is stunned and cannot act.", kind="status")
@@ -346,7 +365,41 @@ class Battle:
                 entity._death_logged = True
                 self._say(f"{entity.name} is defeated!", kind="system")
 
+    def check_boss_rules(self) -> None:
+        """Apply JSON-configured phase, summon, shield, and enrage rules."""
+        for boss in [enemy for enemy in self.living_enemies if enemy.is_boss]:
+            phases = boss.template.boss_phases
+            next_index = boss.boss_phase + 1
+            if next_index < len(phases):
+                phase = phases[next_index]
+                if boss.hp_fraction <= float(phase.get("hp_fraction", 0.0)):
+                    boss.enter_boss_phase(next_index, phase.get("modifiers"))
+                    shield = float(phase.get("shield_hp", 0))
+                    if shield:
+                        from engine.skills.status import StatusEffect
+                        boss.apply_status(StatusEffect(id=f"boss_phase_{next_index}", name=str(phase.get("name", "Phase Shield")), duration=99, category="shield", shield_hp=shield))
+                    if self.summon_factory:
+                        for spec in phase.get("summons", []):
+                            summoned = self.summon_factory(str(spec.get("enemy_id")), int(spec.get("level", boss.level)))
+                            self.enemies.append(summoned)
+                            self._say(f"{boss.name} summons {summoned.name}!", "system")
+                    self._say(f"{boss.name} enters phase {next_index + 1}: {phase.get('name', 'Escalation')}!", "system")
+            rules = boss.template.boss_rules
+            enrage = int(rules.get("enrage_round", 0))
+            if enrage and self.round >= enrage and not getattr(boss, "_enraged", False):
+                boss._enraged = True
+                bonus = rules.get("enrage_modifiers", {"pct": {"physical_power": 0.5, "magic_power": 0.5}})
+                boss.enter_boss_phase(boss.boss_phase, bonus)
+                self._say(f"{boss.name} enrages!", "system")
+
     def _check_end(self) -> bool:
+        self.check_boss_rules()
+        survive = max((int(e.template.boss_rules.get("survive_rounds", 0)) for e in self.living_enemies if e.is_boss), default=0)
+        if survive and self.round > survive:
+            self.state = CombatState.VICTORY
+            self._finish_victory()
+            self._say("The party survives the encounter's victory condition!", "system")
+            return True
         if not self.living_enemies:
             self.state = CombatState.VICTORY
             self._finish_victory()
@@ -367,6 +420,26 @@ class Battle:
                 self._say(message, kind="status")
             if hasattr(entity, "tick_cooldowns"):
                 entity.tick_cooldowns()
+
+        for boss, telegraph in list(self._telegraph_pending.items()):
+            if boss.is_alive:
+                if self._player_defended_round == self.round:
+                    self._say(f"{self.player.name} counters {boss.name}'s telegraphed attack!", "system")
+                    boss.take_raw_damage(float(telegraph.get("counter_damage", 0)), damage_type="true", attacker=self.player)
+                else:
+                    damage = float(telegraph.get("damage", 0))
+                    for ally in self.living_allies:
+                        ally.take_raw_damage(damage, damage_type="true", attacker=boss)
+                    self._say(str(telegraph.get("impact", f"{boss.name}'s prepared attack erupts!")), "damage")
+            self._telegraph_pending.pop(boss, None)
+
+        for boss in [enemy for enemy in self.living_enemies if enemy.is_boss]:
+            environment = boss.template.boss_rules.get("environment") or {}
+            damage = float(environment.get("per_round_damage", 0))
+            if damage:
+                self._say(str(environment.get("message", "The battlefield itself lashes out!")), "system")
+                for ally in self.living_allies:
+                    ally.take_raw_damage(damage, damage_type="true", attacker=boss)
 
         self._collect_deaths()
         if self._check_end():

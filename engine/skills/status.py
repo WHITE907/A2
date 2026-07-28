@@ -56,6 +56,8 @@ class StatusEffect:
     shield_hp: float = 0.0
     #: Fraction of incoming damage reflected to the attacker.
     reflect_pct: float = 0.0
+    redirect_pct: float = 0.0
+    redirect_target: Any = None
     stacks: int = 1
     max_stacks: int = 1
     stacking: str = StatusStacking.REFRESH
@@ -147,6 +149,8 @@ class StatusEffect:
             modifiers=copied_mods,
             shield_hp=self.shield_hp,
             reflect_pct=self.reflect_pct,
+            redirect_pct=self.redirect_pct,
+            redirect_target=self.redirect_target,
             stacks=self.stacks,
             max_stacks=self.max_stacks,
             stacking=self.stacking,
@@ -199,6 +203,7 @@ class StatusEffect:
             "modifiers": {"flat": dict(self.modifiers.flat), "pct": dict(self.modifiers.pct)},
             "shield_hp": self.shield_hp,
             "reflect_pct": self.reflect_pct,
+            "redirect_pct": self.redirect_pct,
             "stacks": self.stacks,
             "max_stacks": self.max_stacks,
             "stacking": self.stacking,
@@ -222,6 +227,7 @@ class StatusEffect:
             modifiers=ModifierSet.from_dict(payload.get("modifiers")),
             shield_hp=float(payload.get("shield_hp", 0.0)),
             reflect_pct=float(payload.get("reflect_pct", 0.0)),
+            redirect_pct=float(payload.get("redirect_pct", 0.0)),
             stacks=int(payload.get("stacks", 1)),
             max_stacks=int(payload.get("max_stacks", payload.get("stacks", 1))),
             stacking=stacking,

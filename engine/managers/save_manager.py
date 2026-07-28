@@ -27,7 +27,7 @@ from engine.managers.data_loader import PROJECT_ROOT
 __all__ = ["SaveManager", "SaveSlotInfo", "SAVE_VERSION"]
 
 #: Bump when the payload shape changes; add a matching step in ``_migrate``.
-SAVE_VERSION: int = 2
+SAVE_VERSION: int = 6
 
 _AUTOSAVE_PREFIX = "autosave"
 
@@ -223,6 +223,36 @@ class SaveManager:
                 player.setdefault("flags", {})
                 player.setdefault("class_history", [player.get("class_id", "")])
             version = 2
+
+        if version < 3:
+            player = payload.get("player")
+            if isinstance(player, dict):
+                player.setdefault("active_quests", [])
+                player.setdefault("quest_progress", {})
+            version = 3
+
+        if version < 4:
+            world = payload.setdefault("world", {})
+            if isinstance(world, dict):
+                world.setdefault("defeated_bosses", [])
+            version = 4
+
+        if version < 5:
+            player = payload.get("player")
+            if isinstance(player, dict):
+                # The runtime resolves an empty id through config.default_race_id.
+                player.setdefault("race_id", "")
+            version = 5
+
+        if version < 6:
+            player = payload.get("player")
+            if isinstance(player, dict):
+                for key in (
+                    "faction_reputation", "companion_loyalty",
+                    "companion_unavailable_until", "item_enchantments", "item_upgrades",
+                ):
+                    player.setdefault(key, {})
+            version = 6
 
         payload["save_version"] = max(version, SAVE_VERSION)
         return payload

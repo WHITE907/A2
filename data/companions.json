@@ -5,6 +5,7 @@
       "id": "rook",
       "name": "Rook",
       "role": "guardian",
+      "race_id": "human",
       "description": "A retired sellsword who stayed in Ashvale because leaving cost more than staying.",
       "location_id": "town_ashvale",
       "base_stats": { "STR": 10, "END": 12, "INT": 3, "AGI": 5 },
@@ -18,17 +19,24 @@
       "marriageable": true,
       "marriage_affinity": 70,
       "gift_item_ids": ["troll_hide", "steel_sword", "potion"],
+      "loyalty_skill_ids": {"Devoted": ["sunder_armor"], "Sworn": ["titans_wrath"]},
+      "loyalty_titles": {"Trusted": "Old Shield", "Devoted": "Road Captain", "Sworn": "The Unbroken Rook"},
+      "loyalty_outfits": {"Devoted": "veteran_mail", "Sworn": "oathplate"},
       "dialogue": [
         "Stay behind me and this stays simple.",
         "I've buried better fighters than either of us. Keep your guard up.",
         "You swing like you're angry. Anger's fine. Sloppy isn't.",
-        "Quiet roads make me nervous. Loud ones make me useful."
+        "Quiet roads make me nervous. Loud ones make me useful.",
+        "I once guarded a duke's hat for three days. The duke was elsewhere.",
+        "Soup is tactics. Bad soup ruins morale before the enemy gets a chance.",
+        "Ashvale's well owes me money. Long story."
       ]
     },
     {
       "id": "sister_elen",
       "name": "Sister Elen",
       "role": "healer",
+      "race_id": "half_elf",
       "description": "Left the shrine when it stopped answering questions. Still keeps the vows that mattered.",
       "location_id": "town_ashvale",
       "base_stats": { "STR": 3, "END": 7, "INT": 12, "AGI": 6 },
@@ -46,13 +54,17 @@
         "You're hurt. Sit. That wasn't a request.",
         "The shrine taught mercy. The road taught triage.",
         "I can keep you standing. I can't keep you sensible.",
-        "Every prayer I know is just a very old instruction. They still work."
+        "Every prayer I know is just a very old instruction. They still work.",
+        "I collect terrible jokes. They remind patients to keep breathing.",
+        "Half my family prays before meals. The other half checks for poison.",
+        "Voss tried to label my medicine cabinet. He has recovered."
       ]
     },
     {
       "id": "kess",
       "name": "Kess",
       "role": "skirmisher",
+      "race_id": "beastkin",
       "description": "Fast, cheerful, and entirely unbothered by the word 'ambush'.",
       "location_id": "old_road",
       "base_stats": { "STR": 7, "END": 6, "INT": 5, "AGI": 14 },
@@ -70,13 +82,17 @@
         "Found you a shortcut. It's only a bit haunted.",
         "Rook says I'm reckless. Rook is slow. Draw your own conclusions.",
         "If it bleeds, it has a schedule. I just move it up.",
-        "Don't look behind us. Actually - do, and then run."
+        "Don't look behind us. Actually - do, and then run.",
+        "I named my left boot. The right one hasn't earned it.",
+        "Beastkin ears are excellent. Yours are very loud, somehow.",
+        "If this plan works, I invented it. If not, Rook did."
       ]
     },
     {
       "id": "magister_voss",
       "name": "Magister Voss",
       "role": "mage",
+      "race_id": "elf",
       "description": "Studies the Sunken Shrine because nobody sensible will. Glass, but the sharp kind.",
       "location_id": "hollow_cave",
       "base_stats": { "STR": 2, "END": 5, "INT": 18, "AGI": 7 },
@@ -94,7 +110,590 @@
         "The shrine is older than the language on it. Doesn't that trouble you?",
         "Stand clear of the target. I mean genuinely clear.",
         "I have three theories. Two of them end badly for us.",
-        "Knowledge first, safety somewhere after. It's a working order."
+        "Knowledge first, safety somewhere after. It's a working order.",
+        "I am not banned from the archive. The archive is banned from me.",
+        "Elven patience is real. I simply spend mine quickly.",
+        "A wisp followed me home once. We disagreed about rent."
+      ]
+    },
+    {
+      "id": "captain_brann",
+      "name": "Captain Brann",
+      "role": "vanguard",
+      "race_id": "dwarf",
+      "description": "Emberwatch's captain, off duty only by technicality.",
+      "location_id": "town_emberwatch",
+      "base_stats": {
+        "STR": 16,
+        "END": 18,
+        "INT": 6,
+        "AGI": 8
+      },
+      "growth": {
+        "STR": 3,
+        "END": 4,
+        "INT": 1,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "executioners_arc",
+        "radiant_aegis",
+        "rallying_cry"
+      ],
+      "ai_behavior_id": "defensive",
+      "weapon_type": "sword",
+      "modifiers": {
+        "flat": {
+          "armor": 14,
+          "max_hp": 70
+        }
+      },
+      "recruit": {
+        "level": 18,
+        "affinity": 20,
+        "gold": 1200,
+        "items": {
+          "ember_scale": 3
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "embersteel_blade",
+        "ember_scale",
+        "greater_potion"
+      ],
+      "dialogue": [
+        "A wall is just a promise made from stone.",
+        "The western road burns because nobody has convinced it to stop.",
+        "Stand your watch. Even when nobody thanks you.",
+        "Ash gets into everything. Discipline keeps it out of the important parts.",
+        "Dwarven tea should hold a spoon upright. Anything weaker is weather.",
+        "My beard caught fire once. The recruits learned faster afterward.",
+        "Walls listen better than officers and interrupt less."
+      ]
+    },
+    {
+      "id": "nyra_reed",
+      "name": "Nyra Reed",
+      "role": "ranger",
+      "race_id": "half_elf",
+      "description": "A marsh guide who can identify danger by how quiet the frogs become.",
+      "location_id": "town_emberwatch",
+      "base_stats": {
+        "STR": 10,
+        "END": 10,
+        "INT": 8,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 1,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "pierce",
+        "hunters_mark",
+        "heartseeker",
+        "smoke_veil"
+      ],
+      "ai_behavior_id": "opportunist",
+      "weapon_type": "bow",
+      "modifiers": {
+        "flat": {
+          "accuracy": 0.08,
+          "evasion": 0.06
+        }
+      },
+      "recruit": {
+        "level": 20,
+        "affinity": 15,
+        "items": {
+          "briar_heart": 2
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "gift_item_ids": [
+        "briar_bow",
+        "briar_heart",
+        "marsh_ichor"
+      ],
+      "dialogue": [
+        "If the reeds stop moving, you should too.",
+        "Maps are apologies for not knowing the ground.",
+        "The marsh isn't cruel. Cruelty requires interest.",
+        "Follow exactly. Heroics sink faster than boots.",
+        "My elven side reads the stars. My human side asks where supper is.",
+        "Never trust a frog with nothing to say.",
+        "I have six maps of this marsh. At most two are lying."
+      ]
+    },
+    {
+      "id": "orren_quill",
+      "name": "Orren Quill",
+      "role": "battlemage",
+      "race_id": "tiefling",
+      "description": "Stonehaven's runesmith keeps testing inscriptions on live problems.",
+      "location_id": "town_stonehaven",
+      "base_stats": {
+        "STR": 7,
+        "END": 13,
+        "INT": 22,
+        "AGI": 10
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 4,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "chain_lightning",
+        "glacial_prison",
+        "mind_over_matter"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 14,
+          "magic_resist": 12
+        }
+      },
+      "recruit": {
+        "level": 28,
+        "affinity": 25,
+        "gold": 2500,
+        "items": {
+          "crystal_carapace": 2
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": [
+        "crystal_staff",
+        "crystal_carapace",
+        "wraith_lantern"
+      ],
+      "dialogue": [
+        "A rune is an argument reality has agreed to lose.",
+        "Do not touch the blue chisel.",
+        "The crystals sing. Mostly complaints.",
+        "If this explodes, remember the pattern. The pattern is valuable.",
+        "The horns are useful for hanging measuring string. Dignity adapts.",
+        "I wrote a rune for silence. Tala smashed it for being suspiciously quiet.",
+        "Tea tastes better from a beaker. This is not negotiable."
+      ]
+    },
+    {
+      "id": "tala_stone",
+      "name": "Tala Stone",
+      "role": "breaker",
+      "race_id": "dwarf",
+      "description": "A forewoman who negotiates with cave-ins using an axe.",
+      "location_id": "town_stonehaven",
+      "base_stats": {
+        "STR": 22,
+        "END": 19,
+        "INT": 5,
+        "AGI": 9
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "cleave",
+        "executioners_arc",
+        "sunder_armor"
+      ],
+      "ai_behavior_id": "berserk",
+      "weapon_type": "axe",
+      "modifiers": {
+        "flat": {
+          "physical_power": 12,
+          "armor": 10
+        }
+      },
+      "recruit": {
+        "level": 28,
+        "affinity": 20,
+        "items": {
+          "granite_core": 3
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "stonecleaver",
+        "granite_core",
+        "runic_gauntlets"
+      ],
+      "dialogue": [
+        "Rock talks. Usually right before it falls.",
+        "Nobody is trapped until I say the tunnel is closed.",
+        "A bigger hammer is a kind of planning.",
+        "Stonehaven stands because we keep putting it back.",
+        "My axe is called Delicate Negotiation.",
+        "I can sing mining songs or sing well. Pick one.",
+        "Orren says crystals remember insults. Good. Saves me repeating them."
+      ]
+    },
+    {
+      "id": "seraphine_gale",
+      "name": "Seraphine Gale",
+      "role": "stormcaller",
+      "race_id": "demon",
+      "description": "A weather scholar whose forecasts occasionally fight beside her.",
+      "location_id": "town_skyreach",
+      "base_stats": {
+        "STR": 5,
+        "END": 12,
+        "INT": 26,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 0,
+        "END": 2,
+        "INT": 5,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "chain_lightning",
+        "flame_wave",
+        "renewal"
+      ],
+      "ai_behavior_id": "aggressive",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 18,
+          "speed": 8,
+          "max_mp": 60
+        }
+      },
+      "recruit": {
+        "level": 35,
+        "affinity": 30,
+        "gold": 4000,
+        "items": {
+          "storm_feather": 3
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 90,
+      "gift_item_ids": [
+        "stormglass_pendant",
+        "storm_feather",
+        "greater_ether"
+      ],
+      "dialogue": [
+        "The forecast says pain with scattered thunder.",
+        "Clouds are just rivers nobody can stand in.",
+        "Count after the flash. If you reach three, it wasn't mine.",
+        "Skyreach teaches perspective and very secure knots.",
+        "Demons invented contracts because handshakes kept setting things on fire.",
+        "I asked the cloud its name. It rained on me for an hour.",
+        "My forecast for supper is bread with a strong chance of cheese."
+      ]
+    },
+    {
+      "id": "cael_sunward",
+      "name": "Cael Sunward",
+      "role": "spellblade",
+      "race_id": "dragonkin",
+      "description": "The last ruin guide willing to cross the Obsidian Gate twice.",
+      "location_id": "town_skyreach",
+      "base_stats": {
+        "STR": 20,
+        "END": 16,
+        "INT": 16,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 3,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "smite",
+        "radiant_aegis",
+        "heartseeker",
+        "second_wind"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "sword",
+      "modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "magic_power": 10,
+          "crit_chance": 0.05
+        }
+      },
+      "recruit": {
+        "level": 38,
+        "affinity": 35,
+        "items": {
+          "sun_fragment": 2
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 90,
+      "gift_item_ids": [
+        "dawnblade",
+        "sun_fragment",
+        "dawn_signet"
+      ],
+      "dialogue": [
+        "The gate opens for confidence. It closes for arrogance.",
+        "Morning is beautiful from up here. Dangerous, but beautiful.",
+        "The ruins remember footsteps. Walk like you want to be remembered kindly.",
+        "I've crossed twice. The third time should be almost sensible.",
+        "Dragonkin shed scales. No, you may not sell mine.",
+        "I polish my sword when nervous. It has become extremely shiny.",
+        "The Tyrant called me hatchling. Technically correct. Still rude."
+      ]
+    },
+    {
+      "id": "lethira_vale",
+      "name": "Lethira Vale",
+      "role": "memory archer",
+      "race_id": "elf",
+      "description": "An elven pathkeeper whose missing memories have begun growing as silver leaves.",
+      "location_id": "mosswood",
+      "base_stats": {
+        "STR": 10,
+        "END": 10,
+        "INT": 15,
+        "AGI": 22
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 3,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "pierce",
+        "hunters_mark",
+        "heartseeker",
+        "renewal"
+      ],
+      "ai_behavior_id": "opportunist",
+      "weapon_type": "bow",
+      "modifiers": {
+        "flat": {
+          "accuracy": 0.08,
+          "magic_resist": 8
+        }
+      },
+      "recruit": {
+        "level": 19,
+        "affinity": 10,
+        "quests": [
+          "lethira_roots"
+        ]
+      },
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": [
+        "moonleaf_brooch",
+        "briar_heart",
+        "wraith_lantern"
+      ],
+      "dialogue": [
+        "This path remembers me, though I do not remember it.",
+        "Silver leaves only grow where a promise was forgotten.",
+        "Do not step on that root. It holds grudges.",
+        "I have lived two hundred years and still burn porridge.",
+        "Your footsteps are easy to recognise. They sound determined and slightly lost.",
+        "Kess once challenged me to a race. I let the story improve in the retelling.",
+        "If I recover every memory, I hope at least one explains this hat.",
+        "The forest is not silent. It is choosing whether to include us."
+      ]
+    },
+    {
+      "id": "brokk_embervein",
+      "name": "Brokk Embervein",
+      "role": "rune bulwark",
+      "race_id": "dwarf",
+      "description": "A dwarven resonance-smith who hears a missing clan verse beneath Stonehaven.",
+      "location_id": "town_stonehaven",
+      "base_stats": {
+        "STR": 20,
+        "END": 24,
+        "INT": 10,
+        "AGI": 6
+      },
+      "growth": {
+        "STR": 4,
+        "END": 5,
+        "INT": 2,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "shield_wall",
+        "executioners_arc",
+        "rallying_cry"
+      ],
+      "ai_behavior_id": "defensive",
+      "weapon_type": "mace",
+      "modifiers": {
+        "flat": {
+          "armor": 18,
+          "max_hp": 90
+        }
+      },
+      "recruit": {
+        "level": 28,
+        "affinity": 15,
+        "quests": [
+          "brokk_resonance"
+        ]
+      },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "stoneheart_clasp",
+        "granite_core",
+        "skyforge_mace"
+      ],
+      "dialogue": [
+        "The deep song has a missing note. My clan has a missing name.",
+        "A proper rune is carved once and argued over forever.",
+        "Never drink from a cup that hums.",
+        "My grandmother could split granite with a look. Grandfather was very polite.",
+        "Surface rain is just a cave leak with ambitions.",
+        "Tala swings first. I make sure the ceiling agrees.",
+        "I baked this bread myself. It doubles as an off-hand shield.",
+        "Stone forgets nothing, but it can be persuaded to keep quiet."
+      ]
+    },
+    {
+      "id": "veyra_ashhorn",
+      "name": "Veyra Ashhorn",
+      "role": "hex medic",
+      "race_id": "tiefling",
+      "description": "A tiefling contract-breaker healing people harmed by bargains they never understood.",
+      "location_id": "town_emberwatch",
+      "base_stats": {
+        "STR": 6,
+        "END": 12,
+        "INT": 23,
+        "AGI": 15
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 5,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "mend",
+        "shadow_bind",
+        "glacial_prison"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 15,
+          "max_mp": 50
+        }
+      },
+      "recruit": {
+        "level": 20,
+        "affinity": 15,
+        "quests": [
+          "veyra_debt"
+        ]
+      },
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": [
+        "infernal_compass",
+        "greater_ether",
+        "shadow_essence"
+      ],
+      "dialogue": [
+        "Every contract has a door. Most are hidden in the punctuation.",
+        "Yes, the horns are real. No, they do not predict weather.",
+        "Pell labels poisons with skulls. He labels soup with two skulls.",
+        "I charge demons double. Professional discourtesy.",
+        "A curse is just a rule with theatrical lighting.",
+        "My tail knocked over that bottle. We have discussed boundaries.",
+        "I left the Ash Court with one coat and several enemies. Good coat.",
+        "Mercy and loopholes are cousins. I am fond of both."
+      ]
+    },
+    {
+      "id": "rhazek_dawnscale",
+      "name": "Rhazek Dawnscale",
+      "role": "sunscale lancer",
+      "race_id": "dragonkin",
+      "description": "A dragonkin oath-bearer descended from the guardians who first sealed the Obsidian Gate.",
+      "location_id": "town_skyreach",
+      "base_stats": {
+        "STR": 23,
+        "END": 19,
+        "INT": 14,
+        "AGI": 15
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 3,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "smite",
+        "radiant_aegis",
+        "heartseeker",
+        "second_wind"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "sword",
+      "modifiers": {
+        "flat": {
+          "armor": 12,
+          "physical_power": 12,
+          "magic_resist": 12
+        }
+      },
+      "recruit": {
+        "level": 36,
+        "affinity": 20,
+        "quests": [
+          "rhazek_oath"
+        ]
+      },
+      "marriageable": true,
+      "marriage_affinity": 90,
+      "gift_item_ids": [
+        "dawnscale_torc",
+        "drake_scale",
+        "sun_fragment"
+      ],
+      "dialogue": [
+        "My ancestors guarded the gate. They neglected to explain from which side.",
+        "I breathe smoke when embarrassed. This is not an invitation to test it.",
+        "Cael cheats at cards by being lucky with confidence.",
+        "The oath is older than my name and considerably less practical.",
+        "Cold mornings make my scales squeak. Speak of this and perish.",
+        "A dragonkin bow is mostly horns and apologies.",
+        "I keep one sun fragment as a night-light. It is excessive.",
+        "Duty should be carried like a spear, not worn like a chain."
       ]
     }
   ]

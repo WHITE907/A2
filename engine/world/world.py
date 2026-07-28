@@ -24,6 +24,7 @@ class EncounterEntry:
     level_min: int = 1
     level_max: int = 1
     is_boss: bool = False
+    boss_id: str = ""
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "EncounterEntry":
@@ -31,12 +32,15 @@ class EncounterEntry:
         if isinstance(raw, str):
             raw = [raw]
         low = int(payload.get("level_min", 1))
+        enemy_ids = [str(e) for e in raw]
+        is_boss = bool(payload.get("is_boss", False))
         return cls(
-            enemy_ids=[str(e) for e in raw],
+            enemy_ids=enemy_ids,
             weight=float(payload.get("weight", 1.0)),
             level_min=low,
             level_max=max(low, int(payload.get("level_max", low))),
-            is_boss=bool(payload.get("is_boss", False)),
+            is_boss=is_boss,
+            boss_id=str(payload.get("boss_id", "")),
         )
 
 
@@ -47,6 +51,7 @@ class NPC:
     id: str
     name: str
     description: str = ""
+    race_id: str = ""
     dialogue: list[str] = field(default_factory=list)
     #: Affinity needed before marriage is offered (bible section 15).
     marriage_affinity: int = 80
@@ -60,6 +65,7 @@ class NPC:
             id=str(payload.get("id", "npc")),
             name=str(payload.get("name", "Stranger")),
             description=str(payload.get("description", "")),
+            race_id=str(payload.get("race_id", "")),
             dialogue=[str(line) for line in payload.get("dialogue", [])],
             marriage_affinity=int(payload.get("marriage_affinity", 80)),
             gift_item_ids=[str(i) for i in payload.get("gift_item_ids", [])],
@@ -77,6 +83,9 @@ class Shop:
     item_ids: list[str] = field(default_factory=list)
     buy_rate: float = 1.0
     sell_rate: float = 0.4
+    faction_id: str = ""
+    race_item_ids: dict[str, list[str]] = field(default_factory=dict)
+    race_buy_rates: dict[str, float] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "Shop":
@@ -86,6 +95,9 @@ class Shop:
             item_ids=[str(i) for i in payload.get("item_ids", [])],
             buy_rate=float(payload.get("buy_rate", 1.0)),
             sell_rate=float(payload.get("sell_rate", 0.4)),
+            faction_id=str(payload.get("faction_id", "")),
+            race_item_ids={str(k): [str(v) for v in values] for k, values in (payload.get("race_item_ids") or {}).items()},
+            race_buy_rates={str(k): float(v) for k, v in (payload.get("race_buy_rates") or {}).items()},
         )
 
 
@@ -172,6 +184,9 @@ class WorldState:
         #: Areas the player has set foot in - used for the travel list.
         self.visited: set[str] = {self.current_area_id} if self.current_area_id else set()
         self.steps_today: int = 0
+        #: One-time bosses already defeated in this save. Their encounter-table
+        #: entries are filtered out while ordinary encounters remain repeatable.
+        self.defeated_bosses: set[str] = set()
 
     # ------------------------------------------------------------------
     @property
@@ -237,7 +252,15 @@ class WorldState:
         if rng.chance(area.quiet_chance):
             return ExploreResult(kind="quiet", message=rng.choice(self.flavour))
 
-        entry = rng.weighted_choice([(e, e.weight) for e in area.encounters])
+        encounters = [
+            entry
+            for entry in area.encounters
+            if not (entry.is_boss and entry.boss_id in self.defeated_bosses)
+        ]
+        if not encounters:
+            return ExploreResult(kind="quiet", message=rng.choice(self.flavour))
+
+        entry = rng.weighted_choice([(e, e.weight) for e in encounters])
         spawns = [(enemy_id, rng.randint(entry.level_min, entry.level_max)) for enemy_id in entry.enemy_ids]
         names = ", ".join(enemy_id.replace("_", " ").title() for enemy_id in entry.enemy_ids)
         return ExploreResult(kind="encounter", message=f"Ambushed by {names}!", spawns=spawns)
@@ -268,6 +291,7 @@ class WorldState:
             "current_area_id": self.current_area_id,
             "visited": sorted(self.visited),
             "steps_today": self.steps_today,
+            "defeated_bosses": sorted(self.defeated_bosses),
         }
 
     def load_dict(self, payload: Mapping[str, Any] | None) -> None:
@@ -279,3 +303,4 @@ class WorldState:
         self.current_area_id = area_id if area_id in self.areas else self.current_area_id
         self.visited = set(payload.get("visited", [])) | {self.current_area_id}
         self.steps_today = int(payload.get("steps_today", 0))
+        self.defeated_bosses = {str(boss_id) for boss_id in payload.get("defeated_bosses", [])}

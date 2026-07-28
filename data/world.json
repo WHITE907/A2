@@ -1,16 +1,22 @@
 {
   "_comment": "Bible section 8 loop: Town -> Explore -> Combat -> Rewards -> Town -> Sleep -> Morning Autosave. Towns are safe; wilderness areas roll encounters.",
   "start_area_id": "town_ashvale",
-
   "flavour": [
     "The path is quiet.",
     "Wind moves through the grass and nothing follows it.",
     "You find old tracks, already filling with rain.",
     "Something watched you pass, then thought better of it.",
     "A cold draught rises from somewhere below.",
-    "You rest a moment. Nothing comes."
+    "You rest a moment. Nothing comes.",
+    "A caravan bell sounds somewhere beyond the next ridge.",
+    "Fresh bootprints cross the road, then vanish at bare stone.",
+    "Smoke on the horizon belongs to a town, probably.",
+    "A weathered shrine holds three new offerings.",
+    "You share the road with merchants until the next turning.",
+    "Far-off mining hammers keep a patient rhythm.",
+    "Cloud shadows race you across the open ground.",
+    "Someone has repaired the trail marker since yesterday."
   ],
-
   "areas": [
     {
       "id": "town_ashvale",
@@ -18,9 +24,20 @@
       "is_town": true,
       "description": "A small town built around a very old well. People stay because leaving is harder.",
       "recommended_level": 1,
-      "connections": ["greenfields", "old_road"],
-      "shop_ids": ["ashvale_general", "ashvale_smith"],
-      "npc_ids": ["innkeeper_mara", "smith_dorn", "scholar_iven"]
+      "connections": [
+        "greenfields",
+        "old_road"
+      ],
+      "shop_ids": [
+        "ashvale_general",
+        "ashvale_smith"
+      ],
+      "npc_ids": [
+        "innkeeper_mara",
+        "smith_dorn",
+        "scholar_iven",
+        "nima_crossroads"
+      ]
     },
     {
       "id": "greenfields",
@@ -28,13 +45,46 @@
       "description": "Long grass, low hills, and more wildlife than the farmers would like.",
       "recommended_level": 1,
       "quiet_chance": 0.3,
-      "connections": ["town_ashvale", "old_road"],
+      "connections": [
+        "town_ashvale",
+        "old_road"
+      ],
       "encounters": [
-        { "enemy_ids": ["green_slime"], "weight": 3, "level_min": 1, "level_max": 3 },
-        { "enemy_ids": ["field_rat"], "weight": 3, "level_min": 1, "level_max": 3 },
-        { "enemy_ids": ["field_rat", "field_rat"], "weight": 1, "level_min": 1, "level_max": 2 },
-        { "enemy_ids": ["grey_wolf"], "weight": 1, "level_min": 2, "level_max": 4 }
-      ]
+        {
+          "enemy_ids": [
+            "green_slime"
+          ],
+          "weight": 3,
+          "level_min": 1,
+          "level_max": 3
+        },
+        {
+          "enemy_ids": [
+            "field_rat"
+          ],
+          "weight": 3,
+          "level_min": 1,
+          "level_max": 3
+        },
+        {
+          "enemy_ids": [
+            "field_rat",
+            "field_rat"
+          ],
+          "weight": 1,
+          "level_min": 1,
+          "level_max": 2
+        },
+        {
+          "enemy_ids": [
+            "grey_wolf"
+          ],
+          "weight": 1,
+          "level_min": 2,
+          "level_max": 4
+        }
+      ],
+      "npc_ids": []
     },
     {
       "id": "old_road",
@@ -43,13 +93,51 @@
       "recommended_level": 4,
       "unlock_level": 3,
       "quiet_chance": 0.25,
-      "connections": ["town_ashvale", "greenfields", "hollow_cave"],
+      "connections": [
+        "town_ashvale",
+        "greenfields",
+        "hollow_cave"
+      ],
       "encounters": [
-        { "enemy_ids": ["bandit"], "weight": 3, "level_min": 3, "level_max": 6 },
-        { "enemy_ids": ["grey_wolf", "grey_wolf"], "weight": 2, "level_min": 3, "level_max": 5 },
-        { "enemy_ids": ["bandit", "field_rat"], "weight": 1, "level_min": 4, "level_max": 6 },
-        { "enemy_ids": ["bandit_chief", "bandit"], "weight": 1, "level_min": 8, "level_max": 10, "is_boss": true }
-      ]
+        {
+          "enemy_ids": [
+            "bandit"
+          ],
+          "weight": 3,
+          "level_min": 3,
+          "level_max": 6
+        },
+        {
+          "enemy_ids": [
+            "grey_wolf",
+            "grey_wolf"
+          ],
+          "weight": 2,
+          "level_min": 3,
+          "level_max": 5
+        },
+        {
+          "enemy_ids": [
+            "bandit",
+            "field_rat"
+          ],
+          "weight": 1,
+          "level_min": 4,
+          "level_max": 6
+        },
+        {
+          "enemy_ids": [
+            "bandit_chief",
+            "bandit"
+          ],
+          "weight": 1,
+          "level_min": 8,
+          "level_max": 10,
+          "is_boss": true,
+          "boss_id": "bandit_chief"
+        }
+      ],
+      "npc_ids": []
     },
     {
       "id": "hollow_cave",
@@ -58,13 +146,47 @@
       "recommended_level": 7,
       "unlock_level": 6,
       "quiet_chance": 0.2,
-      "connections": ["old_road", "sunken_shrine"],
+      "connections": [
+        "old_road",
+        "sunken_shrine"
+      ],
       "encounters": [
-        { "enemy_ids": ["cave_spider"], "weight": 3, "level_min": 5, "level_max": 8 },
-        { "enemy_ids": ["skeleton"], "weight": 3, "level_min": 6, "level_max": 9 },
-        { "enemy_ids": ["cave_spider", "cave_spider"], "weight": 2, "level_min": 5, "level_max": 8 },
-        { "enemy_ids": ["dark_acolyte", "skeleton"], "weight": 1, "level_min": 8, "level_max": 11 }
-      ]
+        {
+          "enemy_ids": [
+            "cave_spider"
+          ],
+          "weight": 3,
+          "level_min": 5,
+          "level_max": 8
+        },
+        {
+          "enemy_ids": [
+            "skeleton"
+          ],
+          "weight": 3,
+          "level_min": 6,
+          "level_max": 9
+        },
+        {
+          "enemy_ids": [
+            "cave_spider",
+            "cave_spider"
+          ],
+          "weight": 2,
+          "level_min": 5,
+          "level_max": 8
+        },
+        {
+          "enemy_ids": [
+            "dark_acolyte",
+            "skeleton"
+          ],
+          "weight": 1,
+          "level_min": 8,
+          "level_max": 11
+        }
+      ],
+      "npc_ids": []
     },
     {
       "id": "sunken_shrine",
@@ -73,17 +195,501 @@
       "recommended_level": 12,
       "unlock_level": 10,
       "quiet_chance": 0.15,
-      "connections": ["hollow_cave"],
+      "connections": [
+        "hollow_cave",
+        "emberwatch_road"
+      ],
       "encounters": [
-        { "enemy_ids": ["dark_acolyte"], "weight": 3, "level_min": 9, "level_max": 13 },
-        { "enemy_ids": ["hill_troll"], "weight": 2, "level_min": 11, "level_max": 14 },
-        { "enemy_ids": ["frost_wisp"], "weight": 2, "level_min": 12, "level_max": 15 },
-        { "enemy_ids": ["skeleton", "skeleton", "dark_acolyte"], "weight": 1, "level_min": 10, "level_max": 13 },
-        { "enemy_ids": ["shadow_warden"], "weight": 1, "level_min": 15, "level_max": 18, "is_boss": true }
+        {
+          "enemy_ids": [
+            "dark_acolyte"
+          ],
+          "weight": 3,
+          "level_min": 9,
+          "level_max": 13
+        },
+        {
+          "enemy_ids": [
+            "hill_troll"
+          ],
+          "weight": 2,
+          "level_min": 11,
+          "level_max": 14
+        },
+        {
+          "enemy_ids": [
+            "frost_wisp"
+          ],
+          "weight": 2,
+          "level_min": 12,
+          "level_max": 15
+        },
+        {
+          "enemy_ids": [
+            "skeleton",
+            "skeleton",
+            "dark_acolyte"
+          ],
+          "weight": 1,
+          "level_min": 10,
+          "level_max": 13
+        },
+        {
+          "enemy_ids": [
+            "shadow_warden"
+          ],
+          "weight": 1,
+          "level_min": 15,
+          "level_max": 18,
+          "is_boss": true,
+          "boss_id": "shadow_warden"
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "emberwatch_road",
+      "name": "The Cinder Road",
+      "description": "Black milestones lead west through grass that never stopped smouldering.",
+      "recommended_level": 16,
+      "unlock_level": 14,
+      "quiet_chance": 0.18,
+      "connections": [
+        "sunken_shrine",
+        "town_emberwatch",
+        "mosswood"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "ash_hound"
+          ],
+          "weight": 3,
+          "level_min": 15,
+          "level_max": 18
+        },
+        {
+          "enemy_ids": [
+            "road_reaver",
+            "ash_hound"
+          ],
+          "weight": 2,
+          "level_min": 16,
+          "level_max": 19
+        },
+        {
+          "enemy_ids": [
+            "briar_witch"
+          ],
+          "weight": 2,
+          "level_min": 17,
+          "level_max": 20
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "town_emberwatch",
+      "name": "Emberwatch",
+      "description": "A walled market town where every roof carries a rain barrel and every citizen knows the fire bell.",
+      "is_town": true,
+      "recommended_level": 18,
+      "unlock_level": 15,
+      "connections": [
+        "emberwatch_road",
+        "mosswood",
+        "glassmarsh"
+      ],
+      "shop_ids": [
+        "emberwatch_outfitter",
+        "emberwatch_apothecary"
+      ],
+      "npc_ids": [
+        "warden_hela",
+        "alchemist_pell",
+        "cartographer_senn",
+        "elder_amariel",
+        "mother_sable"
       ]
+    },
+    {
+      "id": "mosswood",
+      "name": "Mosswood",
+      "description": "Ancient trees drink warm rain while paths rearrange behind travellers.",
+      "recommended_level": 19,
+      "unlock_level": 17,
+      "quiet_chance": 0.2,
+      "connections": [
+        "emberwatch_road",
+        "town_emberwatch",
+        "glassmarsh"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "mossback_boar"
+          ],
+          "weight": 3,
+          "level_min": 18,
+          "level_max": 21
+        },
+        {
+          "enemy_ids": [
+            "thorn_stalker"
+          ],
+          "weight": 3,
+          "level_min": 19,
+          "level_max": 22
+        },
+        {
+          "enemy_ids": [
+            "briar_witch",
+            "thorn_stalker"
+          ],
+          "weight": 1,
+          "level_min": 20,
+          "level_max": 23
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "glassmarsh",
+      "name": "The Glassmarsh",
+      "description": "Still pools mirror the sky too perfectly, even when something moves beneath them.",
+      "recommended_level": 22,
+      "unlock_level": 20,
+      "quiet_chance": 0.16,
+      "connections": [
+        "town_emberwatch",
+        "mosswood",
+        "drowned_archive"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "marsh_serpent"
+          ],
+          "weight": 3,
+          "level_min": 20,
+          "level_max": 23
+        },
+        {
+          "enemy_ids": [
+            "bog_knight"
+          ],
+          "weight": 2,
+          "level_min": 22,
+          "level_max": 25
+        },
+        {
+          "enemy_ids": [
+            "marsh_serpent",
+            "marsh_serpent"
+          ],
+          "weight": 1,
+          "level_min": 21,
+          "level_max": 24
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "drowned_archive",
+      "name": "The Drowned Archive",
+      "description": "Stone shelves descend into black water, their books whispering through sealed covers.",
+      "recommended_level": 25,
+      "unlock_level": 23,
+      "quiet_chance": 0.12,
+      "connections": [
+        "glassmarsh",
+        "town_stonehaven"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "lantern_wraith"
+          ],
+          "weight": 3,
+          "level_min": 23,
+          "level_max": 26
+        },
+        {
+          "enemy_ids": [
+            "bog_knight",
+            "lantern_wraith"
+          ],
+          "weight": 2,
+          "level_min": 24,
+          "level_max": 27
+        },
+        {
+          "enemy_ids": [
+            "mire_oracle"
+          ],
+          "weight": 1,
+          "level_min": 27,
+          "level_max": 27,
+          "is_boss": true,
+          "boss_id": "mire_oracle"
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "town_stonehaven",
+      "name": "Stonehaven",
+      "description": "A mining city carved into a cliff, loud with lifts, chisels, and shift bells.",
+      "is_town": true,
+      "recommended_level": 27,
+      "unlock_level": 24,
+      "connections": [
+        "drowned_archive",
+        "red_pass",
+        "crystal_mines"
+      ],
+      "shop_ids": [
+        "stonehaven_forge",
+        "stonehaven_arcanist"
+      ],
+      "npc_ids": [
+        "reeve_marta",
+        "miner_joss",
+        "runekeeper_ada",
+        "thane_dorrim"
+      ]
+    },
+    {
+      "id": "red_pass",
+      "name": "The Red Pass",
+      "description": "Iron dust stains the mountain road and every boot that survives it.",
+      "recommended_level": 28,
+      "unlock_level": 26,
+      "quiet_chance": 0.17,
+      "connections": [
+        "town_stonehaven",
+        "crystal_mines",
+        "storm_plateau"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "redcap_raider"
+          ],
+          "weight": 3,
+          "level_min": 27,
+          "level_max": 30
+        },
+        {
+          "enemy_ids": [
+            "granite_golem"
+          ],
+          "weight": 2,
+          "level_min": 28,
+          "level_max": 31
+        },
+        {
+          "enemy_ids": [
+            "redcap_raider",
+            "redcap_raider"
+          ],
+          "weight": 1,
+          "level_min": 28,
+          "level_max": 31
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "crystal_mines",
+      "name": "The Singing Mines",
+      "description": "Blue crystal veins vibrate with every footstep, building toward a song nobody wants to finish.",
+      "recommended_level": 31,
+      "unlock_level": 28,
+      "quiet_chance": 0.13,
+      "connections": [
+        "town_stonehaven",
+        "red_pass",
+        "storm_plateau"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "crystal_beetle"
+          ],
+          "weight": 3,
+          "level_min": 29,
+          "level_max": 32
+        },
+        {
+          "enemy_ids": [
+            "deep_delver",
+            "crystal_beetle"
+          ],
+          "weight": 2,
+          "level_min": 30,
+          "level_max": 33
+        },
+        {
+          "enemy_ids": [
+            "iron_colossus"
+          ],
+          "weight": 1,
+          "level_min": 34,
+          "level_max": 34,
+          "is_boss": true,
+          "boss_id": "iron_colossus"
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "storm_plateau",
+      "name": "Storm Plateau",
+      "description": "Open stone rises above the cloud line beneath a sky that never stops choosing targets.",
+      "recommended_level": 35,
+      "unlock_level": 32,
+      "quiet_chance": 0.12,
+      "connections": [
+        "red_pass",
+        "crystal_mines",
+        "town_skyreach"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "storm_harpy"
+          ],
+          "weight": 3,
+          "level_min": 33,
+          "level_max": 36
+        },
+        {
+          "enemy_ids": [
+            "thunder_drake"
+          ],
+          "weight": 2,
+          "level_min": 35,
+          "level_max": 38
+        },
+        {
+          "enemy_ids": [
+            "storm_harpy",
+            "storm_harpy"
+          ],
+          "weight": 1,
+          "level_min": 34,
+          "level_max": 37
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "town_skyreach",
+      "name": "Skyreach",
+      "description": "Rope bridges and white towers cling to the peak above an ocean of cloud.",
+      "is_town": true,
+      "recommended_level": 35,
+      "unlock_level": 33,
+      "connections": [
+        "storm_plateau",
+        "cloud_ruins"
+      ],
+      "shop_ids": [
+        "skyreach_quartermaster",
+        "skyreach_reliquary"
+      ],
+      "npc_ids": [
+        "archivist_lume",
+        "ropewright_fenn",
+        "abbess_sol",
+        "keth_cloudscar",
+        "siv_quickpaw"
+      ]
+    },
+    {
+      "id": "cloud_ruins",
+      "name": "The Cloud Ruins",
+      "description": "Roofless halls drift in and out of fog, patrolled by machines older than the mountain.",
+      "recommended_level": 38,
+      "unlock_level": 35,
+      "quiet_chance": 0.1,
+      "connections": [
+        "town_skyreach",
+        "obsidian_gate"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "sky_cultist"
+          ],
+          "weight": 3,
+          "level_min": 36,
+          "level_max": 39
+        },
+        {
+          "enemy_ids": [
+            "ruin_sentinel"
+          ],
+          "weight": 3,
+          "level_min": 37,
+          "level_max": 40
+        },
+        {
+          "enemy_ids": [
+            "sky_cultist",
+            "ruin_sentinel"
+          ],
+          "weight": 1,
+          "level_min": 38,
+          "level_max": 40
+        }
+      ],
+      "npc_ids": []
+    },
+    {
+      "id": "obsidian_gate",
+      "name": "The Obsidian Gate",
+      "description": "A black arch frames a sunrise from somewhere else. Something stands between here and morning.",
+      "recommended_level": 40,
+      "unlock_level": 38,
+      "quiet_chance": 0.06,
+      "connections": [
+        "cloud_ruins"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "ruin_sentinel",
+            "sky_cultist"
+          ],
+          "weight": 3,
+          "level_min": 38,
+          "level_max": 40
+        },
+        {
+          "enemy_ids": [
+            "thunder_drake",
+            "ruin_sentinel"
+          ],
+          "weight": 2,
+          "level_min": 39,
+          "level_max": 40
+        },
+        {
+          "enemy_ids": [
+            "dawn_tyrant"
+          ],
+          "weight": 1,
+          "level_min": 40,
+          "level_max": 40,
+          "is_boss": true,
+          "boss_id": "dawn_tyrant"
+        }
+      ],
+      "npc_ids": []
     }
   ],
-
   "shops": [
     {
       "id": "ashvale_general",
@@ -91,9 +697,20 @@
       "buy_rate": 1.0,
       "sell_rate": 0.4,
       "item_ids": [
-        "minor_potion", "potion", "minor_ether", "ether", "antidote",
-        "travel_boots", "leather_gloves", "leather_vest", "cloth_robe", "eternal_band"
-      ]
+        "minor_potion",
+        "potion",
+        "minor_ether",
+        "ether",
+        "antidote",
+        "travel_boots",
+        "leather_gloves",
+        "leather_vest",
+        "cloth_robe",
+        "eternal_band",
+        "wanderers_knot",
+        "bridgewalkers_charm"
+      ],
+      "faction_id": "merchant_caravans"
     },
     {
       "id": "ashvale_smith",
@@ -101,12 +718,124 @@
       "buy_rate": 1.1,
       "sell_rate": 0.45,
       "item_ids": [
-        "iron_sword", "iron_dagger", "iron_mace", "hunting_bow", "battle_axe",
-        "apprentice_staff", "wooden_shield", "iron_helm", "chain_mail", "steel_sword"
-      ]
+        "iron_sword",
+        "iron_dagger",
+        "iron_mace",
+        "hunting_bow",
+        "battle_axe",
+        "apprentice_staff",
+        "wooden_shield",
+        "iron_helm",
+        "chain_mail",
+        "steel_sword"
+      ],
+      "faction_id": "ashvale_council"
+    },
+    {
+      "id": "emberwatch_outfitter",
+      "name": "The Cinder Rack",
+      "buy_rate": 1.05,
+      "sell_rate": 0.45,
+      "item_ids": [
+        "embersteel_blade",
+        "watchman_mace",
+        "briar_bow",
+        "ember_plate",
+        "ember_helm",
+        "briar_grips",
+        "mossweave_coat",
+        "marshwalker_boots"
+      ],
+      "faction_id": "emberwatch_wardens"
+    },
+    {
+      "id": "emberwatch_apothecary",
+      "name": "Pell's Bottles",
+      "buy_rate": 1.0,
+      "sell_rate": 0.4,
+      "item_ids": [
+        "potion",
+        "ether",
+        "greater_potion",
+        "greater_ether",
+        "antidote",
+        "elixir_of_might"
+      ],
+      "faction_id": "merchant_caravans",
+      "race_item_ids": {
+        "tiefling": [
+          "infernal_compass"
+        ],
+        "demon": [
+          "ashcourt_seal"
+        ]
+      },
+      "race_buy_rates": {
+        "tiefling": 0.92,
+        "demon": 0.9
+      }
+    },
+    {
+      "id": "stonehaven_forge",
+      "name": "The Deep Anvil",
+      "buy_rate": 1.08,
+      "sell_rate": 0.48,
+      "item_ids": [
+        "stonecleaver",
+        "runebound_sword",
+        "deepglass_dagger",
+        "stoneguard_mail",
+        "runic_gauntlets",
+        "warden_charm"
+      ],
+      "faction_id": "stonehaven_clans"
+    },
+    {
+      "id": "stonehaven_arcanist",
+      "name": "Ada's Resonance",
+      "buy_rate": 1.05,
+      "sell_rate": 0.44,
+      "item_ids": [
+        "oracle_staff",
+        "crystal_staff",
+        "oracle_vestments",
+        "crystal_circlet",
+        "greater_ether",
+        "stormglass_pendant"
+      ],
+      "faction_id": "stonehaven_clans"
+    },
+    {
+      "id": "skyreach_quartermaster",
+      "name": "High Stores",
+      "buy_rate": 1.1,
+      "sell_rate": 0.5,
+      "item_ids": [
+        "tempest_bow",
+        "skyforge_mace",
+        "stormweave_robe",
+        "gale_boots",
+        "greater_potion",
+        "greater_ether"
+      ],
+      "faction_id": "skyreach_archivists"
+    },
+    {
+      "id": "skyreach_reliquary",
+      "name": "The Open Sky Reliquary",
+      "buy_rate": 1.15,
+      "sell_rate": 0.5,
+      "item_ids": [
+        "stormglass_pendant",
+        "stormweave_robe",
+        "gale_boots",
+        "greater_potion",
+        "greater_ether",
+        "wildclaw_pendant"
+      ],
+      "faction_id": "skyreach_archivists"
     }
   ],
-
   "npcs": [
     {
       "id": "innkeeper_mara",
@@ -115,13 +844,17 @@
       "marriageable": true,
       "marriage_affinity": 60,
       "description": "Runs the inn. Has run it for a long time.",
-      "gift_item_ids": ["wolf_pelt", "potion"],
+      "gift_item_ids": [
+        "wolf_pelt",
+        "potion"
+      ],
       "dialogue": [
         "Bed's the same price as yesterday. So's the porridge.",
         "You look like the road's been arguing with you.",
         "Stay as long as you like. People usually don't.",
         "The well's older than the town. Don't drop anything in it."
-      ]
+      ],
+      "race_id": "human"
     },
     {
       "id": "smith_dorn",
@@ -130,13 +863,17 @@
       "marriageable": true,
       "marriage_affinity": 70,
       "description": "The smith. Speaks mostly in prices.",
-      "gift_item_ids": ["troll_hide", "bandit_coin"],
+      "gift_item_ids": [
+        "troll_hide",
+        "bandit_coin"
+      ],
       "dialogue": [
         "Bring me steel and I'll make it worth carrying.",
         "That edge is a disgrace. Give it here.",
         "Everything breaks. Question is how loudly.",
         "Cheap armour costs more. You'll see."
-      ]
+      ],
+      "race_id": "dwarf"
     },
     {
       "id": "scholar_iven",
@@ -145,12 +882,287 @@
       "marriageable": true,
       "marriage_affinity": 75,
       "description": "Reads too much and says so.",
-      "gift_item_ids": ["shadow_essence", "slime_core"],
+      "gift_item_ids": [
+        "shadow_essence",
+        "slime_core"
+      ],
       "dialogue": [
         "The shrine predates the town. Nobody finds that interesting but me.",
         "Seven tiers, the old texts say. Most never pass the second.",
         "Mastery isn't talent. It's repetition nobody watched.",
         "If you find anything written down out there, bring it back intact."
+      ],
+      "race_id": "half_elf"
+    },
+    {
+      "id": "warden_hela",
+      "name": "Warden Hela",
+      "location_id": "town_emberwatch",
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "description": "Keeps the walls staffed and the fire buckets full.",
+      "gift_item_ids": [
+        "ember_scale",
+        "greater_potion"
+      ],
+      "dialogue": [
+        "The bell rings once for a drill, twice for fire, continuously for fools.",
+        "Emberwatch was rebuilt six times. We kept the name to save paint.",
+        "West road is open. Safe would be a stronger word."
+      ],
+      "race_id": "dragonkin"
+    },
+    {
+      "id": "alchemist_pell",
+      "name": "Pell",
+      "location_id": "town_emberwatch",
+      "marriageable": true,
+      "marriage_affinity": 70,
+      "description": "An alchemist whose eyebrows are recent replacements.",
+      "gift_item_ids": [
+        "marsh_ichor",
+        "briar_heart",
+        "greater_ether"
+      ],
+      "dialogue": [
+        "Green bottle heals. Blue bottle helps magic. Striped bottle is lunch.",
+        "I need marsh ichor. Need is perhaps too gentle a word.",
+        "If it bubbles clockwise, leave the room calmly."
+      ],
+      "race_id": "tiefling"
+    },
+    {
+      "id": "cartographer_senn",
+      "name": "Senn",
+      "location_id": "town_emberwatch",
+      "marriageable": false,
+      "description": "Draws maps in erasable charcoal for practical reasons.",
+      "gift_item_ids": [
+        "wraith_lantern"
+      ],
+      "dialogue": [
+        "Mosswood moved two paths again last night.",
+        "Stonehaven is west, down, and louder than expected.",
+        "A blank place on a map is not an invitation. Usually."
+      ],
+      "race_id": "elf"
+    },
+    {
+      "id": "reeve_marta",
+      "name": "Reeve Marta",
+      "location_id": "town_stonehaven",
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "description": "Runs Stonehaven by ledger, whistle, and inexhaustible disapproval.",
+      "gift_item_ids": [
+        "granite_core",
+        "runic_gauntlets"
+      ],
+      "dialogue": [
+        "Visitors sign in. Heroes sign twice.",
+        "The mine is singing in a new key. Nobody likes it.",
+        "If Tala says a tunnel is safe, it is. If Orren says it, ask Tala."
+      ],
+      "race_id": "dwarf"
+    },
+    {
+      "id": "miner_joss",
+      "name": "Joss",
+      "location_id": "town_stonehaven",
+      "marriageable": true,
+      "marriage_affinity": 70,
+      "description": "A lift operator who has seen every depth and recommends none.",
+      "gift_item_ids": [
+        "greater_potion",
+        "crystal_carapace"
+      ],
+      "dialogue": [
+        "Down is easy. Coming back is skilled work.",
+        "Don't whistle underground. The crystals answer.",
+        "Colossus used to guard us. Pronouns changed somewhere along the way."
+      ],
+      "race_id": "beastkin"
+    },
+    {
+      "id": "runekeeper_ada",
+      "name": "Ada",
+      "location_id": "town_stonehaven",
+      "marriageable": false,
+      "description": "Catalogues runes by effect, age, and likelihood of explosion.",
+      "gift_item_ids": [
+        "wraith_lantern",
+        "crystal_carapace"
+      ],
+      "dialogue": [
+        "Old runes command. New runes negotiate.",
+        "Bring me anything that glows without heat.",
+        "The plateau inscriptions all point upward. Grammatically, not geographically."
+      ],
+      "race_id": "tiefling"
+    },
+    {
+      "id": "archivist_lume",
+      "name": "Lume",
+      "location_id": "town_skyreach",
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "description": "Records weather, ruins, and every traveller who returns from either.",
+      "gift_item_ids": [
+        "sun_fragment",
+        "storm_feather"
+      ],
+      "dialogue": [
+        "History is thinner up here. The wind takes loose pages.",
+        "The Obsidian Gate predates the mountain road.",
+        "Morning through the gate arrives from the wrong direction."
+      ],
+      "race_id": "elf"
+    },
+    {
+      "id": "ropewright_fenn",
+      "name": "Fenn",
+      "location_id": "town_skyreach",
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "description": "Trusts rope more than stone and people less than either.",
+      "gift_item_ids": [
+        "drake_scale",
+        "gale_boots"
+      ],
+      "dialogue": [
+        "Every bridge is a promise with knots.",
+        "Check the wind, then check it again after it lies.",
+        "Falling is free. Everything before it costs."
+      ],
+      "race_id": "half_elf"
+    },
+    {
+      "id": "abbess_sol",
+      "name": "Abbess Sol",
+      "location_id": "town_skyreach",
+      "marriageable": false,
+      "description": "Tends a roofless chapel facing the gate.",
+      "gift_item_ids": [
+        "sun_fragment",
+        "dawn_signet"
+      ],
+      "dialogue": [
+        "Light is not goodness. Fire teaches that early.",
+        "The thing at the gate calls itself dawn. Names are claims.",
+        "Go prepared. Faith is not a substitute for armour."
+      ],
+      "race_id": "demon"
+    },
+    {
+      "id": "elder_amariel",
+      "name": "Elder Amariel",
+      "race_id": "elf",
+      "location_id": "town_emberwatch",
+      "marriageable": false,
+      "description": "An elven gardener keeping one impossible silver sapling alive in a fire town.",
+      "gift_item_ids": [
+        "briar_heart",
+        "moonleaf_brooch"
+      ],
+      "dialogue": [
+        "Some trees grow toward sunlight. This one grows toward memory.",
+        "Lethira lost something in Mosswood. The wood found it first.",
+        "I came for one season. That was eighty-three years ago.",
+        "Emberwatch ash makes excellent roses. Angry roses, but excellent."
+      ]
+    },
+    {
+      "id": "nima_crossroads",
+      "name": "Nima Crossroads",
+      "race_id": "half_elf",
+      "location_id": "town_ashvale",
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "description": "A half-elven courier who knows which roads accept which names.",
+      "gift_item_ids": [
+        "travel_boots",
+        "bridgewalkers_charm"
+      ],
+      "dialogue": [
+        "A letter arrives faster when it contains an apology.",
+        "Two families taught me two ways to get lost.",
+        "Ashvale is where roads come to reconsider.",
+        "I deliver secrets sealed. Reading them costs extra and my self-respect."
+      ]
+    },
+    {
+      "id": "thane_dorrim",
+      "name": "Thane Dorrim",
+      "race_id": "dwarf",
+      "location_id": "town_stonehaven",
+      "marriageable": false,
+      "description": "Keeper of an erased clan ledger and Brokk's least patient uncle.",
+      "gift_item_ids": [
+        "granite_core",
+        "stoneheart_clasp"
+      ],
+      "dialogue": [
+        "A name removed from stone leaves a louder space.",
+        "Brokk hears songs because he refuses sensible silence.",
+        "Our ledger has one clean cut. History is rarely that tidy.",
+        "I do not hold grudges. I archive them."
+      ]
+    },
+    {
+      "id": "mother_sable",
+      "name": "Mother Sable",
+      "race_id": "demon",
+      "location_id": "town_emberwatch",
+      "marriageable": true,
+      "marriage_affinity": 90,
+      "description": "A demon advocate offering free counsel and terrifyingly precise tea.",
+      "gift_item_ids": [
+        "ashcourt_seal",
+        "greater_ether"
+      ],
+      "dialogue": [
+        "Never sign your true name. Initials have saved kingdoms.",
+        "Veyra mistakes escape for absolution. She needs both.",
+        "Demons do not all lie. That rumour was started by honest lawyers.",
+        "Tea is a contract: patience in exchange for flavour."
+      ]
+    },
+    {
+      "id": "keth_cloudscar",
+      "name": "Keth Cloudscar",
+      "race_id": "dragonkin",
+      "location_id": "town_skyreach",
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "description": "A dragonkin historian reconstructing the first gate oath from scorched scales.",
+      "gift_item_ids": [
+        "drake_scale",
+        "dawnscale_torc"
+      ],
+      "dialogue": [
+        "Scales preserve heat and, sometimes, testimony.",
+        "Rhazek inherited an oath with half the verbs missing.",
+        "The gate was sealed against dawn, not darkness.",
+        "History written in fire is difficult to alphabetise."
+      ]
+    },
+    {
+      "id": "siv_quickpaw",
+      "name": "Siv Quickpaw",
+      "race_id": "beastkin",
+      "location_id": "town_skyreach",
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "description": "A fox-eared salvager with excellent balance and flexible definitions of abandoned.",
+      "gift_item_ids": [
+        "wildclaw_pendant",
+        "storm_feather"
+      ],
+      "dialogue": [
+        "If the ruin wanted it, it should have held tighter.",
+        "My tail is for balance, not public commentary.",
+        "Sentinels hate bells. I carry seven.",
+        "I found a crown yesterday. Turned out to be plumbing."
       ]
     }
   ]

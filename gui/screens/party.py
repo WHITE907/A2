@@ -65,7 +65,8 @@ class PartyWindow(tk.Toplevel):
         self.toggle_button = theme.flat_button(buttons, "Bench", self._toggle_active, width=10)
         self.toggle_button.pack(side=tk.LEFT)
         theme.flat_button(buttons, "Talk", self._talk, width=10).pack(side=tk.LEFT, padx=8)
-        theme.flat_button(buttons, "Dismiss", self._dismiss, width=10).pack(side=tk.LEFT)
+        theme.flat_button(buttons, "Tactics", self._tactics, width=10).pack(side=tk.LEFT)
+        theme.flat_button(buttons, "Dismiss", self._dismiss, width=10).pack(side=tk.LEFT, padx=8)
         self.recruit_button = theme.flat_button(buttons, "Recruit", self._recruit, width=10)
         self.recruit_button.pack(side=tk.LEFT, padx=8)
         theme.flat_button(buttons, "Close", self._close, width=10).pack(side=tk.RIGHT)
@@ -155,6 +156,11 @@ class PartyWindow(tk.Toplevel):
         # otherwise immediately overwrite it with the plain detail view.
         if not ok:
             self._on_recruit_target(companion_id)
+
+    def _tactics(self) -> None:
+        companion_id = self.member_list.selected_value
+        if companion_id:
+            self.app.open_tactics(companion_id)
 
     def _talk(self) -> None:
         """Open the shared Talk window - companions use the same one as NPCs."""

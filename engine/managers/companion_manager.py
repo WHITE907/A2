@@ -11,6 +11,7 @@ from typing import Any, Sequence
 
 from engine.entities.companion import Companion, CompanionDefinition
 from engine.managers.data_loader import ContentError, DataLoader
+from engine.managers.race_manager import RaceManager
 from engine.managers.skill_manager import SkillManager
 from engine.stats import Formulas
 
@@ -22,9 +23,16 @@ class CompanionManager:
 
     COMPANION_FILE = "companions.json"
 
-    def __init__(self, loader: DataLoader, skill_manager: SkillManager, formulas: Formulas) -> None:
+    def __init__(
+        self,
+        loader: DataLoader,
+        skill_manager: SkillManager,
+        race_manager: RaceManager,
+        formulas: Formulas,
+    ) -> None:
         self._loader = loader
         self._skills = skill_manager
+        self._races = race_manager
         self._formulas = formulas
         self._definitions: dict[str, CompanionDefinition] = {}
         self._loaded = False
@@ -71,6 +79,7 @@ class CompanionManager:
         return Companion(
             definition=definition,
             level=definition.level_for(player_level),
+            race_def=self._races.require(definition.race_id),
             formulas=self._formulas,
             skills=self._skills.get_many(definition.skill_ids),
         )

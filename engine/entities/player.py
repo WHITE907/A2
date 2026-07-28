@@ -18,6 +18,7 @@ from engine.classes import ClassDefinition
 from engine.entities.entity import Entity
 from engine.items.item import EQUIPMENT_SLOTS, Inventory, Item, SLOT_LABELS
 from engine.mastery import MasteryBook
+from engine.races import RaceDefinition
 from engine.skills.skill import Skill, SkillCategory
 from engine.stats import PRIMARY_STATS, Formulas, ModifierSet, StatBlock
 
@@ -47,13 +48,19 @@ class Player(Entity):
         name: str,
         gender: str,
         class_def: ClassDefinition,
+        race_def: RaceDefinition,
         formulas: Formulas,
         level: int = 1,
         progression: Mapping[str, Any] | None = None,
+        equipment_config: Mapping[str, Any] | None = None,
+        enchantments: Mapping[str, Any] | None = None,
     ) -> None:
         progression = progression or {}
+        self.equipment_config = dict(equipment_config or {})
+        self.enchantment_definitions = dict(enchantments or {})
         self.gender = (gender or "any").lower()
         self.class_def = class_def
+        self.race_def = race_def
         self.class_history: list[str] = [class_def.id]
 
         # Progression tuning (bible section 9) - JSON-driven, never hardcoded.
@@ -71,6 +78,7 @@ class Player(Entity):
         self.allocated_stats = StatBlock()
 
         self.known_skills: dict[str, Skill] = {}
+        self.equipment_granted_skills: set[str] = set()
         self.cooldowns: dict[str, int] = {}
         self.equipment: dict[str, Item | None] = {slot: None for slot in EQUIPMENT_SLOTS}
         self.inventory = Inventory()
@@ -80,6 +88,13 @@ class Player(Entity):
         self.affinity: dict[str, int] = {}
         self.spouse_id: str | None = None
         self.completed_quests: list[str] = []
+        self.active_quests: list[str] = []
+        self.quest_progress: dict[str, dict[str, int]] = {}
+        self.faction_reputation: dict[str, int] = {}
+        self.companion_loyalty: dict[str, int] = {}
+        self.companion_unavailable_until: dict[str, int] = {}
+        self.item_enchantments: dict[str, str] = {}
+        self.item_upgrades: dict[str, int] = {}
         self.flags: dict[str, Any] = {}
 
         super().__init__(name=name, level=level, base_stats=StatBlock(), formulas=formulas)
@@ -90,9 +105,17 @@ class Player(Entity):
     # ------------------------------------------------------------------
     # Stats
     # ------------------------------------------------------------------
+    @property
+    def race_id(self) -> str:
+        return self.race_def.id
+
     def _recalculate_base_stats(self) -> None:
-        """Class base + per-level growth + hand-allocated points."""
-        self.base_stats = self.class_def.stats_at_level(self.level).add(self.allocated_stats)
+        """Class growth + racial primaries + hand-allocated points."""
+        self.base_stats = (
+            self.class_def.stats_at_level(self.level)
+            .add(self.race_def.base_stats)
+            .add(self.allocated_stats)
+        )
         self.invalidate_stats()
 
     def _equipment_modifiers(self) -> ModifierSet:
@@ -102,9 +125,37 @@ class Player(Entity):
         cached together by :meth:`Entity.derived_stats`.
         """
         combined = ModifierSet()
-        for item in self.equipment.values():
-            if item is not None:
-                combined.merge(item.modifiers)
+        equipped = [item for item in self.equipment.values() if item is not None]
+        for item in equipped:
+            rate = float(self.equipment_config.get("equipment_upgrade", {}).get("modifier_rate", 0.0))
+            level = self.item_upgrades.get(item.id, 0)
+            scale = 1.0 + rate * level
+            upgraded = ModifierSet(
+                flat={key: value * scale for key, value in item.modifiers.flat.items()},
+                pct={key: value * scale for key, value in item.modifiers.pct.items()},
+            )
+            combined.merge(upgraded)
+            racial_bonus = item.race_modifiers.get(self.race_id)
+            if racial_bonus is not None:
+                combined.merge(racial_bonus)
+            enchantment = self.enchantment_definitions.get(self.item_enchantments.get(item.id, ""))
+            if enchantment is not None:
+                combined.merge(enchantment.modifiers)
+            for condition in item.conditional_modifiers:
+                threshold = float(condition.get("below_hp_fraction", -1))
+                base_max = self.formulas.derive(self.base_stats, self.level).max_hp
+                if threshold >= 0 and hasattr(self, "current_hp") and self.current_hp < base_max * threshold:
+                    combined.merge(ModifierSet.from_dict(condition.get("modifiers")))
+        counts: dict[str, int] = {}
+        for item in equipped:
+            if item.set_id:
+                counts[item.set_id] = counts.get(item.set_id, 0) + 1
+        for set_id, count in counts.items():
+            definition = (self.equipment_config.get("equipment_sets") or {}).get(set_id, {})
+            for threshold, modifiers in (definition.get("bonuses") or {}).items():
+                if count >= int(threshold):
+                    combined.merge(ModifierSet.from_dict(modifiers))
+        combined.merge(self.race_def.modifiers)
         combined.merge(self.class_def.passive_modifiers)
         for skill in self.known_skills.values():
             if skill.is_passive:
@@ -272,6 +323,19 @@ class Player(Entity):
         weapon = self.equipment.get("weapon")
         return weapon.weapon_type if weapon else "unarmed"
 
+    def active_set_bonuses(self) -> list[str]:
+        counts: dict[str, int] = {}
+        for item in self.equipment.values():
+            if item and item.set_id:
+                counts[item.set_id] = counts.get(item.set_id, 0) + 1
+        lines: list[str] = []
+        for set_id, count in counts.items():
+            definition = (self.equipment_config.get("equipment_sets") or {}).get(set_id, {})
+            for threshold in sorted((definition.get("bonuses") or {}), key=int):
+                if count >= int(threshold):
+                    lines.append(f"{definition.get('name', set_id)} ({threshold})")
+        return lines
+
     def equipment_lines(self) -> list[str]:
         """``Weapon: Iron Sword`` lines for the Equipment screen."""
         return [
@@ -341,9 +405,29 @@ class Player(Entity):
     # ------------------------------------------------------------------
     # Quests
     # ------------------------------------------------------------------
+    def accept_quest(self, quest_id: str) -> bool:
+        if quest_id in self.completed_quests or quest_id in self.active_quests:
+            return False
+        self.active_quests.append(quest_id)
+        self.quest_progress[quest_id] = {}
+        return True
+
+    def quest_progress_value(self, quest_id: str, objective_key: str) -> int:
+        return int(self.quest_progress.get(quest_id, {}).get(objective_key, 0))
+
+    def advance_quest(self, quest_id: str, objective_key: str, amount: int, *, maximum: int) -> int:
+        if quest_id not in self.active_quests or amount <= 0:
+            return self.quest_progress_value(quest_id, objective_key)
+        progress = self.quest_progress.setdefault(quest_id, {})
+        progress[objective_key] = min(maximum, int(progress.get(objective_key, 0)) + int(amount))
+        return progress[objective_key]
+
     def complete_quest(self, quest_id: str) -> bool:
         if quest_id in self.completed_quests:
             return False
+        if quest_id in self.active_quests:
+            self.active_quests.remove(quest_id)
+        self.quest_progress.pop(quest_id, None)
         self.completed_quests.append(quest_id)
         return True
 
@@ -356,6 +440,7 @@ class Player(Entity):
         return [
             f"Name: {self.name}",
             f"Gender: {self.gender.title()}",
+            f"Race: {self.race_def.name}",
             f"Class: {self.class_def.name}",
             f"Tier: {self.class_def.tier}",
             f"Level: {self.level}",
@@ -386,6 +471,7 @@ class Player(Entity):
         data.update(
             {
                 "gender": self.gender,
+                "race_id": self.race_id,
                 "class_id": self.class_def.id,
                 "class_history": list(self.class_history),
                 "exp": self.exp,
@@ -400,6 +486,15 @@ class Player(Entity):
                 "affinity": dict(self.affinity),
                 "spouse_id": self.spouse_id,
                 "completed_quests": list(self.completed_quests),
+                "active_quests": list(self.active_quests),
+                "quest_progress": {
+                    quest_id: dict(progress) for quest_id, progress in self.quest_progress.items()
+                },
+                "faction_reputation": dict(self.faction_reputation),
+                "companion_loyalty": dict(self.companion_loyalty),
+                "companion_unavailable_until": dict(self.companion_unavailable_until),
+                "item_enchantments": dict(self.item_enchantments),
+                "item_upgrades": dict(self.item_upgrades),
                 "flags": dict(self.flags),
             }
         )

@@ -7,25 +7,24 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-There is a patch file, `v0.2.0-companions.patch` (~2,971 lines, 18 files),
-containing a finished **companion + affinity/marriage system**. It was built in
-a previous session that lost GitHub access before it could push.
+**The high-value systems expansion is complete on the current branch.** v0.7.0
+adds eleven quest objective strategies, branching dialogue, eight factions,
+companion loyalty and banter, recoverable disagreements, persisted combat
+tactics, phased bosses, twelve advanced combat effects, race-reactive shops,
+and equipment sets/enchantments/upgrades/conditional effects. The full suite
+contains 442 tests.
 
-**It is already verified**: applied against current `main` in a scratch
-worktree, full suite passed (366 tests), content validated.
+The next milestone should use these systems in **levels 41–70 content** rather
+than adding another disconnected framework: faction quest hubs, multiple
+branching conversations, loyalty chapters, set drops, and level-50/70 phased
+bosses should all ship together.
+
+Before handing off changes, run:
 
 ```bash
-git apply v0.2.0-companions.patch          # or --3way if main has moved
-python3 -m unittest discover -s tests      # expect: 366 tests, OK
-python3 main.py --check                    # expect: v0.2.0, Companions: 4
+python3 -m unittest discover -s tests
+python3 main.py --check
 ```
-
-Then commit, push, and open a PR. **Do not rebuild this from scratch** — the
-work is done. If `git apply` fails outright, say so rather than silently
-reimplementing.
-
-If the patch is unavailable, section 6 describes what it contains well enough
-to rebuild.
 
 ---
 
@@ -37,11 +36,13 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 366 tests
+python3 -m unittest discover -s tests    # 442 tests
 ```
 
-**Current state:** v0.1.0 is merged to `main` (PR #1). v0.2.0 is the pending
-patch above.
+**Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.7.0 are implemented
+on the current branch: quests, level-40 world content, persistent bosses,
+races/stories, and the Living Systems expansion. The next unsupported
+promotion band begins at level 50.
 
 ---
 
@@ -82,13 +83,14 @@ From `docs/ENGINE_DESIGN.md`. Class count scales with **behaviour**, not
 
 | Concept | Python classes | JSON entries |
 |---|---|---|
-| Skills | 1 (`Skill`) | 42 |
-| Effects | 5 strategies | — |
+| Skills | 1 (`Skill`) | 60 |
+| Effects | 17 strategies | — |
 | Classes | 1 (`ClassDefinition`) | 19 |
-| Enemies | 1 (`Enemy`) | 11 |
-| Items | 1 (`Item`) | 41 |
-| Statuses | 1 (`StatusEffect`) | 16 |
-| Companions | 1 (`Companion`) | 4 |
+| Enemies | 1 (`Enemy`) | 30 |
+| Items | 1 (`Item`) | 88 |
+| Statuses | 1 (`StatusEffect`) | 21 |
+| Races | 1 (`RaceDefinition`) | 8 |
+| Companions | 1 (`Companion`) | 14 |
 
 Fireball is **not** a Python class. It is a JSON entry composing a
 `DamageEffect` and an `ApplyStatusEffect`.
@@ -112,13 +114,14 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `docs/ENGINE_DESIGN.md` | The composition pattern and why it exists. |
 | `docs/GUI_STYLE_REFERENCE.md` | Exact palette, fonts, layout conventions. |
 | `docs/GUI_VERIFICATION.md` | Hard-won Tkinter gotchas. Read before GUI work. |
+| `docs/BALANCE_REPORT_LEVEL_40.md` | Executed EXP, economy, and combat baselines. |
 | `README.md` | Current state, known limitations. |
 | `CHANGELOG.md` | What shipped when (bible §18 requires updating this). |
 
 ### Engine — the single entry point
 | File | Responsibility |
 |---|---|
-| **`engine/game.py`** (956 ln) | **The facade. The GUI's only contact with the engine.** Start here. |
+| **`engine/game.py`** | **The facade. The GUI's only contact with the engine.** Start here. |
 | `engine/stats.py` | `StatBlock`, `ModifierSet`, `DerivedStats`, `Formulas`. All combat maths. |
 | `engine/skills/effects.py` | The 5 composable effect strategies. New behaviours go here. |
 | `engine/skills/skill.py` | The one `Skill` class. |
@@ -131,6 +134,11 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `engine/combat/ai.py` | Behaviour registry: 5 strategies selected by id. |
 | `engine/classes.py` | `ClassDefinition` + promotion requirement checks. |
 | `engine/mastery.py` | F→Master tracks, earned by use. |
+| `engine/quests.py` | *(v0.3.0)* Quest definitions and objective data. |
+| `engine/races.py` | *(v0.6.0)* Race stats, modifiers, and traits. |
+| `engine/story.py` | *(v0.7.0)* Dialogue, faction, and banter definitions. |
+| `engine/managers/race_manager.py` | *(v0.6.0)* Race content loading. |
+| `engine/managers/quest_manager.py` | *(v0.3.0)* Quest loading and progression. |
 | `engine/relationships.py` | *(v0.2.0)* Affinity + marriage, shared by NPCs and companions. |
 | `engine/party.py` | *(v0.2.0)* Active roster + reserve bench. |
 | `engine/managers/*.py` | **The only code that reads JSON.** One per content type. |
@@ -147,7 +155,8 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient) · `skills.json` · `statuses.json` ·
-`classes.json` · `items.json` · `enemies.json` · `companions.json` · `world.json`
+`classes.json` · `items.json` · `races.json` · `enemies.json` ·
+`quests.json` · `companions.json` · `world.json`
 
 All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
@@ -156,14 +165,18 @@ area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 | File | Coverage |
 |---|---|
 | `tests/test_engine.py` | 178 tests. Real chain: JSON → managers → entities → `Skill.use()` → effects → log. |
-| `tests/test_gui.py` | 112 tests. Builds real screens, invokes real handlers. |
+| `tests/test_gui.py` | 116 tests. Builds real screens, invokes real handlers. |
 | `tests/test_companions.py` | *(v0.2.0)* 76 tests. |
+| `tests/test_quests.py` | *(v0.3.0)* Quest progression, persistence, and loot. |
+| `tests/test_races_storylines.py` | *(v0.6.0)* Races, heirlooms, and companion stories. |
+| `tests/test_systems_expansion.py` | *(v0.7.0)* Objectives, story, loyalty, gear, effects, bosses. |
+| `tests/test_world_expansion.py` | *(v0.4.0)* Level-40 density, reachability, and content. |
 | `tests/tk_stub.py` | Recording Tkinter stand-in for headless GUI testing. |
 | `tools/render_mockups.py` | Renders screen layouts via Pillow. |
 
 ---
 
-## 6. What the v0.2.0 patch contains
+## 6. What v0.2.0 contains
 
 **Companions** (bible §6, roadmap v0.0.9) — `Companion` + `CompanionDefinition`
 + `CompanionManager`, and a `Party` with a capped active roster plus reserve.
@@ -189,57 +202,48 @@ a checkbox.
 
 ---
 
-## 7. Known blockers — verified, not guessed
+## 7. Known limitations — verified, not guessed
 
-An earlier summary claimed tiers 4–7 were "reachable but under-supported."
-**That was wrong.** Re-audited by execution:
+The reusable systems now cover the requested behaviours, but content breadth is
+intentionally smaller than engine breadth: one branching dialogue is the
+reference tree, one equipment set demonstrates thresholds, and the Dawn Tyrant
+is the reference phased boss. New content should copy those data patterns, not
+add NPC-, item-, or boss-specific Python.
 
-**The game is currently playable to tier 2 only.**
+**The progression limit still begins at level 50.** Tier-5+ quest entries use
+placeholder objectives until level-41–70 regions and bosses exist. The next
+content pass should exercise factions, race reactions, companion loyalty,
+branching outcomes, set gear, advanced effects, and phased bosses together.
 
-1. **Quests do not exist.** `QuestManager` (bible §6) was never built.
-   `Player.complete_quest()` exists with **zero callers** — verified by grep —
-   so no quest can ever complete. All 12 tier-4+ promotions require one, making
-   them permanently ineligible.
+Damage redirection stores its protector as battle-only runtime state, so it is
+not intended to persist outside combat. Temporary companion departures are
+recoverable after the configured number of days; do not turn them into permanent
+loss without a clear restoration path.
+## 8. Roadmap
 
-2. **Six promotion items are unobtainable** — `oath_sigil`, `shadow_pact`,
-   `grimoire_of_ages`, `sacred_relic`, `void_shard`, `codex_infinite` appear in
-   no loot table, shop, starting kit or recruit cost. **This blocks tier 3.**
+### Completed
+- ✅ v0.1–v0.2: playable foundation, companions, relationships.
+- ✅ v0.3: quest engine and promotion progression.
+- ✅ v0.4: connected world and content through level 40.
+- ✅ v0.5: NPC quest givers, persistent bosses, measured balance.
+- ✅ v0.6: eight races, racial heirlooms, companion stories.
+- ✅ v0.7: generic objectives, branching dialogue, loyalty/banter/tactics,
+  factions, advanced gear/effects, and phased boss framework.
 
-3. **Content tops out at level 18**, against gates of 35 / 50 / 70 / 99.
-
-Reproduce blocker 2 in seconds (this exact snippet is verified — note the
-promotion chain must be walked in order, Squire → Knight → Paladin):
-
-```python
-from engine.game import Game
-g = Game(seed=1); g.load_content(); g.create_character('P','male','squire')
-p = g.player
-p.level = 25
-p.allocated_stats['STR'] = 60; p.allocated_stats['END'] = 60
-p.allocated_stats['INT'] = 40; p._recalculate_base_stats()
-p.mastery.gain('sword', 5000); p.mastery.gain('light', 5000)
-p.inventory.add_gold(9999)
-
-# Tier 1 -> 2 works: knights_seal drops from bandit_chief.
-g.items.grant(p.inventory, 'knights_seal', 1)
-print(g.promote('knight')[0])        # -> True
-
-# Tier 2 -> 3 is impossible: nothing in the game yields oath_sigil.
-print(g.promote('paladin'))          # -> (False, ['Needs: Oath Sigil x1 (have 0)'])
-```
-
-### Suggested order
-1. **`QuestManager` + `data/quests.json`** — unblocks 12 promotions. The
-   *checking* side already exists: `ClassDefinition.check_promotion()` accepts
-   and enforces `completed_quests`, and `Player.complete_quest()` is waiting for
-   a caller. Follow the existing manager shape.
-2. **Add the 6 items to boss loot** — JSON only, no Python. Unblocks tier 3.
-3. **Extend the world toward level 99** — JSON only.
-4. Companions are done (the patch).
+### Next
+1. **Build levels 41–55** around a factional capital using branching quest
+   outcomes, reputation shops, loyalty chapters, set gear, and a phased level-50
+   promotion boss.
+2. **Build levels 56–70** with hostile/otherworldly settlements, heritage quests,
+   advanced enchantments, and level-70 promotion bosses.
+3. Add several dialogue trees per settlement so race/class/faction reactivity is
+   a normal part of play rather than a single reference conversation.
+4. Run party, faction-economy, advanced-effect, and phased-boss balance passes.
+5. Continue toward level 99 before post-game guild/housing/crafting systems.
 
 ---
 
-## 8. Gotchas that will cost you time
+## 9. Gotchas that will cost you time
 
 **`exportselection=False` on every Listbox.** Documented in
 `docs/GUI_VERIFICATION.md`: two `tk.Listbox` widgets that both hold a live
@@ -268,7 +272,7 @@ demonstrate it with executed code first.
 
 ---
 
-## 9. House style
+## 10. House style
 
 - Type hints and dataclasses throughout (bible §17).
 - Comments explain **why**, not what. Non-obvious tradeoffs get a sentence.

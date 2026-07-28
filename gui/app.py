@@ -155,6 +155,11 @@ class AscensionApp:
 
         return self.open_toplevel("status", StatusWindow)
 
+    def open_quests(self) -> tk.Toplevel:
+        from gui.screens.quests import QuestWindow
+
+        return self.open_toplevel("quests", QuestWindow)
+
     def open_party(self) -> tk.Toplevel:
         from gui.screens.party import PartyWindow
 
@@ -176,6 +181,16 @@ class AscensionApp:
 
         self.close_toplevel("talk")
         return self.open_toplevel("talk", lambda app: TalkWindow(app, npc_id))
+
+    def open_dialogue(self, tree_id: str) -> tk.Toplevel:
+        from gui.screens.dialogue import DialogueWindow
+        self.close_toplevel("dialogue")
+        return self.open_toplevel("dialogue", lambda app: DialogueWindow(app, tree_id))
+
+    def open_tactics(self, companion_id: str) -> tk.Toplevel:
+        from gui.screens.tactics import TacticsWindow
+        self.close_toplevel("tactics")
+        return self.open_toplevel("tactics", lambda app: TacticsWindow(app, companion_id))
 
     # ------------------------------------------------------------------
     # Shared helpers used by screens

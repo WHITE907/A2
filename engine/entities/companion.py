@@ -25,6 +25,7 @@ from dataclasses import dataclass, field
 from typing import Any, Mapping, Sequence
 
 from engine.entities.entity import Entity
+from engine.races import RaceDefinition
 from engine.skills.skill import Skill
 from engine.stats import Formulas, ModifierSet, StatBlock
 
@@ -87,6 +88,7 @@ class CompanionDefinition:
     name: str
     description: str = ""
     role: str = "fighter"
+    race_id: str = ""
     base_stats: StatBlock = field(default_factory=StatBlock)
     growth: StatBlock = field(default_factory=StatBlock)
     skill_ids: list[str] = field(default_factory=list)
@@ -103,6 +105,9 @@ class CompanionDefinition:
     marriageable: bool = False
     marriage_affinity: int = 80
     gift_item_ids: list[str] = field(default_factory=list)
+    loyalty_skill_ids: dict[str, list[str]] = field(default_factory=dict)
+    loyalty_titles: dict[str, str] = field(default_factory=dict)
+    loyalty_outfits: dict[str, str] = field(default_factory=dict)
 
     def stats_at_level(self, level: int) -> StatBlock:
         result = self.base_stats.copy()
@@ -119,6 +124,8 @@ class CompanionDefinition:
         if self.description:
             lines.append(self.description)
         lines.append(f"Role: {self.role.title()}")
+        if self.race_id:
+            lines.append(f"Race: {self.race_id.replace('_', ' ').title()}")
         if self.weapon_type:
             lines.append(f"Fights with: {self.weapon_type.title()}")
         return lines
@@ -133,6 +140,7 @@ class CompanionDefinition:
             name=str(payload.get("name", companion_id)),
             description=str(payload.get("description", "")),
             role=str(payload.get("role", "fighter")),
+            race_id=str(payload.get("race_id", "")),
             base_stats=StatBlock.from_dict(payload.get("base_stats")),
             growth=StatBlock.from_dict(payload.get("growth")),
             skill_ids=[str(s) for s in payload.get("skill_ids", [])],
@@ -146,6 +154,9 @@ class CompanionDefinition:
             marriageable=bool(payload.get("marriageable", False)),
             marriage_affinity=int(payload.get("marriage_affinity", 80)),
             gift_item_ids=[str(i) for i in payload.get("gift_item_ids", [])],
+            loyalty_skill_ids={str(k): [str(v) for v in values] for k, values in (payload.get("loyalty_skill_ids") or {}).items()},
+            loyalty_titles={str(k): str(v) for k, v in (payload.get("loyalty_titles") or {}).items()},
+            loyalty_outfits={str(k): str(v) for k, v in (payload.get("loyalty_outfits") or {}).items()},
         )
 
 
@@ -156,20 +167,33 @@ class Companion(Entity):
         self,
         definition: CompanionDefinition,
         level: int,
+        race_def: RaceDefinition,
         formulas: Formulas,
         skills: Sequence[Skill] = (),
     ) -> None:
         self.definition = definition
+        self.race_def = race_def
         self.skills: list[Skill] = list(skills)
         self.cooldowns: dict[str, int] = {}
         self.ai_behavior_id = definition.ai_behavior_id
-        #: Set by the party when a marriage bonus applies.
+        self.tactics: dict[str, Any] = {
+            "stance": definition.ai_behavior_id,
+            "preferred_target": "",
+            "preserve_mp": False,
+            "healing_threshold": 0.5,
+            "ultimate_policy": "smart",
+            "protect_target": "",
+        }
+        #: Relationship bonuses are independent and composable.
         self._married_bonus: ModifierSet | None = None
+        self._loyalty_bonus: ModifierSet | None = None
+        self.loyalty_title: str = ""
+        self.outfit_id: str = "default"
 
         super().__init__(
             name=definition.name,
             level=level,
-            base_stats=definition.stats_at_level(level),
+            base_stats=definition.stats_at_level(level).add(race_def.base_stats),
             formulas=formulas,
         )
 
@@ -182,14 +206,25 @@ class Companion(Entity):
         """Companions carry no gear; template + marriage bonuses stand in."""
         combined = ModifierSet()
         combined.merge(self.definition.modifiers)
+        combined.merge(self.race_def.modifiers)
         if self._married_bonus is not None:
             combined.merge(self._married_bonus)
+        if self._loyalty_bonus is not None:
+            combined.merge(self._loyalty_bonus)
         return combined
 
     def set_married_bonus(self, bonus: ModifierSet | None) -> None:
         """Apply (or clear) the spouse bonus and refresh derived stats."""
         self._married_bonus = bonus
         self.invalidate_stats()
+
+    def set_loyalty_bonus(self, bonus: ModifierSet | None) -> None:
+        self._loyalty_bonus = bonus
+        self.invalidate_stats()
+
+    def set_tactics(self, values: Mapping[str, Any]) -> None:
+        self.tactics.update(dict(values))
+        self.ai_behavior_id = str(self.tactics.get("stance", self.definition.ai_behavior_id))
 
     def sync_level(self, player_level: int) -> bool:
         """Re-level to track the player.  Returns ``True`` if it changed.
@@ -205,7 +240,7 @@ class Companion(Entity):
         mp_fraction = self.mp_fraction if self.max_mp else 1.0
 
         self.level = target
-        self.base_stats = self.definition.stats_at_level(target)
+        self.base_stats = self.definition.stats_at_level(target).add(self.race_def.base_stats)
         self.invalidate_stats()
 
         self.current_hp = max(1.0, float(self.max_hp) * hp_fraction)
@@ -214,8 +249,14 @@ class Companion(Entity):
 
     # ------------------------------------------------------------------
     def usable_skills(self) -> list[Skill]:
-        """What the AI may choose from this turn."""
-        return [s for s in self.skills if s.is_usable_in_combat and s.can_use(self)[0]]
+        """Skills allowed by the player's tactical policy this turn."""
+        skills = [s for s in self.skills if s.is_usable_in_combat and s.can_use(self)[0]]
+        if self.tactics.get("ultimate_policy") == "never":
+            skills = [s for s in skills if s.category != "ultimate"]
+        if self.tactics.get("preserve_mp") and self.mp_fraction < 0.4:
+            free = [s for s in skills if s.mp_cost <= 0]
+            skills = free or skills
+        return skills
 
     def tick_cooldowns(self) -> None:
         for skill_id in list(self.cooldowns):
@@ -238,5 +279,5 @@ class Companion(Entity):
 
     def to_dict(self) -> dict[str, Any]:
         data = self._serialise_common()
-        data.update({"companion_id": self.definition.id, "cooldowns": dict(self.cooldowns)})
+        data.update({"companion_id": self.definition.id, "cooldowns": dict(self.cooldowns), "tactics": dict(self.tactics)})
         return data

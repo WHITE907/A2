@@ -313,7 +313,7 @@
       "kind": "key",
       "description": "It hums faintly when a promise is broken nearby.",
       "value": 1500,
-      "stack_size": 1
+      "stack_size": 99
     },
     {
       "id": "shadow_pact",
@@ -321,7 +321,7 @@
       "kind": "key",
       "description": "Signed in something darker than ink.",
       "value": 1500,
-      "stack_size": 1
+      "stack_size": 99
     },
     {
       "id": "grimoire_of_ages",
@@ -329,7 +329,7 @@
       "kind": "key",
       "description": "The pages are older than the binding.",
       "value": 1500,
-      "stack_size": 1
+      "stack_size": 99
     },
     {
       "id": "sacred_relic",
@@ -337,7 +337,7 @@
       "kind": "key",
       "description": "Nobody agrees on what it was. Everybody agrees it matters.",
       "value": 5000,
-      "stack_size": 4
+      "stack_size": 99
     },
     {
       "id": "void_shard",
@@ -345,7 +345,7 @@
       "kind": "key",
       "description": "A piece of an absence.",
       "value": 5000,
-      "stack_size": 4
+      "stack_size": 99
     },
     {
       "id": "codex_infinite",
@@ -353,7 +353,7 @@
       "kind": "key",
       "description": "It has one more page than it had yesterday.",
       "value": 5000,
-      "stack_size": 4
+      "stack_size": 99
     },
     {
       "id": "eternal_band",
@@ -363,6 +363,790 @@
       "value": 1200,
       "stack_size": 1,
       "tags": ["marriage"]
+    },
+    {
+      "id": "greater_potion",
+      "name": "Greater Potion",
+      "kind": "consumable",
+      "description": "Restores substantial health.",
+      "value": 220,
+      "use_effects": [
+        {
+          "type": "heal",
+          "base": 300,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "greater_ether",
+      "name": "Greater Ether",
+      "kind": "consumable",
+      "description": "Restores substantial magic.",
+      "value": 240,
+      "use_effects": [
+        {
+          "type": "resource",
+          "amount": 220,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "ember_scale",
+      "name": "Ember Scale",
+      "kind": "material",
+      "description": "Warm long after its owner dies.",
+      "value": 120
+    },
+    {
+      "id": "briar_heart",
+      "name": "Briar Heart",
+      "kind": "material",
+      "description": "A knot of living wood and stubborn sap.",
+      "value": 135
+    },
+    {
+      "id": "marsh_ichor",
+      "name": "Marsh Ichor",
+      "kind": "material",
+      "description": "Useful to alchemists with weak noses.",
+      "value": 160
+    },
+    {
+      "id": "wraith_lantern",
+      "name": "Wraith Lantern",
+      "kind": "material",
+      "description": "Cold light trapped behind old glass.",
+      "value": 210
+    },
+    {
+      "id": "granite_core",
+      "name": "Granite Core",
+      "kind": "material",
+      "description": "Stone packed around a pulse of earth magic.",
+      "value": 260
+    },
+    {
+      "id": "crystal_carapace",
+      "name": "Crystal Carapace",
+      "kind": "material",
+      "description": "Hard, translucent, and faintly musical.",
+      "value": 290
+    },
+    {
+      "id": "storm_feather",
+      "name": "Storm Feather",
+      "kind": "material",
+      "description": "It rises whenever thunder sounds.",
+      "value": 340
+    },
+    {
+      "id": "drake_scale",
+      "name": "Thunder Drake Scale",
+      "kind": "material",
+      "description": "Blue sparks skip between its ridges.",
+      "value": 390
+    },
+    {
+      "id": "sun_fragment",
+      "name": "Sun Fragment",
+      "kind": "material",
+      "description": "Painfully bright even through cloth.",
+      "value": 600
+    },
+    {
+      "id": "embersteel_blade",
+      "name": "Embersteel Blade",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "Forged where the road still smoulders.",
+      "value": 1100,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "physical_power": 30,
+          "crit_chance": 0.04
+        }
+      },
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
+    },
+    {
+      "id": "watchman_mace",
+      "name": "Watchman's Mace",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "mace",
+      "description": "Built for long walls and short arguments.",
+      "value": 1050,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "physical_power": 28,
+          "armor": 8
+        }
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "briar_bow",
+      "name": "Briar Bow",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "bow",
+      "description": "Living wood bends eagerly toward prey.",
+      "value": 1200,
+      "required_level": 19,
+      "modifiers": {
+        "flat": {
+          "physical_power": 27,
+          "accuracy": 0.08,
+          "speed": 5
+        }
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "marshfang_dagger",
+      "name": "Marshfang Dagger",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "dagger",
+      "description": "Its green edge never needs poison twice.",
+      "value": 1700,
+      "required_level": 22,
+      "modifiers": {
+        "flat": {
+          "physical_power": 34,
+          "crit_chance": 0.08,
+          "speed": 7
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "oracle_staff",
+      "name": "Oracle Staff",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "staff",
+      "description": "A lantern burns where a focus stone should be.",
+      "value": 2100,
+      "required_level": 25,
+      "modifiers": {
+        "flat": {
+          "magic_power": 42,
+          "max_mp": 65
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "stonecleaver",
+      "name": "Stonecleaver",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "axe",
+      "description": "A mining tool promoted by necessity.",
+      "value": 2600,
+      "required_level": 28,
+      "modifiers": {
+        "flat": {
+          "physical_power": 48
+        },
+        "pct": {
+          "crit_damage": 0.2
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "runebound_sword",
+      "name": "Runebound Sword",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "Stonehaven runes hold an edge better than steel.",
+      "value": 3000,
+      "required_level": 30,
+      "modifiers": {
+        "flat": {
+          "physical_power": 50,
+          "accuracy": 0.06,
+          "armor": 6
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "deepglass_dagger",
+      "name": "Deepglass Dagger",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "dagger",
+      "description": "Transparent until it catches blood.",
+      "value": 3200,
+      "required_level": 31,
+      "modifiers": {
+        "flat": {
+          "physical_power": 45,
+          "crit_chance": 0.12,
+          "speed": 9
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "crystal_staff",
+      "name": "Crystal Choir Staff",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "staff",
+      "description": "Every crystal answers in a different voice.",
+      "value": 3400,
+      "required_level": 32,
+      "modifiers": {
+        "flat": {
+          "magic_power": 58,
+          "max_mp": 90,
+          "magic_resist": 10
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "tempest_bow",
+      "name": "Tempest Bow",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "bow",
+      "description": "Its string hums before the storm arrives.",
+      "value": 4300,
+      "required_level": 35,
+      "modifiers": {
+        "flat": {
+          "physical_power": 58,
+          "accuracy": 0.1,
+          "speed": 12
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "skyforge_mace",
+      "name": "Skyforge Mace",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "mace",
+      "description": "Thunder tempered into a blunt instrument.",
+      "value": 4600,
+      "required_level": 36,
+      "modifiers": {
+        "flat": {
+          "physical_power": 66,
+          "armor": 12
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "dawnblade",
+      "name": "Dawnblade",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "The horizon, sharpened.",
+      "value": 7000,
+      "required_level": 40,
+      "modifiers": {
+        "flat": {
+          "physical_power": 82,
+          "crit_chance": 0.1,
+          "accuracy": 0.08
+        }
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "ember_plate",
+      "name": "Emberwatch Plate",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Soot-dark plate worn by the western watch.",
+      "value": 1300,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "armor": 32,
+          "max_hp": 90,
+          "magic_resist": 8
+        }
+      },
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
+    },
+    {
+      "id": "ember_helm",
+      "name": "Emberwatch Helm",
+      "kind": "equipment",
+      "slot": "head",
+      "description": "A narrow visor keeps ash from the eyes.",
+      "value": 800,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "armor": 15,
+          "max_hp": 45
+        }
+      },
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
+    },
+    {
+      "id": "briar_grips",
+      "name": "Briar Grips",
+      "kind": "equipment",
+      "slot": "hands",
+      "description": "The thorns curl away from a confident hand.",
+      "value": 900,
+      "required_level": 19,
+      "modifiers": {
+        "flat": {
+          "physical_power": 8,
+          "accuracy": 0.05,
+          "crit_chance": 0.03
+        }
+      },
+      "rarity": "uncommon",
+      "set_id": "emberwatch"
+    },
+    {
+      "id": "mossweave_coat",
+      "name": "Mossweave Coat",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Dry in rain and silent in reeds.",
+      "value": 1400,
+      "required_level": 20,
+      "modifiers": {
+        "flat": {
+          "armor": 20,
+          "evasion": 0.07,
+          "speed": 6
+        }
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "marshwalker_boots",
+      "name": "Marshwalker Boots",
+      "kind": "equipment",
+      "slot": "feet",
+      "description": "They never sink deeper than the ankle.",
+      "value": 1050,
+      "required_level": 21,
+      "modifiers": {
+        "flat": {
+          "speed": 8,
+          "evasion": 0.06
+        }
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "oracle_vestments",
+      "name": "Oracle Vestments",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Threads of ghostlight map forgotten roads.",
+      "value": 2200,
+      "required_level": 24,
+      "modifiers": {
+        "flat": {
+          "magic_resist": 34,
+          "magic_power": 12,
+          "max_mp": 70
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "warden_charm",
+      "name": "Warden Charm",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A tiny gate with no opening.",
+      "value": 1900,
+      "required_level": 25,
+      "modifiers": {
+        "flat": {
+          "status_resist": 0.15,
+          "armor": 12,
+          "magic_resist": 12
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "stoneguard_mail",
+      "name": "Stoneguard Mail",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Each link is etched with one patient rune.",
+      "value": 3000,
+      "required_level": 28,
+      "modifiers": {
+        "flat": {
+          "armor": 48,
+          "max_hp": 140,
+          "magic_resist": 15
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "runic_gauntlets",
+      "name": "Runic Gauntlets",
+      "kind": "equipment",
+      "slot": "hands",
+      "description": "Impact wakes the script across each knuckle.",
+      "value": 2100,
+      "required_level": 29,
+      "modifiers": {
+        "flat": {
+          "physical_power": 14,
+          "armor": 12,
+          "accuracy": 0.04
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "crystal_circlet",
+      "name": "Crystal Circlet",
+      "kind": "equipment",
+      "slot": "head",
+      "description": "It makes nearby thoughts ring softly.",
+      "value": 2400,
+      "required_level": 31,
+      "modifiers": {
+        "flat": {
+          "magic_power": 18,
+          "max_mp": 55,
+          "magic_resist": 16
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "stormweave_robe",
+      "name": "Stormweave Robe",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Cloud-silk threaded with grounded silver.",
+      "value": 4300,
+      "required_level": 34,
+      "modifiers": {
+        "flat": {
+          "magic_resist": 48,
+          "magic_power": 22,
+          "max_mp": 100,
+          "speed": 8
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "gale_boots",
+      "name": "Gale Boots",
+      "kind": "equipment",
+      "slot": "feet",
+      "description": "The next step always finds a tailwind.",
+      "value": 3300,
+      "required_level": 35,
+      "modifiers": {
+        "flat": {
+          "speed": 15,
+          "evasion": 0.1
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "stormglass_pendant",
+      "name": "Stormglass Pendant",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "A thunderhead turns inside the glass.",
+      "value": 3800,
+      "required_level": 36,
+      "modifiers": {
+        "flat": {
+          "magic_power": 20,
+          "crit_chance": 0.05,
+          "magic_resist": 18
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "sunplate",
+      "name": "Sunplate",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Golden plate that refuses to cast a shadow.",
+      "value": 7200,
+      "required_level": 40,
+      "modifiers": {
+        "flat": {
+          "armor": 68,
+          "magic_resist": 42,
+          "max_hp": 220
+        }
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "dawn_signet",
+      "name": "Dawn Signet",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "Proof that something beyond the gate noticed you.",
+      "value": 6500,
+      "required_level": 40,
+      "modifiers": {
+        "flat": {
+          "physical_power": 18,
+          "magic_power": 18,
+          "max_hp": 100,
+          "max_mp": 60
+        }
+      },
+      "rarity": "legendary",
+      "bound_skill_id": "radiant_aegis"
+    },
+    {
+      "id": "wanderers_knot",
+      "name": "Wanderer's Knot",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A simple cord tied in eight regional styles.",
+      "value": 700,
+      "required_level": 8,
+      "modifiers": {
+        "flat": {
+          "max_hp": 20
+        }
+      },
+      "race_modifiers": {
+        "human": {
+          "flat": {
+            "physical_power": 5,
+            "magic_power": 5,
+            "max_hp": 25
+          }
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "moonleaf_brooch",
+      "name": "Moonleaf Brooch",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "A silver leaf that reflects remembered moonlight.",
+      "value": 1800,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "max_mp": 20
+        }
+      },
+      "race_modifiers": {
+        "elf": {
+          "flat": {
+            "magic_power": 15,
+            "evasion": 0.05,
+            "max_mp": 35
+          }
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "bridgewalkers_charm",
+      "name": "Bridgewalker's Charm",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "Two metals joined without a visible seam.",
+      "value": 1700,
+      "required_level": 18,
+      "modifiers": {
+        "flat": {
+          "speed": 3
+        }
+      },
+      "race_modifiers": {
+        "half_elf": {
+          "flat": {
+            "status_resist": 0.15,
+            "accuracy": 0.05,
+            "speed": 5
+          }
+        }
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "stoneheart_clasp",
+      "name": "Stoneheart Clasp",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "Clan slate wrapped in unbreakable bronze wire.",
+      "value": 2800,
+      "required_level": 28,
+      "modifiers": {
+        "flat": {
+          "armor": 8
+        }
+      },
+      "race_modifiers": {
+        "dwarf": {
+          "flat": {
+            "armor": 18,
+            "max_hp": 80,
+            "status_resist": 0.1
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "dawnscale_torc",
+      "name": "Dawnscale Torc",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "A golden torc fitted around one ancient dragon scale.",
+      "value": 5000,
+      "required_level": 36,
+      "modifiers": {
+        "flat": {
+          "magic_resist": 10
+        }
+      },
+      "race_modifiers": {
+        "dragonkin": {
+          "flat": {
+            "physical_power": 18,
+            "armor": 14,
+            "magic_resist": 16
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "ashcourt_seal",
+      "name": "Ash Court Seal",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "An infernal office seal officially declared stolen.",
+      "value": 2600,
+      "required_level": 22,
+      "modifiers": {
+        "flat": {
+          "magic_power": 6
+        }
+      },
+      "race_modifiers": {
+        "demon": {
+          "flat": {
+            "magic_power": 20,
+            "crit_damage": 0.18,
+            "max_mp": 30
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "infernal_compass",
+      "name": "Infernal Compass",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "Points toward the nearest exploitable clause.",
+      "value": 2300,
+      "required_level": 20,
+      "modifiers": {
+        "flat": {
+          "magic_resist": 7
+        }
+      },
+      "race_modifiers": {
+        "tiefling": {
+          "flat": {
+            "magic_power": 14,
+            "crit_chance": 0.06,
+            "magic_resist": 12
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "wildclaw_pendant",
+      "name": "Wildclaw Pendant",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A polished claw from an ancestor who preferred running to portraits.",
+      "value": 2400,
+      "required_level": 24,
+      "modifiers": {
+        "flat": {
+          "speed": 4
+        }
+      },
+      "race_modifiers": {
+        "beastkin": {
+          "flat": {
+            "physical_power": 12,
+            "speed": 10,
+            "evasion": 0.06
+          }
+        }
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "blood_oath_ring",
+      "name": "Blood-Oath Ring",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "It rewards desperation and remembers every broken promise.",
+      "value": 3200,
+      "required_level": 25,
+      "modifiers": {
+        "flat": {
+          "max_hp": 30
+        }
+      },
+      "conditional_modifiers": [
+        {
+          "below_hp_fraction": 0.3,
+          "modifiers": {
+            "flat": {
+              "physical_power": 25,
+              "magic_power": 25
+            }
+          }
+        }
+      ],
+      "rarity": "epic"
     }
   ]
 }

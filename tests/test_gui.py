@@ -163,6 +163,7 @@ class TestExportSelectionRegression(unittest.TestCase):
             app.open_inventory,
             app.open_equipment,
             app.open_skills,
+            app.open_quests,
             app.open_party,
             app.open_status,
             app.open_settings,
@@ -388,6 +389,16 @@ class TestCharacterCreation(unittest.TestCase):
     def test_lists_starting_classes(self):
         self.assertGreater(self.window.class_list.count, 0)
 
+    def test_lists_playable_races(self):
+        self.assertEqual(self.window.race_list.count, 8)
+
+    def test_selecting_a_race_shows_traits(self):
+        elf_index = next(
+            index for index, race in enumerate(self.window.race_list._values) if race.id == "elf"
+        )
+        self.window.race_list.select_index(elf_index)
+        self.assertIn("Keen Senses", self.window.preview._label.options["text"])
+
     def test_gender_switch_requeries_classes(self):
         """Bible section 10: starting classes are gender-restricted."""
         male = {label for label, _ in zip(self.window.class_list.listbox.items, range(99))}
@@ -411,10 +422,15 @@ class TestCharacterCreation(unittest.TestCase):
     def test_creating_a_character_opens_the_world(self):
         from gui.screens.world_screen import WorldScreen
 
+        elf_index = next(
+            index for index, race in enumerate(self.window.race_list._values) if race.id == "elf"
+        )
         self.window.name_var.set("Hero")
+        self.window.race_list.select_index(elf_index)
         self.window.class_list.select_index(0)
         self.window._create()
         self.assertTrue(self.app.game.has_character)
+        self.assertEqual(self.app.game.player.race_id, "elf")
         self.assertIsInstance(self.app.current_screen, WorldScreen)
 
 
@@ -1067,6 +1083,72 @@ class TestCompanionMarriageUI(unittest.TestCase):
         window = self.app.open_talk("innkeeper_mara")
         window._talk()
         self.assertGreater(self.app.game.player.affinity_with("innkeeper_mara"), 0)
+
+    def test_story_button_opens_branching_dialogue(self):
+        app = make_app_with_character()
+        window = app.open_talk("mother_sable")
+        self.assertEqual(window.story_button.options["state"], tk.NORMAL)
+        window._story()
+        self.assertIn("dialogue", app._toplevels)
+
+    def test_companion_tactics_window_updates_policy(self):
+        app = make_app_with_party()
+        window = app.open_tactics("rook")
+        before = app.game.party.get("rook").tactics["preserve_mp"]
+        window.toggle_mp()
+        self.assertNotEqual(app.game.party.get("rook").tactics["preserve_mp"], before)
+
+
+# ======================================================================
+class TestQuestUI(unittest.TestCase):
+    def setUp(self):
+        self.app = make_app_with_character()
+        self.app.game.player.class_def = self.app.game.classes.require("paladin")
+        self.app.game.player.level = 35
+        self.app.game.player._recalculate_base_stats()
+        quest = self.app.game.quests.require("trial_of_the_dawn")
+        self.app.game.world.current_area_id = quest.start_area_id
+        self.app.show_world()
+
+    def _select_trial(self, window) -> None:
+        index = next(
+            index
+            for index, quest in enumerate(window.available_list._values)
+            if quest.id == "trial_of_the_dawn"
+        )
+        window.available_list.select_index(index)
+
+    def test_world_screen_has_quest_button(self):
+        screen = self.app.show_world()
+        self.assertIsNotNone(button_labelled(screen, "Quests"))
+
+    def test_quest_window_lists_available_quest(self):
+        window = self.app.open_quests()
+        self.assertGreaterEqual(window.available_list.count, 1)
+        self._select_trial(window)
+        self.assertIn("Trial of the Dawn", window.details._label.options["text"])
+        self.assertIn("Reeve Marta", window.details._label.options["text"])
+
+    def test_quest_giver_talk_window_links_to_quest_log(self):
+        window = self.app.open_talk("reeve_marta")
+        self.assertIn("Trial of the Dawn", window.quest_info._label.options["text"])
+        self.assertEqual(window.quest_button.options["state"], tk.NORMAL)
+
+    def test_accept_quest_through_window(self):
+        window = self.app.open_quests()
+        self._select_trial(window)
+        window._accept()
+        self.assertIn("trial_of_the_dawn", self.app.game.player.active_quests)
+        self.assertEqual(window.active_list.count, 1)
+
+    def test_complete_button_enables_when_ready(self):
+        window = self.app.open_quests()
+        self._select_trial(window)
+        window._accept()
+        objective = self.app.game.quests.require("trial_of_the_dawn").objectives[0]
+        self.app.game.quests.record_defeats(self.app.game.player, [objective.target_id])
+        window._show_active(window.active_list.selected_value)
+        self.assertEqual(window.complete_button.options["state"], tk.NORMAL)
 
 
 if __name__ == "__main__":

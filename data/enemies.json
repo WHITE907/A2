@@ -167,6 +167,9 @@
         { "item_id": "steel_sword", "chance": 0.5 },
         { "item_id": "knights_seal", "chance": 1.0 },
         { "item_id": "duelists_token", "chance": 1.0 },
+        { "item_id": "oath_sigil", "chance": 1.0 },
+        { "item_id": "shadow_pact", "chance": 1.0 },
+        { "item_id": "grimoire_of_ages", "chance": 1.0 },
         { "item_id": "bandit_coin", "chance": 1.0, "min_quantity": 5, "max_quantity": 10 }
       ]
     },
@@ -191,6 +194,842 @@
         { "item_id": "runed_staff", "chance": 0.4 },
         { "item_id": "shadow_essence", "chance": 1.0, "min_quantity": 2, "max_quantity": 4 }
       ]
+    },
+    {
+      "id": "ash_hound",
+      "name": "Ash Hound",
+      "base_level": 16,
+      "family": "beast",
+      "description": "Its ribs glow when it growls.",
+      "base_stats": {
+        "STR": 34,
+        "END": 28,
+        "INT": 8,
+        "AGI": 32
+      },
+      "growth": {
+        "STR": 3,
+        "END": 2,
+        "INT": 1,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_bite",
+        "enemy_ember_bite",
+        "enemy_howl"
+      ],
+      "ai_behavior_id": "opportunist",
+      "exp_reward": 300,
+      "gold_reward": 150,
+      "loot": [
+        {
+          "item_id": "ember_scale",
+          "chance": 0.65
+        },
+        {
+          "item_id": "greater_potion",
+          "chance": 0.12
+        }
+      ]
+    },
+    {
+      "id": "road_reaver",
+      "name": "Road Reaver",
+      "base_level": 17,
+      "family": "humanoid",
+      "description": "Better equipped than a bandit and less interested in excuses.",
+      "base_stats": {
+        "STR": 38,
+        "END": 34,
+        "INT": 12,
+        "AGI": 28
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 1,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_howl"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 340,
+      "gold_reward": 210,
+      "loot": [
+        {
+          "item_id": "bandit_coin",
+          "chance": 0.7,
+          "min_quantity": 3,
+          "max_quantity": 6
+        },
+        {
+          "item_id": "watchman_mace",
+          "chance": 0.06
+        }
+      ]
+    },
+    {
+      "id": "briar_witch",
+      "name": "Briar Witch",
+      "base_level": 18,
+      "family": "humanoid",
+      "description": "The forest grew around her and learned spite.",
+      "base_stats": {
+        "STR": 14,
+        "END": 28,
+        "INT": 44,
+        "AGI": 24
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 4,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "enemy_thorn_lash",
+        "enemy_bog_hex",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 380,
+      "gold_reward": 190,
+      "loot": [
+        {
+          "item_id": "briar_heart",
+          "chance": 0.65
+        },
+        {
+          "item_id": "briar_grips",
+          "chance": 0.08
+        }
+      ]
+    },
+    {
+      "id": "mossback_boar",
+      "name": "Mossback Boar",
+      "base_level": 19,
+      "family": "beast",
+      "description": "A moving hill with tusks.",
+      "base_stats": {
+        "STR": 48,
+        "END": 50,
+        "INT": 5,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_howl"
+      ],
+      "ai_behavior_id": "berserk",
+      "exp_reward": 420,
+      "gold_reward": 130,
+      "loot": [
+        {
+          "item_id": "briar_heart",
+          "chance": 0.45
+        },
+        {
+          "item_id": "mossweave_coat",
+          "chance": 0.05
+        }
+      ]
+    },
+    {
+      "id": "thorn_stalker",
+      "name": "Thorn Stalker",
+      "base_level": 20,
+      "family": "plant",
+      "description": "It only resembles a tree while nobody is bleeding.",
+      "base_stats": {
+        "STR": 42,
+        "END": 45,
+        "INT": 20,
+        "AGI": 30
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 2,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_thorn_lash",
+        "enemy_spit"
+      ],
+      "ai_behavior_id": "opportunist",
+      "exp_reward": 460,
+      "gold_reward": 160,
+      "loot": [
+        {
+          "item_id": "briar_heart",
+          "chance": 0.8,
+          "min_quantity": 1,
+          "max_quantity": 2
+        },
+        {
+          "item_id": "briar_bow",
+          "chance": 0.07
+        }
+      ]
+    },
+    {
+      "id": "marsh_serpent",
+      "name": "Marsh Serpent",
+      "base_level": 21,
+      "family": "beast",
+      "description": "The water moves before it does.",
+      "base_stats": {
+        "STR": 44,
+        "END": 36,
+        "INT": 12,
+        "AGI": 48
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 1,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "enemy_bite",
+        "enemy_spit"
+      ],
+      "ai_behavior_id": "opportunist",
+      "exp_reward": 520,
+      "gold_reward": 180,
+      "loot": [
+        {
+          "item_id": "marsh_ichor",
+          "chance": 0.7
+        },
+        {
+          "item_id": "marshfang_dagger",
+          "chance": 0.05
+        }
+      ]
+    },
+    {
+      "id": "bog_knight",
+      "name": "Bog Knight",
+      "base_level": 23,
+      "family": "undead",
+      "description": "Mud fills the gaps where a person used to be.",
+      "base_stats": {
+        "STR": 52,
+        "END": 58,
+        "INT": 24,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 2,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_bog_hex"
+      ],
+      "ai_behavior_id": "defensive",
+      "exp_reward": 650,
+      "gold_reward": 260,
+      "modifiers": {
+        "flat": {
+          "armor": 20
+        }
+      },
+      "loot": [
+        {
+          "item_id": "marsh_ichor",
+          "chance": 0.65
+        },
+        {
+          "item_id": "warden_charm",
+          "chance": 0.05
+        }
+      ]
+    },
+    {
+      "id": "lantern_wraith",
+      "name": "Lantern Wraith",
+      "base_level": 24,
+      "family": "undead",
+      "description": "A light carried by something that forgot its body.",
+      "base_stats": {
+        "STR": 12,
+        "END": 34,
+        "INT": 62,
+        "AGI": 42
+      },
+      "growth": {
+        "STR": 1,
+        "END": 3,
+        "INT": 5,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_spectral_touch",
+        "enemy_bog_hex",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 720,
+      "gold_reward": 300,
+      "loot": [
+        {
+          "item_id": "wraith_lantern",
+          "chance": 0.6
+        },
+        {
+          "item_id": "oracle_vestments",
+          "chance": 0.04
+        }
+      ]
+    },
+    {
+      "id": "mire_oracle",
+      "name": "Mire Oracle",
+      "base_level": 27,
+      "family": "undead",
+      "description": "It predicts only drownings and has never been wrong.",
+      "is_boss": true,
+      "base_stats": {
+        "STR": 30,
+        "END": 72,
+        "INT": 84,
+        "AGI": 38
+      },
+      "growth": {
+        "STR": 2,
+        "END": 5,
+        "INT": 6,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_bog_hex",
+        "enemy_spectral_touch",
+        "enemy_mend",
+        "enemy_frost_breath"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 4200,
+      "gold_reward": 1800,
+      "modifiers": {
+        "flat": {
+          "max_hp": 500,
+          "magic_resist": 35
+        }
+      },
+      "loot": [
+        {
+          "item_id": "oracle_staff",
+          "chance": 0.35
+        },
+        {
+          "item_id": "wraith_lantern",
+          "chance": 1.0,
+          "min_quantity": 2,
+          "max_quantity": 3
+        },
+        {
+          "item_id": "void_shard",
+          "chance": 1.0,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "id": "redcap_raider",
+      "name": "Redcap Raider",
+      "base_level": 27,
+      "family": "humanoid",
+      "description": "The cap was not red when the raid began.",
+      "base_stats": {
+        "STR": 64,
+        "END": 50,
+        "INT": 18,
+        "AGI": 58
+      },
+      "growth": {
+        "STR": 5,
+        "END": 4,
+        "INT": 1,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_bite",
+        "enemy_howl"
+      ],
+      "ai_behavior_id": "berserk",
+      "exp_reward": 850,
+      "gold_reward": 440,
+      "loot": [
+        {
+          "item_id": "bandit_coin",
+          "chance": 1.0,
+          "min_quantity": 5,
+          "max_quantity": 9
+        },
+        {
+          "item_id": "greater_potion",
+          "chance": 0.18
+        }
+      ]
+    },
+    {
+      "id": "granite_golem",
+      "name": "Granite Golem",
+      "base_level": 29,
+      "family": "construct",
+      "description": "A quarry's worth of patience, taught to punch.",
+      "base_stats": {
+        "STR": 72,
+        "END": 86,
+        "INT": 10,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 5,
+        "END": 6,
+        "INT": 1,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_stone_fist",
+        "enemy_crush"
+      ],
+      "ai_behavior_id": "defensive",
+      "exp_reward": 950,
+      "gold_reward": 360,
+      "modifiers": {
+        "flat": {
+          "armor": 35
+        }
+      },
+      "loot": [
+        {
+          "item_id": "granite_core",
+          "chance": 0.75
+        },
+        {
+          "item_id": "stonecleaver",
+          "chance": 0.05
+        }
+      ]
+    },
+    {
+      "id": "crystal_beetle",
+      "name": "Crystal Beetle",
+      "base_level": 30,
+      "family": "insect",
+      "description": "Its shell scatters torchlight into warnings.",
+      "base_stats": {
+        "STR": 58,
+        "END": 78,
+        "INT": 32,
+        "AGI": 40
+      },
+      "growth": {
+        "STR": 4,
+        "END": 5,
+        "INT": 2,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_crystal_burst",
+        "enemy_bite"
+      ],
+      "ai_behavior_id": "defensive",
+      "exp_reward": 1050,
+      "gold_reward": 390,
+      "loot": [
+        {
+          "item_id": "crystal_carapace",
+          "chance": 0.8
+        },
+        {
+          "item_id": "crystal_circlet",
+          "chance": 0.05
+        }
+      ]
+    },
+    {
+      "id": "deep_delver",
+      "name": "Deep Delver",
+      "base_level": 31,
+      "family": "humanoid",
+      "description": "A miner who listened when the crystal started speaking.",
+      "base_stats": {
+        "STR": 62,
+        "END": 60,
+        "INT": 58,
+        "AGI": 38
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 4,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_crystal_burst",
+        "enemy_stone_fist",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 1100,
+      "gold_reward": 520,
+      "loot": [
+        {
+          "item_id": "crystal_carapace",
+          "chance": 0.6
+        },
+        {
+          "item_id": "deepglass_dagger",
+          "chance": 0.04
+        },
+        {
+          "item_id": "crystal_staff",
+          "chance": 0.04
+        }
+      ]
+    },
+    {
+      "id": "iron_colossus",
+      "name": "Iron Colossus",
+      "base_level": 34,
+      "family": "construct",
+      "description": "Stonehaven built a guardian. The mine taught it ownership.",
+      "is_boss": true,
+      "base_stats": {
+        "STR": 94,
+        "END": 110,
+        "INT": 38,
+        "AGI": 24
+      },
+      "growth": {
+        "STR": 6,
+        "END": 7,
+        "INT": 2,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_stone_fist",
+        "enemy_crystal_burst",
+        "enemy_crush"
+      ],
+      "ai_behavior_id": "defensive",
+      "exp_reward": 7200,
+      "gold_reward": 3000,
+      "modifiers": {
+        "flat": {
+          "max_hp": 900,
+          "armor": 55
+        }
+      },
+      "loot": [
+        {
+          "item_id": "runebound_sword",
+          "chance": 0.3
+        },
+        {
+          "item_id": "stoneguard_mail",
+          "chance": 0.3
+        },
+        {
+          "item_id": "granite_core",
+          "chance": 1.0,
+          "min_quantity": 3,
+          "max_quantity": 5
+        },
+        {
+          "item_id": "sacred_relic",
+          "chance": 1.0,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "id": "storm_harpy",
+      "name": "Storm Harpy",
+      "base_level": 34,
+      "family": "beast",
+      "description": "It nests where lightning goes to rest.",
+      "base_stats": {
+        "STR": 68,
+        "END": 54,
+        "INT": 60,
+        "AGI": 88
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 4,
+        "AGI": 6
+      },
+      "skill_ids": [
+        "enemy_lightning_dive",
+        "enemy_tempest"
+      ],
+      "ai_behavior_id": "opportunist",
+      "exp_reward": 2100,
+      "gold_reward": 580,
+      "loot": [
+        {
+          "item_id": "storm_feather",
+          "chance": 0.75
+        },
+        {
+          "item_id": "gale_boots",
+          "chance": 0.04
+        }
+      ]
+    },
+    {
+      "id": "thunder_drake",
+      "name": "Thunder Drake",
+      "base_level": 36,
+      "family": "dragon",
+      "description": "Too young to be wise and too large for that to help.",
+      "base_stats": {
+        "STR": 86,
+        "END": 80,
+        "INT": 54,
+        "AGI": 74
+      },
+      "growth": {
+        "STR": 6,
+        "END": 5,
+        "INT": 3,
+        "AGI": 5
+      },
+      "skill_ids": [
+        "enemy_ember_bite",
+        "enemy_lightning_dive",
+        "enemy_tempest"
+      ],
+      "ai_behavior_id": "berserk",
+      "exp_reward": 2600,
+      "gold_reward": 720,
+      "loot": [
+        {
+          "item_id": "drake_scale",
+          "chance": 0.7
+        },
+        {
+          "item_id": "tempest_bow",
+          "chance": 0.04
+        }
+      ]
+    },
+    {
+      "id": "sky_cultist",
+      "name": "Sky Cultist",
+      "base_level": 37,
+      "family": "humanoid",
+      "description": "They climbed for revelation and found weather.",
+      "base_stats": {
+        "STR": 46,
+        "END": 62,
+        "INT": 92,
+        "AGI": 60
+      },
+      "growth": {
+        "STR": 3,
+        "END": 4,
+        "INT": 6,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "enemy_tempest",
+        "enemy_dark_bolt",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 2700,
+      "gold_reward": 820,
+      "loot": [
+        {
+          "item_id": "storm_feather",
+          "chance": 0.6
+        },
+        {
+          "item_id": "stormglass_pendant",
+          "chance": 0.04
+        }
+      ]
+    },
+    {
+      "id": "ruin_sentinel",
+      "name": "Ruin Sentinel",
+      "base_level": 38,
+      "family": "construct",
+      "description": "Its orders survived the civilisation that issued them.",
+      "base_stats": {
+        "STR": 92,
+        "END": 98,
+        "INT": 72,
+        "AGI": 42
+      },
+      "growth": {
+        "STR": 6,
+        "END": 6,
+        "INT": 5,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_stone_fist",
+        "enemy_sunfire",
+        "enemy_crystal_burst"
+      ],
+      "ai_behavior_id": "defensive",
+      "exp_reward": 3000,
+      "gold_reward": 900,
+      "modifiers": {
+        "flat": {
+          "armor": 35,
+          "magic_resist": 30
+        }
+      },
+      "loot": [
+        {
+          "item_id": "sun_fragment",
+          "chance": 0.35
+        },
+        {
+          "item_id": "skyforge_mace",
+          "chance": 0.04
+        }
+      ]
+    },
+    {
+      "id": "dawn_tyrant",
+      "name": "Dawn Tyrant",
+      "base_level": 40,
+      "family": "celestial",
+      "description": "A fallen piece of morning that believes the world should kneel.",
+      "is_boss": true,
+      "base_stats": {
+        "STR": 108,
+        "END": 112,
+        "INT": 118,
+        "AGI": 72
+      },
+      "growth": {
+        "STR": 7,
+        "END": 7,
+        "INT": 7,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "enemy_sunfire",
+        "enemy_tempest",
+        "enemy_stone_fist",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 12000,
+      "gold_reward": 6000,
+      "modifiers": {
+        "flat": {
+          "max_hp": 1400,
+          "armor": 65,
+          "magic_resist": 65
+        }
+      },
+      "loot": [
+        {
+          "item_id": "dawnblade",
+          "chance": 0.35
+        },
+        {
+          "item_id": "sunplate",
+          "chance": 0.25
+        },
+        {
+          "item_id": "dawn_signet",
+          "chance": 0.25
+        },
+        {
+          "item_id": "sun_fragment",
+          "chance": 1.0,
+          "min_quantity": 3,
+          "max_quantity": 6
+        },
+        {
+          "item_id": "codex_infinite",
+          "chance": 1.0,
+          "quantity": 3
+        }
+      ],
+      "boss_phases": [
+        {
+          "name": "Crowned Sunrise",
+          "hp_fraction": 1.0,
+          "modifiers": {}
+        },
+        {
+          "name": "Broken Horizon",
+          "hp_fraction": 0.5,
+          "shield_hp": 500,
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.25,
+              "speed": 0.15
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "ruin_sentinel",
+              "level": 38
+            }
+          ]
+        },
+        {
+          "name": "Black Noon",
+          "hp_fraction": 0.2,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.35,
+              "magic_power": 0.35
+            },
+            "flat": {
+              "armor": 25,
+              "magic_resist": 25
+            }
+          }
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 10,
+        "enrage_modifiers": {
+          "pct": {
+            "physical_power": 0.6,
+            "magic_power": 0.6
+          }
+        },
+        "environment": {
+          "per_round_damage": 18,
+          "message": "Solar fractures burn across the arena."
+        },
+        "telegraph": {
+          "interval": 3,
+          "warning": "The Dawn Tyrant gathers the horizon into one burning point. Defend!",
+          "damage": 180,
+          "counter_damage": 120,
+          "impact": "The stolen sunrise detonates across the arena."
+        }
+      }
     }
   ]
 }

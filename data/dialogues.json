@@ -1,0 +1,182 @@
+{
+  "dialogues": [
+    {
+      "id": "mother_sable_contract",
+      "speaker_id": "mother_sable",
+      "start_node_id": "start",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Mother Sable lays out a contract that would protect refugees by binding Emberwatch to Ash Court law.",
+          "options": [
+            {
+              "id": "sign_clause",
+              "text": "Invoke my Ash Court blood and sign.",
+              "conditions": {
+                "race_ids": [
+                  "demon",
+                  "tiefling"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "sable_clause",
+                  "value": "signed"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 20
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "emberwatch_wardens",
+                  "amount": -10
+                },
+                {
+                  "type": "affinity",
+                  "target_id": "mother_sable",
+                  "amount": 12
+                },
+                {
+                  "type": "choice",
+                  "choice_id": "sable_signed"
+                }
+              ],
+              "next_node_id": "signed"
+            },
+            {
+              "id": "expose_clause",
+              "text": "Expose the hidden price to the Wardens.",
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "sable_clause",
+                  "value": "exposed"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "emberwatch_wardens",
+                  "amount": 20
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": -15
+                },
+                {
+                  "type": "affinity",
+                  "target_id": "mother_sable",
+                  "amount": -20
+                },
+                {
+                  "type": "choice",
+                  "choice_id": "sable_exposed"
+                }
+              ],
+              "next_node_id": "exposed"
+            },
+            {
+              "id": "burn_clause",
+              "text": "Burn it. Let both factions solve their own mess.",
+              "conditions": {
+                "class_ids": [
+                  "assassin",
+                  "nightblade",
+                  "eclipse"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "sable_clause",
+                  "value": "burned"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": -8
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "emberwatch_wardens",
+                  "amount": -8
+                },
+                {
+                  "type": "choice",
+                  "choice_id": "sable_burned"
+                }
+              ],
+              "next_node_id": "burned"
+            },
+            {
+              "id": "own_clause",
+              "text": "Rewrite “protection” as ownership and take the refugees’ oaths.",
+              "conditions": {
+                "race_ids": [
+                  "demon"
+                ],
+                "reputation_min": {
+                  "ash_court": 10
+                }
+              },
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "sable_clause",
+                  "value": "enslaved"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 35
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "emberwatch_wardens",
+                  "amount": -30
+                },
+                {
+                  "type": "affinity",
+                  "target_id": "mother_sable",
+                  "amount": 20
+                },
+                {
+                  "type": "loyalty",
+                  "companion_id": "veyra_ashhorn",
+                  "amount": -40
+                },
+                {
+                  "type": "choice",
+                  "choice_id": "sable_enslaved"
+                }
+              ],
+              "next_node_id": "enslaved"
+            }
+          ]
+        },
+        {
+          "id": "signed",
+          "text": "‘Merciful,’ Sable says, ‘and perhaps catastrophic. The best contracts often are.’",
+          "options": []
+        },
+        {
+          "id": "exposed",
+          "text": "Sable smiles without warmth. ‘Morality is expensive. I hope the Wardens pay promptly.’",
+          "options": []
+        },
+        {
+          "id": "burned",
+          "text": "The ash curls into a shape like a laughing mouth. Sable applauds once.",
+          "options": []
+        },
+        {
+          "id": "enslaved",
+          "text": "Sable reads the new clause twice. “Efficient,” she says softly. “Do not mistake my admiration for approval.”",
+          "options": []
+        }
+      ]
+    }
+  ]
+}
