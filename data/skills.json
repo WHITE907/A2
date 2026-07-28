@@ -1,0 +1,520 @@
+{
+  "_comment": "Every skill is a JSON entry composed of effects. Adding the 200th skill is a diff here, not a new Python file. Categories: core, active, passive, weapon, shared, ultimate.",
+  "skills": [
+    {
+      "id": "strike",
+      "name": "Strike",
+      "category": "core",
+      "description": "A straightforward attack with the equipped weapon.",
+      "targeting": "enemy",
+      "mp_cost": 0,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 1.0 }
+      ]
+    },
+    {
+      "id": "arcane_bolt",
+      "name": "Arcane Bolt",
+      "category": "core",
+      "description": "A dart of raw magic that rarely misses.",
+      "targeting": "enemy",
+      "mp_cost": 0,
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 4, "power_ratio": 1.0, "accuracy_bonus": 0.05 }
+      ]
+    },
+    {
+      "id": "pierce",
+      "name": "Pierce",
+      "category": "core",
+      "description": "A precise thrust that slips past armour.",
+      "targeting": "enemy",
+      "mp_cost": 0,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 3, "power_ratio": 0.9, "penetration_pct": 0.25 }
+      ]
+    },
+    {
+      "id": "smite",
+      "name": "Smite",
+      "category": "core",
+      "description": "A blow guided by conviction.",
+      "targeting": "enemy",
+      "mp_cost": 0,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 3, "scaling": { "STR": 1.0, "INT": 0.5 } }
+      ]
+    },
+    {
+      "id": "power_strike",
+      "name": "Power Strike",
+      "category": "active",
+      "description": "A heavy overhead blow.",
+      "targeting": "enemy",
+      "mp_cost": 6,
+      "mastery_track": "sword",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 8, "power_ratio": 1.45 }
+      ]
+    },
+    {
+      "id": "sunder_armor",
+      "name": "Sunder Armor",
+      "category": "active",
+      "description": "Cripples the target's defences.",
+      "targeting": "enemy",
+      "mp_cost": 8,
+      "cooldown": 3,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 0.8 },
+        { "type": "apply_status", "status_id": "sundered", "chance": 0.8 }
+      ]
+    },
+    {
+      "id": "whirlwind",
+      "name": "Whirlwind",
+      "category": "active",
+      "description": "A spinning attack that strikes every foe.",
+      "targeting": "all_enemies",
+      "mp_cost": 14,
+      "cooldown": 2,
+      "required_level": 5,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 5, "power_ratio": 0.85 }
+      ]
+    },
+    {
+      "id": "rallying_cry",
+      "name": "Rallying Cry",
+      "category": "active",
+      "description": "A roar that steels the body for battle.",
+      "targeting": "self",
+      "mp_cost": 10,
+      "cooldown": 4,
+      "effects": [
+        { "type": "apply_status", "status_id": "might" },
+        { "type": "apply_status", "status_id": "iron_skin" }
+      ]
+    },
+    {
+      "id": "shield_wall",
+      "name": "Shield Wall",
+      "category": "active",
+      "description": "Raises a barrier that absorbs damage and punishes attackers.",
+      "targeting": "self",
+      "mp_cost": 12,
+      "cooldown": 4,
+      "effects": [
+        { "type": "shield", "name": "Shield Wall", "base": 20, "scaling": { "END": 2.0 }, "duration": 3, "reflect_pct": 0.15 }
+      ]
+    },
+    {
+      "id": "fireball",
+      "name": "Fireball",
+      "category": "active",
+      "description": "Hurls a roaring sphere of flame.",
+      "targeting": "enemy",
+      "mp_cost": 10,
+      "mastery_track": "fire",
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 10, "power_ratio": 1.4 },
+        { "type": "apply_status", "status_id": "burn", "chance": 0.45 }
+      ]
+    },
+    {
+      "id": "frost_lance",
+      "name": "Frost Lance",
+      "category": "active",
+      "description": "A spear of ice that slows what it strikes.",
+      "targeting": "enemy",
+      "mp_cost": 9,
+      "mastery_track": "ice",
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 8, "power_ratio": 1.2 },
+        { "type": "apply_status", "status_id": "slowed", "chance": 0.6 }
+      ]
+    },
+    {
+      "id": "flame_wave",
+      "name": "Flame Wave",
+      "category": "active",
+      "description": "A sheet of fire that washes over every enemy.",
+      "targeting": "all_enemies",
+      "mp_cost": 18,
+      "cooldown": 3,
+      "required_level": 6,
+      "mastery_track": "fire",
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 9, "power_ratio": 1.0 },
+        { "type": "apply_status", "status_id": "burn", "chance": 0.3 }
+      ]
+    },
+    {
+      "id": "mind_over_matter",
+      "name": "Mind Over Matter",
+      "category": "active",
+      "description": "Channels focus into raw magical potency.",
+      "targeting": "self",
+      "mp_cost": 8,
+      "cooldown": 4,
+      "effects": [
+        { "type": "apply_status", "status_id": "focus" },
+        { "type": "apply_status", "status_id": "meditation" }
+      ]
+    },
+    {
+      "id": "mend",
+      "name": "Mend",
+      "category": "active",
+      "description": "Closes wounds with a wash of restorative magic.",
+      "targeting": "self",
+      "mp_cost": 8,
+      "mastery_track": "light",
+      "effects": [
+        { "type": "heal", "base": 18, "scaling": { "INT": 1.3 } }
+      ]
+    },
+    {
+      "id": "renewal",
+      "name": "Renewal",
+      "category": "active",
+      "description": "A lingering blessing that heals over time.",
+      "targeting": "self",
+      "mp_cost": 12,
+      "cooldown": 3,
+      "mastery_track": "light",
+      "effects": [
+        { "type": "heal", "base": 8, "scaling": { "INT": 0.5 } },
+        { "type": "apply_status", "status_id": "regeneration" }
+      ]
+    },
+    {
+      "id": "shadow_bind",
+      "name": "Shadow Bind",
+      "category": "active",
+      "description": "Coils of darkness hold the target fast.",
+      "targeting": "enemy",
+      "mp_cost": 14,
+      "cooldown": 4,
+      "mastery_track": "shadow",
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 6, "power_ratio": 0.7 },
+        { "type": "apply_status", "status_id": "stunned", "chance": 0.55 }
+      ]
+    },
+    {
+      "id": "venom_edge",
+      "name": "Venom Edge",
+      "category": "active",
+      "description": "A coated blade that leaves poison behind.",
+      "targeting": "enemy",
+      "mp_cost": 7,
+      "mastery_track": "dagger",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 5, "power_ratio": 1.0 },
+        { "type": "apply_status", "status_id": "poison", "chance": 0.7 }
+      ]
+    },
+    {
+      "id": "shadowstep",
+      "name": "Shadowstep",
+      "category": "active",
+      "description": "Slips into the dark, striking twice from nowhere.",
+      "targeting": "enemy",
+      "mp_cost": 12,
+      "cooldown": 3,
+      "required_level": 4,
+      "mastery_track": "dagger",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 0.75, "hits": 2, "penetration_pct": 0.2 },
+        { "type": "apply_status", "status_id": "haste", "target": "self", "resistible": false }
+      ]
+    },
+    {
+      "id": "hunters_mark",
+      "name": "Hunter's Mark",
+      "category": "active",
+      "description": "Marks the prey, blinding and weakening it.",
+      "targeting": "enemy",
+      "mp_cost": 9,
+      "cooldown": 3,
+      "mastery_track": "bow",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 0.9 },
+        { "type": "apply_status", "status_id": "blinded", "chance": 0.65 },
+        { "type": "apply_status", "status_id": "weakened", "chance": 0.5 }
+      ]
+    },
+    {
+      "id": "cleave",
+      "name": "Cleave",
+      "category": "weapon",
+      "description": "A wide swing that bites deep. Requires an axe or sword.",
+      "targeting": "enemy",
+      "mp_cost": 6,
+      "required_weapon_types": ["axe", "sword"],
+      "mastery_track": "axe",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 6, "power_ratio": 1.25 },
+        { "type": "apply_status", "status_id": "bleed", "chance": 0.4 }
+      ]
+    },
+    {
+      "id": "aimed_shot",
+      "name": "Aimed Shot",
+      "category": "weapon",
+      "description": "A patient shot that finds the gap. Requires a bow.",
+      "targeting": "enemy",
+      "mp_cost": 7,
+      "required_weapon_types": ["bow"],
+      "mastery_track": "bow",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 7, "power_ratio": 1.3, "accuracy_bonus": 0.1, "penetration_pct": 0.15 }
+      ]
+    },
+    {
+      "id": "crushing_blow",
+      "name": "Crushing Blow",
+      "category": "weapon",
+      "description": "A blunt impact that rattles armour. Requires a mace.",
+      "targeting": "enemy",
+      "mp_cost": 8,
+      "required_weapon_types": ["mace"],
+      "mastery_track": "mace",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 7, "power_ratio": 1.2, "penetration_flat": 15 },
+        { "type": "apply_status", "status_id": "stunned", "chance": 0.2 }
+      ]
+    },
+    {
+      "id": "staff_channel",
+      "name": "Channel",
+      "category": "weapon",
+      "description": "Draws power through the staff. Requires a staff.",
+      "targeting": "self",
+      "mp_cost": 0,
+      "cooldown": 3,
+      "required_weapon_types": ["staff"],
+      "mastery_track": "staff",
+      "effects": [
+        { "type": "resource", "amount": 14 }
+      ]
+    },
+    {
+      "id": "second_wind",
+      "name": "Second Wind",
+      "category": "shared",
+      "description": "A moment's respite anyone can learn.",
+      "targeting": "self",
+      "mp_cost": 0,
+      "cooldown": 5,
+      "effects": [
+        { "type": "heal", "base": 10, "percent_max_hp": 0.15 }
+      ]
+    },
+    {
+      "id": "steady_breath",
+      "name": "Steady Breath",
+      "category": "shared",
+      "description": "Recovers composure and a little magic.",
+      "targeting": "self",
+      "mp_cost": 0,
+      "cooldown": 4,
+      "effects": [
+        { "type": "resource", "percent_max_mp": 0.2 }
+      ]
+    },
+    {
+      "id": "toughness",
+      "name": "Toughness",
+      "category": "passive",
+      "description": "Years of hardship harden the body.",
+      "passive_modifiers": { "flat": { "max_hp": 25, "armor": 4 } }
+    },
+    {
+      "id": "keen_edge",
+      "name": "Keen Edge",
+      "category": "passive",
+      "description": "A trained eye for weak points.",
+      "passive_modifiers": { "flat": { "crit_chance": 0.05 }, "pct": { "crit_damage": 0.1 } }
+    },
+    {
+      "id": "arcane_mind",
+      "name": "Arcane Mind",
+      "category": "passive",
+      "description": "A deep well of magical reserve.",
+      "passive_modifiers": { "flat": { "max_mp": 20 }, "pct": { "magic_power": 0.12 } }
+    },
+    {
+      "id": "fleet_footed",
+      "name": "Fleet Footed",
+      "category": "passive",
+      "description": "Light on the feet, hard to pin down.",
+      "passive_modifiers": { "flat": { "evasion": 0.06, "speed": 3 } }
+    },
+    {
+      "id": "warding_spirit",
+      "name": "Warding Spirit",
+      "category": "passive",
+      "description": "An inner calm that turns aside curses.",
+      "passive_modifiers": { "flat": { "magic_resist": 8, "status_resist": 0.15 } }
+    },
+    {
+      "id": "titans_wrath",
+      "name": "Titan's Wrath",
+      "category": "ultimate",
+      "description": "An earth-splitting blow that shatters everything before it.",
+      "targeting": "all_enemies",
+      "mp_cost": 30,
+      "cooldown": 6,
+      "skill_point_cost": 3,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 25, "power_ratio": 2.2, "penetration_pct": 0.4 },
+        { "type": "apply_status", "status_id": "sundered", "chance": 0.75 }
+      ]
+    },
+    {
+      "id": "meteor",
+      "name": "Meteor",
+      "category": "ultimate",
+      "description": "Calls down a burning stone from the heavens.",
+      "targeting": "all_enemies",
+      "mp_cost": 34,
+      "cooldown": 6,
+      "skill_point_cost": 3,
+      "mastery_track": "fire",
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 28, "power_ratio": 2.4, "penetration_pct": 0.3 },
+        { "type": "apply_status", "status_id": "burn", "chance": 0.9 }
+      ]
+    },
+    {
+      "id": "thousand_cuts",
+      "name": "Thousand Cuts",
+      "category": "ultimate",
+      "description": "A blur of strikes too fast to count.",
+      "targeting": "enemy",
+      "mp_cost": 28,
+      "cooldown": 5,
+      "skill_point_cost": 3,
+      "mastery_track": "dagger",
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 6, "power_ratio": 0.7, "hits": 5, "penetration_pct": 0.25 },
+        { "type": "apply_status", "status_id": "bleed", "chance": 0.8, "stacks": 2 }
+      ]
+    },
+    {
+      "id": "divine_judgment",
+      "name": "Divine Judgment",
+      "category": "ultimate",
+      "description": "Light that heals the faithful and burns the wicked.",
+      "targeting": "all_enemies",
+      "mp_cost": 32,
+      "cooldown": 6,
+      "skill_point_cost": 3,
+      "mastery_track": "light",
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 22, "power_ratio": 1.9 },
+        { "type": "heal", "target": "self", "base": 30, "scaling": { "INT": 1.0 } },
+        { "type": "apply_status", "status_id": "regeneration", "target": "self", "resistible": false }
+      ]
+    },
+    {
+      "id": "enemy_claw",
+      "name": "Claw",
+      "category": "core",
+      "description": "A raking swipe.",
+      "targeting": "enemy",
+      "mp_cost": 0,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 3, "power_ratio": 1.0 }
+      ]
+    },
+    {
+      "id": "enemy_bite",
+      "name": "Bite",
+      "category": "active",
+      "description": "Sinks its teeth in and holds on.",
+      "targeting": "enemy",
+      "mp_cost": 4,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 5, "power_ratio": 1.15 },
+        { "type": "apply_status", "status_id": "bleed", "chance": 0.35 }
+      ]
+    },
+    {
+      "id": "enemy_spit",
+      "name": "Acid Spit",
+      "category": "active",
+      "description": "A gob of corrosive fluid.",
+      "targeting": "enemy",
+      "mp_cost": 6,
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 4, "power_ratio": 0.9 },
+        { "type": "apply_status", "status_id": "poison", "chance": 0.5 }
+      ]
+    },
+    {
+      "id": "enemy_howl",
+      "name": "Howl",
+      "category": "active",
+      "description": "A cry that rouses the pack.",
+      "targeting": "self",
+      "mp_cost": 5,
+      "cooldown": 4,
+      "effects": [
+        { "type": "apply_status", "status_id": "might" }
+      ]
+    },
+    {
+      "id": "enemy_dark_bolt",
+      "name": "Dark Bolt",
+      "category": "active",
+      "description": "A lance of congealed shadow.",
+      "targeting": "enemy",
+      "mp_cost": 8,
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 8, "power_ratio": 1.25 },
+        { "type": "apply_status", "status_id": "cursed", "chance": 0.4 }
+      ]
+    },
+    {
+      "id": "enemy_mend",
+      "name": "Dark Mending",
+      "category": "active",
+      "description": "Knits its own flesh back together.",
+      "targeting": "self",
+      "mp_cost": 10,
+      "cooldown": 3,
+      "effects": [
+        { "type": "heal", "base": 14, "scaling": { "INT": 1.0 } }
+      ]
+    },
+    {
+      "id": "enemy_crush",
+      "name": "Crush",
+      "category": "active",
+      "description": "A colossal downward smash.",
+      "targeting": "enemy",
+      "mp_cost": 12,
+      "cooldown": 2,
+      "effects": [
+        { "type": "damage", "damage_type": "physical", "base": 12, "power_ratio": 1.6, "penetration_flat": 20 },
+        { "type": "apply_status", "status_id": "stunned", "chance": 0.25 }
+      ]
+    },
+    {
+      "id": "enemy_frost_breath",
+      "name": "Frost Breath",
+      "category": "active",
+      "description": "A freezing gale that engulfs everything ahead.",
+      "targeting": "all_enemies",
+      "mp_cost": 16,
+      "cooldown": 3,
+      "effects": [
+        { "type": "damage", "damage_type": "magic", "base": 14, "power_ratio": 1.5 },
+        { "type": "apply_status", "status_id": "frozen", "chance": 0.3 }
+      ]
+    }
+  ]
+}

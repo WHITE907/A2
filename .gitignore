@@ -1,0 +1,16 @@
+# Save files are per-player runtime state, not source.
+saves/*.json
+saves/*.tmp
+
+# Logs
+logs/*.log
+
+# Generated layout renders (rebuild with tools/render_mockups.py)
+assets/mockups/
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/

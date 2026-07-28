@@ -1,1 +1,223 @@
-# A2
+# Project Ascension
+
+A single-player, text-based RPG in Python and Tkinter, built to the
+specification in [`PROJECT_BIBLE_v1.md`](PROJECT_BIBLE_v1.md) and the notes in
+[`docs/`](docs).
+
+Deep progression, seven promotion tiers, a JSON-driven content pipeline, and a
+strict engine/UI separation.
+
+```
+python3 main.py            # play
+python3 main.py --check    # validate all content, no GUI needed
+python3 -m unittest discover -s tests
+```
+
+## Requirements
+
+- Python 3.11+
+- Tkinter (`sudo apt-get install python3-tk` on Debian/Ubuntu; bundled with
+  the python.org installers on Windows and macOS)
+
+No third-party packages. `--check` and the entire engine test-suite run without
+Tkinter installed.
+
+## Layout
+
+```
+ProjectAscension/
+├── main.py              entry point (--check, --seed, --data-dir, --save-dir)
+├── engine/              all gameplay logic
+│   ├── game.py          Game facade - the only thing the GUI talks to
+│   ├── stats.py         StatBlock, ModifierSet, DerivedStats, Formulas
+│   ├── classes.py       ClassDefinition + promotion rules
+│   ├── mastery.py       F..Master tracks
+│   ├── rng.py           seedable, serialisable RNG
+│   ├── entities/        Entity -> Player, Enemy
+│   ├── skills/          Skill, Effect strategies, StatusEffect
+│   ├── items/           Item, Inventory, equipment slots
+│   ├── combat/          turn loop + AI behaviour registry
+│   ├── world/           areas, exploration, NPCs, shops
+│   └── managers/        JSON -> object factories (the only JSON readers)
+├── gui/                 Tkinter presentation layer
+│   ├── theme.py         palette, fonts, widget factories
+│   ├── widgets.py       StatPanel, ButtonStack, SelectList, LogPanel
+│   ├── app.py           window shell + screen routing
+│   └── screens/         one module per screen
+├── data/                all gameplay content
+├── docs/                design notes
+├── tests/               267 tests
+├── tools/               dev utilities
+└── saves/               JSON save slots (created on first save)
+```
+
+## Architecture
+
+Two rules from the bible drive the whole design.
+
+**§5 — "UI only displays information. Engine performs all calculations."**
+Every screen holds a reference to one `Game` object and calls methods on it. No
+screen imports a manager, opens a file, or does arithmetic on a stat. A test
+(`test_gui_never_imports_managers_directly`) enforces this by scanning the `gui`
+package for forbidden imports.
+
+**§5 — "Gameplay values are never hardcoded. All content loads from JSON."**
+Every coefficient lives in `data/config.json`. `Formulas` reads
+`base + per_<stat> * stat + per_level * level` blocks dynamically, so adding
+`"per_agi"` to the HP formula works with no code change. A test proves the
+engine references no specific content id — it parses the AST rather than
+grepping, so docstrings explaining the rule don't trip it.
+
+### Composition over content-subclassing
+
+Per [`docs/ENGINE_DESIGN.md`](docs/ENGINE_DESIGN.md), class count scales with
+**behaviour types**, not **content volume**:
+
+| Concept | Python classes | JSON entries |
+|---|---|---|
+| Skills | 1 (`Skill`) | 42 |
+| Effects | 5 (`damage`, `heal`, `resource`, `shield`, `apply_status`) | — |
+| Classes | 1 (`ClassDefinition`) | 19 |
+| Enemies | 1 (`Enemy`) | 11 |
+| Items | 1 (`Item`) | 41 |
+| Statuses | 1 (`StatusEffect`) | 16 |
+
+Fireball is not a Python class. It is a JSON entry composing a `DamageEffect`
+and an `ApplyStatusEffect`:
+
+```json
+{
+  "id": "fireball",
+  "category": "active",
+  "mp_cost": 10,
+  "mastery_track": "fire",
+  "effects": [
+    { "type": "damage", "damage_type": "magic", "base": 10, "power_ratio": 1.4 },
+    { "type": "apply_status", "status_id": "burn", "chance": 0.45 }
+  ]
+}
+```
+
+Adding the 200th skill is a JSON diff. Adding code is only needed for a
+genuinely new *behaviour* — one class plus one `@register_effect` line.
+
+Inheritance is used where it is the right tool: `Player` and `Enemy` both
+extend `Entity` because they genuinely share a supertype, not because they are
+kinds of content.
+
+### The AI registry
+
+`ENGINE_DESIGN.md` noted `ai_behavior_id` was stored on `Enemy` with no
+registry behind it, and that the same composition pattern should apply when it
+was built. `engine/combat/ai.py` is that registry: five behaviours
+(`aggressive`, `opportunist`, `tactical`, `defensive`, `berserk`) selected by
+id, with an unknown id falling back to `aggressive` so a typo in one monster
+never crashes a battle.
+
+## Systems
+
+| Bible § | System | Where |
+|---|---|---|
+| 9 | Unlimited levels, +5 stat / +1 skill point | `entities/player.py` |
+| 10 | Gender-restricted starters, 7 promotion tiers | `classes.py`, `managers/class_manager.py` |
+| 11 | core / active / passive / weapon / shared / ultimate | `skills/skill.py` |
+| 12 | Physical/magic/true, crits, armour, penetration, evasion, DOT/HOT, shields, reflect | `skills/effects.py`, `stats.py` |
+| 13 | JSON enemies with growth, AI, loot, scaling | `entities/enemy.py` |
+| 14 | Mastery F→Master, earned by use | `mastery.py` |
+| 15 | Affinity and gender-agnostic marriage | `game.py`, `world/world.py` |
+| 16 | Multiple slots, morning autosave, inn respawn | `managers/save_manager.py` |
+
+**Promotion** requires level, stats, mastery, items, quests and gold. It swaps
+the core skill, keeps every other learned skill, and consumes the required
+items. Where a requirement genuinely cannot be checked, `PromotionCheck`
+reports it under `unenforced` rather than silently ignoring it — the behaviour
+`ENGINE_DESIGN.md` asked for.
+
+**Saves** are versioned and migrated forward (`SAVE_VERSION`), so a save from an
+older build still loads (§5, backwards compatibility). Writes go to a temp file
+and are atomically replaced, so a crash mid-write cannot corrupt a slot. The RNG
+state is serialised too, meaning a reloaded save resumes the exact roll stream.
+A corrupt file is listed as a damaged slot rather than vanishing.
+
+## GUI
+
+Visual direction from [`docs/GUI_STYLE_REFERENCE.md`](docs/GUI_STYLE_REFERENCE.md):
+dark navy `#1a1f2e`, off-white text, flat light-gray buttons with no gradients
+or rounded corners, one thin maroon accent line along the bottom edge, and stat
+displays as plain stacked `key: value` lines. Sub-screens open as `Toplevel`
+windows over the main window, which stays visible behind them.
+
+`docs/GUI_VERIFICATION.md` documents a subtle bug found by debugging rather
+than inspection: two `tk.Listbox` widgets that both need a live selection will
+silently fight over it, because Tk ties selection to the X PRIMARY clipboard.
+`theme.stat_listbox()` sets `exportselection=False` by default, and three tests
+cover it — including one that asserts the *test harness itself* still
+reproduces the bug with Tk defaults, so the regression test cannot quietly stop
+testing anything.
+
+## Testing
+
+267 tests, no third-party dependencies:
+
+```
+python3 -m unittest discover -s tests        # everything
+python3 -m unittest tests.test_engine        # 178 engine tests
+python3 -m unittest tests.test_gui           #  89 GUI tests
+```
+
+`tests/test_engine.py` exercises the real chain — JSON on disk → managers →
+entities → `Skill.use()` → effects → combat log — including full DOT lifecycles
+(apply → tick → tick → expire), save/load round-trips, v1→v2 migration, and
+guards on the architectural rules above.
+
+`tests/test_gui.py` builds the real screens and invokes the same handlers a
+click would trigger. It runs headlessly on `tests/tk_stub.py`, a recording
+stand-in for Tkinter, so the GUI is covered on machines without a display.
+
+### Seeing the UI without a display
+
+`docs/GUI_VERIFICATION.md`'s Xvfb + openbox + screenshot pipeline is the right
+approach when `python3-tk`, `xvfb` and `openbox` can be installed. Where they
+can't, `tools/render_mockups.py` gets close from pure Python: it builds the real
+screens, runs a simplified `pack` geometry pass over the resulting widget tree,
+and draws the result with Pillow.
+
+```
+pip install Pillow
+python3 tools/render_mockups.py     # -> assets/mockups/*.png
+```
+
+This renders **layout**, not Tk: real font metrics, native button chrome and
+window decoration will differ. What it does show faithfully is structure,
+ordering, sizing, colour and text — enough to catch a panel packed on the wrong
+side or a stat block rendering empty. Both were caught this way during
+development. It does not replace running the app on your own machine.
+
+## Content
+
+All in `data/`, cross-validated at startup — a skill referencing a missing
+status, an area spawning an unknown enemy, or a shop selling a nonexistent item
+is reported as a `ContentError` with the exact ids, not discovered mid-battle.
+
+| File | Contents |
+|---|---|
+| `config.json` | every formula coefficient, progression, mastery thresholds |
+| `skills.json` | 42 skills across all six categories |
+| `statuses.json` | 16 buffs, debuffs, DOTs, HOTs, stuns |
+| `classes.json` | 19 classes, tiers 1–7, full promotion chains |
+| `items.json` | 41 items: weapons, armour, consumables, key items |
+| `enemies.json` | 11 enemies including 2 bosses |
+| `world.json` | 5 areas, 2 shops, 3 NPCs, encounter tables |
+
+Rebalancing is a JSON edit. Run `python3 main.py --check` afterwards.
+
+## Known limitations
+
+- Companions, quests as a system, and the crafting/guild/housing features in
+  bible §20 are not implemented; the roadmap places them after v1.0.
+- The tier 4–7 classes exist and are reachable, but the content to realistically
+  reach them (higher-level areas and enemies) stops around level 18.
+- `gui/theme.py` produces type-checker warnings on its `**options` widget
+  factories. This is a known Tkinter/mypy variance limitation, documented in
+  that file; the pattern is correct at runtime and is the only such finding in
+  the project.

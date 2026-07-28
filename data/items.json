@@ -1,0 +1,368 @@
+{
+  "_comment": "Item content. kind: equipment | consumable | material | key | special. Equipment slots: weapon, offhand, head, body, hands, feet, accessory1, accessory2.",
+  "items": [
+    {
+      "id": "iron_sword",
+      "name": "Iron Sword",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "Plain, heavy, and entirely reliable.",
+      "value": 80,
+      "modifiers": { "flat": { "physical_power": 6, "accuracy": 0.02 } }
+    },
+    {
+      "id": "steel_sword",
+      "name": "Steel Sword",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "Well-balanced steel with a keen edge.",
+      "value": 320,
+      "required_level": 8,
+      "modifiers": { "flat": { "physical_power": 15, "crit_chance": 0.03 } }
+    },
+    {
+      "id": "iron_dagger",
+      "name": "Iron Dagger",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "dagger",
+      "description": "Short, quick, and quiet.",
+      "value": 70,
+      "modifiers": { "flat": { "physical_power": 4, "crit_chance": 0.04, "speed": 2 } }
+    },
+    {
+      "id": "shadow_fang",
+      "name": "Shadow Fang",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "dagger",
+      "description": "The blade drinks the light around it.",
+      "value": 400,
+      "required_level": 10,
+      "rarity": "rare",
+      "modifiers": { "flat": { "physical_power": 12, "crit_chance": 0.08, "speed": 4 } }
+    },
+    {
+      "id": "battle_axe",
+      "name": "Battle Axe",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "axe",
+      "description": "Slow, brutal, and very final.",
+      "value": 140,
+      "required_level": 5,
+      "required_stats": { "STR": 14 },
+      "modifiers": { "flat": { "physical_power": 12 }, "pct": { "crit_damage": 0.15 } }
+    },
+    {
+      "id": "iron_mace",
+      "name": "Iron Mace",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "mace",
+      "description": "Armour is a suggestion.",
+      "value": 110,
+      "modifiers": { "flat": { "physical_power": 8, "armor": 2 } }
+    },
+    {
+      "id": "hunting_bow",
+      "name": "Hunting Bow",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "bow",
+      "description": "Worn smooth at the grip.",
+      "value": 100,
+      "modifiers": { "flat": { "physical_power": 7, "accuracy": 0.05 } }
+    },
+    {
+      "id": "apprentice_staff",
+      "name": "Apprentice Staff",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "staff",
+      "description": "Notched from years of practice.",
+      "value": 75,
+      "modifiers": { "flat": { "magic_power": 7, "max_mp": 10 } }
+    },
+    {
+      "id": "runed_staff",
+      "name": "Runed Staff",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "staff",
+      "description": "Runes shift slowly when nobody is watching.",
+      "value": 380,
+      "required_level": 9,
+      "modifiers": { "flat": { "magic_power": 18, "max_mp": 30 } }
+    },
+    {
+      "id": "wooden_shield",
+      "name": "Wooden Shield",
+      "kind": "equipment",
+      "slot": "offhand",
+      "description": "Battered, splintered, still standing.",
+      "value": 60,
+      "modifiers": { "flat": { "armor": 6, "max_hp": 10 } }
+    },
+    {
+      "id": "tower_shield",
+      "name": "Tower Shield",
+      "kind": "equipment",
+      "slot": "offhand",
+      "description": "A wall you can carry.",
+      "value": 260,
+      "required_level": 8,
+      "required_stats": { "END": 16 },
+      "modifiers": { "flat": { "armor": 16, "max_hp": 30 }, "pct": { "evasion": -0.2 } }
+    },
+    {
+      "id": "leather_vest",
+      "name": "Leather Vest",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Cheap, light, better than nothing.",
+      "value": 55,
+      "modifiers": { "flat": { "armor": 5, "max_hp": 12 } }
+    },
+    {
+      "id": "chain_mail",
+      "name": "Chain Mail",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Heavy links, well maintained.",
+      "value": 240,
+      "required_level": 7,
+      "modifiers": { "flat": { "armor": 14, "max_hp": 35 }, "flat_speed": 0 }
+    },
+    {
+      "id": "cloth_robe",
+      "name": "Cloth Robe",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Comfortable, and stitched with faint wards.",
+      "value": 50,
+      "modifiers": { "flat": { "magic_resist": 6, "max_mp": 12 } }
+    },
+    {
+      "id": "arcane_robe",
+      "name": "Arcane Robe",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "The hem never quite touches the floor.",
+      "value": 280,
+      "required_level": 9,
+      "modifiers": { "flat": { "magic_resist": 16, "max_mp": 35, "magic_power": 5 } }
+    },
+    {
+      "id": "iron_helm",
+      "name": "Iron Helm",
+      "kind": "equipment",
+      "slot": "head",
+      "description": "Dented in a reassuring way.",
+      "value": 70,
+      "modifiers": { "flat": { "armor": 5, "max_hp": 10 } }
+    },
+    {
+      "id": "leather_gloves",
+      "name": "Leather Gloves",
+      "kind": "equipment",
+      "slot": "hands",
+      "description": "Good grip, no frills.",
+      "value": 40,
+      "modifiers": { "flat": { "accuracy": 0.02, "physical_power": 2 } }
+    },
+    {
+      "id": "travel_boots",
+      "name": "Travel Boots",
+      "kind": "equipment",
+      "slot": "feet",
+      "description": "They have already walked a very long way.",
+      "value": 45,
+      "modifiers": { "flat": { "speed": 3, "evasion": 0.02 } }
+    },
+    {
+      "id": "ring_of_vigor",
+      "name": "Ring of Vigor",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "Warm to the touch.",
+      "value": 200,
+      "modifiers": { "flat": { "max_hp": 40, "END": 3 } }
+    },
+    {
+      "id": "amulet_of_insight",
+      "name": "Amulet of Insight",
+      "kind": "equipment",
+      "slot": "accessory2",
+      "description": "Thoughts arrive a moment early.",
+      "value": 220,
+      "modifiers": { "flat": { "INT": 4, "max_mp": 25 } }
+    },
+    {
+      "id": "minor_potion",
+      "name": "Minor Potion",
+      "kind": "consumable",
+      "description": "Restores a small amount of health.",
+      "value": 25,
+      "use_effects": [{ "type": "heal", "base": 40, "target": "self" }]
+    },
+    {
+      "id": "potion",
+      "name": "Potion",
+      "kind": "consumable",
+      "description": "Restores a moderate amount of health.",
+      "value": 70,
+      "use_effects": [{ "type": "heal", "base": 110, "target": "self" }]
+    },
+    {
+      "id": "minor_ether",
+      "name": "Minor Ether",
+      "kind": "consumable",
+      "description": "Restores a small amount of magic.",
+      "value": 30,
+      "use_effects": [{ "type": "resource", "amount": 30, "target": "self" }]
+    },
+    {
+      "id": "ether",
+      "name": "Ether",
+      "kind": "consumable",
+      "description": "Restores a good amount of magic.",
+      "value": 85,
+      "use_effects": [{ "type": "resource", "amount": 80, "target": "self" }]
+    },
+    {
+      "id": "antidote",
+      "name": "Antidote",
+      "kind": "consumable",
+      "description": "A bitter draught that settles the blood.",
+      "value": 20,
+      "use_effects": [{ "type": "heal", "base": 10, "target": "self" }]
+    },
+    {
+      "id": "elixir_of_might",
+      "name": "Elixir of Might",
+      "kind": "consumable",
+      "description": "Grants surging strength for a short time.",
+      "value": 120,
+      "use_effects": [{ "type": "apply_status", "status_id": "might", "target": "self", "resistible": false }]
+    },
+    {
+      "id": "wolf_pelt",
+      "name": "Wolf Pelt",
+      "kind": "material",
+      "description": "Thick and still faintly warm.",
+      "value": 15
+    },
+    {
+      "id": "slime_core",
+      "name": "Slime Core",
+      "kind": "material",
+      "description": "It pulses if you hold it too long.",
+      "value": 10
+    },
+    {
+      "id": "bandit_coin",
+      "name": "Bandit Coin",
+      "kind": "material",
+      "description": "Somebody's, once.",
+      "value": 20
+    },
+    {
+      "id": "shadow_essence",
+      "name": "Shadow Essence",
+      "kind": "material",
+      "description": "A cold that has learned to stay still.",
+      "value": 60
+    },
+    {
+      "id": "troll_hide",
+      "name": "Troll Hide",
+      "kind": "material",
+      "description": "Tough enough to blunt a knife.",
+      "value": 90
+    },
+    {
+      "id": "knights_seal",
+      "name": "Knight's Seal",
+      "kind": "key",
+      "description": "Proof of a vow taken seriously. Required to become a Knight.",
+      "value": 500,
+      "stack_size": 1
+    },
+    {
+      "id": "duelists_token",
+      "name": "Duelist's Token",
+      "kind": "key",
+      "description": "Awarded for a duel survived. Required to become a Duelist.",
+      "value": 500,
+      "stack_size": 1
+    },
+    {
+      "id": "arcane_focus",
+      "name": "Arcane Focus",
+      "kind": "key",
+      "description": "A lens for the untrained mind. Required to become a Mage.",
+      "value": 500,
+      "stack_size": 1
+    },
+    {
+      "id": "oath_sigil",
+      "name": "Oath Sigil",
+      "kind": "key",
+      "description": "It hums faintly when a promise is broken nearby.",
+      "value": 1500,
+      "stack_size": 1
+    },
+    {
+      "id": "shadow_pact",
+      "name": "Shadow Pact",
+      "kind": "key",
+      "description": "Signed in something darker than ink.",
+      "value": 1500,
+      "stack_size": 1
+    },
+    {
+      "id": "grimoire_of_ages",
+      "name": "Grimoire of Ages",
+      "kind": "key",
+      "description": "The pages are older than the binding.",
+      "value": 1500,
+      "stack_size": 1
+    },
+    {
+      "id": "sacred_relic",
+      "name": "Sacred Relic",
+      "kind": "key",
+      "description": "Nobody agrees on what it was. Everybody agrees it matters.",
+      "value": 5000,
+      "stack_size": 4
+    },
+    {
+      "id": "void_shard",
+      "name": "Void Shard",
+      "kind": "key",
+      "description": "A piece of an absence.",
+      "value": 5000,
+      "stack_size": 4
+    },
+    {
+      "id": "codex_infinite",
+      "name": "Codex Infinite",
+      "kind": "key",
+      "description": "It has one more page than it had yesterday.",
+      "value": 5000,
+      "stack_size": 4
+    },
+    {
+      "id": "eternal_band",
+      "name": "Eternal Band",
+      "kind": "special",
+      "description": "A ring that binds two people, whoever they are. Required to propose.",
+      "value": 1200,
+      "stack_size": 1,
+      "tags": ["marriage"]
+    }
+  ]
+}

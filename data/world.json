@@ -1,0 +1,157 @@
+{
+  "_comment": "Bible section 8 loop: Town -> Explore -> Combat -> Rewards -> Town -> Sleep -> Morning Autosave. Towns are safe; wilderness areas roll encounters.",
+  "start_area_id": "town_ashvale",
+
+  "flavour": [
+    "The path is quiet.",
+    "Wind moves through the grass and nothing follows it.",
+    "You find old tracks, already filling with rain.",
+    "Something watched you pass, then thought better of it.",
+    "A cold draught rises from somewhere below.",
+    "You rest a moment. Nothing comes."
+  ],
+
+  "areas": [
+    {
+      "id": "town_ashvale",
+      "name": "Ashvale",
+      "is_town": true,
+      "description": "A small town built around a very old well. People stay because leaving is harder.",
+      "recommended_level": 1,
+      "connections": ["greenfields", "old_road"],
+      "shop_ids": ["ashvale_general", "ashvale_smith"],
+      "npc_ids": ["innkeeper_mara", "smith_dorn", "scholar_iven"]
+    },
+    {
+      "id": "greenfields",
+      "name": "The Greenfields",
+      "description": "Long grass, low hills, and more wildlife than the farmers would like.",
+      "recommended_level": 1,
+      "quiet_chance": 0.3,
+      "connections": ["town_ashvale", "old_road"],
+      "encounters": [
+        { "enemy_ids": ["green_slime"], "weight": 3, "level_min": 1, "level_max": 3 },
+        { "enemy_ids": ["field_rat"], "weight": 3, "level_min": 1, "level_max": 3 },
+        { "enemy_ids": ["field_rat", "field_rat"], "weight": 1, "level_min": 1, "level_max": 2 },
+        { "enemy_ids": ["grey_wolf"], "weight": 1, "level_min": 2, "level_max": 4 }
+      ]
+    },
+    {
+      "id": "old_road",
+      "name": "The Old Road",
+      "description": "The paving stones are good. The people using them are not.",
+      "recommended_level": 4,
+      "unlock_level": 3,
+      "quiet_chance": 0.25,
+      "connections": ["town_ashvale", "greenfields", "hollow_cave"],
+      "encounters": [
+        { "enemy_ids": ["bandit"], "weight": 3, "level_min": 3, "level_max": 6 },
+        { "enemy_ids": ["grey_wolf", "grey_wolf"], "weight": 2, "level_min": 3, "level_max": 5 },
+        { "enemy_ids": ["bandit", "field_rat"], "weight": 1, "level_min": 4, "level_max": 6 },
+        { "enemy_ids": ["bandit_chief", "bandit"], "weight": 1, "level_min": 8, "level_max": 10, "is_boss": true }
+      ]
+    },
+    {
+      "id": "hollow_cave",
+      "name": "The Hollow",
+      "description": "A cave that goes down further than the town admits.",
+      "recommended_level": 7,
+      "unlock_level": 6,
+      "quiet_chance": 0.2,
+      "connections": ["old_road", "sunken_shrine"],
+      "encounters": [
+        { "enemy_ids": ["cave_spider"], "weight": 3, "level_min": 5, "level_max": 8 },
+        { "enemy_ids": ["skeleton"], "weight": 3, "level_min": 6, "level_max": 9 },
+        { "enemy_ids": ["cave_spider", "cave_spider"], "weight": 2, "level_min": 5, "level_max": 8 },
+        { "enemy_ids": ["dark_acolyte", "skeleton"], "weight": 1, "level_min": 8, "level_max": 11 }
+      ]
+    },
+    {
+      "id": "sunken_shrine",
+      "name": "The Sunken Shrine",
+      "description": "Someone built this to keep something in, and then stopped visiting.",
+      "recommended_level": 12,
+      "unlock_level": 10,
+      "quiet_chance": 0.15,
+      "connections": ["hollow_cave"],
+      "encounters": [
+        { "enemy_ids": ["dark_acolyte"], "weight": 3, "level_min": 9, "level_max": 13 },
+        { "enemy_ids": ["hill_troll"], "weight": 2, "level_min": 11, "level_max": 14 },
+        { "enemy_ids": ["frost_wisp"], "weight": 2, "level_min": 12, "level_max": 15 },
+        { "enemy_ids": ["skeleton", "skeleton", "dark_acolyte"], "weight": 1, "level_min": 10, "level_max": 13 },
+        { "enemy_ids": ["shadow_warden"], "weight": 1, "level_min": 15, "level_max": 18, "is_boss": true }
+      ]
+    }
+  ],
+
+  "shops": [
+    {
+      "id": "ashvale_general",
+      "name": "Ashvale General Goods",
+      "buy_rate": 1.0,
+      "sell_rate": 0.4,
+      "item_ids": [
+        "minor_potion", "potion", "minor_ether", "ether", "antidote",
+        "travel_boots", "leather_gloves", "leather_vest", "cloth_robe", "eternal_band"
+      ]
+    },
+    {
+      "id": "ashvale_smith",
+      "name": "Dorn's Forge",
+      "buy_rate": 1.1,
+      "sell_rate": 0.45,
+      "item_ids": [
+        "iron_sword", "iron_dagger", "iron_mace", "hunting_bow", "battle_axe",
+        "apprentice_staff", "wooden_shield", "iron_helm", "chain_mail", "steel_sword"
+      ]
+    }
+  ],
+
+  "npcs": [
+    {
+      "id": "innkeeper_mara",
+      "name": "Mara",
+      "location_id": "town_ashvale",
+      "marriageable": true,
+      "marriage_affinity": 60,
+      "description": "Runs the inn. Has run it for a long time.",
+      "gift_item_ids": ["wolf_pelt", "potion"],
+      "dialogue": [
+        "Bed's the same price as yesterday. So's the porridge.",
+        "You look like the road's been arguing with you.",
+        "Stay as long as you like. People usually don't.",
+        "The well's older than the town. Don't drop anything in it."
+      ]
+    },
+    {
+      "id": "smith_dorn",
+      "name": "Dorn",
+      "location_id": "town_ashvale",
+      "marriageable": true,
+      "marriage_affinity": 70,
+      "description": "The smith. Speaks mostly in prices.",
+      "gift_item_ids": ["troll_hide", "bandit_coin"],
+      "dialogue": [
+        "Bring me steel and I'll make it worth carrying.",
+        "That edge is a disgrace. Give it here.",
+        "Everything breaks. Question is how loudly.",
+        "Cheap armour costs more. You'll see."
+      ]
+    },
+    {
+      "id": "scholar_iven",
+      "name": "Iven",
+      "location_id": "town_ashvale",
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "description": "Reads too much and says so.",
+      "gift_item_ids": ["shadow_essence", "slime_core"],
+      "dialogue": [
+        "The shrine predates the town. Nobody finds that interesting but me.",
+        "Seven tiers, the old texts say. Most never pass the second.",
+        "Mastery isn't talent. It's repetition nobody watched.",
+        "If you find anything written down out there, bring it back intact."
+      ]
+    }
+  ]
+}
