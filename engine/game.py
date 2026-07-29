@@ -1838,6 +1838,8 @@ class Game:
         self.world = world
         self.battle = None
         self.current_slot = slot
+        # Fix: update party composition so race party bonuses work after load
+        self._update_party_composition()
         return True, f"Loaded {player.name} (Level {player.level})."
 
     def _load_party(self, payload: Mapping[str, Any] | None, player: Player) -> Party:

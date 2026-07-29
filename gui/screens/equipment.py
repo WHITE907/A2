@@ -24,13 +24,17 @@ class EquipmentWindow(tk.Toplevel):
         self.app = app
 
         theme.style_window(self, "Project Ascension - Equipment")
-        theme.center_window(self, 720, 520)
+        theme.center_window(self, 820, 560)
         self.transient(app.root)
 
         body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
         body.pack(fill=tk.BOTH, expand=True)
 
         theme.heading_label(body, text="Equipment").pack(anchor="w", pady=(0, 10))
+
+        # Active set bonuses
+        self.set_bonus_label = theme.body_label(body, text="", fg=theme.FG_DIM, font=theme.FONT_SMALL)
+        self.set_bonus_label.pack(anchor="w", pady=(0, 8))
 
         columns = tk.Frame(body, bg=theme.BG)
         columns.pack(fill=tk.BOTH, expand=True)
@@ -51,13 +55,15 @@ class EquipmentWindow(tk.Toplevel):
         )
         self.candidate_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(18, 0))
 
-        self.detail = StatPanel(columns, title="Details", wrap=210)
+        self.detail = StatPanel(columns, title="Details", wrap=280)
         self.detail.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(18, 0))
 
         buttons = tk.Frame(body, bg=theme.BG)
         buttons.pack(fill=tk.X, pady=(16, 0))
         theme.flat_button(buttons, "Equip", self._equip, width=10).pack(side=tk.LEFT)
         theme.flat_button(buttons, "Unequip", self._unequip, width=10).pack(side=tk.LEFT, padx=8)
+        theme.flat_button(buttons, "Enchant", self._enchant, width=10).pack(side=tk.LEFT, padx=8)
+        theme.flat_button(buttons, "Upgrade", self._upgrade, width=10).pack(side=tk.LEFT, padx=8)
         theme.flat_button(buttons, "Close", self._close, width=10).pack(side=tk.RIGHT)
 
         self.refresh()
@@ -84,6 +90,14 @@ class EquipmentWindow(tk.Toplevel):
             rows.append((label, slot))
         self.slot_list.set_items(rows, keep_selection=True)
         self.slot_list.set_row_colors(colors)
+
+        # Set bonuses
+        bonuses = player.active_set_bonuses()
+        if bonuses:
+            self.set_bonus_label.configure(text="Set bonuses: " + ", ".join(bonuses))
+        else:
+            self.set_bonus_label.configure(text="No set bonuses active")
+
         self._reload_candidates()
 
     def _reload_candidates(self) -> None:
@@ -93,9 +107,11 @@ class EquipmentWindow(tk.Toplevel):
             return
         items = self.app.game.equippable_for_slot(slot)
         rarity_cfg = self.app.game.config.get("rarities") or {}
-        # Sort by rarity then name
+        # Sort by rarity then power estimate
         rarity_order = {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
-        items = sorted(items, key=lambda i: (rarity_order.get(i.rarity.lower(), 0), i.name))
+        def power_est(it: Item):
+            return sum(it.modifiers.flat.values())
+        items = sorted(items, key=lambda i: (rarity_order.get(i.rarity.lower(), 0), power_est(i)), reverse=True)
         self.candidate_list.set_items([(f"[{item.rarity_label}] {item.name}", item) for item in items], keep_selection=False)
         self.candidate_list.set_row_colors([rarity_cfg.get(item.rarity.lower(), {}).get("color", theme.FG) for item in items])
         if items:
@@ -103,15 +119,56 @@ class EquipmentWindow(tk.Toplevel):
         else:
             equipped = self.app.game.player.equipment.get(slot)
             if equipped:
-                self.detail.set_lines(equipped.detail_lines(rarity_cfg))
+                self.detail.set_lines(self._enriched_detail(equipped))
             else:
                 self.detail.set_lines(["Nothing available for this slot."])
+
+    def _enriched_detail(self, item: Item) -> list[str]:
+        game = self.app.game
+        rarity_cfg = game.config.get("rarities") or {}
+        lines = item.detail_lines(rarity_cfg)
+        # Enchantments
+        ench_ids = game.player.item_enchantments.get(item.id, [])
+        if ench_ids:
+            lines.append("")
+            lines.append(f"Enchantments ({len(ench_ids)}/{item.effective_enchant_slots(rarity_cfg)}):")
+            for eid in ench_ids:
+                ench = game.enchantments.get(eid)
+                if ench:
+                    lines.append(f"  {ench.name}: " + ", ".join(ench.modifiers.describe()))
+        else:
+            if item.is_equipment:
+                lines.append(f"Enchant slots: {item.effective_enchant_slots(rarity_cfg)} (empty)")
+        up_lvl = game.player.item_upgrades.get(item.id, 0)
+        if up_lvl:
+            lines.append(f"Upgrade: +{up_lvl}")
+            # Upgrade preview next level
+            next_lvl = up_lvl + 1
+            rate = float(game.config.get("equipment_upgrade", {}).get("modifier_rate", 0.08))
+            lines.append(f"Next upgrade +{next_lvl} cost: {int(game.config.get('equipment_upgrade',{}).get('base_gold',500)*(next_lvl))}g")
+        # Comparison
+        equipped = game.player.equipment.get(item.slot)
+        if equipped and equipped.id != item.id:
+            lines.append("")
+            lines.append(f"vs {equipped.name} [{equipped.rarity_label}]:")
+            for key in ["physical_power", "magic_power", "armor", "magic_resist", "max_hp", "max_mp", "crit_chance", "accuracy", "evasion", "speed"]:
+                old_flat = equipped.modifiers.flat.get(key, 0)
+                new_flat = item.modifiers.flat.get(key, 0)
+                old_r = rarity_cfg.get(equipped.rarity.lower(), {}).get("modifier_rate", 1.0)
+                new_r = rarity_cfg.get(item.rarity.lower(), {}).get("modifier_rate", 1.0)
+                # Apply rarity scaling for fair compare
+                old_val = old_flat * old_r
+                new_val = new_flat * new_r
+                diff = new_val - old_val
+                if abs(diff) >= 0.1 or key in item.modifiers.flat or key in equipped.modifiers.flat:
+                    sign = "+" if diff>0 else ""
+                    lines.append(f"  {key}: {sign}{diff:.1f} ({new_val:.0f} vs {old_val:.0f})")
+        return lines
 
     def _on_candidate(self, item: Item | None) -> None:
         if item is None:
             return
-        rarity_cfg = self.app.game.config.get("rarities") or {}
-        self.detail.set_lines(item.detail_lines(rarity_cfg))
+        self.detail.set_lines(self._enriched_detail(item))
 
     # ------------------------------------------------------------------
     def _equip(self) -> None:
@@ -130,6 +187,74 @@ class EquipmentWindow(tk.Toplevel):
         ok, message = self.app.game.unequip_slot(slot)
         self.app.notify(message)
         self.app.refresh_active()
+
+    def _enchant(self) -> None:
+        # Determine which item: prefer candidate if selected, else equipped in slot
+        item = self.candidate_list.selected_value
+        if item is None:
+            slot = self.slot_list.selected_value
+            if slot:
+                item = self.app.game.player.equipment.get(slot)
+        if not item:
+            self.app.notify("Select an item to enchant.")
+            return
+        # Open enchant chooser
+        self._open_enchant_window(item)
+
+    def _upgrade(self) -> None:
+        item = self.candidate_list.selected_value
+        if item is None:
+            slot = self.slot_list.selected_value
+            if slot:
+                item = self.app.game.player.equipment.get(slot)
+        if not item:
+            self.app.notify("Select an item to upgrade.")
+            return
+        ok, msg = self.app.game.upgrade_item(item.id)
+        self.app.notify(msg)
+        self.app.refresh_active()
+
+    def _open_enchant_window(self, item: Item) -> None:
+        game = self.app.game
+        window = tk.Toplevel(self.app.root, bg=theme.BG)
+        theme.style_window(window, f"Enchant {item.name}")
+        theme.center_window(window, 420, 400)
+        window.transient(self.app.root)
+        frame = tk.Frame(window, bg=theme.BG, padx=16, pady=14)
+        frame.pack(fill=tk.BOTH, expand=True)
+        theme.heading_label(frame, text=f"Enchant {item.name}").pack(anchor="w")
+        rarity_cfg = game.config.get("rarities") or {}
+        slots = item.effective_enchant_slots(rarity_cfg)
+        used = len(game.player.item_enchantments.get(item.id, []))
+        theme.body_label(frame, text=f"Slots: {used}/{slots}", fg=theme.FG_DIM).pack(anchor="w", pady=(4, 8))
+
+        current = game.player.item_enchantments.get(item.id, [])
+        if current:
+            theme.body_label(frame, text="Current:").pack(anchor="w")
+            for eid in current:
+                ench = game.enchantments.get(eid)
+                theme.body_label(frame, text=f"  {eid}: {ench.name if ench else eid}", font=theme.FONT_SMALL).pack(anchor="w")
+                theme.flat_button(frame, f"Remove {eid}", lambda e=eid: (game.disenchant_item(item.id, e), self.app.refresh_active(), window.destroy())).pack(fill=tk.X, pady=2)
+        else:
+            theme.body_label(frame, text="No enchantments", fg=theme.FG_DIM).pack(anchor="w")
+
+        theme.body_label(frame, text="Available:", font=theme.FONT_SMALL).pack(anchor="w", pady=(12, 4))
+        picker: SelectList[str] = SelectList(frame, height=6)
+        options = [(f"{ench.name} - {ench.gold_cost}g: " + ", ".join(ench.modifiers.describe()), ench.id) for ench in game.enchantments.all_definitions()]
+        picker.set_items(options)
+        picker.pack(fill=tk.BOTH, expand=True)
+
+        def apply_enchant():
+            eid = picker.selected_value
+            if not eid:
+                return
+            ok, msg = game.enchant_item(item.id, eid)
+            self.app.notify(msg)
+            self.app.refresh_active()
+            window.destroy()
+
+        theme.flat_button(frame, "Enchant", apply_enchant).pack(fill=tk.X, pady=(12, 0))
+        theme.flat_button(frame, "Close", window.destroy).pack(fill=tk.X, pady=(6, 0))
 
     def _close(self) -> None:
         self.app.close_toplevel("equipment")
