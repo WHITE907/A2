@@ -2,6 +2,57 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.9.0 - Content Enrichment
+
+A content-focused expansion building on v0.8.0's systems: companion banter,
+race reactivity, boss design, equipment sets, and advanced skills.
+
+### Companion banter (92 entries)
+- 92 banter entries across all 6 trigger types (travel, rest, boss_victory,
+  enemy_family, companion_downed, marriage)
+- Companion-to-companion pair banter (Rook+Brann, Elen+Veyra, Kess+Nyra, etc.)
+- Race-specific banter (companions react to player being orc, gnome, lamia, etc.)
+- Area-specific travel banter for all major locations
+- Enemy family banter for undead, beasts, constructs, demons, elementals
+
+### Race reactivity
+- All 8 shops now have race-reactive pricing (`race_buy_rates`) and exclusive stock (`race_item_ids`)
+- 18 new race-themed items (Dwarven Axe, Elven Bow, Drake Scale Armor, Silk Cloak, etc.)
+- Second branching dialogue tree (Silver Sapling) with 5 race-specific paths
+  (Elf, Orc, Gnome, Lamia, Arachne) plus a generic path
+
+### Boss design
+- All 5 bosses now have advanced mechanics:
+  - Bandit Chief: 2 phases, enrage timer, telegraph attacks
+  - Shadow Warden: 3 phases, telegraph, environmental hazards, phase shields
+  - Mire Oracle: 3 phases, enrage, telegraph, environment, summons
+  - Iron Colossus: 3 phases, enrage, telegraph, environment, summons, shields
+  - Dawn Tyrant: 3 phases, enrage, telegraph, environment (existing)
+
+### Equipment sets (9 total)
+- 8 new equipment sets added (up from 1):
+  - Race-themed: Elven Moonweave, Dwarven Deepforge, Dragonkin Scalemail
+  - Class-line: Paladin's Vestments, Assassin's Shrouds, Archmage's Regalia
+  - Boss drops: Dawn Tyrant's Spoils, Shadow Warden's Relics
+- Each set has 2/3/4 piece bonuses with meaningful power progression
+
+### Advanced skills (10 new)
+- 10 new skills using previously-unused advanced effect types:
+  - Vampiric Strike (life_drain), Executioner's Blade (execute)
+  - Purifying Light (cleanse), Arcane Disruption (dispel)
+  - Riposte Stance (counter), Challenging Shout (taunt)
+  - Temporal Shift (cooldown reduction), Curse Mirror (status_transfer)
+  - Time Bomb (delayed_attack), Guardian Bond (damage_redirect)
+
+### Content totals
+- Skills: 70 (was 60)
+- Items: 112 (was 94)
+- Banter: 92 (was 10)
+- Dialogues: 2 (was 1)
+- Equipment sets: 9 (was 1)
+- Bosses with phases: 5 (was 1)
+- Tests: 443
+
 ## v0.8.0 - Resources, Races, and Branching Paths
 
 A major systems expansion adding stamina, sub-races, lateral promotions, and new peoples.

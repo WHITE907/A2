@@ -201,20 +201,257 @@
     "max_active": 2
   },
   "loyalty": {
-    "thresholds": {"Wary": -100, "Trusted": 20, "Devoted": 50, "Sworn": 75},
+    "thresholds": {
+      "Wary": -100,
+      "Trusted": 20,
+      "Devoted": 50,
+      "Sworn": 75
+    },
     "bonuses": {
-      "Trusted": {"flat": {"max_hp": 20, "accuracy": 0.02}},
-      "Devoted": {"flat": {"max_hp": 45, "physical_power": 4, "magic_power": 4}},
-      "Sworn": {"flat": {"max_hp": 80, "physical_power": 8, "magic_power": 8, "armor": 6}}
+      "Trusted": {
+        "flat": {
+          "max_hp": 20,
+          "accuracy": 0.02
+        }
+      },
+      "Devoted": {
+        "flat": {
+          "max_hp": 45,
+          "physical_power": 4,
+          "magic_power": 4
+        }
+      },
+      "Sworn": {
+        "flat": {
+          "max_hp": 80,
+          "physical_power": 8,
+          "magic_power": 8,
+          "armor": 6
+        }
+      }
     },
     "leave_severity": 75,
     "leave_days": 3
   },
-  "equipment_upgrade": {"max_level": 5, "modifier_rate": 0.08, "base_gold": 500},
+  "equipment_upgrade": {
+    "max_level": 5,
+    "modifier_rate": 0.08,
+    "base_gold": 500
+  },
   "equipment_sets": {
     "emberwatch": {
       "name": "Emberwatch Bulwark",
-      "bonuses": {"2": {"flat": {"armor": 12, "max_hp": 45}}, "4": {"flat": {"physical_power": 10, "status_resist": 0.1}}}
+      "bonuses": {
+        "2": {
+          "flat": {
+            "armor": 12,
+            "max_hp": 45
+          }
+        },
+        "4": {
+          "flat": {
+            "physical_power": 10,
+            "status_resist": 0.1
+          }
+        }
+      }
+    },
+    "elven_moonweave": {
+      "name": "Elven Moonweave",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "evasion": 0.05,
+            "max_mp": 20
+          }
+        },
+        "3": {
+          "flat": {
+            "magic_power": 8,
+            "accuracy": 0.04
+          }
+        },
+        "4": {
+          "pct": {
+            "magic_power": 0.15
+          },
+          "flat": {
+            "max_mp": 40
+          }
+        }
+      }
+    },
+    "dwarven_deepforge": {
+      "name": "Dwarven Deepforge",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "armor": 10,
+            "max_hp": 40
+          }
+        },
+        "3": {
+          "flat": {
+            "physical_power": 8,
+            "status_resist": 0.08
+          }
+        },
+        "4": {
+          "pct": {
+            "max_hp": 0.12
+          },
+          "flat": {
+            "armor": 8
+          }
+        }
+      }
+    },
+    "dragonkin_scalemail": {
+      "name": "Dragonkin Scalemail",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "armor": 8,
+            "magic_resist": 8
+          }
+        },
+        "3": {
+          "flat": {
+            "physical_power": 6,
+            "magic_power": 6
+          }
+        },
+        "4": {
+          "pct": {
+            "physical_power": 0.1,
+            "magic_power": 0.1
+          }
+        }
+      }
+    },
+    "paladin_vestments": {
+      "name": "Paladin's Vestments",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "armor": 8,
+            "magic_resist": 6,
+            "max_hp": 30
+          }
+        },
+        "3": {
+          "flat": {
+            "physical_power": 6,
+            "magic_power": 6
+          }
+        },
+        "4": {
+          "pct": {
+            "max_hp": 0.1
+          },
+          "flat": {
+            "status_resist": 0.1
+          }
+        }
+      }
+    },
+    "assassin_shrouds": {
+      "name": "Assassin's Shrouds",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "evasion": 0.06,
+            "crit_chance": 0.04
+          }
+        },
+        "3": {
+          "flat": {
+            "physical_power": 8,
+            "speed": 5
+          }
+        },
+        "4": {
+          "pct": {
+            "crit_damage": 0.2
+          },
+          "flat": {
+            "evasion": 0.04
+          }
+        }
+      }
+    },
+    "archmage_regalia": {
+      "name": "Archmage's Regalia",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "max_mp": 30,
+            "magic_power": 6
+          }
+        },
+        "3": {
+          "flat": {
+            "magic_resist": 10,
+            "accuracy": 0.04
+          }
+        },
+        "4": {
+          "pct": {
+            "magic_power": 0.2
+          },
+          "flat": {
+            "max_mp": 50
+          }
+        }
+      }
+    },
+    "dawn_tyrant_spoils": {
+      "name": "Dawn Tyrant's Spoils",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "physical_power": 10,
+            "armor": 12
+          }
+        },
+        "3": {
+          "flat": {
+            "crit_chance": 0.06,
+            "crit_damage": 0.08
+          }
+        },
+        "4": {
+          "pct": {
+            "physical_power": 0.15,
+            "max_hp": 0.08
+          }
+        }
+      }
+    },
+    "shadow_warden_relics": {
+      "name": "Shadow Warden's Relics",
+      "bonuses": {
+        "2": {
+          "flat": {
+            "evasion": 0.05,
+            "magic_resist": 8
+          }
+        },
+        "3": {
+          "flat": {
+            "magic_power": 8,
+            "speed": 4
+          }
+        },
+        "4": {
+          "pct": {
+            "magic_power": 0.12
+          },
+          "flat": {
+            "crit_chance": 0.05
+          }
+        }
+      }
     }
   }
 }

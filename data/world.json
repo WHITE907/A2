@@ -710,7 +710,17 @@
         "wanderers_knot",
         "bridgewalkers_charm"
       ],
-      "faction_id": "merchant_caravans"
+      "faction_id": "merchant_caravans",
+      "race_buy_rates": {
+        "halfling": 0.9,
+        "human": 0.85
+      },
+      "race_item_ids": {
+        "halfling": [
+          "pipe_weed",
+          "halfling_pie"
+        ]
+      }
     },
     {
       "id": "ashvale_smith",
@@ -729,7 +739,21 @@
         "chain_mail",
         "steel_sword"
       ],
-      "faction_id": "ashvale_council"
+      "faction_id": "ashvale_council",
+      "race_buy_rates": {
+        "dwarf": 0.8,
+        "goliath": 0.85,
+        "orc": 0.9
+      },
+      "race_item_ids": {
+        "dwarf": [
+          "dwarven_axe",
+          "stone_shield"
+        ],
+        "goliath": [
+          "giant_hammer"
+        ]
+      }
     },
     {
       "id": "emberwatch_outfitter",
@@ -746,7 +770,20 @@
         "mossweave_coat",
         "marshwalker_boots"
       ],
-      "faction_id": "emberwatch_wardens"
+      "faction_id": "emberwatch_wardens",
+      "race_buy_rates": {
+        "dragonkin": 0.85,
+        "demon": 0.9,
+        "arachne": 0.9
+      },
+      "race_item_ids": {
+        "dragonkin": [
+          "drake_scale_armor"
+        ],
+        "arachne": [
+          "silk_cloak"
+        ]
+      }
     },
     {
       "id": "emberwatch_apothecary",
@@ -788,7 +825,20 @@
         "runic_gauntlets",
         "warden_charm"
       ],
-      "faction_id": "stonehaven_clans"
+      "faction_id": "stonehaven_clans",
+      "race_buy_rates": {
+        "dwarf": 0.8,
+        "goliath": 0.85,
+        "gnome": 0.9
+      },
+      "race_item_ids": {
+        "dwarf": [
+          "masterwork_plate"
+        ],
+        "gnome": [
+          "tinker_tools"
+        ]
+      }
     },
     {
       "id": "stonehaven_arcanist",
@@ -803,7 +853,23 @@
         "greater_ether",
         "stormglass_pendant"
       ],
-      "faction_id": "stonehaven_clans"
+      "faction_id": "stonehaven_clans",
+      "race_buy_rates": {
+        "gnome": 0.8,
+        "tiefling": 0.85,
+        "lamia": 0.9
+      },
+      "race_item_ids": {
+        "gnome": [
+          "alchemical_kit"
+        ],
+        "tiefling": [
+          "infernal_tome"
+        ],
+        "lamia": [
+          "serpent_staff"
+        ]
+      }
     },
     {
       "id": "skyreach_quartermaster",
@@ -818,7 +884,20 @@
         "greater_potion",
         "greater_ether"
       ],
-      "faction_id": "skyreach_archivists"
+      "faction_id": "skyreach_archivists",
+      "race_buy_rates": {
+        "elf": 0.85,
+        "genasi": 0.9,
+        "dragonkin": 0.9
+      },
+      "race_item_ids": {
+        "elf": [
+          "elven_bow"
+        ],
+        "genasi": [
+          "elemental_gem"
+        ]
+      }
     },
     {
       "id": "skyreach_reliquary",
@@ -833,7 +912,20 @@
         "greater_ether",
         "wildclaw_pendant"
       ],
-      "faction_id": "skyreach_archivists"
+      "faction_id": "skyreach_archivists",
+      "race_buy_rates": {
+        "elf": 0.85,
+        "half_elf": 0.9,
+        "lamia": 0.9
+      },
+      "race_item_ids": {
+        "elf": [
+          "moonstone_amulet"
+        ],
+        "lamia": [
+          "ancient_scroll"
+        ]
+      }
     }
   ],
   "npcs": [

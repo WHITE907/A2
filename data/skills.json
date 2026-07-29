@@ -1621,6 +1621,218 @@
         "aoe",
         "debuff"
       ]
+    },
+    {
+      "id": "vampiric_strike",
+      "name": "Vampiric Strike",
+      "category": "active",
+      "description": "A dark blow that feeds on the target's life force.",
+      "mp_cost": 0,
+      "sp_cost": 12,
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "melee",
+        "shadow",
+        "sustain"
+      ],
+      "effects": [
+        {
+          "type": "life_drain",
+          "damage_type": "physical",
+          "base": 12,
+          "power_ratio": 1.3,
+          "drain_ratio": 0.5
+        }
+      ]
+    },
+    {
+      "id": "executioner_blade",
+      "name": "Executioner's Blade",
+      "category": "active",
+      "description": "A killing blow that deals massive damage to wounded foes.",
+      "mp_cost": 0,
+      "sp_cost": 18,
+      "cooldown": 4,
+      "tags": [
+        "physical",
+        "melee",
+        "execute"
+      ],
+      "effects": [
+        {
+          "type": "execute",
+          "damage_type": "physical",
+          "base": 15,
+          "power_ratio": 1.5,
+          "threshold": 0.3,
+          "execute_multiplier": 2.5
+        }
+      ]
+    },
+    {
+      "id": "purifying_light",
+      "name": "Purifying Light",
+      "category": "active",
+      "description": "Holy light that burns away corruption and curses.",
+      "mp_cost": 14,
+      "cooldown": 5,
+      "tags": [
+        "magical",
+        "light",
+        "support",
+        "cleanse"
+      ],
+      "effects": [
+        {
+          "type": "cleanse"
+        }
+      ]
+    },
+    {
+      "id": "arcane_disruption",
+      "name": "Arcane Disruption",
+      "category": "active",
+      "description": "Shatters magical effects protecting the target.",
+      "mp_cost": 16,
+      "cooldown": 6,
+      "tags": [
+        "magical",
+        "support",
+        "dispel"
+      ],
+      "effects": [
+        {
+          "type": "dispel"
+        }
+      ]
+    },
+    {
+      "id": "riposte_stance",
+      "name": "Riposte Stance",
+      "category": "active",
+      "description": "Assume a defensive posture that counters the next attack.",
+      "mp_cost": 0,
+      "sp_cost": 10,
+      "cooldown": 4,
+      "tags": [
+        "physical",
+        "defense",
+        "counter"
+      ],
+      "effects": [
+        {
+          "type": "counter",
+          "reflect_pct": 0.6,
+          "duration": 2
+        }
+      ]
+    },
+    {
+      "id": "challenging_shout",
+      "name": "Challenging Shout",
+      "category": "active",
+      "description": "Provoke an enemy into focusing their attacks on you.",
+      "mp_cost": 0,
+      "sp_cost": 8,
+      "cooldown": 5,
+      "tags": [
+        "physical",
+        "defense",
+        "taunt"
+      ],
+      "targeting": "enemy",
+      "effects": [
+        {
+          "type": "taunt",
+          "duration": 3
+        }
+      ]
+    },
+    {
+      "id": "temporal_shift",
+      "name": "Temporal Shift",
+      "category": "active",
+      "description": "Bend time to reduce all cooldowns.",
+      "mp_cost": 20,
+      "cooldown": 8,
+      "tags": [
+        "magical",
+        "support",
+        "cooldown"
+      ],
+      "effects": [
+        {
+          "type": "cooldown",
+          "amount": -2
+        }
+      ]
+    },
+    {
+      "id": "curse_mirror",
+      "name": "Curse Mirror",
+      "category": "active",
+      "description": "Reflect one of your debuffs onto an enemy.",
+      "mp_cost": 12,
+      "cooldown": 5,
+      "tags": [
+        "magical",
+        "shadow",
+        "debuff",
+        "transfer"
+      ],
+      "targeting": "enemy",
+      "effects": [
+        {
+          "type": "status_transfer"
+        }
+      ]
+    },
+    {
+      "id": "time_bomb",
+      "name": "Time Bomb",
+      "category": "active",
+      "description": "Plant an arcane explosive that detonates after 2 turns.",
+      "mp_cost": 15,
+      "cooldown": 6,
+      "tags": [
+        "magical",
+        "delayed",
+        "aoe"
+      ],
+      "targeting": "enemy",
+      "effects": [
+        {
+          "type": "delayed_attack",
+          "base": 40,
+          "delay": 2,
+          "name": "Time Bomb"
+        }
+      ]
+    },
+    {
+      "id": "guardian_bond",
+      "name": "Guardian Bond",
+      "category": "active",
+      "description": "Link yourself to an ally, absorbing a portion of their damage.",
+      "mp_cost": 10,
+      "sp_cost": 10,
+      "cooldown": 6,
+      "tags": [
+        "physical",
+        "magical",
+        "defense",
+        "support",
+        "redirect"
+      ],
+      "targeting": "ally",
+      "effects": [
+        {
+          "type": "damage_redirect",
+          "percent": 0.4,
+          "duration": 4
+        }
+      ]
     }
   ]
 }

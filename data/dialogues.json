@@ -177,6 +177,291 @@
           "options": []
         }
       ]
+    },
+    {
+      "id": "amariel_silver_sapling",
+      "speaker_id": "elder_amariel",
+      "title": "The Silver Sapling",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Elder Amariel tends a silver sapling that seems to glow faintly. She looks up at your approach. 'You can see it, can't you? Most cannot. The sapling chooses who sees its light.'",
+          "options": [
+            {
+              "id": "ask_meaning",
+              "text": "What is this sapling?",
+              "next_node_id": "explain"
+            },
+            {
+              "id": "elven_greeting",
+              "text": "[Elf] 'Mae govannen, elder. The silver reminds me of the old songs.'",
+              "conditions": {
+                "race_ids": [
+                  "elf",
+                  "half_elf"
+                ]
+              },
+              "next_node_id": "elven_path"
+            },
+            {
+              "id": "orc_challenge",
+              "text": "[Orc] 'In my culture, glowing plants mean danger or power. Which is this?'",
+              "conditions": {
+                "race_ids": [
+                  "orc",
+                  "half_orc"
+                ]
+              },
+              "next_node_id": "orc_path"
+            },
+            {
+              "id": "gnome_curious",
+              "text": "[Gnome] 'Fascinating! Is it bioluminescent? Magically infused? Can I take a sample?'",
+              "conditions": {
+                "race_ids": [
+                  "gnome"
+                ]
+              },
+              "next_node_id": "gnome_path"
+            },
+            {
+              "id": "lamia_memory",
+              "text": "[Lamia] 'I remember when this was a seed. Three hundred years ago.'",
+              "conditions": {
+                "race_ids": [
+                  "lamia"
+                ]
+              },
+              "next_node_id": "lamia_path"
+            },
+            {
+              "id": "arachne_web",
+              "text": "[Arachne] 'The threads around it... they're not spider silk. They're memories.'",
+              "conditions": {
+                "race_ids": [
+                  "arachne"
+                ]
+              },
+              "next_node_id": "arachne_path"
+            },
+            {
+              "id": "leave",
+              "text": "Leave the elder to her work.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'It grows from a promise. An elven oath made to the forest before the first road was cut. The oath is fading, and so is the sapling. I need someone to carry its seed to the heart of Mosswood and plant it where the old roots still remember.'",
+          "options": [
+            {
+              "id": "accept_quest",
+              "text": "I'll carry the seed.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "accepted"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "decline",
+              "text": "That sounds like someone else's problem.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "elven_path",
+          "text": "Amariel's eyes widen. 'You know the old tongue. Then you understand what this sapling truly is — a living memory. The oath was made by my grandmother's grandmother. It was sung, not written.' She offers you a silver seed. 'An elf should carry this. The roots will know your blood.'",
+          "options": [
+            {
+              "id": "elven_accept",
+              "text": "I will carry it with honour.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "elven_carrier"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "elven_pathkeepers",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "elven_accepted"
+            },
+            {
+              "id": "elven_decline",
+              "text": "I'm not the right elf for this.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "orc_path",
+          "text": "Amariel laughs. 'Direct. I like that. It is both danger and power. The forest is dying, and this sapling is its last heartbeat. An orc's strength could carry it through the deep woods where others would falter.'",
+          "options": [
+            {
+              "id": "orc_accept",
+              "text": "Gruk— I mean, I will carry it. The forest owes me nothing, but I owe it this.'",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "orc_carrier"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "orc_decline",
+              "text": "Not my fight.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "gnome_path",
+          "text": "Amariel smiles. 'A gnome! Perfect. The seed needs careful handling — temperature, humidity, soil composition. No sample, I'm afraid, but I can give you the seed itself. Your scientific mind might be exactly what it needs.'",
+          "options": [
+            {
+              "id": "gnome_accept",
+              "text": "I'll document everything! Temperature logs, soil samples, the works!",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "gnome_carrier"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "gnome_decline",
+              "text": "Too much responsibility for a seed.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "lamia_path",
+          "text": "Amariel's eyes fill with tears. 'You remember. After all these centuries, someone remembers. The sapling was planted the year you were born, wasn't it? You've watched it grow your entire life.' She presses the seed into your hands. 'Bring it home.'",
+          "options": [
+            {
+              "id": "lamia_accept",
+              "text": "For the memories we share, I will.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "lamia_carrier"
+                },
+                {
+                  "type": "affinity",
+                  "target_id": "elder_amariel",
+                  "amount": 20
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "lamia_decline",
+              "text": "Some memories are better left buried.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "arachne_path",
+          "text": "Amariel nods slowly. 'You see the threads. Yes, they are memories — woven into the bark by every creature that has passed this way. An arachne could carry the seed and weave new threads along the path, strengthening the old oath.'",
+          "options": [
+            {
+              "id": "arachne_accept",
+              "text": "I will weave a new path for the old promise.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "arachne_carrier"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "arachne_decline",
+              "text": "My webs are for hunting, not gardening.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "accepted",
+          "text": "Amariel places a small silver seed in your palm. It pulses with warmth. 'Plant it at the heart of Mosswood, where the oldest roots meet. The forest will know what to do.'",
+          "options": [
+            {
+              "id": "end_accepted",
+              "text": "I won't let you down.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "elven_accepted",
+          "text": "Amariel places the seed in your palm and whispers a blessing in the old tongue. The seed glows brighter. 'The pathkeepers will hear of this. You carry more than a seed — you carry a song.'",
+          "options": [
+            {
+              "id": "end_elven",
+              "text": "The song will not be forgotten.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "declined",
+          "text": "Amariel nods. 'I understand. The forest will wait. It has waited before.'",
+          "options": [
+            {
+              "id": "end_declined",
+              "text": "Perhaps someone else will come.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
     }
   ]
 }

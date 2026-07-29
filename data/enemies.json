@@ -7,16 +7,36 @@
       "base_level": 1,
       "family": "ooze",
       "description": "It jiggles with what might be intent.",
-      "base_stats": { "STR": 4, "END": 4, "INT": 1, "AGI": 2 },
-      "growth": { "STR": 1, "END": 1, "INT": 0, "AGI": 0 },
-      "skill_ids": ["enemy_claw"],
+      "base_stats": {
+        "STR": 4,
+        "END": 4,
+        "INT": 1,
+        "AGI": 2
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 0,
+        "AGI": 0
+      },
+      "skill_ids": [
+        "enemy_claw"
+      ],
       "ai_behavior_id": "aggressive",
       "exp_reward": 12,
       "gold_reward": 6,
       "reward_scaling": 0.12,
       "loot": [
-        { "item_id": "slime_core", "chance": 0.6, "min_quantity": 1, "max_quantity": 2 },
-        { "item_id": "minor_potion", "chance": 0.15 }
+        {
+          "item_id": "slime_core",
+          "chance": 0.6,
+          "min_quantity": 1,
+          "max_quantity": 2
+        },
+        {
+          "item_id": "minor_potion",
+          "chance": 0.15
+        }
       ]
     },
     {
@@ -25,13 +45,31 @@
       "base_level": 1,
       "family": "beast",
       "description": "Bold, for its size.",
-      "base_stats": { "STR": 3, "END": 3, "INT": 1, "AGI": 6 },
-      "growth": { "STR": 1, "END": 0, "INT": 0, "AGI": 1 },
-      "skill_ids": ["enemy_claw", "enemy_bite"],
+      "base_stats": {
+        "STR": 3,
+        "END": 3,
+        "INT": 1,
+        "AGI": 6
+      },
+      "growth": {
+        "STR": 1,
+        "END": 0,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_claw",
+        "enemy_bite"
+      ],
       "ai_behavior_id": "opportunist",
       "exp_reward": 10,
       "gold_reward": 4,
-      "loot": [{ "item_id": "minor_potion", "chance": 0.1 }]
+      "loot": [
+        {
+          "item_id": "minor_potion",
+          "chance": 0.1
+        }
+      ]
     },
     {
       "id": "grey_wolf",
@@ -39,16 +77,36 @@
       "base_level": 3,
       "family": "beast",
       "description": "It has already decided how this goes.",
-      "base_stats": { "STR": 9, "END": 6, "INT": 2, "AGI": 10 },
-      "growth": { "STR": 2, "END": 1, "INT": 0, "AGI": 2 },
-      "skill_ids": ["enemy_claw", "enemy_bite", "enemy_howl"],
+      "base_stats": {
+        "STR": 9,
+        "END": 6,
+        "INT": 2,
+        "AGI": 10
+      },
+      "growth": {
+        "STR": 2,
+        "END": 1,
+        "INT": 0,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "enemy_claw",
+        "enemy_bite",
+        "enemy_howl"
+      ],
       "ai_behavior_id": "opportunist",
       "exp_reward": 28,
       "gold_reward": 14,
       "mastery_reward": 4,
       "loot": [
-        { "item_id": "wolf_pelt", "chance": 0.55 },
-        { "item_id": "minor_potion", "chance": 0.2 }
+        {
+          "item_id": "wolf_pelt",
+          "chance": 0.55
+        },
+        {
+          "item_id": "minor_potion",
+          "chance": 0.2
+        }
       ]
     },
     {
@@ -57,16 +115,40 @@
       "base_level": 4,
       "family": "humanoid",
       "description": "Desperate, armed, and out of better options.",
-      "base_stats": { "STR": 11, "END": 9, "INT": 4, "AGI": 9 },
-      "growth": { "STR": 2, "END": 2, "INT": 1, "AGI": 1 },
-      "skill_ids": ["enemy_claw", "enemy_bite"],
+      "base_stats": {
+        "STR": 11,
+        "END": 9,
+        "INT": 4,
+        "AGI": 9
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 1,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_claw",
+        "enemy_bite"
+      ],
       "ai_behavior_id": "defensive",
       "exp_reward": 36,
       "gold_reward": 30,
       "loot": [
-        { "item_id": "bandit_coin", "chance": 0.7, "min_quantity": 1, "max_quantity": 3 },
-        { "item_id": "iron_dagger", "chance": 0.1 },
-        { "item_id": "potion", "chance": 0.15 }
+        {
+          "item_id": "bandit_coin",
+          "chance": 0.7,
+          "min_quantity": 1,
+          "max_quantity": 3
+        },
+        {
+          "item_id": "iron_dagger",
+          "chance": 0.1
+        },
+        {
+          "item_id": "potion",
+          "chance": 0.15
+        }
       ]
     },
     {
@@ -75,13 +157,31 @@
       "base_level": 5,
       "family": "insect",
       "description": "Too many legs, moving too well together.",
-      "base_stats": { "STR": 8, "END": 7, "INT": 5, "AGI": 14 },
-      "growth": { "STR": 1, "END": 1, "INT": 1, "AGI": 2 },
-      "skill_ids": ["enemy_bite", "enemy_spit"],
+      "base_stats": {
+        "STR": 8,
+        "END": 7,
+        "INT": 5,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 1,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "enemy_bite",
+        "enemy_spit"
+      ],
       "ai_behavior_id": "aggressive",
       "exp_reward": 42,
       "gold_reward": 18,
-      "loot": [{ "item_id": "antidote", "chance": 0.3 }]
+      "loot": [
+        {
+          "item_id": "antidote",
+          "chance": 0.3
+        }
+      ]
     },
     {
       "id": "skeleton",
@@ -89,15 +189,36 @@
       "base_level": 7,
       "family": "undead",
       "description": "It remembers how to fight but not why.",
-      "base_stats": { "STR": 14, "END": 12, "INT": 3, "AGI": 8 },
-      "growth": { "STR": 2, "END": 2, "INT": 0, "AGI": 1 },
-      "skill_ids": ["enemy_claw", "enemy_crush"],
+      "base_stats": {
+        "STR": 14,
+        "END": 12,
+        "INT": 3,
+        "AGI": 8
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_claw",
+        "enemy_crush"
+      ],
       "ai_behavior_id": "berserk",
       "exp_reward": 60,
       "gold_reward": 26,
       "loot": [
-        { "item_id": "iron_helm", "chance": 0.12 },
-        { "item_id": "bandit_coin", "chance": 0.35, "min_quantity": 1, "max_quantity": 2 }
+        {
+          "item_id": "iron_helm",
+          "chance": 0.12
+        },
+        {
+          "item_id": "bandit_coin",
+          "chance": 0.35,
+          "min_quantity": 1,
+          "max_quantity": 2
+        }
       ]
     },
     {
@@ -106,15 +227,34 @@
       "base_level": 8,
       "family": "humanoid",
       "description": "Whispering to something that whispers back.",
-      "base_stats": { "STR": 6, "END": 10, "INT": 20, "AGI": 9 },
-      "growth": { "STR": 1, "END": 2, "INT": 3, "AGI": 1 },
-      "skill_ids": ["enemy_dark_bolt", "enemy_mend"],
+      "base_stats": {
+        "STR": 6,
+        "END": 10,
+        "INT": 20,
+        "AGI": 9
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 3,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_dark_bolt",
+        "enemy_mend"
+      ],
       "ai_behavior_id": "tactical",
       "exp_reward": 75,
       "gold_reward": 40,
       "loot": [
-        { "item_id": "shadow_essence", "chance": 0.4 },
-        { "item_id": "ether", "chance": 0.2 }
+        {
+          "item_id": "shadow_essence",
+          "chance": 0.4
+        },
+        {
+          "item_id": "ether",
+          "chance": 0.2
+        }
       ]
     },
     {
@@ -123,15 +263,36 @@
       "base_level": 11,
       "family": "giant",
       "description": "Slow to anger, and then not slow at all.",
-      "base_stats": { "STR": 26, "END": 26, "INT": 4, "AGI": 6 },
-      "growth": { "STR": 3, "END": 4, "INT": 0, "AGI": 1 },
-      "skill_ids": ["enemy_crush", "enemy_howl"],
+      "base_stats": {
+        "STR": 26,
+        "END": 26,
+        "INT": 4,
+        "AGI": 6
+      },
+      "growth": {
+        "STR": 3,
+        "END": 4,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_howl"
+      ],
       "ai_behavior_id": "berserk",
       "exp_reward": 130,
       "gold_reward": 70,
       "loot": [
-        { "item_id": "troll_hide", "chance": 0.5 },
-        { "item_id": "potion", "chance": 0.3, "min_quantity": 1, "max_quantity": 2 }
+        {
+          "item_id": "troll_hide",
+          "chance": 0.5
+        },
+        {
+          "item_id": "potion",
+          "chance": 0.3,
+          "min_quantity": 1,
+          "max_quantity": 2
+        }
       ]
     },
     {
@@ -140,13 +301,31 @@
       "base_level": 12,
       "family": "elemental",
       "description": "Cold enough that looking at it hurts.",
-      "base_stats": { "STR": 8, "END": 14, "INT": 28, "AGI": 18 },
-      "growth": { "STR": 1, "END": 2, "INT": 4, "AGI": 2 },
-      "skill_ids": ["enemy_frost_breath", "enemy_dark_bolt"],
+      "base_stats": {
+        "STR": 8,
+        "END": 14,
+        "INT": 28,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 4,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "enemy_frost_breath",
+        "enemy_dark_bolt"
+      ],
       "ai_behavior_id": "tactical",
       "exp_reward": 150,
       "gold_reward": 60,
-      "loot": [{ "item_id": "shadow_essence", "chance": 0.35 }]
+      "loot": [
+        {
+          "item_id": "shadow_essence",
+          "chance": 0.35
+        }
+      ]
     },
     {
       "id": "bandit_chief",
@@ -155,23 +334,108 @@
       "family": "humanoid",
       "description": "The one the others are afraid of.",
       "is_boss": true,
-      "base_stats": { "STR": 24, "END": 22, "INT": 8, "AGI": 16 },
-      "growth": { "STR": 3, "END": 3, "INT": 1, "AGI": 2 },
-      "skill_ids": ["enemy_crush", "enemy_bite", "enemy_howl"],
+      "base_stats": {
+        "STR": 24,
+        "END": 22,
+        "INT": 8,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 1,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_bite",
+        "enemy_howl"
+      ],
       "ai_behavior_id": "tactical",
       "exp_reward": 320,
       "gold_reward": 250,
       "reward_scaling": 0.15,
-      "modifiers": { "flat": { "armor": 8, "max_hp": 120 } },
+      "modifiers": {
+        "flat": {
+          "armor": 8,
+          "max_hp": 120
+        }
+      },
       "loot": [
-        { "item_id": "steel_sword", "chance": 0.5 },
-        { "item_id": "knights_seal", "chance": 1.0 },
-        { "item_id": "duelists_token", "chance": 1.0 },
-        { "item_id": "oath_sigil", "chance": 1.0 },
-        { "item_id": "shadow_pact", "chance": 1.0 },
-        { "item_id": "grimoire_of_ages", "chance": 1.0 },
-        { "item_id": "bandit_coin", "chance": 1.0, "min_quantity": 5, "max_quantity": 10 }
-      ]
+        {
+          "item_id": "steel_sword",
+          "chance": 0.5
+        },
+        {
+          "item_id": "knights_seal",
+          "chance": 1.0
+        },
+        {
+          "item_id": "duelists_token",
+          "chance": 1.0
+        },
+        {
+          "item_id": "oath_sigil",
+          "chance": 1.0
+        },
+        {
+          "item_id": "shadow_pact",
+          "chance": 1.0
+        },
+        {
+          "item_id": "grimoire_of_ages",
+          "chance": 1.0
+        },
+        {
+          "item_id": "bandit_coin",
+          "chance": 1.0,
+          "min_quantity": 5,
+          "max_quantity": 10
+        }
+      ],
+      "boss_phases": [
+        {
+          "hp_fraction": 0.6,
+          "name": "Rally the Troops",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.3,
+              "speed": 0.2
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "bandit",
+              "level": 5
+            }
+          ]
+        },
+        {
+          "hp_fraction": 0.3,
+          "name": "Desperate Fury",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.5,
+              "crit_damage": 0.3
+            }
+          }
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 12,
+        "enrage_modifiers": {
+          "pct": {
+            "physical_power": 0.4
+          }
+        },
+        "telegraph": {
+          "interval": 5,
+          "damage": 25,
+          "counter_damage": 40,
+          "warning": "The Bandit Chief winds up for a devastating strike!",
+          "impact": "The Bandit Chief's axe comes crashing down!"
+        }
+      }
     },
     {
       "id": "shadow_warden",
@@ -180,20 +444,109 @@
       "family": "aberration",
       "description": "It guards a door that is not there any more.",
       "is_boss": true,
-      "base_stats": { "STR": 30, "END": 30, "INT": 34, "AGI": 22 },
-      "growth": { "STR": 3, "END": 4, "INT": 4, "AGI": 2 },
-      "skill_ids": ["enemy_dark_bolt", "enemy_frost_breath", "enemy_mend", "enemy_crush"],
+      "base_stats": {
+        "STR": 30,
+        "END": 30,
+        "INT": 34,
+        "AGI": 22
+      },
+      "growth": {
+        "STR": 3,
+        "END": 4,
+        "INT": 4,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "enemy_dark_bolt",
+        "enemy_frost_breath",
+        "enemy_mend",
+        "enemy_crush"
+      ],
       "ai_behavior_id": "tactical",
       "exp_reward": 700,
       "gold_reward": 600,
       "reward_scaling": 0.15,
-      "modifiers": { "flat": { "armor": 15, "magic_resist": 15, "max_hp": 260 } },
+      "modifiers": {
+        "flat": {
+          "armor": 15,
+          "magic_resist": 15,
+          "max_hp": 260
+        }
+      },
       "loot": [
-        { "item_id": "arcane_focus", "chance": 1.0 },
-        { "item_id": "shadow_fang", "chance": 0.4 },
-        { "item_id": "runed_staff", "chance": 0.4 },
-        { "item_id": "shadow_essence", "chance": 1.0, "min_quantity": 2, "max_quantity": 4 }
-      ]
+        {
+          "item_id": "arcane_focus",
+          "chance": 1.0
+        },
+        {
+          "item_id": "shadow_fang",
+          "chance": 0.4
+        },
+        {
+          "item_id": "runed_staff",
+          "chance": 0.4
+        },
+        {
+          "item_id": "shadow_essence",
+          "chance": 1.0,
+          "min_quantity": 2,
+          "max_quantity": 4
+        }
+      ],
+      "boss_phases": [
+        {
+          "hp_fraction": 0.7,
+          "name": "Shadow Cloak",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.15,
+              "magic_resist": 15
+            }
+          }
+        },
+        {
+          "hp_fraction": 0.4,
+          "name": "Summon Shadows",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.3
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "frost_wisp",
+              "level": 8
+            },
+            {
+              "enemy_id": "frost_wisp",
+              "level": 8
+            }
+          ]
+        },
+        {
+          "hp_fraction": 0.15,
+          "name": "Umbral Nova",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.6
+            }
+          },
+          "shield_hp": 50
+        }
+      ],
+      "boss_rules": {
+        "telegraph": {
+          "interval": 4,
+          "damage": 35,
+          "counter_damage": 50,
+          "warning": "The Shadow Warden gathers darkness around itself!",
+          "impact": "A wave of shadow erupts outward!"
+        },
+        "environment": {
+          "per_round_damage": 3,
+          "message": "The shadows lash out at everyone."
+        }
+      }
     },
     {
       "id": "ash_hound",
@@ -545,7 +898,65 @@
           "chance": 1.0,
           "quantity": 3
         }
-      ]
+      ],
+      "boss_phases": [
+        {
+          "hp_fraction": 0.75,
+          "name": "Prophetic Vision",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.2,
+              "accuracy": 0.1
+            }
+          }
+        },
+        {
+          "hp_fraction": 0.5,
+          "name": "Summon Mire Spirits",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.25
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "marsh_serpent",
+              "level": 12
+            }
+          ]
+        },
+        {
+          "hp_fraction": 0.25,
+          "name": "Fate Unravelled",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.5,
+              "speed": 0.3
+            }
+          },
+          "shield_hp": 80
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 15,
+        "enrage_modifiers": {
+          "pct": {
+            "magic_power": 0.5,
+            "speed": 0.3
+          }
+        },
+        "telegraph": {
+          "interval": 6,
+          "damage": 45,
+          "counter_damage": 60,
+          "warning": "The Mire Oracle's eyes glow white — she sees your future!",
+          "impact": "The Oracle's prophecy strikes with terrible certainty!"
+        },
+        "environment": {
+          "per_round_damage": 5,
+          "message": "Toxic mire bubbles up from the ground!"
+        }
+      }
     },
     {
       "id": "redcap_raider",
@@ -757,7 +1168,70 @@
           "chance": 1.0,
           "quantity": 3
         }
-      ]
+      ],
+      "boss_phases": [
+        {
+          "hp_fraction": 0.8,
+          "name": "Armour Plating",
+          "modifiers": {
+            "flat": {
+              "armor": 30,
+              "magic_resist": 20
+            }
+          },
+          "shield_hp": 100
+        },
+        {
+          "hp_fraction": 0.5,
+          "name": "Overdrive",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.4,
+              "speed": 0.3
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "ruin_sentinel",
+              "level": 15
+            },
+            {
+              "enemy_id": "ruin_sentinel",
+              "level": 15
+            }
+          ]
+        },
+        {
+          "hp_fraction": 0.2,
+          "name": "Meltdown Protocol",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.7,
+              "magic_power": 0.5
+            }
+          },
+          "shield_hp": 120
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 10,
+        "enrage_modifiers": {
+          "pct": {
+            "physical_power": 0.6
+          }
+        },
+        "telegraph": {
+          "interval": 4,
+          "damage": 55,
+          "counter_damage": 70,
+          "warning": "The Iron Colossus charges its core — brace for impact!",
+          "impact": "The Colossus unleashes a devastating shockwave!"
+        },
+        "environment": {
+          "per_round_damage": 8,
+          "message": "Steam vents erupt from the Colossus, scalding everyone nearby!"
+        }
+      }
     },
     {
       "id": "storm_harpy",
