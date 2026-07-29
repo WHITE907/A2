@@ -17,7 +17,7 @@ from __future__ import annotations
 import tkinter as tk
 
 from engine.entities.enemy import Enemy
-from engine.skills.skill import Skill
+from engine.skills.skill import Skill, SkillTargeting
 from gui import theme
 from gui.widgets import ButtonStack, LogPanel, SelectList, StatPanel
 
@@ -117,9 +117,9 @@ class CombatScreen(tk.Frame):
             actions.append((f"{skill.name} - {skill.cost_text()}{suffix}", skill))
         self.action_list.set_items(actions)
 
-        living = battle.living_enemies
-        self.target_list.set_items([(e.name, e) for e in living], keep_selection=True)
+        self._refresh_target_list(keep_selection=True)
 
+        living = battle.living_enemies
         waiting = battle.waiting_for_player
         self.buttons.set_all_enabled(waiting)
         self.buttons.set_enabled("flee", waiting and not any(e.is_boss for e in living))
@@ -146,8 +146,35 @@ class CombatScreen(tk.Frame):
             self.log.append(entry.text, entry.kind)
         self._logged_entries = len(battle.log)
 
+    def _refresh_target_list(self, keep_selection: bool = False) -> None:
+        """Display targets valid for the currently selected action.
+
+        Previously this list always contained enemies, which made ally-targeted
+        skills appear unusable even though the engine already supported them.
+        Keeping this decision in the presentation layer also preserves the
+        engine/UI boundary: the engine remains authoritative when the action
+        is resolved.
+        """
+        battle = self.app.game.battle
+        if battle is None:
+            return
+        action = self.action_list.selected_value
+        if isinstance(action, Skill):
+            if action.targeting == SkillTargeting.ALLY:
+                targets = battle.living_allies
+            elif action.targeting == SkillTargeting.SELF:
+                targets = [battle.player]
+            elif action.targeting == SkillTargeting.ALL_ALLIES:
+                targets = battle.living_allies
+            else:
+                targets = battle.living_enemies
+        else:
+            targets = battle.living_enemies
+        self.target_list.set_items([(target.name, target) for target in targets], keep_selection=keep_selection)
+
     def _on_action_selected(self, value: "Skill | str") -> None:
-        """Show what the highlighted skill does."""
+        """Show what the highlighted skill does and update valid targets."""
+        self._refresh_target_list(keep_selection=False)
         if isinstance(value, str):  # the ATTACK sentinel
             self.app.notify("Basic attack with your equipped weapon.")
             return
