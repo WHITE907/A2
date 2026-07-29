@@ -326,8 +326,14 @@ class Game:
             return False, "Please choose a race."
 
         # Validate sub-race if provided
-        if sub_race_id and race.get_sub_race(sub_race_id) is None:
-            return False, "Invalid sub-race selection."
+        if sub_race_id:
+            selected_sub_race = race.get_sub_race(sub_race_id)
+            if selected_sub_race is None:
+                return False, "Invalid sub-race selection."
+            gender_rules = {"succubus": "female", "incubus": "male"}
+            required_gender = gender_rules.get(sub_race_id)
+            if required_gender and gender.lower() != required_gender:
+                return False, f"{selected_sub_race.name} is only available to {required_gender} characters."
 
         progression = self.config.get("progression", {})
         player = Player(
@@ -346,6 +352,13 @@ class Game:
 
         for skill in self.classes.create_starting_kit(definition, player.level):
             player.learn_skill(skill, spend_points=False)
+
+        # Every sub-race begins with its own racial gift; it is free and does
+        # not consume the character's level-one skill point.
+        if sub_race_id:
+            racial_skill = self.skills.get(f"racial_{sub_race_id}")
+            if racial_skill is not None:
+                player.learn_skill(racial_skill, spend_points=False)
 
         player.inventory.add_gold(definition.starting_gold or int(self.config.get("starting_gold", 0)))
         for item_id, quantity in definition.starting_items.items():
@@ -1093,7 +1106,8 @@ class Game:
         if not self.player.inventory.has(item_id):
             return False, f"You have no {item.name}."
         rate = shop.sell_rate if shop else 0.4
-        price = item.sell_price(rate)
+        rarity = (self.config.get("rarities") or {}).get(item.rarity.lower(), {})
+        price = max(1, int(item.sell_price(rate) * float(rarity.get("value_rate", 1.0))))
         self.player.inventory.remove(item_id, 1)
         self.player.inventory.add_gold(price)
         return True, f"Sold {item.name} for {price} gold."
@@ -1401,7 +1415,9 @@ class Game:
             reputation = max(0, self.player.faction_reputation.get(faction.id, 0))
             discount = min(faction.max_discount, reputation * faction.shop_discount_per_point)
         race_rate = shop.race_buy_rates.get(self.player.race_id, 1.0) if self.player else 1.0
-        return max(1, int(item.value * shop.buy_rate * race_rate * (1.0 - discount)))
+        rarity = (self.config.get("rarities") or {}).get(item.rarity.lower(), {})
+        rarity_rate = float(rarity.get("value_rate", 1.0))
+        return max(1, int(item.value * rarity_rate * shop.buy_rate * race_rate * (1.0 - discount)))
 
     def _story_conditions_met(self, conditions: Mapping[str, Any]) -> bool:
         if not self.player:
@@ -1409,6 +1425,7 @@ class Game:
         checks = (
             ("race_ids", self.player.race_id),
             ("class_ids", self.player.class_def.id),
+            ("sub_race_ids", self.player.sub_race_id),
         )
         for key, value in checks:
             allowed = conditions.get(key)

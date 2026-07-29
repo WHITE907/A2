@@ -37,6 +37,24 @@ class SkillsWindow(tk.Toplevel):
         self.points_label = theme.body_label(header, text="", fg=theme.FG_DIM)
         self.points_label.pack(side=tk.RIGHT)
 
+        filters = tk.Frame(body, bg=theme.BG)
+        filters.pack(fill=tk.X, pady=(10, 0))
+        theme.body_label(filters, text="Filter:").pack(side=tk.LEFT)
+        self.search_var = tk.StringVar(value="")
+        search = tk.Entry(filters, textvariable=self.search_var, width=18, bg=theme.BG_ALT, fg=theme.FG, insertbackground=theme.FG)
+        search.pack(side=tk.LEFT, padx=(6, 10))
+        search.bind("<KeyRelease>", lambda _event: self.refresh())
+        self.category_var = tk.StringVar(value="all")
+        self.category_options = ["all", "core", "active", "passive", "weapon", "shared", "ultimate"]
+        self.sort_options = ["name", "category", "cost"]
+        theme.flat_button(filters, "Category", self._cycle_category, width=11).pack(side=tk.LEFT)
+        self.category_label = theme.body_label(filters, text="all", fg=theme.FG_DIM)
+        self.category_label.pack(side=tk.LEFT, padx=(4, 8))
+        self.sort_var = tk.StringVar(value="name")
+        theme.flat_button(filters, "Sort", self._cycle_sort, width=8).pack(side=tk.LEFT)
+        self.sort_label = theme.body_label(filters, text="name", fg=theme.FG_DIM)
+        self.sort_label.pack(side=tk.LEFT, padx=(4, 0))
+
         columns = tk.Frame(body, bg=theme.BG)
         columns.pack(fill=tk.BOTH, expand=True, pady=(12, 0))
 
@@ -65,6 +83,18 @@ class SkillsWindow(tk.Toplevel):
 
         self.refresh()
 
+    def _cycle_category(self) -> None:
+        value = self.category_options[(self.category_options.index(self.category_var.get()) + 1) % len(self.category_options)]
+        self.category_var.set(value)
+        self.category_label.configure(text=value)
+        self.refresh()
+
+    def _cycle_sort(self) -> None:
+        value = self.sort_options[(self.sort_options.index(self.sort_var.get()) + 1) % len(self.sort_options)]
+        self.sort_var.set(value)
+        self.sort_label.configure(text=value)
+        self.refresh()
+
     # ------------------------------------------------------------------
     def refresh(self) -> None:
         game = self.app.game
@@ -75,10 +105,18 @@ class SkillsWindow(tk.Toplevel):
         player = game.player
         self.points_label.configure(text=f"Skill points: {player.unspent_skill_points}")
 
-        known = list(player.usable_skills()) + list(player.passive_skills())
-        self.known_list.set_items([(f"{s.name}  [{s.category}]", s) for s in known])
+        query = self.search_var.get().strip().lower()
+        category = self.category_var.get()
 
-        learnable = game.learnable_skills()
+        def visible(skills: list[Skill]) -> list[Skill]:
+            result = [s for s in skills if (category == "all" or s.category == category) and (not query or query in s.name.lower() or query in s.description.lower() or any(query in tag.lower() for tag in s.tags))]
+            mode = self.sort_var.get()
+            return sorted(result, key=lambda s: (s.category, s.name) if mode == "category" else (s.skill_point_cost, s.name) if mode == "cost" else s.name.lower())
+
+        known = visible(list(player.usable_skills()) + list(player.passive_skills()))
+        self.known_list.set_items([(f"{s.name}  [{s.category}]" + ("  [racial gift]" if s.id.startswith("racial_") else ""), s) for s in known])
+
+        learnable = visible(game.learnable_skills())
         self.learnable_list.set_items(
             [(f"{s.name}  ({s.skill_point_cost} pt)", s) for s in learnable], keep_selection=False
         )

@@ -280,6 +280,11 @@ class DamageEffect(Effect):
             if not target.is_alive:
                 break
 
+        # Lifesteal is a passive data-defined special on the caster.
+        lifesteal = sum(float(s.get("value", 0)) for s in getattr(caster, "special_effects", lambda: [])() if s.get("type") == "lifesteal")
+        if lifesteal and total_dealt > 0:
+            caster.heal(total_dealt * lifesteal)
+
         # Reflect is resolved by the *target*, but the damage lands on the
         # caster, so it is applied here rather than inside take_raw_damage to
         # avoid a re-entrant loop between two reflecting entities.

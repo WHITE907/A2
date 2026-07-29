@@ -1645,6 +1645,151 @@
       "kind": "key",
       "description": "A crystallised fragment of trapped essence.",
       "value": 400
+    },
+    {
+      "id": "bronze_sword",
+      "name": "Bronze Sword",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 35,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "physical_power": 3
+        }
+      }
+    },
+    {
+      "id": "oak_staff",
+      "name": "Oak Staff",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "staff",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 38,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "magic_power": 4
+        }
+      }
+    },
+    {
+      "id": "hunter_bow",
+      "name": "Hunter Bow",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "bow",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 40,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "physical_power": 3,
+          "accuracy": 0.02
+        }
+      }
+    },
+    {
+      "id": "patched_shield",
+      "name": "Patched Shield",
+      "kind": "equipment",
+      "slot": "offhand",
+      "weapon_type": "",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 30,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "armor": 3
+        }
+      }
+    },
+    {
+      "id": "wool_cap",
+      "name": "Wool Cap",
+      "kind": "equipment",
+      "slot": "head",
+      "weapon_type": "",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 18,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "max_hp": 8
+        }
+      }
+    },
+    {
+      "id": "scavenger_mail",
+      "name": "Scavenger Mail",
+      "kind": "equipment",
+      "slot": "body",
+      "weapon_type": "",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 45,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "armor": 4
+        }
+      }
+    },
+    {
+      "id": "apprentice_robe",
+      "name": "Apprentice Robe",
+      "kind": "equipment",
+      "slot": "body",
+      "weapon_type": "",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 42,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "magic_resist": 4
+        }
+      }
+    },
+    {
+      "id": "leather_bracers",
+      "name": "Leather Bracers",
+      "kind": "equipment",
+      "slot": "hands",
+      "weapon_type": "",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 22,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "armor": 2
+        }
+      }
+    },
+    {
+      "id": "traveler_sandals",
+      "name": "Traveler Sandals",
+      "kind": "equipment",
+      "slot": "feet",
+      "weapon_type": "",
+      "description": "Common low-level equipment found near the starting settlements.",
+      "value": 20,
+      "required_level": 1,
+      "rarity": "common",
+      "modifiers": {
+        "flat": {
+          "evasion": 0.02
+        }
+      }
     }
   ]
 }

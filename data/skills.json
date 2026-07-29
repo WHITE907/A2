@@ -3140,6 +3140,846 @@
           "amount": -2
         }
       ]
+    },
+    {
+      "id": "racial_lowlander",
+      "name": "Lowlander Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_highlander",
+      "name": "Highlander Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_seafarer",
+      "name": "Seafarer Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_high_elf",
+      "name": "High Elf Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_wood_elf",
+      "name": "Wood Elf Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_drow",
+      "name": "Drow Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_half_elf_noble",
+      "name": "Noble-Born Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_half_elf_wanderer",
+      "name": "Wanderer Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_mountain_dwarf",
+      "name": "Mountain Dwarf Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_hill_dwarf",
+      "name": "Hill Dwarf Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_forge_dwarf",
+      "name": "Forge Dwarf Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_red_dragonkin",
+      "name": "Red Dragonkin Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_gold_dragonkin",
+      "name": "Gold Dragonkin Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_blue_dragonkin",
+      "name": "Blue Dragonkin Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_pit_fiend",
+      "name": "Pit Fiend Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_succubus",
+      "name": "Succubus Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_balor",
+      "name": "Balor Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_incubus",
+      "name": "Incubus Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_infernal_tiefling",
+      "name": "Infernal Tiefling Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_abyssal_tiefling",
+      "name": "Abyssal Tiefling Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_feline",
+      "name": "Feline Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_canine",
+      "name": "Canine Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_avian",
+      "name": "Avian Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_half_orc",
+      "name": "Half-Orc Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_war_orc",
+      "name": "War Orc Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_shaman_orc",
+      "name": "Shaman Orc Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_rock_gnome",
+      "name": "Rock Gnome Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_forest_gnome",
+      "name": "Forest Gnome Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_lightfoot_halfling",
+      "name": "Lightfoot Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_stout_halfling",
+      "name": "Stout Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_fire_genasi",
+      "name": "Fire Genasi Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_water_genasi",
+      "name": "Water Genasi Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_earth_genasi",
+      "name": "Earth Genasi Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_air_genasi",
+      "name": "Air Genasi Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_frost_goliath",
+      "name": "Frost Goliath Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_storm_goliath",
+      "name": "Storm Goliath Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_naga_lamia",
+      "name": "Naga Lamia Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_hunter_lamia",
+      "name": "Hunter Lamia Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_weaver_arachne",
+      "name": "Weaver Arachne Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
+    },
+    {
+      "id": "racial_predator_arachne",
+      "name": "Predator Arachne Gift",
+      "category": "shared",
+      "description": "A starting gift unique to this sub-race.",
+      "required_level": 1,
+      "mp_cost": 4,
+      "targeting": "enemy",
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        }
+      ]
     }
   ]
 }

@@ -132,6 +132,18 @@ class Player(Entity):
         )
         self.invalidate_stats()
 
+    def special_effects(self) -> list[dict[str, Any]]:
+        """Return data-defined combat specials from class, race and sub-race."""
+        effects = [dict(effect) for effect in getattr(self.race_def, "special_effects", ())]
+        sub = self.race_def.get_sub_race(self.sub_race_id) if self.sub_race_id else None
+        if sub:
+            effects.extend(dict(effect) for effect in sub.special_effects)
+        for perk in self.class_def.perks:
+            special = str(perk.get("special", "")).strip()
+            if special:
+                effects.append({"type": special, "value": float(perk.get("special_value", 0.0))})
+        return effects
+
     def _equipment_modifiers(self) -> ModifierSet:
         """Gear + class passives + learned passive skills + mastery ranks.
 
@@ -143,7 +155,9 @@ class Player(Entity):
         for item in equipped:
             rate = float(self.equipment_config.get("equipment_upgrade", {}).get("modifier_rate", 0.0))
             level = self.item_upgrades.get(item.id, 0)
-            scale = 1.0 + rate * level
+            rarity_cfg = self.equipment_config.get("rarities", {}).get(item.rarity.lower(), {})
+            rarity_scale = float(rarity_cfg.get("modifier_rate", 1.0))
+            scale = (1.0 + rate * level) * rarity_scale
             upgraded = ModifierSet(
                 flat={key: value * scale for key, value in item.modifiers.flat.items()},
                 pct={key: value * scale for key, value in item.modifiers.pct.items()},

@@ -25,6 +25,7 @@ class SubRace:
     bonus_stats: StatBlock = field(default_factory=StatBlock)
     bonus_modifiers: ModifierSet = field(default_factory=ModifierSet)
     bonus_traits: tuple[str, ...] = ()
+    special_effects: tuple[dict[str, Any], ...] = ()
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "SubRace":
@@ -38,6 +39,7 @@ class SubRace:
             bonus_stats=StatBlock.from_dict(payload.get("bonus_stats")),
             bonus_modifiers=ModifierSet.from_dict(payload.get("bonus_modifiers")),
             bonus_traits=tuple(str(trait) for trait in payload.get("bonus_traits", [])),
+            special_effects=tuple(dict(effect) for effect in payload.get("special_effects", [])),
         )
 
     def detail_lines(self) -> list[str]:
@@ -63,6 +65,7 @@ class RaceDefinition:
     modifiers: ModifierSet = field(default_factory=ModifierSet)
     traits: tuple[str, ...] = ()
     sub_races: tuple[SubRace, ...] = ()
+    special_effects: tuple[dict[str, Any], ...] = ()
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "RaceDefinition":
@@ -78,6 +81,7 @@ class RaceDefinition:
             modifiers=ModifierSet.from_dict(payload.get("modifiers")),
             traits=tuple(str(trait) for trait in payload.get("traits", [])),
             sub_races=sub_races,
+            special_effects=tuple(dict(effect) for effect in payload.get("special_effects", [])),
         )
 
     def get_sub_race(self, sub_race_id: str) -> SubRace | None:

@@ -69,6 +69,9 @@ class StatusWindow(tk.Toplevel):
     def _allocate(self, stat: str) -> None:
         ok, message = self.app.game.allocate_stat(stat, 1)
         self.app.notify(message)
+        # The status window is a Toplevel, so refreshing the underlying world
+        # screen does not update its point counter or button states.
+        self.refresh()
         self.app.refresh_active()
 
     def _close(self) -> None:

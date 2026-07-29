@@ -109,9 +109,14 @@ class Item:
     def sell_price(self, rate: float = 0.4) -> int:
         return max(1, int(self.value * rate))
 
+    @property
+    def rarity_label(self) -> str:
+        """Human-readable rarity, while preserving the JSON id."""
+        return self.rarity.replace("_", " ").title()
+
     def detail_lines(self) -> list[str]:
         """Stacked ``key: value`` text for the Inventory/Equipment panes."""
-        lines = [self.name]
+        lines = [f"{self.name} [{self.rarity_label}]"]
         if self.description:
             lines.append(self.description)
         if self.is_equipment:

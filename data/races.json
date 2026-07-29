@@ -386,6 +386,12 @@
             "Lightning Reflexes: enhanced speed and reaction"
           ]
         }
+      ],
+      "special_effects": [
+        {
+          "type": "reflect",
+          "value": 0.05
+        }
       ]
     },
     {
@@ -432,7 +438,7 @@
         },
         {
           "id": "succubus",
-          "name": "Succubus/Incubus",
+          "name": "Succubus",
           "description": "Charmers and manipulators, wielding allure as a weapon.",
           "bonus_stats": {
             "STR": 0,
@@ -448,6 +454,12 @@
           },
           "bonus_traits": [
             "Enthralling: charm and persuasion enhanced"
+          ],
+          "special_effects": [
+            {
+              "type": "lifesteal",
+              "value": 0.05
+            }
           ]
         },
         {
@@ -469,6 +481,38 @@
           "bonus_traits": [
             "Flame Aura: burns those who strike you"
           ]
+        },
+        {
+          "id": "incubus",
+          "name": "Incubus",
+          "description": "Dream-haunting charmers who turn desire into power.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": -1,
+            "INT": 2,
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 5,
+              "crit_chance": 0.04
+            }
+          },
+          "bonus_traits": [
+            "Enthralling: charm and persuasion enhanced"
+          ],
+          "special_effects": [
+            {
+              "type": "lifesteal",
+              "value": 0.05
+            }
+          ]
+        }
+      ],
+      "special_effects": [
+        {
+          "type": "lifesteal",
+          "value": 0.03
         }
       ]
     },

@@ -118,6 +118,7 @@ class CharacterCreationWindow(tk.Toplevel):
         """Re-query the engine whenever gender changes (bible section 10)."""
         classes = self.app.game.starting_classes(self.gender_var.get())
         self.class_list.set_items([(c.name, c) for c in classes], keep_selection=False)
+        self._on_race_selected(self.race_list.selected_value)
         self._on_class_selected(self.class_list.selected_value)
 
     def _on_race_selected(self, race: RaceDefinition | None) -> None:
@@ -125,7 +126,14 @@ class CharacterCreationWindow(tk.Toplevel):
         if race is None or not race.sub_races:
             self.sub_race_list.set_items([], keep_selection=False)
         else:
-            self.sub_race_list.set_items([(sub.name, sub) for sub in race.sub_races], keep_selection=False)
+            gender = self.gender_var.get().lower()
+            visible = [
+                sub for sub in race.sub_races
+                if sub.id not in ("succubus", "incubus")
+                or (sub.id == "succubus" and gender == "female")
+                or (sub.id == "incubus" and gender == "male")
+            ]
+            self.sub_race_list.set_items([(sub.name, sub) for sub in visible], keep_selection=False)
         self._refresh_preview()
 
     def _on_class_selected(self, definition: ClassDefinition | None) -> None:
