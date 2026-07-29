@@ -949,7 +949,7 @@
           "interval": 6,
           "damage": 45,
           "counter_damage": 60,
-          "warning": "The Mire Oracle's eyes glow white — she sees your future!",
+          "warning": "The Mire Oracle's eyes glow white \u2014 she sees your future!",
           "impact": "The Oracle's prophecy strikes with terrible certainty!"
         },
         "environment": {
@@ -1224,7 +1224,7 @@
           "interval": 4,
           "damage": 55,
           "counter_damage": 70,
-          "warning": "The Iron Colossus charges its core — brace for impact!",
+          "warning": "The Iron Colossus charges its core \u2014 brace for impact!",
           "impact": "The Colossus unleashes a devastating shockwave!"
         },
         "environment": {
@@ -1504,6 +1504,417 @@
           "impact": "The stolen sunrise detonates across the arena."
         }
       }
+    },
+    {
+      "id": "stone_revenant",
+      "name": "Stone Revenant",
+      "level": 42,
+      "family": "construct",
+      "stats": {
+        "STR": 30,
+        "END": 35,
+        "INT": 5,
+        "AGI": 10
+      },
+      "hp": 280,
+      "mp": 20,
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_stone_fist"
+      ],
+      "ai_behavior_id": "defensive",
+      "loot": [
+        {
+          "item_id": "granite_core",
+          "chance": 0.3
+        }
+      ]
+    },
+    {
+      "id": "petrified_treant",
+      "name": "Petrified Treant",
+      "level": 43,
+      "family": "construct",
+      "stats": {
+        "STR": 28,
+        "END": 40,
+        "INT": 3,
+        "AGI": 5
+      },
+      "hp": 320,
+      "mp": 10,
+      "skill_ids": [
+        "enemy_thorn_lash",
+        "enemy_crush"
+      ],
+      "ai_behavior_id": "defensive",
+      "loot": [
+        {
+          "item_id": "briar_heart",
+          "chance": 0.25
+        }
+      ]
+    },
+    {
+      "id": "void_stalker",
+      "name": "Void Stalker",
+      "level": 44,
+      "family": "void",
+      "stats": {
+        "STR": 20,
+        "END": 22,
+        "INT": 35,
+        "AGI": 40
+      },
+      "hp": 200,
+      "mp": 120,
+      "skill_ids": [
+        "enemy_dark_bolt",
+        "enemy_spectral_touch",
+        "shadowstep"
+      ],
+      "ai_behavior_id": "aggressive",
+      "loot": [
+        {
+          "item_id": "shadow_essence",
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "ash_wraith",
+      "name": "Ash Wraith",
+      "level": 45,
+      "family": "undead",
+      "stats": {
+        "STR": 18,
+        "END": 20,
+        "INT": 38,
+        "AGI": 30
+      },
+      "hp": 220,
+      "mp": 140,
+      "skill_ids": [
+        "enemy_dark_bolt",
+        "enemy_ember_bite",
+        "enemy_spectral_touch"
+      ],
+      "ai_behavior_id": "aggressive",
+      "loot": [
+        {
+          "item_id": "wraith_lantern",
+          "chance": 0.3
+        }
+      ]
+    },
+    {
+      "id": "ember_elemental",
+      "name": "Ember Elemental",
+      "level": 46,
+      "family": "elemental",
+      "stats": {
+        "STR": 25,
+        "END": 28,
+        "INT": 30,
+        "AGI": 20
+      },
+      "hp": 260,
+      "mp": 100,
+      "skill_ids": [
+        "enemy_ember_bite",
+        "enemy_sunfire"
+      ],
+      "ai_behavior_id": "aggressive",
+      "loot": [
+        {
+          "item_id": "ember_scale",
+          "chance": 0.35
+        }
+      ]
+    },
+    {
+      "id": "cinder_fiend",
+      "name": "Cinder Fiend",
+      "level": 48,
+      "family": "demon",
+      "stats": {
+        "STR": 35,
+        "END": 30,
+        "INT": 28,
+        "AGI": 25
+      },
+      "hp": 300,
+      "mp": 80,
+      "skill_ids": [
+        "enemy_ember_bite",
+        "enemy_crush",
+        "enemy_dark_bolt"
+      ],
+      "ai_behavior_id": "berserk",
+      "loot": [
+        {
+          "item_id": "shadow_essence",
+          "chance": 0.3
+        }
+      ]
+    },
+    {
+      "id": "magma_golem",
+      "name": "Magma Golem",
+      "level": 48,
+      "family": "construct",
+      "stats": {
+        "STR": 40,
+        "END": 45,
+        "INT": 5,
+        "AGI": 8
+      },
+      "hp": 400,
+      "mp": 30,
+      "skill_ids": [
+        "enemy_stone_fist",
+        "enemy_crush",
+        "enemy_ember_bite"
+      ],
+      "ai_behavior_id": "defensive",
+      "loot": [
+        {
+          "item_id": "granite_core",
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "fire_drake",
+      "name": "Fire Drake",
+      "level": 50,
+      "family": "dragon",
+      "stats": {
+        "STR": 38,
+        "END": 35,
+        "INT": 25,
+        "AGI": 30
+      },
+      "hp": 350,
+      "mp": 100,
+      "skill_ids": [
+        "enemy_ember_bite",
+        "enemy_frost_breath",
+        "enemy_sunfire"
+      ],
+      "ai_behavior_id": "aggressive",
+      "loot": [
+        {
+          "item_id": "drake_scale",
+          "chance": 0.3
+        },
+        {
+          "item_id": "ember_scale",
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "drowned_knight",
+      "name": "Drowned Knight",
+      "level": 47,
+      "family": "undead",
+      "stats": {
+        "STR": 32,
+        "END": 38,
+        "INT": 15,
+        "AGI": 18
+      },
+      "hp": 320,
+      "mp": 40,
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_stone_fist",
+        "shadow_bind"
+      ],
+      "ai_behavior_id": "defensive",
+      "loot": [
+        {
+          "item_id": "steel_sword",
+          "chance": 0.2
+        }
+      ]
+    },
+    {
+      "id": "abyssal_horror",
+      "name": "Abyssal Horror",
+      "level": 49,
+      "family": "void",
+      "stats": {
+        "STR": 30,
+        "END": 35,
+        "INT": 40,
+        "AGI": 15
+      },
+      "hp": 340,
+      "mp": 150,
+      "skill_ids": [
+        "enemy_dark_bolt",
+        "enemy_bog_hex",
+        "enemy_crystal_burst"
+      ],
+      "ai_behavior_id": "tactical",
+      "loot": [
+        {
+          "item_id": "shadow_essence",
+          "chance": 0.5
+        }
+      ]
+    },
+    {
+      "id": "void_archon",
+      "name": "Void Archon",
+      "level": 53,
+      "family": "void",
+      "stats": {
+        "STR": 35,
+        "END": 38,
+        "INT": 45,
+        "AGI": 35
+      },
+      "hp": 380,
+      "mp": 180,
+      "skill_ids": [
+        "enemy_dark_bolt",
+        "enemy_tempest",
+        "enemy_crystal_burst",
+        "shadow_bind"
+      ],
+      "ai_behavior_id": "tactical",
+      "loot": [
+        {
+          "item_id": "void_shard",
+          "chance": 0.2
+        }
+      ]
+    },
+    {
+      "id": "infernal_titan",
+      "name": "Infernal Titan",
+      "level": 54,
+      "family": "demon",
+      "stats": {
+        "STR": 50,
+        "END": 48,
+        "INT": 20,
+        "AGI": 15
+      },
+      "hp": 500,
+      "mp": 60,
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_stone_fist",
+        "enemy_sunfire",
+        "enemy_ember_bite"
+      ],
+      "ai_behavior_id": "berserk",
+      "loot": [
+        {
+          "item_id": "drake_scale",
+          "chance": 0.3
+        }
+      ]
+    },
+    {
+      "id": "void_sovereign",
+      "name": "Void Sovereign",
+      "level": 55,
+      "family": "void",
+      "is_boss": true,
+      "stats": {
+        "STR": 45,
+        "END": 50,
+        "INT": 60,
+        "AGI": 40
+      },
+      "hp": 800,
+      "mp": 300,
+      "skill_ids": [
+        "enemy_dark_bolt",
+        "enemy_tempest",
+        "enemy_crystal_burst",
+        "shadow_bind",
+        "enemy_spectral_touch"
+      ],
+      "ai_behavior_id": "tactical",
+      "boss_phases": [
+        {
+          "hp_fraction": 0.7,
+          "name": "Void Shield",
+          "modifiers": {
+            "flat": {
+              "magic_resist": 25,
+              "armor": 20
+            }
+          },
+          "shield_hp": 150
+        },
+        {
+          "hp_fraction": 0.4,
+          "name": "Summon Void Spawn",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.4
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "void_stalker",
+              "level": 52
+            },
+            {
+              "enemy_id": "void_stalker",
+              "level": 52
+            }
+          ]
+        },
+        {
+          "hp_fraction": 0.15,
+          "name": "Void Nova",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.7,
+              "speed": 0.4
+            }
+          },
+          "shield_hp": 200
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 12,
+        "enrage_modifiers": {
+          "pct": {
+            "magic_power": 0.5,
+            "physical_power": 0.3
+          }
+        },
+        "telegraph": {
+          "interval": 4,
+          "damage": 70,
+          "counter_damage": 90,
+          "warning": "The Void Sovereign tears open a rift in reality!",
+          "impact": "A wave of void energy erupts from the rift!"
+        },
+        "environment": {
+          "per_round_damage": 10,
+          "message": "The void itself lashes out at everyone!"
+        }
+      },
+      "loot": [
+        {
+          "item_id": "void_shard",
+          "chance": 1.0
+        },
+        {
+          "item_id": "codex_infinite",
+          "chance": 0.3
+        }
+      ]
     }
   ]
 }

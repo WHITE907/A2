@@ -778,12 +778,112 @@ class Game:
             unlocked = self.player.record_achievement("areas_visited", area_id)
             for ach_id in unlocked:
                 message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
+            # Random travel event (20% chance)
+            event = self._random_travel_event(area_id)
+            if event:
+                message += "\n\n" + event
             for companion in self.party.active:
                 self.quests.record_event(self.player, "travel_with_companion", companion.id)
             banter = self.trigger_banter("travel", area_id=area_id)
             if banter:
                 message += "\n" + "\n".join(banter)
         return ok, message
+
+    def _random_travel_event(self, area_id: str) -> str | None:
+        """Generate a random event during travel. 20% chance per journey."""
+        if not self.player or not self.rng:
+            return None
+        if not self.rng.chance(0.2):
+            return None
+
+        events = [
+            # Positive events
+            ("merchant", "You encounter a travelling merchant who offers you a fair price for your wares.", lambda: self._event_merchant()),
+            ("shrine", "You find a roadside shrine that fills you with renewed vigour.", lambda: self._event_shrine()),
+            ("traveller", "A fellow traveller shares news of the road ahead.", lambda: self._event_traveller()),
+            ("herbs", "You spot rare healing herbs growing by the roadside.", lambda: self._event_herbs()),
+            ("treasure", "You discover a hidden cache left by a previous adventurer.", lambda: self._event_treasure()),
+            # Negative events
+            ("ambush", "Bandits leap from the undergrowth!", lambda: self._event_ambush()),
+            ("storm", "A sudden storm forces you to take shelter, costing time.", lambda: self._event_storm()),
+            ("trap", "You stumble into a hunter's trap!", lambda: self._event_trap()),
+            # Neutral events
+            ("ruins", "You pass ancient ruins. Something stirs within, but does not emerge.", lambda: self._event_ruins()),
+            ("omen", "A raven circles overhead three times before flying south. An omen?", lambda: self._event_omen()),
+        ]
+
+        event_type, text, handler = self.rng.choice(events)
+        result = handler()
+        if result:
+            return f"📍 {text}\n{result}"
+        return f"📍 {text}"
+
+    def _event_merchant(self) -> str:
+        if self.player and self.player.inventory.gold >= 50:
+            self.player.inventory.spend_gold(50)
+            return "You trade 50 gold for useful supplies."
+        return "You have nothing to trade."
+
+    def _event_shrine(self) -> str:
+        if self.player:
+            heal = int(self.player.max_hp * 0.2)
+            self.player.heal(heal)
+            mana = int(self.player.max_mp * 0.2)
+            self.player.change_mp(mana)
+            sp = int(self.player.max_sp * 0.2)
+            self.player.change_sp(sp)
+            return f"The shrine's blessing restores {heal} HP, {mana} MP, and {sp} SP."
+        return ""
+
+    def _event_traveller(self) -> str:
+        if self.player:
+            self.player.gain_exp(50)
+            return "You gain 50 EXP from the shared knowledge."
+        return ""
+
+    def _event_herbs(self) -> str:
+        if self.player:
+            item = self.items.get("minor_potion")
+            if item:
+                self.player.inventory.add(item, 1)
+                return "You gather enough herbs to brew a Minor Potion."
+        return ""
+
+    def _event_treasure(self) -> str:
+        if self.player:
+            gold = self.rng.randint(30, 120) if self.rng else 50
+            self.player.inventory.add_gold(gold)
+            return f"You find {gold} gold in the cache!"
+        return ""
+
+    def _event_ambush(self) -> str:
+        if self.player:
+            damage = int(self.player.max_hp * 0.1)
+            self.player.take_raw_damage(damage, damage_type="physical")
+            return f"The bandits wound you for {damage} damage before fleeing."
+        return ""
+
+    def _event_storm(self) -> str:
+        return "You lose an hour waiting for the storm to pass."
+
+    def _event_trap(self) -> str:
+        if self.player:
+            damage = int(self.player.max_hp * 0.08)
+            self.player.take_raw_damage(damage, damage_type="physical")
+            return f"You take {damage} damage from the trap."
+        return ""
+
+    def _event_ruins(self) -> str:
+        if self.player:
+            self.player.gain_exp(30)
+            return "You gain 30 EXP from exploring the ruins."
+        return ""
+
+    def _event_omen(self) -> str:
+        if self.player:
+            self.player.gain_exp(20)
+            return "You ponder the omen and gain 20 EXP."
+        return ""
 
     def _achievement_name(self, achievement_id: str) -> str:
         from engine.codex import ACHIEVEMENTS

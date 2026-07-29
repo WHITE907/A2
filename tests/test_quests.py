@@ -35,7 +35,7 @@ class TestQuestContent(unittest.TestCase):
 
     def test_quest_count_is_reported(self):
         game = new_game()
-        self.assertIn("Quests: 39", game.content_summary())
+        self.assertIn("Quests: 44", game.content_summary())
 
     def test_unsupported_objective_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

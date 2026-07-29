@@ -1854,6 +1854,26 @@
           "duration": 3
         }
       ]
+    },
+    {
+      "id": "status_transfer",
+      "name": "Curse Mirror",
+      "category": "active",
+      "description": "Reflect one of your debuffs onto an enemy.",
+      "mp_cost": 12,
+      "cooldown": 5,
+      "tags": [
+        "magical",
+        "shadow",
+        "debuff",
+        "transfer"
+      ],
+      "targeting": "enemy",
+      "effects": [
+        {
+          "type": "status_transfer"
+        }
+      ]
     }
   ]
 }

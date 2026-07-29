@@ -94,20 +94,21 @@ From `docs/ENGINE_DESIGN.md`. Class count scales with **behaviour**, not
 
 | Concept | Python classes | JSON entries |
 |---|---|---|
-| Skills | 1 (`Skill`) | 71 |
+| Skills | 1 (`Skill`) | 72 |
 | Effects | 17 strategies | — |
-| Classes | 1 (`ClassDefinition`) | 49 |
-| Enemies | 1 (`Enemy`) | 30 (5 bosses with phases) |
+| Classes | 1 (`ClassDefinition`) | 73 |
+| Enemies | 1 (`Enemy`) | 43 (6 bosses with phases) |
 | Items | 1 (`Item`) | 118 |
 | Statuses | 1 (`StatusEffect`) | 21 |
 | Races | 1 (`RaceDefinition`) + `SubRace` | 15 (with 35 sub-races) |
 | Companions | 1 (`Companion`) | 21 |
 | Banter | 1 (`BanterDefinition`) | 92 |
-| Dialogues | 1 (`DialogueTree`) | 10 |
-| Quests | 1 (`QuestDefinition`) | 39 |
-| Factions | 1 (`Faction`) | 8 |
+| Dialogues | 1 (`DialogueTree`) | 15 |
+| Quests | 1 (`QuestDefinition`) | 44 |
+| Factions | 1 (`Faction`) | 9 |
 | Equipment sets | — | 9 |
 | Achievements | 1 (`Codex`) | 36 (code-defined) |
+| Areas | 1 (`Area`) | 25 (5 towns) |
 
 Fireball is **not** a Python class. It is a JSON entry composing a
 `DamageEffect` and an `ApplyStatusEffect`.
@@ -176,11 +177,11 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient, now includes `sp` formula and 9 equipment sets) · `skills.json`
-(71 skills with `tags` and `sp_cost`) · `statuses.json` ·
-`classes.json` (49 classes: 3 starters with 3 tier-2 paths each, 9 tier-2 with 3 tier-3 paths each) · `items.json`
+(72 skills with `tags` and `sp_cost`) · `statuses.json` ·
+`classes.json` (73 classes: 3 starters → 9 tier-2 → 27 tier-3 → 27 tier-4, all with lateral paths) · `items.json`
 (118 items including race-themed gear, set pieces, and promotion keys) · `races.json` (15 races with 35
-sub-races) · `enemies.json` (30 enemies, 5 bosses with phases) · `quests.json` (39 quests including 20 race-specific) · `companions.json` (21 companions
-with genders) · `world.json` (25 NPCs with genders, 8 race-reactive shops) · `banter.json` (92 entries) · `dialogues.json` (10 branching trees) · `factions.json` (8 factions)
+sub-races) · `enemies.json` (43 enemies, 6 bosses with phases) · `quests.json` (44 quests including 20 race-specific and 5 level 41-55) · `companions.json` (21 companions
+with genders) · `world.json` (28 NPCs with genders, 10 race-reactive shops, 25 areas including Ironveil faction capital) · `banter.json` (92 entries) · `dialogues.json` (15 branching trees) · `factions.json` (9 factions including Iron Covenant)
 
 All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
@@ -360,6 +361,10 @@ loss without a clear restoration path.
 - ✅ v0.10: tier 2→3 lateral promotions (24 new classes, 49 total), 20
   race-specific quests (39 total), achievement/codex system (36 achievements),
   8 new branching dialogues (10 total).
+- ✅ v0.11: tier 3→4 promotion chains (24 new tier-4 classes, 73 total),
+  levels 41–55 content (8 new areas, 13 new enemies, 1 phased boss, 5 new quests,
+  new faction capital Ironveil), random travel events (10 event types),
+  5 new branching dialogues (15 total).
 
 ### Next
 1. **Build out tier-2→3 promotion chains** for Berserker, Warlord, Ranger,
@@ -416,9 +421,9 @@ added for Power Strike (SP). When adding new skills with SP costs, remember
 that existing tests may reference them by id.
 
 **Content count assertions are fragile.** Several tests check exact counts of
-races, companions, items, classes, skills, and quests. When adding content, search for
+races, companions, items, classes, skills, quests, and enemies. When adding content, search for
 `assertEqual.*count()` in the test files and update the expected values.
-Currently: 49 classes, 15 races, 21 companions, 118 items, 71 skills, 39 quests.
+Currently: 73 classes, 15 races, 21 companions, 118 items, 72 skills, 44 quests, 43 enemies.
 
 **Verify claims before making them.** The tier-4 error in section 8 came from
 asserting something plausible without running it. If you state a limitation,

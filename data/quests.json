@@ -1077,6 +1077,146 @@
         "exp": 2600,
         "gold": 1000
       }
+    },
+    {
+      "id": "ironveil_welcome",
+      "name": "Welcome to Ironveil",
+      "description": "Commander Vex wants to test your worth before granting access to the city's inner sanctum.",
+      "min_level": 41,
+      "giver_id": "commander_vex",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "stone_revenant",
+          "quantity": 5
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_stalker",
+          "quantity": 3
+        }
+      ],
+      "rewards": {
+        "exp": 4000,
+        "gold": 1500
+      }
+    },
+    {
+      "id": "ashen_expedition",
+      "name": "The Ashen Expedition",
+      "description": "Chronicler Thon needs someone to recover artifacts from the Ashen Wastes before they're lost forever.",
+      "min_level": 44,
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "ashen_wastes",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "ash_wraith",
+          "quantity": 5
+        },
+        {
+          "kind": "collect_item",
+          "target_id": "wraith_lantern",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000
+      }
+    },
+    {
+      "id": "cinder_heart",
+      "name": "Heart of Cinder",
+      "description": "Artificer Zara needs a core sample from the deepest magma flow to power her latest invention.",
+      "min_level": 48,
+      "giver_id": "artificer_zara",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "cinder_depths",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "magma_golem",
+          "quantity": 3
+        },
+        {
+          "kind": "collect_item",
+          "target_id": "ember_scale",
+          "quantity": 5
+        }
+      ],
+      "rewards": {
+        "exp": 6000,
+        "gold": 2500
+      }
+    },
+    {
+      "id": "void_throne_assault",
+      "name": "The Void Throne",
+      "description": "Commander Vex is assembling a strike force to assault the Void Throne. You are the tip of the spear.",
+      "min_level": 53,
+      "giver_id": "commander_vex",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "void_throne",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 10000,
+        "gold": 5000
+      }
+    },
+    {
+      "id": "sunken_secrets",
+      "name": "Secrets of the Sunken Citadel",
+      "description": "Chronicler Thon believes the Sunken Citadel holds records of the first war against the void.",
+      "min_level": 46,
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "sunken_citadel",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "drowned_knight",
+          "quantity": 5
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "abyssal_horror",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 5500,
+        "gold": 2200
+      }
     }
   ]
 }

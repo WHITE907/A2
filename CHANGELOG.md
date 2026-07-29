@@ -2,6 +2,55 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.11.0 - Tier 3→4 Chains, Level 41–55 Content, and Travel Events
+
+### Tier 3→4 promotion chains
+- All 27 tier-3 classes now have tier-4 promotion targets (24 new tier-4 classes)
+- 73 total classes with complete tier 1→2→3→4 chains for all 9 class lines
+- New tier-4 classes: Shadow Reaver, Iron Bastion, Stormblade, Illusionist,
+  Time Weaver, Lich Lord, Bloodlord, Blood Sovereign, Horde Lord, Supreme
+  Commander, Grand Strategist, Cavalry Lord, Trail Warden, Alpha Predator,
+  Deadeye, Wraith Lord, Void Walker, Demolitionist, Divine Oracle, Purifier,
+  Fate Weaver, Archfiend, Doom Blade, Soul Reaper
+
+### Levels 41–55 content
+- 8 new areas: Ironveil Approach, Ironveil (faction capital), Ashen Wastes,
+  Cinder Depths, Sunken Citadel, Abyssal Halls, Molten Sanctum, Void Throne
+- 13 new enemies: Stone Revenant, Petrified Treant, Void Stalker, Ash Wraith,
+  Ember Elemental, Cinder Fiend, Magma Golem, Fire Drake, Drowned Knight,
+  Abyssal Horror, Void Archon, Infernal Titan
+- 1 new phased boss: Void Sovereign (3 phases, enrage, telegraph, environment)
+- 5 new quests: Welcome to Ironveil, Ashen Expedition, Heart of Cinder,
+  Secrets of the Sunken Citadel, The Void Throne
+- New faction: Iron Covenant
+- 3 new NPCs: Commander Vex, Artificer Zara, Chronicler Thon
+- 2 new shops: Ironveil Armory, Zara's Workshop
+
+### Random travel events
+- 10 event types triggered during travel (20% chance per journey)
+- Positive: merchant, shrine, traveller, herbs, treasure
+- Negative: ambush, storm, trap
+- Neutral: ruins, omen
+- Events affect HP, MP, SP, gold, and EXP
+
+### Branching dialogues
+- 5 new dialogue trees (15 total)
+- Iron Covenant recruitment (class-specific paths)
+- Artificer Zara's Resonance Engine (gnome/genasi/mage paths)
+- Chronicler Thon's First War history (lamia/elf/dragonkin/scholar paths)
+- Mother Sable's Ash Court negotiation (demon/faction-specific)
+- Ironveil citizen greetings (orc/dwarf/halfling/arachne/class paths)
+
+### Content totals
+- Classes: 73 (was 49)
+- Enemies: 43 (was 30)
+- Areas: 25 (was 17)
+- Quests: 44 (was 39)
+- Dialogues: 15 (was 10)
+- Factions: 9 (was 8)
+- Skills: 72 (was 71)
+- Tests: 443
+
 ## v0.10.0 - Promotions, Quests, Achievements, and Dialogue
 
 A systems and content expansion completing the promotion framework and adding
