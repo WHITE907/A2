@@ -326,8 +326,14 @@ class Game:
             return False, "Please choose a race."
 
         # Validate sub-race if provided
-        if sub_race_id and race.get_sub_race(sub_race_id) is None:
-            return False, "Invalid sub-race selection."
+        if sub_race_id:
+            selected_sub_race = race.get_sub_race(sub_race_id)
+            if selected_sub_race is None:
+                return False, "Invalid sub-race selection."
+            gender_rules = {"succubus": "female", "incubus": "male"}
+            required_gender = gender_rules.get(sub_race_id)
+            if required_gender and gender.lower() != required_gender:
+                return False, f"{selected_sub_race.name} is only available to {required_gender} characters."
 
         progression = self.config.get("progression", {})
         player = Player(
@@ -346,6 +352,13 @@ class Game:
 
         for skill in self.classes.create_starting_kit(definition, player.level):
             player.learn_skill(skill, spend_points=False)
+
+        # Every sub-race begins with its own racial gift; it is free and does
+        # not consume the character's level-one skill point.
+        if sub_race_id:
+            racial_skill = self.skills.get(f"racial_{sub_race_id}")
+            if racial_skill is not None:
+                player.learn_skill(racial_skill, spend_points=False)
 
         player.inventory.add_gold(definition.starting_gold or int(self.config.get("starting_gold", 0)))
         for item_id, quantity in definition.starting_items.items():
