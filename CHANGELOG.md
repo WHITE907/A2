@@ -47,13 +47,33 @@ Bible §18: update the changelog after versions.
   boss guaranteed loot and rarity weights, race passives stacking,
   family damage and heal bonuses, party bonus modifiers, perk active reasons,
   tactics persistence and expanded fields, AI boss focus and skill toggles.
-- Content validation passes with 73 classes, 162 skills, 127 items, 15 races,
-  43 enemies, 44 quests, 15 dialogues, 9 factions, 21 companions, and 25 areas.
+- Content validation passes with 97 classes, 162 skills, 135 items, 15 races,
+  48 enemies, 68 quests, 16 dialogues, 9 factions, 21 companions, and 30 areas.
+
+### Tier 4→5 promotion chains (new in this continuation)
+- All 24 tier-4 classes now have tier-5 promotion targets (24 new tier-5 classes, 97 total)
+- New tier-5: Void Reaver, Aegis Bastion, Tempest Sovereign, Phantasm Lord,
+  Aeon Weaver, Death Sovereign, Crimson Sovereign, Blood Tyrant, Horde Sovereign,
+  Grand Marshal, Sovereign Strategist, Drake Lord, Elder Warden, Apex Predator,
+  Godseye, Specter Lord, Abyss Walker, Annihilator, Divine Avatar,
+  Absolute Purifier, Loom Master, Infernal Sovereign, Oblivion Blade, Death Reaper
+- Tier-4→5 requirements: level 50, stat 90/70, mastery A, 2x Essence of Ascension + void shard, 24 new trial quests, 6000 gold
+- New key items: Essence of Ascension, Void Heart, Celestial Shard, Abyssal Core (epic/legendary)
+
+### Levels 56–70 content
+- 5 new areas: Celestial Crossing (56), Celestial Archives (58 town), Astral Rift (62), Abyssal Maw (66), Throne of Ascension (70)
+- 2 new shops: Celestial Outfitters, Archive Exchange (Iron Covenant)
+- 5 new enemies: Celestial Guardian (56), Starborn Mage (58), Astral Horror (62), Abyssal Titan (66 boss), Ascendant Avatar (70 boss)
+- Boss mechanics: Abyssal Titan has 3 phases, shield, summon, enrage, telegraph, environment; Ascendant Avatar has celestial aegis, void convergence summons, overdrive, enrage, telegraph
+- Connections made reciprocal and unlock_level set to recommended_level for proper level-gating
+
+### Sub-race reactivity
+- New dialogue tree dragonkin_heritage with distinct Red vs Gold vs Blue vs generic dragonkin paths, flag setting and reputation rewards
 
 ### Still planned
-- Tier 4→5 promotion chains and levels 56–70 content (per HANDOFF next milestone).
-- Sub-race-specific dialogue beyond Succubus/Incubus.
-- Tag-based elemental interactions beyond resist and family bonuses.
+- Tier 5→6 and 6→7 chains, full level 70–99 route, and post-game systems.
+- Tag-based elemental interactions beyond resist and family bonuses (achievement tracking for tags).
+- Additional sub-race-specific quests and economies beyond dragonkin example.
 
 ## v0.11.1 - Skills Expansion and Class Perks
 

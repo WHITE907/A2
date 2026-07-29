@@ -3818,7 +3818,26 @@
           "crit_damage": 0.15
         }
       },
-      "promotions": {},
+      "promotions": {
+        "void_reaver": {
+          "level": 50,
+          "stats": {
+            "STR": 90,
+            "END": 70
+          },
+          "mastery": {
+            "sword": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 2
+          },
+          "quests": [
+            "trial_of_void_reaver"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "void_blade",
@@ -3877,7 +3896,26 @@
           "status_resist": 0.15
         }
       },
-      "promotions": {},
+      "promotions": {
+        "aegis_bastion": {
+          "level": 50,
+          "stats": {
+            "END": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "sword": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_aegis_bastion"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "fortress",
@@ -3938,7 +3976,26 @@
           "crit_damage": 0.2
         }
       },
-      "promotions": {},
+      "promotions": {
+        "tempest_sovereign": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "dagger": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_tempest_sovereign"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "lightning_reflexes",
@@ -3998,7 +4055,26 @@
           "speed": 6
         }
       },
-      "promotions": {},
+      "promotions": {
+        "phantasm_lord": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "dagger": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_phantasm_lord"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "mirror_image",
@@ -4055,7 +4131,26 @@
           "magic_power": 0.25
         }
       },
-      "promotions": {},
+      "promotions": {
+        "aeon_weaver": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "END": 70
+          },
+          "mastery": {
+            "staff": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_aeon_weaver"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "temporal_mastery",
@@ -4117,7 +4212,26 @@
           "magic_power": 0.2
         }
       },
-      "promotions": {},
+      "promotions": {
+        "death_sovereign": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "END": 70
+          },
+          "mastery": {
+            "staff": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_death_sovereign"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "undying_will",
@@ -4177,7 +4291,26 @@
           "crit_damage": 0.25
         }
       },
-      "promotions": {},
+      "promotions": {
+        "crimson_sovereign": {
+          "level": 50,
+          "stats": {
+            "STR": 90,
+            "END": 70
+          },
+          "mastery": {
+            "axe": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "blood_oath_ring": 1
+          },
+          "quests": [
+            "trial_of_crimson_sovereign"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "savage_fury",
@@ -4237,7 +4370,26 @@
           "max_hp": 80
         }
       },
-      "promotions": {},
+      "promotions": {
+        "blood_tyrant": {
+          "level": 50,
+          "stats": {
+            "STR": 90,
+            "END": 70
+          },
+          "mastery": {
+            "axe": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "blood_oath_ring": 1
+          },
+          "quests": [
+            "trial_of_blood_tyrant"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "blood_lord",
@@ -4298,7 +4450,26 @@
           "armor": 6
         }
       },
-      "promotions": {},
+      "promotions": {
+        "horde_sovereign": {
+          "level": 50,
+          "stats": {
+            "STR": 90,
+            "END": 70
+          },
+          "mastery": {
+            "axe": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_horde_sovereign"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "warlords_banner",
@@ -4356,7 +4527,26 @@
           "status_resist": 0.1
         }
       },
-      "promotions": {},
+      "promotions": {
+        "grand_marshal": {
+          "level": 50,
+          "stats": {
+            "END": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "sword": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_grand_marshal"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "grand_strategy",
@@ -4414,7 +4604,26 @@
           "crit_chance": 0.06
         }
       },
-      "promotions": {},
+      "promotions": {
+        "sovereign_strategist": {
+          "level": 50,
+          "stats": {
+            "END": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "sword": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_sovereign_strategist"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "perfect_defense",
@@ -4477,7 +4686,26 @@
           "armor": 10
         }
       },
-      "promotions": {},
+      "promotions": {
+        "drake_lord": {
+          "level": 50,
+          "stats": {
+            "STR": 90,
+            "END": 70
+          },
+          "mastery": {
+            "sword": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_drake_lord"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "charging_strike",
@@ -4539,7 +4767,26 @@
           "speed": 8
         }
       },
-      "promotions": {},
+      "promotions": {
+        "elder_warden": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "END": 70
+          },
+          "mastery": {
+            "bow": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_elder_warden"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "pathfinder_mastery",
@@ -4599,7 +4846,26 @@
           "accuracy": 0.07
         }
       },
-      "promotions": {},
+      "promotions": {
+        "apex_predator": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "END": 70
+          },
+          "mastery": {
+            "bow": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_apex_predator"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "apex_predator",
@@ -4658,7 +4924,26 @@
           "crit_damage": 0.15
         }
       },
-      "promotions": {},
+      "promotions": {
+        "godseye": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "END": 70
+          },
+          "mastery": {
+            "bow": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_godseye"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "perfect_aim",
@@ -4718,7 +5003,26 @@
           "speed": 8
         }
       },
-      "promotions": {},
+      "promotions": {
+        "specter_lord": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "dagger": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 2
+          },
+          "quests": [
+            "trial_of_specter_lord"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "spectral_form",
@@ -4776,7 +5080,26 @@
           "evasion": 0.08
         }
       },
-      "promotions": {},
+      "promotions": {
+        "abyss_walker": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "dagger": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 2
+          },
+          "quests": [
+            "trial_of_abyss_walker"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "void_mastery",
@@ -4837,7 +5160,26 @@
           "speed": 6
         }
       },
-      "promotions": {},
+      "promotions": {
+        "annihilator": {
+          "level": 50,
+          "stats": {
+            "AGI": 90,
+            "INT": 70
+          },
+          "mastery": {
+            "dagger": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_annihilator"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "master_saboteur",
@@ -4896,7 +5238,26 @@
           "magic_power": 0.18
         }
       },
-      "promotions": {},
+      "promotions": {
+        "divine_avatar": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "END": 70
+          },
+          "mastery": {
+            "mace": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_divine_avatar"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "divine_mastery",
@@ -4957,7 +5318,26 @@
           "armor": 10
         }
       },
-      "promotions": {},
+      "promotions": {
+        "absolute_purifier": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "mace": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_absolute_purifier"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "holy_wrath",
@@ -5018,7 +5398,26 @@
           "magic_power": 0.2
         }
       },
-      "promotions": {},
+      "promotions": {
+        "loom_master": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "END": 70
+          },
+          "mastery": {
+            "staff": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_loom_master"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "fate_mastery",
@@ -5079,7 +5478,26 @@
           "magic_power": 0.25
         }
       },
-      "promotions": {},
+      "promotions": {
+        "infernal_sovereign": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "END": 70
+          },
+          "mastery": {
+            "staff": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_infernal_sovereign"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "infernal_mastery",
@@ -5139,7 +5557,26 @@
           "crit_chance": 0.06
         }
       },
-      "promotions": {},
+      "promotions": {
+        "oblivion_blade": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "STR": 70
+          },
+          "mastery": {
+            "sword": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_oblivion_blade"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "cursed_mastery",
@@ -5199,7 +5636,26 @@
           "max_mp": 50
         }
       },
-      "promotions": {},
+      "promotions": {
+        "death_reaper": {
+          "level": 50,
+          "stats": {
+            "INT": 90,
+            "END": 70
+          },
+          "mastery": {
+            "staff": "A"
+          },
+          "items": {
+            "essence_of_ascension": 2,
+            "void_shard": 1
+          },
+          "quests": [
+            "trial_of_death_reaper"
+          ],
+          "gold": 6000
+        }
+      },
       "perks": [
         {
           "id": "soul_mastery",
@@ -5215,6 +5671,2048 @@
           "special_value": 0.35
         }
       ]
+    },
+    {
+      "id": "void_reaver",
+      "name": "Void Reaver",
+      "tier": 5,
+      "description": "Ascended form of Shadow Reaver. A warrior consumed by shadow, wielding darkness as both weapon and armour.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 74,
+        "END": 70,
+        "INT": 48,
+        "AGI": 34
+      },
+      "growth": {
+        "STR": 6,
+        "END": 5,
+        "INT": 5,
+        "AGI": 3
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "executioners_arc",
+        "smoke_veil"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "sunder_armor",
+        "keen_edge",
+        "predatory_focus",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "shadow_bind"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "sword",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 14,
+          "physical_power": 10,
+          "crit_chance": 0.05
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      },
+      "perks": [
+        {
+          "id": "void_blade",
+          "name": "Void Blade",
+          "description": "Below 30% HP, +40% physical power, 20% lifesteal",
+          "trigger": "low_hp",
+          "threshold": 0.3,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.4
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.2
+        },
+        {
+          "id": "void_reaver_ascendant",
+          "name": "Void Reaver Ascendant",
+          "description": "As Void Reaver, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "aegis_bastion",
+      "name": "Aegis Bastion",
+      "tier": 5,
+      "description": "Ascended form of Iron Bastion. An unbreakable wall of steel and will, the last line of defence.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 68,
+        "END": 82,
+        "INT": 42,
+        "AGI": 30
+      },
+      "growth": {
+        "STR": 5,
+        "END": 7,
+        "INT": 3,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "shield_wall",
+        "rallying_cry",
+        "challenging_shout"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "guardian_resolve",
+        "warding_spirit",
+        "toughness",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "shield_wall"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 24,
+          "max_hp": 120,
+          "status_resist": 0.15
+        }
+      },
+      "perks": [
+        {
+          "id": "fortress",
+          "name": "Fortress",
+          "description": "+25% armor, +20% max HP, reflect 10% damage",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.25,
+              "max_hp": 0.2
+            }
+          },
+          "special": "reflect",
+          "special_value": 0.1
+        },
+        {
+          "id": "aegis_bastion_ascendant",
+          "name": "Aegis Bastion Ascendant",
+          "description": "As Aegis Bastion, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "tempest_sovereign",
+      "name": "Tempest Sovereign",
+      "tier": 5,
+      "description": "Ascended form of Stormblade. A whirlwind of steel whose strikes fall like lightning.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 62,
+        "END": 46,
+        "INT": 28,
+        "AGI": 90
+      },
+      "growth": {
+        "STR": 5,
+        "END": 4,
+        "INT": 2,
+        "AGI": 8
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "thousand_cuts",
+        "shadowstep",
+        "heartseeker"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "predatory_focus",
+        "executioners_arc",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "thousand_cuts"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.12,
+          "speed": 8
+        },
+        "pct": {
+          "crit_damage": 0.2
+        }
+      },
+      "perks": [
+        {
+          "id": "lightning_reflexes",
+          "name": "Lightning Reflexes",
+          "description": "+15% speed, +12% crit chance, +20% crit damage",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15,
+              "crit_chance": 0.12
+            },
+            "pct": {
+              "crit_damage": 0.2
+            }
+          }
+        },
+        {
+          "id": "tempest_sovereign_ascendant",
+          "name": "Tempest Sovereign Ascendant",
+          "description": "As Tempest Sovereign, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "phantasm_lord",
+      "name": "Phantasm Lord",
+      "tier": 5,
+      "description": "Ascended form of Illusionist. A master of misdirection who fights with shadows and deceit.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 46,
+        "END": 40,
+        "INT": 44,
+        "AGI": 86
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 4,
+        "AGI": 7
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "venom_edge",
+        "smoke_veil",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "shadowstep",
+        "hunters_mark",
+        "shadow_bind",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "venom_edge"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.12,
+          "crit_chance": 0.07,
+          "speed": 6
+        }
+      },
+      "perks": [
+        {
+          "id": "mirror_image",
+          "name": "Mirror Image",
+          "description": "+20% evasion, 15% chance to dodge completely",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.2
+            }
+          }
+        },
+        {
+          "id": "phantasm_lord_ascendant",
+          "name": "Phantasm Lord Ascendant",
+          "description": "As Phantasm Lord, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "aeon_weaver",
+      "name": "Aeon Weaver",
+      "tier": 5,
+      "description": "Ascended form of Time Weaver. A mage who bends the fabric of time itself, accelerating allies and freezing foes.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 20,
+        "END": 44,
+        "INT": 94,
+        "AGI": 40
+      },
+      "growth": {
+        "STR": 1,
+        "END": 4,
+        "INT": 9,
+        "AGI": 4
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "temporal_shift",
+        "glacial_prison",
+        "chain_lightning"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "ley_attunement",
+        "mind_over_matter",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "temporal_shift"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 80,
+          "speed": 6
+        },
+        "pct": {
+          "magic_power": 0.25
+        }
+      },
+      "perks": [
+        {
+          "id": "temporal_mastery",
+          "name": "Temporal Mastery",
+          "description": "+15% speed, cooldowns reduced by 2, +15% magic power",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15
+            },
+            "pct": {
+              "magic_power": 0.15
+            }
+          }
+        },
+        {
+          "id": "aeon_weaver_ascendant",
+          "name": "Aeon Weaver Ascendant",
+          "description": "As Aeon Weaver, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "death_sovereign",
+      "name": "Death Sovereign",
+      "tier": 5,
+      "description": "Ascended form of Lich Lord. A master of death who has transcended mortality, draining life from all who oppose.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 24,
+        "END": 48,
+        "INT": 90,
+        "AGI": 30
+      },
+      "growth": {
+        "STR": 2,
+        "END": 5,
+        "INT": 8,
+        "AGI": 2
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "shadow_bind",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "steady_breath",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "vampiric_strike"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 14,
+          "max_mp": 60,
+          "max_hp": 40
+        },
+        "pct": {
+          "magic_power": 0.2
+        }
+      },
+      "perks": [
+        {
+          "id": "undying_will",
+          "name": "Undying Will",
+          "description": "25% lifesteal, +20% magic power, survive lethal blow once per battle",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.25
+        },
+        {
+          "id": "death_sovereign_ascendant",
+          "name": "Death Sovereign Ascendant",
+          "description": "As Death Sovereign, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "crimson_sovereign",
+      "name": "Crimson Sovereign",
+      "tier": 5,
+      "description": "Ascended form of Bloodlord. A warrior whose rage is matched only by the devastation they leave behind.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 84,
+        "END": 58,
+        "INT": 16,
+        "AGI": 40
+      },
+      "growth": {
+        "STR": 7,
+        "END": 5,
+        "INT": 1,
+        "AGI": 4
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "power_strike",
+        "executioners_arc",
+        "whirlwind",
+        "titans_wrath"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "cleave",
+        "keen_edge",
+        "predatory_focus",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "power_strike"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "axe",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 16
+        },
+        "pct": {
+          "crit_damage": 0.25
+        }
+      },
+      "perks": [
+        {
+          "id": "savage_fury",
+          "name": "Savage Fury",
+          "description": "Below 50% HP, +50% physical power, +25% speed",
+          "trigger": "low_hp",
+          "threshold": 0.5,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.5
+            },
+            "flat": {
+              "speed": 25
+            }
+          }
+        },
+        {
+          "id": "crimson_sovereign_ascendant",
+          "name": "Crimson Sovereign Ascendant",
+          "description": "As Crimson Sovereign, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "blood_tyrant",
+      "name": "Blood Tyrant",
+      "tier": 5,
+      "description": "Ascended form of Blood Sovereign. A warrior who feasts on the life force of enemies, growing stronger with every kill.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 78,
+        "END": 66,
+        "INT": 24,
+        "AGI": 36
+      },
+      "growth": {
+        "STR": 6,
+        "END": 6,
+        "INT": 2,
+        "AGI": 3
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "cleave",
+        "second_wind",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "sunder_armor",
+        "guardian_resolve",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "vampiric_strike"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "axe",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 12,
+          "max_hp": 80
+        }
+      },
+      "perks": [
+        {
+          "id": "blood_lord",
+          "name": "Blood Lord",
+          "description": "30% lifesteal, +20% physical power below 40% HP",
+          "trigger": "low_hp",
+          "threshold": 0.4,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.3
+        },
+        {
+          "id": "blood_tyrant_ascendant",
+          "name": "Blood Tyrant Ascendant",
+          "description": "As Blood Tyrant, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "horde_sovereign",
+      "name": "Horde Sovereign",
+      "tier": 5,
+      "description": "Ascended form of Horde Lord. A war leader whose battle cries inspire armies and shatter enemy morale.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 82,
+        "END": 60,
+        "INT": 28,
+        "AGI": 36
+      },
+      "growth": {
+        "STR": 7,
+        "END": 5,
+        "INT": 3,
+        "AGI": 3
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "power_strike",
+        "cleave",
+        "whirlwind"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "sunder_armor",
+        "guardian_resolve",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "rallying_cry"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "axe",
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 14,
+          "max_hp": 60,
+          "armor": 6
+        }
+      },
+      "perks": [
+        {
+          "id": "warlords_banner",
+          "name": "Warlord's Banner",
+          "description": "+15% physical power, +15% armor for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "armor": 0.15
+            }
+          }
+        },
+        {
+          "id": "horde_sovereign_ascendant",
+          "name": "Horde Sovereign Ascendant",
+          "description": "As Horde Sovereign, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "grand_marshal",
+      "name": "Grand Marshal",
+      "tier": 5,
+      "description": "Ascended form of Supreme Commander. A general whose presence alone turns the tide of battle.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 64,
+        "END": 70,
+        "INT": 50,
+        "AGI": 34
+      },
+      "growth": {
+        "STR": 5,
+        "END": 6,
+        "INT": 5,
+        "AGI": 3
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "shield_wall",
+        "challenging_shout",
+        "guardian_bond"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "guardian_resolve",
+        "warding_spirit",
+        "sunder_armor",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "rallying_cry"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 16,
+          "max_hp": 80,
+          "status_resist": 0.1
+        }
+      },
+      "perks": [
+        {
+          "id": "grand_strategy",
+          "name": "Grand Strategy",
+          "description": "+20% accuracy, +15% evasion for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.2,
+              "evasion": 0.15
+            }
+          }
+        },
+        {
+          "id": "grand_marshal_ascendant",
+          "name": "Grand Marshal Ascendant",
+          "description": "As Grand Marshal, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "sovereign_strategist",
+      "name": "Sovereign Strategist",
+      "tier": 5,
+      "description": "Ascended form of Grand Strategist. A master of warfare who reads the battlefield like a chess grandmaster.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 60,
+        "END": 64,
+        "INT": 58,
+        "AGI": 40
+      },
+      "growth": {
+        "STR": 5,
+        "END": 5,
+        "INT": 5,
+        "AGI": 4
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "riposte_stance",
+        "sunder_armor",
+        "hunters_mark",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "warding_spirit",
+        "guardian_resolve",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "riposte_stance"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 12,
+          "accuracy": 0.08,
+          "crit_chance": 0.06
+        }
+      },
+      "perks": [
+        {
+          "id": "perfect_defense",
+          "name": "Perfect Defense",
+          "description": "20% counter chance, +15% armor, +10% evasion",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.15
+            },
+            "flat": {
+              "evasion": 0.1
+            }
+          },
+          "special": "counter",
+          "special_value": 0.2
+        },
+        {
+          "id": "sovereign_strategist_ascendant",
+          "name": "Sovereign Strategist Ascendant",
+          "description": "As Sovereign Strategist, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "drake_lord",
+      "name": "Drake Lord",
+      "tier": 5,
+      "description": "Ascended form of Cavalry Lord. A mounted champion whose charge breaks formations and inspires charges.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 68,
+        "END": 64,
+        "INT": 40,
+        "AGI": 50
+      },
+      "growth": {
+        "STR": 6,
+        "END": 5,
+        "INT": 4,
+        "AGI": 5
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "power_strike",
+        "executioners_arc",
+        "cleave"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "fleet_footed",
+        "sunder_armor",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "rallying_cry"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "sword",
+        "mace",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "speed": 8,
+          "armor": 10
+        }
+      },
+      "perks": [
+        {
+          "id": "charging_strike",
+          "name": "Charging Strike",
+          "description": "+15% physical power, +15% speed, +10% armor",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "armor": 0.1
+            },
+            "flat": {
+              "speed": 15
+            }
+          }
+        },
+        {
+          "id": "drake_lord_ascendant",
+          "name": "Drake Lord Ascendant",
+          "description": "As Drake Lord, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "elder_warden",
+      "name": "Elder Warden",
+      "tier": 5,
+      "description": "Ascended form of Trail Warden. A master of the wilderness who can track any prey and survive any terrain.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 48,
+        "END": 54,
+        "INT": 40,
+        "AGI": 84
+      },
+      "growth": {
+        "STR": 4,
+        "END": 5,
+        "INT": 4,
+        "AGI": 7
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "hunters_mark",
+        "fleet_footed",
+        "heartseeker"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "shadowstep",
+        "steady_breath",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "aimed_shot"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "bow",
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.1,
+          "evasion": 0.07,
+          "speed": 8
+        }
+      },
+      "perks": [
+        {
+          "id": "pathfinder_mastery",
+          "name": "Pathfinder Mastery",
+          "description": "+15% speed, +12% evasion, +10% accuracy",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15,
+              "evasion": 0.12,
+              "accuracy": 0.1
+            }
+          }
+        },
+        {
+          "id": "elder_warden_ascendant",
+          "name": "Elder Warden Ascendant",
+          "description": "As Elder Warden, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "apex_predator",
+      "name": "Apex Predator",
+      "tier": 5,
+      "description": "Ascended form of Alpha Predator. A ranger who fights alongside a pack of loyal beasts, the alpha of all predators.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 52,
+        "END": 54,
+        "INT": 42,
+        "AGI": 80
+      },
+      "growth": {
+        "STR": 5,
+        "END": 5,
+        "INT": 4,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "hunters_mark",
+        "challenging_shout",
+        "heartseeker"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "toughness",
+        "guardian_resolve",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "aimed_shot"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "bow",
+        "sword",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "max_hp": 60,
+          "accuracy": 0.07
+        }
+      },
+      "perks": [
+        {
+          "id": "apex_predator",
+          "name": "Apex Predator",
+          "description": "+20% physical power, summons deal +30% damage",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2
+            }
+          }
+        },
+        {
+          "id": "apex_predator_ascendant",
+          "name": "Apex Predator Ascendant",
+          "description": "As Apex Predator, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "godseye",
+      "name": "Godseye",
+      "tier": 5,
+      "description": "Ascended form of Deadeye. A sniper whose arrows never miss and whose shots always find the kill zone.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 44,
+        "END": 46,
+        "INT": 32,
+        "AGI": 92
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 3,
+        "AGI": 8
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "heartseeker",
+        "hunters_mark",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "predatory_focus",
+        "steady_breath",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "aimed_shot"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "bow",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.14,
+          "crit_chance": 0.08
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      },
+      "perks": [
+        {
+          "id": "perfect_aim",
+          "name": "Perfect Aim",
+          "description": "+20% accuracy, +15% crit chance, +30% crit damage",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.2,
+              "crit_chance": 0.15
+            },
+            "pct": {
+              "crit_damage": 0.3
+            }
+          }
+        },
+        {
+          "id": "godseye_ascendant",
+          "name": "Godseye Ascendant",
+          "description": "As Godseye, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "specter_lord",
+      "name": "Specter Lord",
+      "tier": 5,
+      "description": "Ascended form of Wraith Lord. A ghost-like assassin who exists between worlds, striking from the void.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 54,
+        "END": 42,
+        "INT": 46,
+        "AGI": 92
+      },
+      "growth": {
+        "STR": 5,
+        "END": 4,
+        "INT": 4,
+        "AGI": 8
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "shadowstep",
+        "shadow_bind",
+        "venom_edge",
+        "thousand_cuts"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "smoke_veil",
+        "predatory_focus",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "shadowstep"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.14,
+          "crit_chance": 0.1,
+          "speed": 8
+        }
+      },
+      "perks": [
+        {
+          "id": "spectral_form",
+          "name": "Spectral Form",
+          "description": "+25% evasion, +20% speed, 50% chance to avoid AoE",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.25,
+              "speed": 20
+            }
+          }
+        },
+        {
+          "id": "specter_lord_ascendant",
+          "name": "Specter Lord Ascendant",
+          "description": "As Specter Lord, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "abyss_walker",
+      "name": "Abyss Walker",
+      "tier": 5,
+      "description": "Ascended form of Void Walker. A shadow-mage who steps through the void itself, appearing behind enemies.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 58,
+        "END": 44,
+        "INT": 58,
+        "AGI": 84
+      },
+      "growth": {
+        "STR": 5,
+        "END": 4,
+        "INT": 5,
+        "AGI": 7
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "shadowstep",
+        "vampiric_strike",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "arcane_mind",
+        "smoke_veil",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "shadow_bind"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 10,
+          "crit_chance": 0.08,
+          "evasion": 0.08
+        }
+      },
+      "perks": [
+        {
+          "id": "void_mastery",
+          "name": "Void Mastery",
+          "description": "+20% magic power, +20% physical power, +15% evasion",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2,
+              "physical_power": 0.2
+            },
+            "flat": {
+              "evasion": 0.15
+            }
+          }
+        },
+        {
+          "id": "abyss_walker_ascendant",
+          "name": "Abyss Walker Ascendant",
+          "description": "As Abyss Walker, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "annihilator",
+      "name": "Annihilator",
+      "tier": 5,
+      "description": "Ascended form of Demolitionist. A master of traps and sabotage who destroys enemies before they know they're in danger.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 48,
+        "END": 46,
+        "INT": 54,
+        "AGI": 86
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 5,
+        "AGI": 7
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "venom_edge",
+        "time_bomb",
+        "sunder_armor",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "hunters_mark",
+        "smoke_veil",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "venom_edge"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.08,
+          "crit_chance": 0.07,
+          "speed": 6
+        }
+      },
+      "perks": [
+        {
+          "id": "master_saboteur",
+          "name": "Master Saboteur",
+          "description": "Traps deal +50% damage, +15% accuracy",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.15
+            }
+          }
+        },
+        {
+          "id": "annihilator_ascendant",
+          "name": "Annihilator Ascendant",
+          "description": "As Annihilator, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "divine_avatar",
+      "name": "Divine Avatar",
+      "tier": 5,
+      "description": "Ascended form of Divine Oracle. A conduit of divine power whose healing can pull allies back from death itself.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 32,
+        "END": 54,
+        "INT": 84,
+        "AGI": 30
+      },
+      "growth": {
+        "STR": 3,
+        "END": 5,
+        "INT": 7,
+        "AGI": 2
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "mend",
+        "renewal",
+        "purifying_light",
+        "divine_judgment"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "steady_breath",
+        "guardian_resolve",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "mend"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "mace",
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 70,
+          "magic_resist": 14
+        },
+        "pct": {
+          "magic_power": 0.18
+        }
+      },
+      "perks": [
+        {
+          "id": "divine_mastery",
+          "name": "Divine Mastery",
+          "description": "+35% healing done, +20% magic resist, +15% max MP",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "magic_resist": 12
+            },
+            "pct": {
+              "max_mp": 0.15,
+              "healing_done": 0.35
+            }
+          }
+        },
+        {
+          "id": "divine_avatar_ascendant",
+          "name": "Divine Avatar Ascendant",
+          "description": "As Divine Avatar, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "absolute_purifier",
+      "name": "Absolute Purifier",
+      "tier": 5,
+      "description": "Ascended form of Purifier. A holy warrior who burns away corruption with righteous fire and purifying steel.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 58,
+        "END": 58,
+        "INT": 72,
+        "AGI": 34
+      },
+      "growth": {
+        "STR": 5,
+        "END": 5,
+        "INT": 6,
+        "AGI": 3
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "purifying_light",
+        "executioners_arc",
+        "mend",
+        "divine_judgment"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "warding_spirit",
+        "arcane_mind",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "purifying_light"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "mace",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "magic_power": 10,
+          "armor": 10
+        }
+      },
+      "perks": [
+        {
+          "id": "holy_wrath",
+          "name": "Holy Wrath",
+          "description": "+20% physical power, +20% magic power, +15% armor",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2,
+              "magic_power": 0.2,
+              "armor": 0.15
+            }
+          }
+        },
+        {
+          "id": "absolute_purifier_ascendant",
+          "name": "Absolute Purifier Ascendant",
+          "description": "As Absolute Purifier, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "loom_master",
+      "name": "Loom Master",
+      "tier": 5,
+      "description": "Ascended form of Fate Weaver. A seer who glimpses the threads of fate, bending time and fortune to protect allies.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 28,
+        "END": 48,
+        "INT": 88,
+        "AGI": 40
+      },
+      "growth": {
+        "STR": 2,
+        "END": 4,
+        "INT": 8,
+        "AGI": 4
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "temporal_shift",
+        "renewal",
+        "curse_mirror",
+        "glacial_prison"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "ley_attunement",
+        "mind_over_matter",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "temporal_shift"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 65,
+          "magic_resist": 10,
+          "speed": 6
+        },
+        "pct": {
+          "magic_power": 0.2
+        }
+      },
+      "perks": [
+        {
+          "id": "fate_mastery",
+          "name": "Fate Mastery",
+          "description": "+15% speed, cooldowns reduced by 2, +15% magic power",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15
+            },
+            "pct": {
+              "magic_power": 0.15
+            }
+          }
+        },
+        {
+          "id": "loom_master_ascendant",
+          "name": "Loom Master Ascendant",
+          "description": "As Loom Master, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "infernal_sovereign",
+      "name": "Infernal Sovereign",
+      "tier": 5,
+      "description": "Ascended form of Archfiend. A master of forbidden arts whose dark power corrupts everything it touches.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 26,
+        "END": 48,
+        "INT": 94,
+        "AGI": 32
+      },
+      "growth": {
+        "STR": 2,
+        "END": 4,
+        "INT": 9,
+        "AGI": 3
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "flame_wave",
+        "vampiric_strike",
+        "meteor"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "frost_lance",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "shadow_bind"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 16,
+          "crit_damage": 0.12
+        },
+        "pct": {
+          "magic_power": 0.25
+        }
+      },
+      "perks": [
+        {
+          "id": "infernal_mastery",
+          "name": "Infernal Mastery",
+          "description": "30% lifesteal, +25% magic power, +20% max MP",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.25,
+              "max_mp": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.3
+        },
+        {
+          "id": "infernal_sovereign_ascendant",
+          "name": "Infernal Sovereign Ascendant",
+          "description": "As Infernal Sovereign, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "oblivion_blade",
+      "name": "Oblivion Blade",
+      "tier": 5,
+      "description": "Ascended form of Doom Blade. A warrior-mage whose cursed weapon drinks the souls of those it strikes.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 60,
+        "END": 50,
+        "INT": 74,
+        "AGI": 40
+      },
+      "growth": {
+        "STR": 5,
+        "END": 5,
+        "INT": 6,
+        "AGI": 4
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "venom_edge",
+        "vampiric_strike",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "keen_edge",
+        "arcane_mind",
+        "warding_spirit",
+        "sunder_armor",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "shadow_bind"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "sword",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "magic_power": 10,
+          "crit_chance": 0.06
+        }
+      },
+      "perks": [
+        {
+          "id": "cursed_mastery",
+          "name": "Cursed Mastery",
+          "description": "+20% physical power, +20% magic power, 20% lifesteal",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2,
+              "magic_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.2
+        },
+        {
+          "id": "oblivion_blade_ascendant",
+          "name": "Oblivion Blade Ascendant",
+          "description": "As Oblivion Blade, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
+    },
+    {
+      "id": "death_reaper",
+      "name": "Death Reaper",
+      "tier": 5,
+      "description": "Ascended form of Soul Reaper. A warlock who harvests souls, growing stronger with each life claimed.",
+      "gender_restriction": "any",
+      "base_stats": {
+        "STR": 30,
+        "END": 56,
+        "INT": 88,
+        "AGI": 36
+      },
+      "growth": {
+        "STR": 3,
+        "END": 5,
+        "INT": 8,
+        "AGI": 3
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "curse_mirror",
+        "shadow_bind",
+        "status_transfer"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "steady_breath",
+        "battle_cry",
+        "focus_mind"
+      ],
+      "ultimate_skill_ids": [
+        "vampiric_strike"
+      ],
+      "ultimate_unlock_level": 55,
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 14,
+          "max_hp": 60,
+          "max_mp": 50
+        }
+      },
+      "perks": [
+        {
+          "id": "soul_mastery",
+          "name": "Soul Mastery",
+          "description": "35% lifesteal, +20% magic power, gain 8% max HP on kill",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.35
+        },
+        {
+          "id": "death_reaper_ascendant",
+          "name": "Death Reaper Ascendant",
+          "description": "As Death Reaper, gain +15% all power and +10% max HP/SP",
+          "trigger": "always",
+          "threshold": 1.0,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "max_hp": 0.1,
+              "max_sp": 0.1
+            }
+          },
+          "special": "",
+          "special_value": 0.0
+        }
+      ],
+      "promotions": {},
+      "starting_items": {},
+      "starting_gold": 0
     }
   ]
 }

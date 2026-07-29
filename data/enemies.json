@@ -2000,6 +2000,368 @@
         }
       ],
       "guaranteed_rarity_min": "rare"
+    },
+    {
+      "id": "celestial_guardian",
+      "name": "Celestial Guardian",
+      "base_level": 56,
+      "family": "celestial",
+      "description": "A construct of starlight and oath, guarding the crossing.",
+      "base_stats": {
+        "STR": 60,
+        "END": 70,
+        "INT": 40,
+        "AGI": 50
+      },
+      "growth": {
+        "STR": 5,
+        "END": 6,
+        "INT": 3,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "enemy_crush",
+        "enemy_sunfire",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "defensive",
+      "exp_reward": 4000,
+      "gold_reward": 1200,
+      "loot": [
+        {
+          "item_id": "celestial_shard",
+          "chance": 0.5
+        },
+        {
+          "item_id": "essence_of_ascension",
+          "chance": 0.3
+        }
+      ],
+      "modifiers": {
+        "flat": {
+          "armor": 50,
+          "magic_resist": 40,
+          "max_hp": 600
+        }
+      }
+    },
+    {
+      "id": "starborn_mage",
+      "name": "Starborn Mage",
+      "base_level": 58,
+      "family": "humanoid",
+      "description": "A scholar who drank starlight and forgot how to die.",
+      "base_stats": {
+        "STR": 30,
+        "END": 50,
+        "INT": 85,
+        "AGI": 55
+      },
+      "growth": {
+        "STR": 2,
+        "END": 4,
+        "INT": 7,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "enemy_tempest",
+        "enemy_crystal_burst",
+        "enemy_dark_bolt",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 4500,
+      "gold_reward": 1400,
+      "loot": [
+        {
+          "item_id": "celestial_shard",
+          "chance": 0.6
+        },
+        {
+          "item_id": "greater_ether",
+          "chance": 0.3
+        }
+      ]
+    },
+    {
+      "id": "astral_horror",
+      "name": "Astral Horror",
+      "base_level": 62,
+      "family": "void",
+      "description": "A tear in reality that learned to hunger.",
+      "base_stats": {
+        "STR": 55,
+        "END": 60,
+        "INT": 70,
+        "AGI": 50
+      },
+      "growth": {
+        "STR": 4,
+        "END": 5,
+        "INT": 6,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "enemy_crystal_burst",
+        "enemy_tempest",
+        "shadow_bind",
+        "enemy_spectral_touch"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 5500,
+      "gold_reward": 1800,
+      "loot": [
+        {
+          "item_id": "void_heart",
+          "chance": 0.3
+        },
+        {
+          "item_id": "void_shard",
+          "chance": 0.8
+        }
+      ]
+    },
+    {
+      "id": "abyssal_titan",
+      "name": "Abyssal Titan",
+      "base_level": 66,
+      "family": "abyssal",
+      "description": "The maw's own heart, clad in drowned stars.",
+      "is_boss": true,
+      "base_stats": {
+        "STR": 90,
+        "END": 100,
+        "INT": 50,
+        "AGI": 40
+      },
+      "growth": {
+        "STR": 7,
+        "END": 8,
+        "INT": 4,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "enemy_stone_fist",
+        "enemy_crush",
+        "enemy_ember_bite",
+        "enemy_sunfire"
+      ],
+      "ai_behavior_id": "berserk",
+      "exp_reward": 15000,
+      "gold_reward": 5000,
+      "modifiers": {
+        "flat": {
+          "max_hp": 1200,
+          "armor": 80,
+          "magic_resist": 60
+        }
+      },
+      "loot": [
+        {
+          "item_id": "abyssal_core",
+          "chance": 1.0,
+          "guaranteed": true
+        },
+        {
+          "item_id": "essence_of_ascension",
+          "chance": 1.0,
+          "quantity": 2,
+          "guaranteed": true
+        },
+        {
+          "item_id": "celestial_blade",
+          "chance": 0.35,
+          "min_rarity": "epic"
+        }
+      ],
+      "boss_phases": [
+        {
+          "hp_fraction": 0.7,
+          "name": "Abyssal Shield",
+          "modifiers": {
+            "flat": {
+              "armor": 30,
+              "magic_resist": 30
+            }
+          },
+          "shield_hp": 250
+        },
+        {
+          "hp_fraction": 0.4,
+          "name": "Titan's Roar",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.5
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "astral_horror",
+              "level": 62
+            }
+          ]
+        },
+        {
+          "hp_fraction": 0.15,
+          "name": "Maw Unleashed",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.8,
+              "speed": 0.4
+            }
+          },
+          "shield_hp": 300
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 12,
+        "enrage_modifiers": {
+          "pct": {
+            "physical_power": 0.6
+          }
+        },
+        "telegraph": {
+          "interval": 4,
+          "damage": 90,
+          "counter_damage": 120,
+          "warning": "The Abyssal Titan inhales reality!",
+          "impact": "A crushing wave of void erupts!"
+        },
+        "environment": {
+          "per_round_damage": 12,
+          "message": "The abyssal depths crush all nearby!"
+        }
+      },
+      "guaranteed_rarity_min": "epic"
+    },
+    {
+      "id": "ascendant_avatar",
+      "name": "Ascendant Avatar",
+      "base_level": 70,
+      "family": "celestial",
+      "description": "The final arbiter of ascension, light and void entwined.",
+      "is_boss": true,
+      "base_stats": {
+        "STR": 85,
+        "END": 90,
+        "INT": 95,
+        "AGI": 80
+      },
+      "growth": {
+        "STR": 7,
+        "END": 7,
+        "INT": 8,
+        "AGI": 6
+      },
+      "skill_ids": [
+        "enemy_sunfire",
+        "enemy_tempest",
+        "enemy_crystal_burst",
+        "shadow_bind",
+        "enemy_spectral_touch",
+        "enemy_mend"
+      ],
+      "ai_behavior_id": "tactical",
+      "exp_reward": 25000,
+      "gold_reward": 8000,
+      "modifiers": {
+        "flat": {
+          "max_hp": 1800,
+          "armor": 90,
+          "magic_resist": 90
+        }
+      },
+      "loot": [
+        {
+          "item_id": "essence_of_ascension",
+          "chance": 1.0,
+          "quantity": 3,
+          "guaranteed": true
+        },
+        {
+          "item_id": "void_heart",
+          "chance": 1.0,
+          "guaranteed": true
+        },
+        {
+          "item_id": "celestial_blade",
+          "chance": 0.5,
+          "min_rarity": "legendary"
+        },
+        {
+          "item_id": "void_reaver_blade",
+          "chance": 0.4,
+          "min_rarity": "legendary"
+        }
+      ],
+      "boss_phases": [
+        {
+          "hp_fraction": 0.8,
+          "name": "Celestial Aegis",
+          "modifiers": {
+            "flat": {
+              "armor": 40,
+              "magic_resist": 40,
+              "evasion": 0.15
+            }
+          },
+          "shield_hp": 400
+        },
+        {
+          "hp_fraction": 0.5,
+          "name": "Void Convergence",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.6,
+              "physical_power": 0.4
+            }
+          },
+          "summons": [
+            {
+              "enemy_id": "celestial_guardian",
+              "level": 58
+            },
+            {
+              "enemy_id": "astral_horror",
+              "level": 62
+            }
+          ]
+        },
+        {
+          "hp_fraction": 0.2,
+          "name": "Ascendant Overdrive",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.8,
+              "magic_power": 0.8,
+              "speed": 0.5
+            }
+          },
+          "shield_hp": 500
+        }
+      ],
+      "boss_rules": {
+        "enrage_round": 15,
+        "enrage_modifiers": {
+          "pct": {
+            "physical_power": 0.7,
+            "magic_power": 0.7
+          }
+        },
+        "telegraph": {
+          "interval": 3,
+          "damage": 120,
+          "counter_damage": 150,
+          "warning": "The Ascendant Avatar gathers all creation into one point!",
+          "impact": "Reality shatters in a blinding nova!"
+        },
+        "environment": {
+          "per_round_damage": 18,
+          "message": "The throne itself rejects the unworthy, lashing out with pure ascendant force!"
+        },
+        "survive_rounds": 0
+      },
+      "guaranteed_rarity_min": "legendary"
     }
   ]
 }

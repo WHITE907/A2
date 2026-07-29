@@ -1790,6 +1790,113 @@
           "evasion": 0.02
         }
       }
+    },
+    {
+      "id": "essence_of_ascension",
+      "name": "Essence of Ascension",
+      "kind": "key",
+      "description": "A crystallized fragment of pure ascendant will, required for tier-5 promotions.",
+      "value": 5000,
+      "stack_size": 99,
+      "rarity": "epic"
+    },
+    {
+      "id": "void_heart",
+      "name": "Void Heart",
+      "kind": "key",
+      "description": "The still-beating heart of a void sovereign, pulsing with absence.",
+      "value": 7500,
+      "stack_size": 99,
+      "rarity": "legendary"
+    },
+    {
+      "id": "celestial_shard",
+      "name": "Celestial Shard",
+      "kind": "key",
+      "description": "A fragment fallen from the celestial archives, warm with starlight.",
+      "value": 6000,
+      "stack_size": 99,
+      "rarity": "epic"
+    },
+    {
+      "id": "abyssal_core",
+      "name": "Abyssal Core",
+      "kind": "key",
+      "description": "A dense core from the abyssal maw, heavy as guilt.",
+      "value": 7000,
+      "stack_size": 99,
+      "rarity": "legendary"
+    },
+    {
+      "id": "celestial_blade",
+      "name": "Celestial Blade",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "A blade forged from fallen stars, humming with ascendant light.",
+      "value": 12000,
+      "required_level": 58,
+      "rarity": "epic",
+      "modifiers": {
+        "flat": {
+          "physical_power": 95,
+          "crit_chance": 0.12,
+          "accuracy": 0.1
+        }
+      }
+    },
+    {
+      "id": "void_reaver_blade",
+      "name": "Void Reaver Blade",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "sword",
+      "description": "A sword that drinks light, favored by void reavers.",
+      "value": 13000,
+      "required_level": 60,
+      "rarity": "legendary",
+      "modifiers": {
+        "flat": {
+          "physical_power": 110,
+          "crit_damage": 0.25,
+          "speed": 8
+        }
+      }
+    },
+    {
+      "id": "aegis_plate",
+      "name": "Aegis Plate",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Immovable as a bastion, this plate has turned aside dragonfire.",
+      "value": 11000,
+      "required_level": 57,
+      "rarity": "epic",
+      "modifiers": {
+        "flat": {
+          "armor": 90,
+          "max_hp": 350,
+          "magic_resist": 60
+        }
+      }
+    },
+    {
+      "id": "godseye_bow",
+      "name": "Godseye Bow",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "bow",
+      "description": "A bow that never misses what the gods have marked.",
+      "value": 12500,
+      "required_level": 60,
+      "rarity": "legendary",
+      "modifiers": {
+        "flat": {
+          "physical_power": 100,
+          "accuracy": 0.15,
+          "crit_chance": 0.1
+        }
+      }
     }
   ]
 }
