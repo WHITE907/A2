@@ -7,27 +7,24 @@ Knowledge transfer for a new coding session. Read this first, then
 
 ## 1. Immediate task
 
-**The content enrichment expansion is complete on the current branch.** v0.9.0
-adds 92 companion banter entries, 8 race-reactive shops with 18 new items,
-a second branching dialogue tree with 5 race-specific paths, advanced boss
-mechanics on all 5 bosses, 8 new equipment sets, and 10 new skills using
-advanced effect types. The full suite contains 443 tests.
+**The skills and perks expansion is complete on the current branch.** v0.11.1
+adds 50 new skills (122 total) including race-specific, class-specific, and
+general utility skills, plus a class perks system giving 66 classes unique
+passive abilities. The promotion framework is complete through tier 4 with
+73 classes, and levels 1–55 content is playable. The full suite contains
+443 tests.
 
-The next milestone should use these systems in **levels 41–70 content** rather
-than adding another disconnected framework:
+The next milestone should push into **levels 56–70 content** and **tier 4→5
+promotion chains**:
 
-1. **Build out the tier-2→3 promotion chains** for the 6 new tier-2 classes
-   (Berserker, Warlord, Ranger, Shadow Dancer, Cleric, Warlock). They
-   currently have `promotions: {}` — their tier-3 targets don't exist yet.
-2. **Build levels 41–55** around a factional capital using branching quest
-   outcomes, reputation shops, loyalty chapters, set gear, and a phased
-   level-50 promotion boss.
-3. **Add race-specific questlines** for the 7 new races — Orc blood-debt
-   quests, Gnome invention chains, Halfling community stories, Genasi
-   elemental heritage, Goliath endurance trials, Lamia ancient lore, and
-   Arachne fate-weaving.
-4. **Expand dialogue trees** per settlement so race/class/faction reactivity
-   is a normal part of play rather than a single reference conversation.
+1. **Build out tier-4→5 promotion chains** for the 24 new tier-4 classes.
+   They currently have `promotions: {}` — their tier-5 targets don't exist yet.
+2. **Build levels 56–70** with hostile/otherworldly settlements, heritage
+   quests, advanced enchantments, and level-70 promotion bosses.
+3. **Wire up tag-based interactions**: elemental damage bonuses, achievement
+   tracking, and skill filtering in the Skills screen.
+4. **Add race-specific dialogue** for sub-races — a Red Dragonkin and a Gold
+   Dragonkin should get different NPC reactions.
 
 Before handing off changes, run:
 
@@ -49,11 +46,11 @@ python3 main.py --check                  # validate content, no GUI
 python3 -m unittest discover -s tests    # 443 tests
 ```
 
-**Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.10.0 are implemented
-on the current branch: quests, level-40 world content, persistent bosses,
+**Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.11.1 are implemented
+on the current branch: quests, level-55 world content, persistent bosses,
 races/stories, the Living Systems expansion, the Resources/Races/Branching
-Paths expansion, and the Content Enrichment + Achievement expansion.
-The next unsupported promotion band begins at level 50.
+Paths expansion, the Content Enrichment + Achievement expansion, and the
+Skills/Perks expansion. The next unsupported promotion band begins at tier 5.
 
 ---
 
@@ -94,7 +91,7 @@ From `docs/ENGINE_DESIGN.md`. Class count scales with **behaviour**, not
 
 | Concept | Python classes | JSON entries |
 |---|---|---|
-| Skills | 1 (`Skill`) | 72 |
+| Skills | 1 (`Skill`) | 122 |
 | Effects | 17 strategies | — |
 | Classes | 1 (`ClassDefinition`) | 73 |
 | Enemies | 1 (`Enemy`) | 43 (6 bosses with phases) |
@@ -150,7 +147,7 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `engine/entities/companion.py` | *(v0.2.0)* Recruitable allies. Now has `gender` field. |
 | `engine/combat/combat.py` | The turn loop. Speed-ordered, recomputed each round. End-of-round now calls `regenerate_resources()` for MP+SP regen. |
 | `engine/combat/ai.py` | Behaviour registry: 5 strategies selected by id. |
-| `engine/classes.py` | `ClassDefinition` + promotion requirement checks. |
+| `engine/classes.py` | `ClassDefinition` + promotion requirement checks. Now has `perks` field for class-specific passive abilities. |
 | `engine/mastery.py` | F→Master tracks, earned by use. |
 | `engine/quests.py` | *(v0.3.0)* Quest definitions and objective data. |
 | `engine/races.py` | *(v0.6.0, updated v0.8.0)* `RaceDefinition` + `SubRace` dataclass. Methods: `combined_stats()`, `combined_modifiers()`, `combined_traits()`, `get_sub_race()`. |
@@ -177,8 +174,8 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient, now includes `sp` formula and 9 equipment sets) · `skills.json`
-(72 skills with `tags` and `sp_cost`) · `statuses.json` ·
-`classes.json` (73 classes: 3 starters → 9 tier-2 → 27 tier-3 → 27 tier-4, all with lateral paths) · `items.json`
+(122 skills with `tags`, `sp_cost`, `required_race_ids`, and `required_class_ids`) · `statuses.json` ·
+`classes.json` (73 classes: 3 starters → 9 tier-2 → 27 tier-3 → 27 tier-4, all with lateral paths and perks) · `items.json`
 (118 items including race-themed gear, set pieces, and promotion keys) · `races.json` (15 races with 35
 sub-races) · `enemies.json` (43 enemies, 6 bosses with phases) · `quests.json` (44 quests including 20 race-specific and 5 level 41-55) · `companions.json` (21 companions
 with genders) · `world.json` (28 NPCs with genders, 10 race-reactive shops, 25 areas including Ironveil faction capital) · `banter.json` (92 entries) · `dialogues.json` (15 branching trees) · `factions.json` (9 factions including Iron Covenant)
@@ -308,22 +305,112 @@ registered effect types are now represented in at least one skill.
 
 ---
 
+## 7c. What v0.10.0 contains
+
+**Achievement/Codex system.** New `engine/codex.py` module with a `Codex` class
+that tracks 36 achievements across 7 categories: combat, bosses, exploration,
+progression, social, skills, and quests. The codex is wired into the game flow
+— combat victories record enemy defeats, travel records area visits, recruitment
+records companions, etc. Achievement unlock notifications appear in game
+messages. The codex persists in save/load via `Codex.to_dict()` /
+`Codex.from_dict()`.
+
+**Tier 2→3 lateral promotions.** All 9 tier-2 classes now have 3 promotion
+paths each (24 new tier-3 classes, 49 total). Each tier-3 class has a unique
+identity: Dark Knight (shadow warrior), Sentinel (pure tank), Chronomancer
+(time mage), Necromancer (death mage), Bloodrager (lifesteal berserker), etc.
+Tier-3 classes have `promotions: {}` — their tier-4 targets are the next task.
+
+**Race-specific questlines.** 20 new quests covering all 15 races. Each race
+has at least one heritage/cultural quest with race-gated dialogue and objectives.
+Orc blood-debt chain, Gnome invention quests, Halfling community stories, Genasi
+elemental heritage, Goliath endurance trials, Lamia ancient lore, Arachne
+fate-weaving.
+
+**Branching dialogues.** 8 new dialogue trees (10 total) with race-specific,
+class-specific, and faction-specific paths. The Silver Sapling dialogue has
+5 race-specific paths. Faction dialogues change reputation and set flags.
+
+---
+
+## 7d. What v0.11.0 contains
+
+**Tier 3→4 promotion chains.** All 27 tier-3 classes now have tier-4 promotion
+targets (24 new tier-4 classes, 73 total). Complete tier 1→2→3→4 chains for all
+9 class lines. New tier-4 classes include Shadow Reaver, Iron Bastion,
+Stormblade, Lich Lord, Bloodlord, Supreme Commander, Deadeye, Wraith Lord,
+Divine Oracle, Archfiend, Doom Blade, and Soul Reaper.
+
+**Levels 41–55 content.** 8 new areas including Ironveil (a faction capital at
+level 42), Ashen Wastes, Cinder Depths, Sunken Citadel, Abyssal Halls, Molten
+Sanctum, and the Void Throne. 13 new enemies and 1 new phased boss (Void
+Sovereign with 3 phases, enrage, telegraph, and environmental hazards). 5 new
+quests, 3 new NPCs, 2 new shops, and the Iron Covenant faction.
+
+**Random travel events.** 10 event types triggered during travel (20% chance per
+journey): positive (merchant, shrine, traveller, herbs, treasure), negative
+(ambush, storm, trap), and neutral (ruins, omen). Events affect HP, MP, SP,
+gold, and EXP.
+
+**Branching dialogues.** 5 new dialogue trees (15 total) with race/class/faction
+conditions. Iron Covenant recruitment, Artificer Zara's Resonance Engine,
+Chronicler Thon's First War history, Mother Sable's Ash Court negotiation, and
+Ironveil citizen greetings.
+
+---
+
+## 7e. What v0.11.1 contains
+
+**Skills expansion.** 50 new skills (122 total, up from 72):
+- **15 race-specific skills** (one per race, gated by `required_race_ids`):
+  Adaptive Strike (Human), Moonlight Arrow (Elf), Stoneguard (Dwarf), Dragon
+  Breath (Dragonkin), Hellfire (Demon), Infernal Charm (Tiefling), Predator's
+  Rush (Beastkin), Dual Nature (Half-Elf), Blood Fury (Orc), Tinker's Trap
+  (Gnome), Lucky Dodge (Halfling), Elemental Burst (Genasi), Mountain's
+  Endurance (Goliath), Constrict (Lamia), Web Trap (Arachne).
+- **20 class-specific skills** (gated by `required_class_ids`): Oath Strike
+  (Knight line), Shadow Cleave (Dark Knight), Fortify (Sentinel), Blade Flourish
+  (Duelist), Multishot (Ranger), Vanish (Shadow Dancer), Arcane Barrage (Mage),
+  Time Stop (Chronomancer), Rampage (Berserker), Blood Strike (Bloodrager),
+  Command: Attack (Warlord), Analyze Weakness (Tactician), Mass Heal (Cleric),
+  Smite Evil (Inquisitor), Prophecy (Oracle), Curse of Agony (Warlock), Cursed
+  Strike (Hexblade), and 3 tier-4+ ultimates.
+- **15 general utility skills** available to all classes: Meditation (MP),
+  Catch Breath (SP), Battle Cry, War Horn, Intimidate, Taunting Shout, Feint,
+  Arcane Shield, Iron Skin, Berserker Rage, Focus Mind, Evasive Maneuvers,
+  Steady Aim, Blood Pact (HP→MP), Adrenaline Rush (cooldown reduction).
+
+**Class perks system.** 66 classes now have unique perks stored in a `perks`
+field on `ClassDefinition`. Perks are data-driven JSON objects with:
+- `trigger`: `"always"`, `"low_hp"`, `"low_mp"`, `"low_sp"`
+- `threshold`: fraction below which conditional perks activate (e.g. 0.3 for 30%)
+- `modifiers`: a `ModifierSet` applied when active
+- `special`: optional string for future combat effects (`"lifesteal"`, `"counter"`, `"reflect"`)
+
+Perks are wired into `Player._equipment_modifiers()` — always-on perks apply
+unconditionally, conditional perks check current HP/MP/SP fractions. Examples:
+- **Berserker**: +25% physical power below 40% HP
+- **Mage**: +8% magic power (always), +20% magic power below 30% MP
+- **Warlock**: 10% lifesteal (special, not yet wired into combat)
+- **Sentinel**: +20% armor, +15% max HP (always)
+- **Marksman**: +15% accuracy, +12% crit chance, +25% crit damage (always)
+
+The `special` field is stored but **not yet processed by the combat loop**.
+Only the `modifiers` portion is currently applied. Wiring lifesteal, counter,
+and reflect into combat is the next engine task.
+
+---
+
 ## 8. Known limitations — verified, not guessed
 
 The reusable systems now cover the requested behaviours, but content breadth is
-intentionally smaller than engine breadth: one branching dialogue is the
-reference tree, one equipment set demonstrates thresholds, and the Dawn Tyrant
-is the reference phased boss. New content should copy those data patterns, not
-add NPC-, item-, or boss-specific Python.
+intentionally smaller than engine breadth. New content should copy existing
+data patterns, not add NPC-, item-, or boss-specific Python.
 
-**The progression limit still begins at level 50.** Tier-5+ quest entries use
-placeholder objectives until level-41–70 regions and bosses exist. The next
-content pass should exercise factions, race reactions, companion loyalty,
-branching outcomes, set gear, advanced effects, and phased bosses together.
-
-**The 6 new tier-2 classes have no tier-3 promotions yet.** Berserker, Warlord,
-Ranger, Shadow Dancer, Cleric, and Warlock are at `promotions: {}`. Their
-promotion trees need to be built out alongside the level 41–55 content.
+**The tier-4→5 promotion chains are empty.** All 24 tier-4 classes have
+`promotions: {}`. Their tier-5 targets need to be built alongside level 56–70
+content. The existing tier-5 classes (Crusader, Shadowlord, Sorcerer King) from
+the original 3 class lines are the reference pattern.
 
 **Skill tags don't yet drive achievement tracking or damage interactions.**
 Tags are used for resource routing (MP vs SP), displayed in tooltips, and
@@ -335,6 +422,18 @@ follow-up, not yet wired up.
 traits but don't yet have sub-race-specific quests, dialogue, or NPC reactions.
 A Red Dragonkin and a Gold Dragonkin play differently mechanically but the
 world doesn't react to the distinction yet.
+
+**Class perks with `"special"` effects are data-only.** Perks with `special:
+"lifesteal"`, `"counter"`, or `"reflect"` are stored in JSON and loaded by the
+engine, but the combat loop doesn't yet check for these special effects. Only
+the `modifiers` portion of perks is currently applied (via
+`Player._equipment_modifiers()`). Wiring lifesteal/counter/reflect into combat
+is the next engine task.
+
+**Race-specific and class-specific skills have gating fields but no UI.**
+Skills with `required_race_ids` or `required_class_ids` are validated at load
+time, but the Skills screen doesn't yet filter or grey out unavailable skills.
+The engine will reject learning them, but the UI should make this obvious.
 
 Damage redirection stores its protector as battle-only runtime state, so it is
 not intended to persist outside combat. Temporary companion departures are
@@ -365,22 +464,21 @@ loss without a clear restoration path.
   levels 41–55 content (8 new areas, 13 new enemies, 1 phased boss, 5 new quests,
   new faction capital Ironveil), random travel events (10 event types),
   5 new branching dialogues (15 total).
+- ✅ v0.11.1: 50 new skills (122 total) — race-specific (15), class-specific (20),
+  general utility (15). Class perks system (66 classes with unique passive abilities).
 
 ### Next
-1. **Build out tier-2→3 promotion chains** for Berserker, Warlord, Ranger,
-   Shadow Dancer, Cleric, and Warlock. Each needs a tier-3 class definition,
-   promotion requirements, and a tier-3→4 chain.
-2. **Build levels 41–55** around a factional capital using branching quest
-   outcomes, reputation shops, loyalty chapters, set gear, and a phased level-50
-   promotion boss.
-3. **Add race-specific questlines** for the 7 new races, leveraging the
-   existing quest objective system and branching dialogue.
-4. **Build levels 56–70** with hostile/otherworldly settlements, heritage quests,
-   advanced enchantments, and level-70 promotion bosses.
-5. **Wire up tag-based interactions**: elemental damage bonuses, achievement
+1. **Build out tier-4→5 promotion chains** for the 24 new tier-4 classes.
+   Each needs a tier-5 class definition, promotion requirements, and a
+   tier-5→6 chain.
+2. **Build levels 56–70** with hostile/otherworldly settlements, heritage
+   quests, advanced enchantments, and level-70 promotion bosses.
+3. **Wire up tag-based interactions**: elemental damage bonuses, achievement
    tracking, and skill filtering in the Skills screen.
-6. Run party, faction-economy, dual-resource, and phased-boss balance passes.
-7. Continue toward level 99 before post-game guild/housing/crafting systems.
+4. **Add sub-race-specific dialogue**: Red Dragonkin vs Gold Dragonkin should
+   get different NPC reactions, shop stock, and quest options.
+5. Run party, faction-economy, dual-resource, and phased-boss balance passes.
+6. Continue toward level 99 before post-game guild/housing/crafting systems.
 
 ---
 
@@ -423,7 +521,7 @@ that existing tests may reference them by id.
 **Content count assertions are fragile.** Several tests check exact counts of
 races, companions, items, classes, skills, quests, and enemies. When adding content, search for
 `assertEqual.*count()` in the test files and update the expected values.
-Currently: 73 classes, 15 races, 21 companions, 118 items, 72 skills, 44 quests, 43 enemies.
+Currently: 73 classes, 15 races, 21 companions, 118 items, 122 skills, 44 quests, 43 enemies.
 
 **Verify claims before making them.** The tier-4 error in section 8 came from
 asserting something plausible without running it. If you state a limitation,
@@ -504,6 +602,36 @@ npc.gender                               # str ("male", "female", "nonbinary", e
 {"type": "resource", "resource": "mp", "amount": 14}
 {"type": "resource", "resource": "sp", "percent_max_sp": 0.2}
 ```
+
+### Class perks
+```json
+// In classes.json, each class can have a "perks" array:
+"perks": [
+  {
+    "id": "blood_rage",
+    "name": "Blood Rage",
+    "description": "Below 40% HP, gain +25% physical power",
+    "trigger": "low_hp",       // "always", "low_hp", "low_mp", "low_sp"
+    "threshold": 0.4,          // fraction below which perk activates
+    "modifiers": {"pct": {"physical_power": 0.25}},
+    "special": "",             // optional: "lifesteal", "counter", "reflect" (not yet wired)
+    "special_value": 0.0
+  }
+]
+```
+Applied automatically in `Player._equipment_modifiers()`.
+
+### Race-specific and class-specific skills
+```json
+// Skills can gate on race and/or class:
+{
+  "id": "dragon_breath",
+  "required_race_ids": ["dragonkin"],
+  "required_class_ids": [],     // empty = any class
+  ...
+}
+```
+Validated at load time. Skills screen doesn't yet filter unavailable skills.
 
 ---
 

@@ -2,6 +2,38 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.11.1 - Skills Expansion and Class Perks
+
+### Skills expansion (50 new skills, 122 total)
+- **15 race-specific skills** (one per race, gated by `required_race_ids`):
+  Adaptive Strike (Human), Moonlight Arrow (Elf), Stoneguard (Dwarf),
+  Dragon Breath (Dragonkin), Hellfire (Demon), Infernal Charm (Tiefling),
+  Predator's Rush (Beastkin), Dual Nature (Half-Elf), Blood Fury (Orc),
+  Tinker's Trap (Gnome), Lucky Dodge (Halfling), Elemental Burst (Genasi),
+  Mountain's Endurance (Goliath), Constrict (Lamia), Web Trap (Arachne)
+- **20 class-specific skills** (gated by `required_class_ids`):
+  Oath Strike, Shadow Cleave, Fortify, Blade Flourish, Multishot, Vanish,
+  Arcane Barrage, Time Stop, Rampage, Blood Strike, Command: Attack,
+  Analyze Weakness, Mass Heal, Smite Evil, Prophecy, Curse of Agony,
+  Cursed Strike, Divine Judgment, Shadow Dance
+- **15 general utility skills**: Meditation, Catch Breath, Battle Cry,
+  War Horn, Intimidate, Taunting Shout, Feint, Arcane Shield, Iron Skin,
+  Berserker Rage, Focus Mind, Evasive Maneuvers, Steady Aim, Blood Pact,
+  Adrenaline Rush
+
+### Class perks system (66 classes)
+- New `perks` field on `ClassDefinition` with `trigger`, `threshold`,
+  `modifiers`, and `special` properties
+- Always-on perks (e.g. Mage: +8% magic power, Sentinel: +20% armor)
+- Conditional perks (e.g. Berserker: +25% power below 40% HP)
+- Special perks stored but not yet wired into combat (lifesteal, counter, reflect)
+- Perks applied automatically in `Player._equipment_modifiers()`
+
+### Content totals
+- Skills: 122 (was 72)
+- Classes with perks: 66 of 73
+- Tests: 443
+
 ## v0.11.0 - Tier 3→4 Chains, Level 41–55 Content, and Travel Events
 
 ### Tier 3→4 promotion chains
