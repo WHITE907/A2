@@ -2,6 +2,35 @@
 
 Bible §18: update the changelog after versions.
 
+## Unreleased - Progression, Rarity, and Reactive Builds
+
+### Completed since v0.11.1
+- Fixed combat targeting for self, ally, and all-ally skills.
+- Fixed Status-window refresh after allocating level-up stat points.
+- Added Common through Legendary item rarities and rarity-based equipment scaling.
+- Added rarity-aware shop buy/sell pricing and rarity labels/colors in shops.
+- Added 9 low-level equipment pieces to Ashvale Smith stock.
+- Added distinct starting racial gifts for all 39 sub-races (162 total skills).
+- Split Demon sub-races into gender-gated Succubus and Incubus options.
+- Added sub-race dialogue conditions and Succubus/Incubus dialogue.
+- Added data-defined lifesteal, counter, and reflect processing for class, race,
+  and sub-race sources.
+- Added guaranteed boss loot behavior.
+- Added Skills-screen search, category filtering, sorting, and racial-gift labels.
+
+### Tests
+- Full suite remains at 443 passing tests.
+- Content validation passes with 73 classes, 162 skills, 127 items, 15 races,
+  43 enemies, 44 quests, 15 dialogues, 9 factions, 21 companions, and 25 areas.
+
+### Still planned
+- Rarity-aware loot variants and rarity-based enchantment-slot counts.
+- Rarity colors in inventory, equipment, loot, and all remaining item screens.
+- Expanded racial/sub-racial passive modifiers and stacking tests.
+- Active class-perk feedback in Status, class, and combat screens.
+- Companion tactics for healing, protection, resource preservation, racial skills,
+  cleansing, reviving, boss focus, and per-skill priorities.
+
 ## v0.11.1 - Skills Expansion and Class Perks
 
 ### Skills expansion (50 new skills, 122 total)

@@ -442,6 +442,45 @@ loss without a clear restoration path.
 
 ---
 
+## 8b. Current follow-up status
+
+The post-v0.11.1 work has begun without expanding beyond the current level-55
+regions. The following are implemented on the active branch:
+
+- Ally/self/all-ally combat targeting in the Combat screen.
+- Refreshable level-up stat allocation through the Status window.
+- Five item rarities with data-driven modifier/value scaling.
+- Rarity-aware shop pricing and shop row colors.
+- Nine additional level-1 equipment items in Ashvale Smith stock.
+- Distinct starting racial gifts for all 39 sub-races; the current skill count is
+  162.
+- Gender-specific Demon sub-races: Succubus is female-only and Incubus is
+  male-only, enforced in both GUI and engine validation.
+- Sub-race dialogue conditions and a Succubus/Incubus-specific dialogue branch.
+- Data-defined lifesteal, counter, and reflect effects from class, race, and
+  sub-race sources, with recursion guards.
+- Guaranteed loot behavior for bosses.
+- Skills-screen search, category filtering, sorting, and racial-gift labels.
+
+### Remaining tasks before the next region
+
+1. Add rarity-aware loot variants and explicit boss rarity guarantees, while
+   preserving existing item ids and save compatibility.
+2. Apply rarity colors to inventory, equipment, loot-reward, and item-detail
+   screens; add rarity filtering/sorting outside the Skills screen.
+3. Make enchantment-slot counts depend on rarity through configuration and add
+   migration-safe tests.
+4. Expand race/sub-race passive data with elemental resistance, enemy-family
+   damage bonuses, low-resource conditions, party-composition bonuses, healing,
+   accuracy, evasion, and status resistance. Add stacking and save/load tests.
+5. Add class-perk feedback to Status, class/promotion, and combat displays,
+   including active conditional reasons and lifesteal/counter/reflect reports.
+6. Expand companion tactics with healing/protection priorities, resource
+   preservation, racial-skill use, cleansing, reviving, boss focus, and per-skill
+   priorities; keep decisions in the engine and controls in the GUI.
+7. Add regression tests for all of the above and retain the required commands:
+   `python3 -m unittest discover -s tests` and `python3 main.py --check`.
+
 ## 9. Roadmap
 
 ### Completed
