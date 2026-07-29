@@ -2,6 +2,57 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.10.0 - Promotions, Quests, Achievements, and Dialogue
+
+A systems and content expansion completing the promotion framework and adding
+narrative depth.
+
+### Tier 2→3 lateral promotions
+- All 9 tier-2 classes now have 3 promotion paths each (24 new tier-3 classes)
+- Knight → Paladin | Dark Knight | Sentinel
+- Duelist → Assassin | Blademaster | Trickster
+- Mage → Archmage | Chronomancer | Necromancer
+- Berserker → Berserker Champion | Bloodrager | Warchief
+- Warlord → High Commander | Tactician | Banneret
+- Ranger → Pathfinder | Beastmaster | Marksman
+- Shadow Dancer → Phantom | Nightstalker | Saboteur
+- Cleric → High Priest | Inquisitor | Oracle
+- Warlock → Dread Lord | Hexblade | Soulbinder
+- 49 total classes (up from 25)
+
+### Race-specific questlines
+- 20 new race-specific quests covering all 15 races
+- Heritage quests, cultural challenges, and race-gated dialogue
+- Orc blood-debt chain, Gnome invention quests, Halfling community stories,
+  Genasi elemental heritage, Goliath endurance trials, Lamia ancient lore,
+  Arachne fate-weaving
+- 39 total quests (up from 19)
+
+### Achievement/Codex system
+- New `engine/codex.py` module with `Codex` class and 36 achievement definitions
+- Tracks: enemies defeated, bosses slain, areas visited, skills learned,
+  quests completed, companions recruited, banter heard, marriages, promotions, levels
+- Wired into game flow: combat, travel, recruitment, quests, skills, banter, marriage
+- Codex persisted in save/load
+- Achievement unlock notifications in game messages
+
+### Branching dialogues
+- 8 new branching dialogue trees (10 total)
+- Race-specific paths: Dwarf, Goliath, Lamia, Elf, Genasi, Dragonkin, Half-Elf,
+  Demon/Tiefling, Halfling, Gnome, Arachne, Orc
+- Class-specific paths: Cleric, Paladin, Mage
+- Faction-specific paths: Ashvale Council, Merchant Caravans, Emberwatch Wardens
+- Dialogues set flags, change reputation, and trigger quests
+
+### Content totals
+- Classes: 49 (was 25)
+- Quests: 39 (was 19)
+- Dialogues: 10 (was 2)
+- Skills: 71 (was 70)
+- Items: 118 (was 112)
+- Achievements: 36 (new)
+- Tests: 443
+
 ## v0.9.0 - Content Enrichment
 
 A content-focused expansion building on v0.8.0's systems: companion banter,

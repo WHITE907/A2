@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from engine.classes import ClassDefinition
+from engine.codex import Codex
 from engine.combat.ai import default_registry
 from engine.combat.combat import Battle, CombatState
 from engine.entities.companion import Companion
@@ -549,7 +550,13 @@ class Game:
         skill = self.skills.get(skill_id)
         if skill is None:
             return False, "Unknown skill."
-        return self.player.learn_skill(skill)
+        ok, message = self.player.learn_skill(skill)
+        if ok:
+            # Codex: track skills learned
+            unlocked = self.player.record_achievement("skills_learned", skill_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
+        return ok, message
 
     # ==================================================================
     # Promotion
@@ -560,7 +567,13 @@ class Game:
     def promote(self, target_class_id: str) -> tuple[bool, list[str]]:
         if not self.player:
             return False, ["No character loaded."]
-        return self.classes.promote(self.player, target_class_id)
+        ok, messages = self.classes.promote(self.player, target_class_id)
+        if ok:
+            # Codex: track promotions
+            unlocked = self.player.record_achievement("promotions", target_class_id)
+            for ach_id in unlocked:
+                messages.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
+        return ok, messages
 
     # ==================================================================
     # Quests
@@ -729,6 +742,10 @@ class Game:
             lines.extend(report.messages)
         for item_line in self.items.grant_many(self.player.inventory, definition.rewards.items):
             lines.append(f"Received {item_line}.")
+        # Codex: track quests completed
+        unlocked = self.player.record_achievement("quests_completed", quest_id)
+        for ach_id in unlocked:
+            lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
         return True, lines
 
     # ==================================================================
@@ -757,12 +774,23 @@ class Game:
         ok, message = self.world.travel_to(area_id, self.player.level)
         if ok:
             self.quests.record_event(self.player, "visit_area", area_id)
+            # Codex: track area visited
+            unlocked = self.player.record_achievement("areas_visited", area_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
             for companion in self.party.active:
                 self.quests.record_event(self.player, "travel_with_companion", companion.id)
             banter = self.trigger_banter("travel", area_id=area_id)
             if banter:
                 message += "\n" + "\n".join(banter)
         return ok, message
+
+    def _achievement_name(self, achievement_id: str) -> str:
+        from engine.codex import ACHIEVEMENTS
+        for ach in ACHIEVEMENTS:
+            if ach.id == achievement_id:
+                return ach.name
+        return achievement_id
 
     def explore(self) -> tuple[str, Battle | None]:
         """Take one exploration step; starts a battle on an encounter.
@@ -831,6 +859,17 @@ class Game:
                         self.world.defeated_bosses.add(enemy.template.id)
                         lines.append(f"World updated: {enemy.template.name} has been defeated.")
             if self.player:
+                # Codex: track enemy defeats
+                for eid in defeated_ids:
+                    unlocked = self.player.record_achievement("enemies_defeated", eid)
+                    for ach_id in unlocked:
+                        lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
+                # Codex: track unique enemy types
+                unique = self.player.codex.count_for("enemies_defeated")
+                if len(set(defeated_ids)) > 0:
+                    unlocked = self.player.record_achievement("unique_enemies", "total", len(set(defeated_ids)))
+                    for ach_id in unlocked:
+                        lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
                 changed = self.quests.record_defeats(self.player, defeated_ids)
                 for quest_id in changed:
                     definition = self.quests.require(quest_id)
@@ -842,6 +881,12 @@ class Game:
                 if battle.round <= 5:
                     self.quests.record_event(self.player, "battle_turn_limit", "5")
                 if boss_victory:
+                    # Codex: track boss kills
+                    for enemy in battle.enemies:
+                        if enemy.is_boss:
+                            unlocked = self.player.record_achievement("bosses_slain", enemy.template.id)
+                            for ach_id in unlocked:
+                                lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
                     lines.extend(self.trigger_banter("boss_victory"))
                 for family in {enemy.template.family for enemy in battle.enemies}:
                     lines.extend(self.trigger_banter("enemy_family", enemy_family=family))
@@ -1018,6 +1063,10 @@ class Game:
         if joined:
             self.quests.record_event(self.player, "recruit_companion", companion_id)
             self.player.companion_loyalty.setdefault(companion_id, 0)
+            # Codex: track companions recruited
+            unlocked = self.player.record_achievement("companions_recruited", companion_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
         return joined, [message]
 
     def dismiss_companion(self, companion_id: str) -> tuple[bool, str]:
@@ -1220,6 +1269,10 @@ class Game:
             if member is not None:
                 self._apply_spouse_bonus(member)
             self.notices.extend(self.trigger_banter("marriage", companion_id=target_id))
+            # Codex: track marriage
+            unlocked = self.player.record_achievement("marriages", target_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
         return ok, message
 
     # ==================================================================
@@ -1394,6 +1447,8 @@ class Game:
             if cond.get("spouse_in_party") and not (self.player.spouse_id and self.party.has(self.player.spouse_id)):
                 continue
             seen[entry.id] = True
+            # Codex: track banter heard
+            self.player.record_achievement("banter_heard", entry.id)
             return list(entry.lines)
         return []
 
@@ -1539,6 +1594,7 @@ class Game:
         player.item_enchantments = {str(k): str(v) for k, v in (player_data.get("item_enchantments") or {}).items()}
         player.item_upgrades = {str(k): int(v) for k, v in (player_data.get("item_upgrades") or {}).items()}
         player.flags = dict(player_data.get("flags") or {})
+        player.codex = Codex.from_dict(player_data.get("codex"))
 
         player._recalculate_base_stats()
         player._restore_common(player_data)

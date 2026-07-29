@@ -1603,6 +1603,48 @@
           "status_id": "might"
         }
       ]
+    },
+    {
+      "id": "berserker_totem",
+      "name": "Berserker Totem",
+      "kind": "key",
+      "description": "A carved totem pulsing with primal rage.",
+      "value": 400
+    },
+    {
+      "id": "commanders_banner",
+      "name": "Commander's Banner",
+      "kind": "key",
+      "description": "A battle standard that inspires courage.",
+      "value": 400
+    },
+    {
+      "id": "phantom_mask",
+      "name": "Phantom Mask",
+      "kind": "key",
+      "description": "A mask that blurs the wearer's features.",
+      "value": 400
+    },
+    {
+      "id": "wardens_oath",
+      "name": "Warden's Oath",
+      "kind": "key",
+      "description": "A sworn promise to protect the wild.",
+      "value": 400
+    },
+    {
+      "id": "holy_symbol",
+      "name": "Holy Symbol",
+      "kind": "key",
+      "description": "A sacred emblem of divine power.",
+      "value": 400
+    },
+    {
+      "id": "soul_gem",
+      "name": "Soul Gem",
+      "kind": "key",
+      "description": "A crystallised fragment of trapped essence.",
+      "value": 400
     }
   ]
 }

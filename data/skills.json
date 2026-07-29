@@ -1833,6 +1833,27 @@
           "duration": 4
         }
       ]
+    },
+    {
+      "id": "taunt_skill",
+      "name": "Provoke",
+      "category": "active",
+      "description": "Force an enemy to focus their attacks on you.",
+      "mp_cost": 0,
+      "sp_cost": 8,
+      "cooldown": 4,
+      "tags": [
+        "physical",
+        "defense",
+        "taunt"
+      ],
+      "targeting": "enemy",
+      "effects": [
+        {
+          "type": "taunt",
+          "duration": 3
+        }
+      ]
     }
   ]
 }

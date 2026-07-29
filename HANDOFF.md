@@ -49,10 +49,11 @@ python3 main.py --check                  # validate content, no GUI
 python3 -m unittest discover -s tests    # 443 tests
 ```
 
-**Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.8.0 are implemented
+**Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.10.0 are implemented
 on the current branch: quests, level-40 world content, persistent bosses,
-races/stories, the Living Systems expansion, and the Resources/Races/Branching
-Paths expansion. The next unsupported promotion band begins at level 50.
+races/stories, the Living Systems expansion, the Resources/Races/Branching
+Paths expansion, and the Content Enrichment + Achievement expansion.
+The next unsupported promotion band begins at level 50.
 
 ---
 
@@ -93,18 +94,20 @@ From `docs/ENGINE_DESIGN.md`. Class count scales with **behaviour**, not
 
 | Concept | Python classes | JSON entries |
 |---|---|---|
-| Skills | 1 (`Skill`) | 70 |
+| Skills | 1 (`Skill`) | 71 |
 | Effects | 17 strategies | — |
-| Classes | 1 (`ClassDefinition`) | 25 |
+| Classes | 1 (`ClassDefinition`) | 49 |
 | Enemies | 1 (`Enemy`) | 30 (5 bosses with phases) |
-| Items | 1 (`Item`) | 112 |
+| Items | 1 (`Item`) | 118 |
 | Statuses | 1 (`StatusEffect`) | 21 |
 | Races | 1 (`RaceDefinition`) + `SubRace` | 15 (with 35 sub-races) |
 | Companions | 1 (`Companion`) | 21 |
 | Banter | 1 (`BanterDefinition`) | 92 |
-| Dialogues | 1 (`DialogueTree`) | 2 |
+| Dialogues | 1 (`DialogueTree`) | 10 |
+| Quests | 1 (`QuestDefinition`) | 39 |
 | Factions | 1 (`Faction`) | 8 |
 | Equipment sets | — | 9 |
+| Achievements | 1 (`Codex`) | 36 (code-defined) |
 
 Fireball is **not** a Python class. It is a JSON entry composing a
 `DamageEffect` and an `ApplyStatusEffect`.
@@ -150,6 +153,7 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 | `engine/mastery.py` | F→Master tracks, earned by use. |
 | `engine/quests.py` | *(v0.3.0)* Quest definitions and objective data. |
 | `engine/races.py` | *(v0.6.0, updated v0.8.0)* `RaceDefinition` + `SubRace` dataclass. Methods: `combined_stats()`, `combined_modifiers()`, `combined_traits()`, `get_sub_race()`. |
+| `engine/codex.py` | *(v0.10.0)* Achievement and codex tracking. `Codex` class with `record()`, `summary_lines()`, serialisation. 36 achievement definitions. |
 | `engine/story.py` | *(v0.7.0)* Dialogue, faction, and banter definitions. |
 | `engine/world/world.py` | *(v0.4.0, updated v0.8.0)* Areas, encounters, shops. `NPC` now has `gender` field. |
 | `engine/managers/race_manager.py` | *(v0.6.0)* Race content loading. |
@@ -172,11 +176,11 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient, now includes `sp` formula and 9 equipment sets) · `skills.json`
-(70 skills with `tags` and `sp_cost`) · `statuses.json` ·
-`classes.json` (25 classes, 3 promotion paths per starter) · `items.json`
-(112 items including race-themed gear and set pieces) · `races.json` (15 races with 35
-sub-races) · `enemies.json` (30 enemies, 5 bosses with phases) · `quests.json` · `companions.json` (21 companions
-with genders) · `world.json` (25 NPCs with genders, 8 race-reactive shops) · `banter.json` (92 entries) · `dialogues.json` (2 branching trees) · `factions.json` (8 factions)
+(71 skills with `tags` and `sp_cost`) · `statuses.json` ·
+`classes.json` (49 classes: 3 starters with 3 tier-2 paths each, 9 tier-2 with 3 tier-3 paths each) · `items.json`
+(118 items including race-themed gear, set pieces, and promotion keys) · `races.json` (15 races with 35
+sub-races) · `enemies.json` (30 enemies, 5 bosses with phases) · `quests.json` (39 quests including 20 race-specific) · `companions.json` (21 companions
+with genders) · `world.json` (25 NPCs with genders, 8 race-reactive shops) · `banter.json` (92 entries) · `dialogues.json` (10 branching trees) · `factions.json` (8 factions)
 
 All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
@@ -353,6 +357,9 @@ loss without a clear restoration path.
 - ✅ v0.9: companion banter (92 entries), race-reactive shops, branching
   dialogue with race paths, all bosses with phases/rules, 8 new equipment
   sets, 10 advanced-effect skills.
+- ✅ v0.10: tier 2→3 lateral promotions (24 new classes, 49 total), 20
+  race-specific quests (39 total), achievement/codex system (36 achievements),
+  8 new branching dialogues (10 total).
 
 ### Next
 1. **Build out tier-2→3 promotion chains** for Berserker, Warlord, Ranger,
@@ -409,9 +416,9 @@ added for Power Strike (SP). When adding new skills with SP costs, remember
 that existing tests may reference them by id.
 
 **Content count assertions are fragile.** Several tests check exact counts of
-races, companions, items, and classes. When adding content, search for
+races, companions, items, classes, skills, and quests. When adding content, search for
 `assertEqual.*count()` in the test files and update the expected values.
-Currently: 25 classes, 15 races, 21 companions, 112 items, 70 skills.
+Currently: 49 classes, 15 races, 21 companions, 118 items, 71 skills, 39 quests.
 
 **Verify claims before making them.** The tier-4 error in section 8 came from
 asserting something plausible without running it. If you state a limitation,
