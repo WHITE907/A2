@@ -171,6 +171,26 @@ class Player(Entity):
                     combined.merge(ModifierSet.from_dict(modifiers))
         combined.merge(self.race_def.combined_modifiers(self.sub_race_id))
         combined.merge(self.class_def.passive_modifiers)
+        # Apply class perks (always-on and conditional)
+        for perk in self.class_def.perks:
+            trigger = perk.get("trigger", "always")
+            if trigger == "always":
+                combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
+            elif trigger == "low_hp" and hasattr(self, "current_hp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_hp = self.formulas.derive(self.base_stats, self.level).max_hp
+                if max_hp > 0 and self.current_hp / max_hp < threshold:
+                    combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
+            elif trigger == "low_mp" and hasattr(self, "current_mp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_mp = self.formulas.derive(self.base_stats, self.level).max_mp
+                if max_mp > 0 and self.current_mp / max_mp < threshold:
+                    combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
+            elif trigger == "low_sp" and hasattr(self, "current_sp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_sp = self.formulas.derive(self.base_stats, self.level).max_sp
+                if max_sp > 0 and self.current_sp / max_sp < threshold:
+                    combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
         for skill in self.known_skills.values():
             if skill.is_passive:
                 combined.merge(skill.passive_modifiers)
