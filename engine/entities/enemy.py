@@ -28,6 +28,7 @@ class LootEntry:
     chance: float = 1.0
     min_quantity: int = 1
     max_quantity: int = 1
+    guaranteed: bool = False
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "LootEntry":
@@ -39,6 +40,7 @@ class LootEntry:
             chance=float(payload.get("chance", 1.0)),
             min_quantity=low,
             max_quantity=max(low, high),
+            guaranteed=bool(payload.get("guaranteed", False)),
         )
 
 
@@ -168,13 +170,17 @@ class Enemy(Entity):
     def roll_loot(self, rng: Any) -> list[tuple[str, int]]:
         """Roll every drop independently; returns ``(item_id, quantity)``."""
         drops: list[tuple[str, int]] = []
+        guaranteed_dropped = False
         for entry in self.template.loot:
             if not entry.item_id:
                 continue
-            if rng.chance(entry.chance):
+            guaranteed = entry.guaranteed or (self.template.is_boss and not guaranteed_dropped and entry is self.template.loot[0])
+            if guaranteed or rng.chance(entry.chance):
                 quantity = rng.randint(entry.min_quantity, entry.max_quantity)
                 if quantity > 0:
                     drops.append((entry.item_id, quantity))
+                    if guaranteed:
+                        guaranteed_dropped = True
         return drops
 
     def summary_lines(self) -> list[str]:
