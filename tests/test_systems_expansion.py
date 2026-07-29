@@ -49,7 +49,9 @@ class TestEquipmentProgression(unittest.TestCase):
  def test_enchantment_and_upgrade_modify_equipment_stats_and_persist(self):
   with tempfile.TemporaryDirectory() as tmp:
    g=game(tmp);g.player.level=40;g.player.inventory.add_gold(99999);i=g.items.require('embersteel_blade');g.player.inventory.add(i);g.player.equipment['weapon']=i;g.player.invalidate_stats();before=g.player.derived_stats().physical_power
-   self.assertTrue(g.enchant_item(i.id,'keen')[0]);self.assertTrue(g.upgrade_item(i.id)[0]);self.assertGreater(g.player.derived_stats().physical_power,before);g.save_game('gear');r=game(tmp);r.load_game('gear');self.assertEqual(r.player.item_enchantments[i.id],'keen');self.assertEqual(r.player.item_upgrades[i.id],1)
+   self.assertTrue(g.enchant_item(i.id,'keen')[0]);self.assertTrue(g.upgrade_item(i.id)[0]);self.assertGreater(g.player.derived_stats().physical_power,before);g.save_game('gear');r=game(tmp);r.load_game('gear');self.assertIn('keen', r.player.item_enchantments[i.id]);self.assertEqual(r.player.item_upgrades[i.id],1)
+   # Test multi-slot enchantments
+   g2=game(tmp);g2.player.level=40;g2.player.inventory.add_gold(99999);j=g2.items.require('dawnblade');g2.player.inventory.add(j);g2.player.equipment['weapon']=j;self.assertTrue(g2.enchant_item(j.id,'keen')[0]);self.assertTrue(g2.enchant_item(j.id,'warded')[0]);self.assertEqual(len(g2.player.item_enchantments[j.id]),2)
  def test_low_health_conditional_modifier(self):
   g=game();g.player.level=40;i=g.items.require('blood_oath_ring');g.player.inventory.add(i);g.player.equipment[i.slot]=i;g.player.current_hp=g.player.max_hp*0.2;g.player.invalidate_stats();low=g.player.derived_stats().physical_power;g.player.current_hp=g.player.max_hp;g.player.invalidate_stats();self.assertGreater(low,g.player.derived_stats().physical_power)
 

@@ -364,27 +364,33 @@
       "loot": [
         {
           "item_id": "steel_sword",
-          "chance": 0.5
+          "chance": 0.5,
+          "min_rarity": "rare"
         },
         {
           "item_id": "knights_seal",
-          "chance": 1.0
+          "chance": 1.0,
+          "guaranteed": true
         },
         {
           "item_id": "duelists_token",
-          "chance": 1.0
+          "chance": 1.0,
+          "guaranteed": true
         },
         {
           "item_id": "oath_sigil",
-          "chance": 1.0
+          "chance": 1.0,
+          "guaranteed": true
         },
         {
           "item_id": "shadow_pact",
-          "chance": 1.0
+          "chance": 1.0,
+          "guaranteed": true
         },
         {
           "item_id": "grimoire_of_ages",
-          "chance": 1.0
+          "chance": 1.0,
+          "guaranteed": true
         },
         {
           "item_id": "bandit_coin",
@@ -435,7 +441,8 @@
           "warning": "The Bandit Chief winds up for a devastating strike!",
           "impact": "The Bandit Chief's axe comes crashing down!"
         }
-      }
+      },
+      "guaranteed_rarity_min": "rare"
     },
     {
       "id": "shadow_warden",
@@ -476,7 +483,8 @@
       "loot": [
         {
           "item_id": "arcane_focus",
-          "chance": 1.0
+          "chance": 1.0,
+          "guaranteed": true
         },
         {
           "item_id": "shadow_fang",
@@ -484,13 +492,15 @@
         },
         {
           "item_id": "runed_staff",
-          "chance": 0.4
+          "chance": 0.4,
+          "min_rarity": "rare"
         },
         {
           "item_id": "shadow_essence",
           "chance": 1.0,
           "min_quantity": 2,
-          "max_quantity": 4
+          "max_quantity": 4,
+          "guaranteed": true
         }
       ],
       "boss_phases": [
@@ -546,7 +556,8 @@
           "per_round_damage": 3,
           "message": "The shadows lash out at everyone."
         }
-      }
+      },
+      "guaranteed_rarity_min": "rare"
     },
     {
       "id": "ash_hound",
@@ -619,7 +630,12 @@
         },
         {
           "item_id": "watchman_mace",
-          "chance": 0.06
+          "chance": 0.06,
+          "rarity_weights": {
+            "common": 70,
+            "uncommon": 25,
+            "rare": 5
+          }
         }
       ]
     },
@@ -730,7 +746,13 @@
         },
         {
           "item_id": "briar_bow",
-          "chance": 0.07
+          "chance": 0.07,
+          "rarity_weights": {
+            "common": 50,
+            "uncommon": 35,
+            "rare": 12,
+            "epic": 3
+          }
         }
       ]
     },
@@ -766,7 +788,13 @@
         },
         {
           "item_id": "marshfang_dagger",
-          "chance": 0.05
+          "chance": 0.05,
+          "rarity_weights": {
+            "common": 50,
+            "uncommon": 35,
+            "rare": 12,
+            "epic": 3
+          }
         }
       ]
     },
@@ -844,7 +872,13 @@
         },
         {
           "item_id": "oracle_vestments",
-          "chance": 0.04
+          "chance": 0.04,
+          "rarity_weights": {
+            "common": 50,
+            "uncommon": 35,
+            "rare": 12,
+            "epic": 3
+          }
         }
       ]
     },
@@ -885,18 +919,21 @@
       "loot": [
         {
           "item_id": "oracle_staff",
-          "chance": 0.35
+          "chance": 0.35,
+          "min_rarity": "rare"
         },
         {
           "item_id": "wraith_lantern",
           "chance": 1.0,
           "min_quantity": 2,
-          "max_quantity": 3
+          "max_quantity": 3,
+          "guaranteed": true
         },
         {
           "item_id": "void_shard",
           "chance": 1.0,
-          "quantity": 3
+          "quantity": 3,
+          "guaranteed": true
         }
       ],
       "boss_phases": [
@@ -956,7 +993,8 @@
           "per_round_damage": 5,
           "message": "Toxic mire bubbles up from the ground!"
         }
-      }
+      },
+      "guaranteed_rarity_min": "rare"
     },
     {
       "id": "redcap_raider",
@@ -1107,11 +1145,25 @@
         },
         {
           "item_id": "deepglass_dagger",
-          "chance": 0.04
+          "chance": 0.04,
+          "rarity_weights": {
+            "common": 30,
+            "uncommon": 40,
+            "rare": 20,
+            "epic": 8,
+            "legendary": 2
+          }
         },
         {
           "item_id": "crystal_staff",
-          "chance": 0.04
+          "chance": 0.04,
+          "rarity_weights": {
+            "common": 30,
+            "uncommon": 40,
+            "rare": 20,
+            "epic": 8,
+            "legendary": 2
+          }
         }
       ]
     },
@@ -1151,22 +1203,26 @@
       "loot": [
         {
           "item_id": "runebound_sword",
-          "chance": 0.3
+          "chance": 0.3,
+          "min_rarity": "rare"
         },
         {
           "item_id": "stoneguard_mail",
-          "chance": 0.3
+          "chance": 0.3,
+          "min_rarity": "rare"
         },
         {
           "item_id": "granite_core",
           "chance": 1.0,
           "min_quantity": 3,
-          "max_quantity": 5
+          "max_quantity": 5,
+          "guaranteed": true
         },
         {
           "item_id": "sacred_relic",
           "chance": 1.0,
-          "quantity": 3
+          "quantity": 3,
+          "guaranteed": true
         }
       ],
       "boss_phases": [
@@ -1231,7 +1287,8 @@
           "per_round_damage": 8,
           "message": "Steam vents erupt from the Colossus, scalding everyone nearby!"
         }
-      }
+      },
+      "guaranteed_rarity_min": "rare"
     },
     {
       "id": "storm_harpy",
@@ -1265,7 +1322,14 @@
         },
         {
           "item_id": "gale_boots",
-          "chance": 0.04
+          "chance": 0.04,
+          "rarity_weights": {
+            "common": 30,
+            "uncommon": 40,
+            "rare": 20,
+            "epic": 8,
+            "legendary": 2
+          }
         }
       ]
     },
@@ -1302,7 +1366,14 @@
         },
         {
           "item_id": "tempest_bow",
-          "chance": 0.04
+          "chance": 0.04,
+          "rarity_weights": {
+            "common": 30,
+            "uncommon": 40,
+            "rare": 20,
+            "epic": 8,
+            "legendary": 2
+          }
         }
       ]
     },
@@ -1382,7 +1453,14 @@
         },
         {
           "item_id": "skyforge_mace",
-          "chance": 0.04
+          "chance": 0.04,
+          "rarity_weights": {
+            "common": 30,
+            "uncommon": 40,
+            "rare": 20,
+            "epic": 8,
+            "legendary": 2
+          }
         }
       ]
     },
@@ -1424,11 +1502,13 @@
       "loot": [
         {
           "item_id": "dawnblade",
-          "chance": 0.35
+          "chance": 0.35,
+          "min_rarity": "rare"
         },
         {
           "item_id": "sunplate",
-          "chance": 0.25
+          "chance": 0.25,
+          "min_rarity": "rare"
         },
         {
           "item_id": "dawn_signet",
@@ -1438,12 +1518,14 @@
           "item_id": "sun_fragment",
           "chance": 1.0,
           "min_quantity": 3,
-          "max_quantity": 6
+          "max_quantity": 6,
+          "guaranteed": true
         },
         {
           "item_id": "codex_infinite",
           "chance": 1.0,
-          "quantity": 3
+          "quantity": 3,
+          "guaranteed": true
         }
       ],
       "boss_phases": [
@@ -1503,7 +1585,8 @@
           "counter_damage": 120,
           "impact": "The stolen sunrise detonates across the arena."
         }
-      }
+      },
+      "guaranteed_rarity_min": "rare"
     },
     {
       "id": "stone_revenant",
@@ -1908,13 +1991,15 @@
       "loot": [
         {
           "item_id": "void_shard",
-          "chance": 1.0
+          "chance": 1.0,
+          "guaranteed": true
         },
         {
           "item_id": "codex_infinite",
           "chance": 0.3
         }
-      ]
+      ],
+      "guaranteed_rarity_min": "rare"
     }
   ]
 }

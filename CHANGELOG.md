@@ -17,19 +17,43 @@ Bible §18: update the changelog after versions.
   and sub-race sources.
 - Added guaranteed boss loot behavior.
 - Added Skills-screen search, category filtering, sorting, and racial-gift labels.
+- Added rarity-aware loot variants with weighted rarity rolls and dynamic variant
+  generation (`base@rarity`), explicit boss guaranteed flags and minimum rarity
+  enforcement (rare+ for bosses), and loot_weight per rarity in config.
+- Added rarity-based enchantment-slot counts via `rarities.*.enchant_slots`
+  (Common 1, Legendary 3) and multi-enchant support with migration-safe save
+  handling (old single-string → list).
+- Applied rarity colors to inventory, equipment, shop, loot-reward, and item-detail
+  screens; added rarity filtering and sorting to inventory and equipment.
+- Expanded race/sub-race passive data: elemental resistances (fire, water, earth,
+  air, lightning, ice), enemy-family damage bonuses, low-HP/MP/SP power
+  conditions, party-composition bonuses, healing, accuracy, evasion, and status
+  resistance. Wired into DamageEffect (family bonus, low-resource, elemental
+  resist), HealEffect (heal_bonus), and Player._equipment_modifiers (party,
+  accuracy, evasion, status resist).
+- Added active class-perk feedback to Status, class detail, and combat displays,
+  including conditional reasons (HP/MP/SP fractions) and lifesteal/counter/reflect
+  reports.
+- Expanded companion tactics: healing/protection priorities, SP preservation,
+  racial-skill toggles, cleansing/reviving/boss-focus toggles, per-skill
+  priorities, resource preservation threshold, and target overrides. AI now
+  respects boss focus, preferred targets, protective healing, cleansing,
+  reviving, racial skill bonuses, and skill priorities. GUI exposes all new
+  controls and a skill priority list.
 
 ### Tests
-- Full suite remains at 443 passing tests.
+- Full suite now at 460 passing tests (443 + 17 new).
+- New coverage: rarity enchant slots, multi-enchant and variant creation,
+  boss guaranteed loot and rarity weights, race passives stacking,
+  family damage and heal bonuses, party bonus modifiers, perk active reasons,
+  tactics persistence and expanded fields, AI boss focus and skill toggles.
 - Content validation passes with 73 classes, 162 skills, 127 items, 15 races,
   43 enemies, 44 quests, 15 dialogues, 9 factions, 21 companions, and 25 areas.
 
 ### Still planned
-- Rarity-aware loot variants and rarity-based enchantment-slot counts.
-- Rarity colors in inventory, equipment, loot, and all remaining item screens.
-- Expanded racial/sub-racial passive modifiers and stacking tests.
-- Active class-perk feedback in Status, class, and combat screens.
-- Companion tactics for healing, protection, resource preservation, racial skills,
-  cleansing, reviving, boss focus, and per-skill priorities.
+- Tier 4→5 promotion chains and levels 56–70 content (per HANDOFF next milestone).
+- Sub-race-specific dialogue beyond Succubus/Incubus.
+- Tag-based elemental interactions beyond resist and family bonuses.
 
 ## v0.11.1 - Skills Expansion and Class Perks
 

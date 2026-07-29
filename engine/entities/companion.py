@@ -94,15 +94,12 @@ class CompanionDefinition:
     growth: StatBlock = field(default_factory=StatBlock)
     skill_ids: list[str] = field(default_factory=list)
     ai_behavior_id: str = "aggressive"
-    #: Level relative to the player - negative is deliberately fragile.
     level_offset: int = 0
     modifiers: ModifierSet = field(default_factory=ModifierSet)
     weapon_type: str = ""
-    #: Where the player can find and recruit them.
     location_id: str = ""
     recruit: RecruitRequirement = field(default_factory=RecruitRequirement)
     dialogue: list[str] = field(default_factory=list)
-    #: -- relationship fields, shared shape with NPC --
     marriageable: bool = False
     marriage_affinity: int = 80
     gift_item_ids: list[str] = field(default_factory=list)
@@ -184,11 +181,22 @@ class Companion(Entity):
             "stance": definition.ai_behavior_id,
             "preferred_target": "",
             "preserve_mp": False,
+            "preserve_sp": False,
             "healing_threshold": 0.5,
-            "ultimate_policy": "smart",
+            "heal_priority": 1.0,
             "protect_target": "",
+            "protect_priority": 1.5,
+            "cleanse_priority": 0.7,
+            "revive_priority": 1.0,
+            "boss_focus": False,
+            "racial_skill_bonus": False,
+            "ultimate_policy": "smart",
+            "allow_cleanse": True,
+            "allow_revive": True,
+            "allow_racial_skills": True,
+            "skill_priorities": {},
+            "resource_preservation": 0.4,
         }
-        #: Relationship bonuses are independent and composable.
         self._married_bonus: ModifierSet | None = None
         self._loyalty_bonus: ModifierSet | None = None
         self.loyalty_title: str = ""
@@ -201,13 +209,11 @@ class Companion(Entity):
             formulas=formulas,
         )
 
-    # ------------------------------------------------------------------
     @property
     def id(self) -> str:
         return self.definition.id
 
     def _equipment_modifiers(self) -> ModifierSet:
-        """Companions carry no gear; template + marriage bonuses stand in."""
         combined = ModifierSet()
         combined.merge(self.definition.modifiers)
         combined.merge(self.race_def.modifiers)
@@ -218,7 +224,6 @@ class Companion(Entity):
         return combined
 
     def set_married_bonus(self, bonus: ModifierSet | None) -> None:
-        """Apply (or clear) the spouse bonus and refresh derived stats."""
         self._married_bonus = bonus
         self.invalidate_stats()
 
@@ -227,39 +232,61 @@ class Companion(Entity):
         self.invalidate_stats()
 
     def set_tactics(self, values: Mapping[str, Any]) -> None:
-        self.tactics.update(dict(values))
+        # Normalize skill_priorities
+        if "skill_priorities" in values and isinstance(values["skill_priorities"], dict):
+            self.tactics["skill_priorities"] = {str(k): float(v) for k, v in values["skill_priorities"].items()}
+            # remove from values to avoid double merge
+            filtered = {k: v for k, v in values.items() if k != "skill_priorities"}
+            self.tactics.update(filtered)
+        else:
+            self.tactics.update(dict(values))
         self.ai_behavior_id = str(self.tactics.get("stance", self.definition.ai_behavior_id))
 
     def sync_level(self, player_level: int) -> bool:
-        """Re-level to track the player.  Returns ``True`` if it changed.
-
-        HP/MP are scaled proportionally rather than refilled, so levelling up
-        between fights is a boost without being a free heal.
-        """
         target = self.definition.level_for(player_level)
         if target == self.level:
             return False
-
         hp_fraction = self.hp_fraction if self.max_hp else 1.0
         mp_fraction = self.mp_fraction if self.max_mp else 1.0
-
         self.level = target
         self.base_stats = self.definition.stats_at_level(target).add(self.race_def.base_stats)
         self.invalidate_stats()
-
         self.current_hp = max(1.0, float(self.max_hp) * hp_fraction)
         self.current_mp = float(self.max_mp) * mp_fraction
         return True
 
-    # ------------------------------------------------------------------
     def usable_skills(self) -> list[Skill]:
-        """Skills allowed by the player's tactical policy this turn."""
         skills = [s for s in self.skills if s.is_usable_in_combat and s.can_use(self)[0]]
         if self.tactics.get("ultimate_policy") == "never":
             skills = [s for s in skills if s.category != "ultimate"]
-        if self.tactics.get("preserve_mp") and self.mp_fraction < 0.4:
-            free = [s for s in skills if s.mp_cost <= 0]
-            skills = free or skills
+        # Resource preservation
+        preserve_thresh = float(self.tactics.get("resource_preservation", 0.4))
+        if self.tactics.get("preserve_mp") and self.mp_fraction < preserve_thresh:
+            free = [s for s in skills if getattr(s, "mp_cost", 0) <= 0]
+            if free:
+                skills = free
+        if self.tactics.get("preserve_sp") and hasattr(self, "sp_fraction") and self.sp_fraction < preserve_thresh:
+            free_sp = [s for s in skills if getattr(s, "sp_cost", 0) <= 0]
+            if free_sp:
+                skills = free_sp if not self.tactics.get("preserve_mp") else [s for s in skills if s in free_sp or getattr(s, "mp_cost", 0) <= 0]
+        # Cleansing / reviving toggles
+        if not self.tactics.get("allow_cleanse", True):
+            skills = [s for s in skills if not any(getattr(e, "type_id", "") in ("cleanse", "status_transfer") for e in s.effects)]
+        if not self.tactics.get("allow_revive", True):
+            skills = [s for s in skills if not any(getattr(e, "type_id", "") == "revive" for e in s.effects)]
+        if not self.tactics.get("allow_racial_skills", True):
+            skills = [s for s in skills if not str(getattr(s, "id", "")).startswith("racial_")]
+        # Per-skill priorities: filter out skills with priority 0 (disabled)
+        priorities = self.tactics.get("skill_priorities") or {}
+        if priorities:
+            filtered = []
+            for s in skills:
+                prio = float(priorities.get(getattr(s, "id", ""), 1.0))
+                if prio > 0:
+                    filtered.append(s)
+            # If filtering removes all, keep original
+            if filtered:
+                skills = filtered
         return skills
 
     def tick_cooldowns(self) -> None:
@@ -268,7 +295,6 @@ class Companion(Entity):
             if self.cooldowns[skill_id] <= 0:
                 del self.cooldowns[skill_id]
 
-    # ------------------------------------------------------------------
     def summary_lines(self) -> list[str]:
         lines = [
             f"Name: {self.name}",
@@ -280,6 +306,8 @@ class Companion(Entity):
         ]
         if self.statuses:
             lines.append("Status: " + ", ".join(self.status_summaries()))
+        # Tactics summary
+        lines.append(f"Tactics: {self.tactics.get('stance','').title()}, Heal<{float(self.tactics.get('healing_threshold',0.5))*100:.0f}%, BossFocus={self.tactics.get('boss_focus')}")
         return lines
 
     def to_dict(self) -> dict[str, Any]:

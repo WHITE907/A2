@@ -14,11 +14,11 @@
   "affinity_gift": 5,
   "affinity_gift_liked": 15,
   "rarities": {
-    "common": {"label": "Common", "modifier_rate": 1.0, "value_rate": 1.0, "color": "#d8d8d8"},
-    "uncommon": {"label": "Uncommon", "modifier_rate": 1.15, "value_rate": 1.25, "color": "#65c466"},
-    "rare": {"label": "Rare", "modifier_rate": 1.35, "value_rate": 1.75, "color": "#5da9e9"},
-    "epic": {"label": "Epic", "modifier_rate": 1.7, "value_rate": 2.5, "color": "#b678e5"},
-    "legendary": {"label": "Legendary", "modifier_rate": 2.2, "value_rate": 4.0, "color": "#e5a83f"}
+    "common": {"label": "Common", "modifier_rate": 1.0, "value_rate": 1.0, "color": "#d8d8d8", "enchant_slots": 1, "loot_weight": 60},
+    "uncommon": {"label": "Uncommon", "modifier_rate": 1.15, "value_rate": 1.25, "color": "#65c466", "enchant_slots": 1, "loot_weight": 25},
+    "rare": {"label": "Rare", "modifier_rate": 1.35, "value_rate": 1.75, "color": "#5da9e9", "enchant_slots": 2, "loot_weight": 10},
+    "epic": {"label": "Epic", "modifier_rate": 1.7, "value_rate": 2.5, "color": "#b678e5", "enchant_slots": 2, "loot_weight": 4},
+    "legendary": {"label": "Legendary", "modifier_rate": 2.2, "value_rate": 4.0, "color": "#e5a83f", "enchant_slots": 3, "loot_weight": 1}
   },
   "progression": {
     "_comment": "Bible section 9: unlimited levels, +5 stat points and +1 skill point per level.",

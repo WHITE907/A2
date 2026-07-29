@@ -18,6 +18,17 @@ _FILTERS: tuple[tuple[str, str | None], ...] = (
     ("Key Items", "key"),
 )
 
+_RARITY_FILTERS: tuple[tuple[str, str | None], ...] = (
+    ("All Rarities", None),
+    ("Common", "common"),
+    ("Uncommon", "uncommon"),
+    ("Rare", "rare"),
+    ("Epic", "epic"),
+    ("Legendary", "legendary"),
+)
+
+_SORTS: tuple[str, ...] = ("name", "rarity", "value", "type")
+
 
 class InventoryWindow(tk.Toplevel):
     """Bag contents with a detail preview."""
@@ -27,7 +38,7 @@ class InventoryWindow(tk.Toplevel):
         self.app = app
 
         theme.style_window(self, "Project Ascension - Inventory")
-        theme.center_window(self, 660, 520)
+        theme.center_window(self, 760, 560)
         self.transient(app.root)
 
         body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
@@ -60,6 +71,49 @@ class InventoryWindow(tk.Toplevel):
                 borderwidth=0,
             ).pack(side=tk.LEFT, padx=(0, 10))
 
+        # -- rarity filter + sort row -----------------------------------
+        rarity_row = tk.Frame(body, bg=theme.BG)
+        rarity_row.pack(fill=tk.X, pady=(6, 0))
+        theme.body_label(rarity_row, text="Rarity:", font=theme.FONT_SMALL).pack(side=tk.LEFT)
+        self.rarity_var = tk.StringVar(value="All Rarities")
+        for label, _rar in _RARITY_FILTERS:
+            tk.Radiobutton(
+                rarity_row,
+                text=label,
+                value=label,
+                variable=self.rarity_var,
+                command=self.refresh,
+                bg=theme.BG,
+                fg=theme.FG,
+                selectcolor=theme.BG_ALT,
+                activebackground=theme.BG,
+                activeforeground=theme.FG,
+                font=theme.FONT_SMALL,
+                highlightthickness=0,
+                borderwidth=0,
+            ).pack(side=tk.LEFT, padx=(0, 6))
+
+        sort_row = tk.Frame(body, bg=theme.BG)
+        sort_row.pack(fill=tk.X, pady=(6, 0))
+        theme.body_label(sort_row, text="Sort:", font=theme.FONT_SMALL).pack(side=tk.LEFT)
+        self.sort_var = tk.StringVar(value="name")
+        for s in _SORTS:
+            tk.Radiobutton(
+                sort_row,
+                text=s.title(),
+                value=s,
+                variable=self.sort_var,
+                command=self.refresh,
+                bg=theme.BG,
+                fg=theme.FG,
+                selectcolor=theme.BG_ALT,
+                activebackground=theme.BG,
+                activeforeground=theme.FG,
+                font=theme.FONT_SMALL,
+                highlightthickness=0,
+                borderwidth=0,
+            ).pack(side=tk.LEFT, padx=(0, 8))
+
         # -- list + detail -----------------------------------------------
         columns = tk.Frame(body, bg=theme.BG)
         columns.pack(fill=tk.BOTH, expand=True, pady=(12, 0))
@@ -87,6 +141,9 @@ class InventoryWindow(tk.Toplevel):
     def _selected_kind(self) -> str | None:
         return dict(_FILTERS).get(self.filter_var.get())
 
+    def _selected_rarity(self) -> str | None:
+        return dict(_RARITY_FILTERS).get(self.rarity_var.get())
+
     def refresh(self) -> None:
         game = self.app.game
         if not game.has_character:
@@ -94,8 +151,33 @@ class InventoryWindow(tk.Toplevel):
             return
 
         self.gold_label.configure(text=f"Gold: {game.player.inventory.gold}")
-        entries = game.inventory_entries(self._selected_kind())
-        self.item_list.set_items([(entry.label(), entry.item) for entry in entries])
+        kind = self._selected_kind()
+        rarity = self._selected_rarity()
+        sort_mode = self.sort_var.get()
+
+        entries = game.inventory_entries(kind)
+        if rarity:
+            entries = [e for e in entries if e.item.rarity.lower() == rarity.lower()]
+
+        # Sorting
+        rarity_order = {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
+        if sort_mode == "rarity":
+            entries = sorted(entries, key=lambda e: (rarity_order.get(e.item.rarity.lower(), 0), e.item.name))
+        elif sort_mode == "value":
+            entries = sorted(entries, key=lambda e: (e.item.value, e.item.name), reverse=True)
+        elif sort_mode == "type":
+            entries = sorted(entries, key=lambda e: (e.item.kind, e.item.name))
+        else:
+            entries = sorted(entries, key=lambda e: e.item.name.lower())
+
+        # Labels with rarity
+        labels = [(f"[{e.item.rarity_label}] {e.label()}", e.item) for e in entries]
+        self.item_list.set_items(labels)
+
+        # Rarity colors
+        rarity_colors = game.config.get("rarities") or {}
+        colors = [rarity_colors.get(e.item.rarity.lower(), {}).get("color", theme.FG) for e in entries]
+        self.item_list.set_row_colors(colors)
 
         if not entries:
             self.detail.set_lines(["Nothing here."])
@@ -108,7 +190,8 @@ class InventoryWindow(tk.Toplevel):
         if item is None:
             self.detail.set_lines([])
             return
-        self.detail.set_lines(item.detail_lines())
+        rarity_cfg = self.app.game.config.get("rarities") or {}
+        self.detail.set_lines(item.detail_lines(rarity_cfg))
         # Buttons follow what the item actually supports.
         self.use_button.configure(state=tk.NORMAL if item.is_consumable else tk.DISABLED)
         self.equip_button.configure(state=tk.NORMAL if item.is_equipment else tk.DISABLED)

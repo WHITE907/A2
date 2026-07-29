@@ -29,18 +29,25 @@ class LootEntry:
     min_quantity: int = 1
     max_quantity: int = 1
     guaranteed: bool = False
+    rarity: str = ""
+    min_rarity: str = ""
+    rarity_weights: dict[str, float] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "LootEntry":
         quantity = payload.get("quantity")
         low = int(payload.get("min_quantity", quantity if quantity is not None else 1))
         high = int(payload.get("max_quantity", quantity if quantity is not None else low))
+        rw = payload.get("rarity_weights") or {}
         return cls(
             item_id=str(payload.get("item_id", payload.get("id", ""))),
             chance=float(payload.get("chance", 1.0)),
             min_quantity=low,
             max_quantity=max(low, high),
             guaranteed=bool(payload.get("guaranteed", False)),
+            rarity=str(payload.get("rarity", "")).lower(),
+            min_rarity=str(payload.get("min_rarity", "")).lower(),
+            rarity_weights={str(k).lower(): float(v) for k, v in rw.items()},
         )
 
 
@@ -58,9 +65,7 @@ class EnemyTemplate:
     loot: list[LootEntry] = field(default_factory=list)
     exp_reward: float = 10.0
     gold_reward: int = 5
-    #: Multiplies EXP/gold per level above ``base_level``.
     reward_scaling: float = 0.1
-    #: Flat stat tweaks applied on top of the level-scaled stats.
     modifiers: ModifierSet = field(default_factory=ModifierSet)
     description: str = ""
     family: str = "beast"
@@ -68,6 +73,7 @@ class EnemyTemplate:
     mastery_reward: float = 0.0
     boss_phases: list[dict[str, Any]] = field(default_factory=list)
     boss_rules: dict[str, Any] = field(default_factory=dict)
+    guaranteed_rarity_min: str = ""
 
     def stats_at_level(self, level: int) -> StatBlock:
         result = self.base_stats.copy()
@@ -105,6 +111,7 @@ class EnemyTemplate:
             mastery_reward=float(payload.get("mastery_reward", 0.0)),
             boss_phases=[dict(value) for value in payload.get("boss_phases", [])],
             boss_rules=dict(payload.get("boss_rules") or {}),
+            guaranteed_rarity_min=str(payload.get("guaranteed_rarity_min", "")).lower(),
         )
 
 
@@ -123,8 +130,6 @@ class Enemy(Entity):
         self.skills: list[Skill] = list(skills)
         self.cooldowns: dict[str, int] = {}
         self.ai_behavior_id = template.ai_behavior_id
-        #: Set by CombatManager when several of the same monster are present
-        #: ("Slime A", "Slime B") so the player can tell targets apart.
         self.name_suffix = name_suffix
         self.boss_phase: int = 0
         self._phase_modifiers = ModifierSet()
@@ -137,9 +142,7 @@ class Enemy(Entity):
             formulas=formulas,
         )
 
-    # ------------------------------------------------------------------
     def _equipment_modifiers(self) -> ModifierSet:
-        """Enemies have no gear; template modifiers stand in for it."""
         combined = ModifierSet()
         combined.merge(self.template.modifiers)
         combined.merge(self._phase_modifiers)
@@ -158,7 +161,6 @@ class Enemy(Entity):
         return self.template.rewards_at_level(self.level)
 
     def usable_skills(self) -> list[Skill]:
-        """Skills this enemy can actually cast right now."""
         return [s for s in self.skills if s.is_usable_in_combat and s.can_use(self)[0]]
 
     def tick_cooldowns(self) -> None:
@@ -167,20 +169,104 @@ class Enemy(Entity):
             if self.cooldowns[skill_id] <= 0:
                 del self.cooldowns[skill_id]
 
-    def roll_loot(self, rng: Any) -> list[tuple[str, int]]:
-        """Roll every drop independently; returns ``(item_id, quantity)``."""
+    def roll_loot(self, rng: Any, item_manager: Any | None = None, rarity_config: Mapping[str, Any] | None = None) -> list[tuple[str, int]]:
         drops: list[tuple[str, int]] = []
         guaranteed_dropped = False
+
+        def resolve_variant(base_id: str, desired_rarity: str) -> str:
+            if not desired_rarity or item_manager is None:
+                return base_id
+            base_item = item_manager.get(base_id) if item_manager else None
+            if base_item is None:
+                return base_id
+            if base_item.rarity.lower() == desired_rarity.lower():
+                return base_id
+            try:
+                variant = item_manager.get_or_create_variant(base_id, desired_rarity)
+                return variant.id
+            except Exception:
+                return base_id
+
         for entry in self.template.loot:
             if not entry.item_id:
                 continue
-            guaranteed = entry.guaranteed or (self.template.is_boss and not guaranteed_dropped and entry is self.template.loot[0])
-            if guaranteed or rng.chance(entry.chance):
-                quantity = rng.randint(entry.min_quantity, entry.max_quantity)
-                if quantity > 0:
-                    drops.append((entry.item_id, quantity))
-                    if guaranteed:
+            is_guaranteed_entry = entry.guaranteed
+            if self.template.is_boss and not guaranteed_dropped and not any(e.guaranteed for e in self.template.loot):
+                if entry is self.template.loot[0]:
+                    is_guaranteed_entry = True
+
+            should_drop = is_guaranteed_entry or rng.chance(entry.chance)
+            if not should_drop:
+                continue
+
+            quantity = rng.randint(entry.min_quantity, entry.max_quantity)
+            if quantity <= 0:
+                continue
+
+            final_id = entry.item_id
+            if entry.rarity:
+                final_id = resolve_variant(final_id, entry.rarity)
+            elif entry.rarity_weights and rng is not None and item_manager is not None:
+                choices = list(entry.rarity_weights.items())
+                total = sum(w for _, w in choices)
+                if total > 0:
+                    roll = rng.uniform(0, total)
+                    cum = 0.0
+                    for rarity, weight in choices:
+                        cum += weight
+                        if roll <= cum:
+                            final_id = resolve_variant(final_id, rarity)
+                            break
+            elif entry.min_rarity and item_manager is not None:
+                base_item = item_manager.get(final_id)
+                if base_item and base_item.is_equipment:
+                    final_id = resolve_variant(final_id, entry.min_rarity)
+
+            drops.append((final_id, quantity))
+            if is_guaranteed_entry:
+                guaranteed_dropped = True
+
+        if self.template.is_boss and not guaranteed_dropped:
+            for entry in self.template.loot:
+                if entry.guaranteed or entry.chance >= 1.0:
+                    final_id = entry.item_id
+                    if entry.rarity:
+                        final_id = resolve_variant(final_id, entry.rarity)
+                    elif entry.min_rarity:
+                        final_id = resolve_variant(final_id, entry.min_rarity)
+                    quantity = rng.randint(entry.min_quantity, entry.max_quantity) if rng else entry.min_quantity
+                    if quantity > 0:
+                        drops.append((final_id, quantity))
                         guaranteed_dropped = True
+                        break
+            if not guaranteed_dropped and self.template.loot:
+                entry = self.template.loot[0]
+                final_id = entry.item_id
+                if entry.rarity:
+                    final_id = resolve_variant(final_id, entry.rarity)
+                quantity = rng.randint(entry.min_quantity, entry.max_quantity) if rng else entry.min_quantity
+                drops.append((final_id, max(1, quantity)))
+
+        if self.template.is_boss and item_manager is not None and rarity_config:
+            min_rarity = (self.template.guaranteed_rarity_min or "rare").lower()
+            order = ["common", "uncommon", "rare", "epic", "legendary"]
+            min_idx = order.index(min_rarity) if min_rarity in order else 2
+            has_high = False
+            for item_id, _ in drops:
+                it = item_manager.get(item_id)
+                if it and it.rarity.lower() in order:
+                    if order.index(it.rarity.lower()) >= min_idx:
+                        has_high = True
+                        break
+            if not has_high and drops:
+                for idx, (item_id, qty) in enumerate(drops):
+                    it = item_manager.get(item_id)
+                    if it and it.is_equipment:
+                        upgraded_id = resolve_variant(item_id.split("@")[0], min_rarity)
+                        drops[idx] = (upgraded_id, qty)
+                        has_high = True
+                        break
+
         return drops
 
     def summary_lines(self) -> list[str]:

@@ -74,6 +74,8 @@ class Battle:
         flee_base_chance: float = 0.45,
         mastery_per_action: float = 6.0,
         summon_factory: Any = None,
+        item_manager: Any | None = None,
+        rarity_config: Any | None = None,
     ) -> None:
         self.player = player
         self.enemies: list[Any] = list(enemies)
@@ -84,6 +86,8 @@ class Battle:
         self.flee_base_chance = flee_base_chance
         self.mastery_per_action = mastery_per_action
         self.summon_factory = summon_factory
+        self.item_manager = item_manager
+        self.rarity_config = rarity_config or {}
 
         self.state = CombatState.ONGOING
         self.round = 0
@@ -466,7 +470,11 @@ class Battle:
             exp, gold = enemy.rewards()
             total_exp += exp
             total_gold += gold
-            drops.extend(enemy.roll_loot(self.rng))
+            # Use rarity-aware roll if item_manager available
+            try:
+                drops.extend(enemy.roll_loot(self.rng, self.item_manager, self.rarity_config))
+            except TypeError:
+                drops.extend(enemy.roll_loot(self.rng))
 
         self.rewards.exp = total_exp
         self.rewards.gold = total_gold
@@ -533,4 +541,25 @@ class Battle:
         ]
         if self.player.statuses:
             lines.append("Status: " + ", ".join(self.player.status_summaries()))
+        # Active perk feedback in combat
+        try:
+            active = self.player.active_perks()
+            actives = [f"{p['perk'].get('name','Perk')}({p['reason']})" for p in active if p["active"]]
+            if actives:
+                lines.append("Perks active: " + ", ".join(actives[:3]))
+            specials = self.player.special_effects()
+            grouped = {}
+            for s in specials:
+                grouped[s.get("type","")] = grouped.get(s.get("type",""), 0.0) + float(s.get("value",0))
+            notes = []
+            if grouped.get("lifesteal"):
+                notes.append(f"Lifesteal {grouped['lifesteal']*100:.0f}%")
+            if grouped.get("reflect"):
+                notes.append(f"Reflect {grouped['reflect']*100:.0f}%")
+            if grouped.get("counter"):
+                notes.append(f"Counter {grouped['counter']*100:.0f}%")
+            if notes:
+                lines.append("Specials: " + ", ".join(notes))
+        except Exception:
+            pass
         return lines

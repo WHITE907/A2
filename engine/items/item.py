@@ -85,6 +85,7 @@ class Item:
     tags: list[str] = field(default_factory=list)
     rarity: str = "common"
     set_id: str = ""
+    #: Sentinel -1 means "resolve from rarity config"
     enchant_slots: int = 0
     bound_skill_id: str = ""
     conditional_modifiers: list[dict[str, Any]] = field(default_factory=list)
@@ -114,13 +115,30 @@ class Item:
         """Human-readable rarity, while preserving the JSON id."""
         return self.rarity.replace("_", " ").title()
 
-    def detail_lines(self) -> list[str]:
+    def effective_enchant_slots(self, rarity_config: Mapping[str, Any] | None = None) -> int:
+        """Resolve enchant slots from rarity config when sentinel -1."""
+        if self.enchant_slots != -1:
+            return max(0, self.enchant_slots)
+        if not self.is_equipment:
+            return 0
+        if rarity_config:
+            cfg = rarity_config.get(self.rarity.lower()) or {}
+            if "enchant_slots" in cfg:
+                return int(cfg["enchant_slots"])
+        return 1
+
+    def detail_lines(self, rarity_config: Mapping[str, Any] | None = None) -> list[str]:
         """Stacked ``key: value`` text for the Inventory/Equipment panes."""
         lines = [f"{self.name} [{self.rarity_label}]"]
         if self.description:
             lines.append(self.description)
         if self.is_equipment:
             lines.append(f"Slot: {SLOT_LABELS.get(self.slot, self.slot.title())}")
+            slots = self.effective_enchant_slots(rarity_config)
+            if slots:
+                lines.append(f"Enchant slots: {slots}")
+            if self.set_id:
+                lines.append(f"Set: {self.set_id.replace('_', ' ').title()}")
         if self.weapon_type:
             lines.append(f"Type: {self.weapon_type.title()}")
         lines.extend(self.modifiers.describe())
@@ -132,6 +150,13 @@ class Item:
             lines.append(f"Requires level {self.required_level}")
         for stat, amount in self.required_stats.items():
             lines.append(f"Requires {stat} {amount}")
+        if self.bound_skill_id:
+            lines.append(f"Grants skill: {self.bound_skill_id.replace('_', ' ').title()}")
+        for cond in self.conditional_modifiers:
+            thr = cond.get("below_hp_fraction")
+            if thr is not None:
+                lines.append(f"When below {float(thr)*100:.0f}% HP:")
+                lines.extend(f"  {l}" for l in ModifierSet.from_dict(cond.get("modifiers")).describe())
         lines.append(f"Value: {self.value} gold")
         return lines
 
@@ -146,6 +171,10 @@ class Item:
         slot = str(payload.get("slot", "")).lower()
         if kind == ItemKind.EQUIPMENT and slot not in EQUIPMENT_SLOTS:
             raise ValueError(f"equipment {item_id!r} has invalid slot {slot!r}")
+        if "enchant_slots" in payload:
+            enchant_slots = int(payload["enchant_slots"])
+        else:
+            enchant_slots = -1 if kind == ItemKind.EQUIPMENT else 0
         return cls(
             id=item_id,
             name=str(payload.get("name", item_id)),
@@ -166,7 +195,7 @@ class Item:
             tags=[str(t) for t in payload.get("tags", [])],
             rarity=str(payload.get("rarity", "common")),
             set_id=str(payload.get("set_id", "")),
-            enchant_slots=int(payload.get("enchant_slots", 1 if kind == ItemKind.EQUIPMENT else 0)),
+            enchant_slots=enchant_slots,
             bound_skill_id=str(payload.get("bound_skill_id", "")),
             conditional_modifiers=[dict(value) for value in payload.get("conditional_modifiers", [])],
         )
@@ -207,7 +236,7 @@ class Inventory:
         return self.count(item_id) >= quantity
 
     def has_all(self, requirements: Mapping[str, int] | Iterable[str] | None) -> bool:
-        """Accepts ``{"id": qty}`` or a plain list of ids."""
+        """Accepts ``{\"id\": qty}`` or a plain list of ids."""
         if not requirements:
             return True
         if isinstance(requirements, Mapping):

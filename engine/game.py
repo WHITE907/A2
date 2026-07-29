@@ -436,12 +436,45 @@ class Game:
         if mastery_lines:
             lines.append("")
             lines.extend(mastery_lines)
+        # Class perk feedback
+        perk_lines = self.player.perk_lines()
+        if perk_lines:
+            lines.append("")
+            lines.extend(perk_lines)
+        # Special effects summary (lifesteal/counter/reflect)
+        specials = self.player.special_effects()
+        if specials:
+            lines.append("")
+            lines.append("Special effects:")
+            grouped: dict[str, float] = {}
+            for s in specials:
+                t = s.get("type", "")
+                grouped[t] = grouped.get(t, 0.0) + float(s.get("value", 0.0))
+            for t, v in sorted(grouped.items()):
+                if t == "lifesteal":
+                    lines.append(f"  Lifesteal: {v*100:.0f}% of damage dealt")
+                elif t == "reflect":
+                    lines.append(f"  Reflect: {v*100:.0f}% of damage taken")
+                elif t == "counter":
+                    lines.append(f"  Counter: {v*100:.0f}% counter damage")
+                else:
+                    lines.append(f"  {t}: {v}")
         if self.player.statuses:
             lines.append("")
             lines.extend(self.player.status_summaries())
         if self.player.spouse_id:
             lines.append("")
             lines.append(f"Spouse: {self.player.spouse_id.replace('_', ' ').title()}")
+        # Equipment enchantment summary
+        if self.player.item_enchantments:
+            lines.append("")
+            lines.append("Enchantments:")
+            for item_id, ench_ids in self.player.item_enchantments.items():
+                item = self.items.get(item_id)
+                name = item.name if item else item_id
+                for eid in ench_ids:
+                    ench = self.enchantments.get(eid)
+                    lines.append(f"  {name}: {ench.name if ench else eid}")
         return lines
 
     def allocate_stat(self, stat: str, amount: int = 1) -> tuple[bool, str]:
@@ -510,15 +543,47 @@ class Game:
         enchantment = self.enchantments.get(enchantment_id)
         if item is None or enchantment is None or not item.is_equipment:
             return False, "Invalid item or enchantment."
-        if item.enchant_slots < 1:
+        rarity_cfg = self.config.get("rarities") or {}
+        effective_slots = item.effective_enchant_slots(rarity_cfg)
+        if effective_slots < 1:
             return False, f"{item.name} cannot be enchanted."
         if not (self.player.inventory.has(item_id) or item in self.player.equipment.values()):
             return False, f"You do not own {item.name}."
+        current = self.player.item_enchantments.get(item_id, [])
+        if len(current) >= effective_slots:
+            return False, f"{item.name} has no free enchant slots ({effective_slots} max)."
+        if enchantment_id in current:
+            return False, f"{item.name} already has {enchantment.name}."
         if not self.player.inventory.spend_gold(enchantment.gold_cost):
             return False, f"You need {enchantment.gold_cost} gold."
-        self.player.item_enchantments[item_id] = enchantment_id
+        # Store as list
+        if item_id not in self.player.item_enchantments:
+            self.player.item_enchantments[item_id] = []
+        self.player.item_enchantments[item_id].append(enchantment_id)
         self.player.invalidate_stats()
-        return True, f"Applied {enchantment.name} to {item.name}."
+        return True, f"Applied {enchantment.name} to {item.name} ({len(self.player.item_enchantments[item_id])}/{effective_slots} slots)."
+
+    def disenchant_item(self, item_id: str, enchantment_id: str | None = None) -> tuple[bool, str]:
+        """Remove an enchantment (or all) from an item."""
+        if not self.player:
+            return False, "No character loaded."
+        item = self.items.get(item_id)
+        if item is None:
+            return False, "Unknown item."
+        current = self.player.item_enchantments.get(item_id, [])
+        if not current:
+            return False, f"{item.name} has no enchantments."
+        if enchantment_id is None:
+            self.player.item_enchantments.pop(item_id, None)
+            self.player.invalidate_stats()
+            return True, f"Removed all enchantments from {item.name}."
+        if enchantment_id not in current:
+            return False, f"{item.name} does not have that enchantment."
+        current.remove(enchantment_id)
+        if not current:
+            self.player.item_enchantments.pop(item_id, None)
+        self.player.invalidate_stats()
+        return True, f"Removed {enchantment_id} from {item.name}."
 
     def upgrade_item(self, item_id: str) -> tuple[bool, str]:
         if not self.player:
@@ -942,6 +1007,8 @@ class Game:
             flee_base_chance=float(combat_config.get("flee_base_chance", 0.45)),
             mastery_per_action=float(combat_config.get("mastery_per_action", 6.0)),
             summon_factory=lambda enemy_id, level: self.enemies.spawn(enemy_id, level),
+            item_manager=self.items,
+            rarity_config=self.config.get("rarities") or {},
         )
         # Fast enemies may act before the player's first turn.
         self.battle.run_until_player_turn()
@@ -1181,6 +1248,8 @@ class Game:
             unlocked = self.player.record_achievement("companions_recruited", companion_id)
             for ach_id in unlocked:
                 message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
+        if joined:
+            self._update_party_composition()
         return joined, [message]
 
     def dismiss_companion(self, companion_id: str) -> tuple[bool, str]:
@@ -1189,17 +1258,50 @@ class Game:
             return False, "No character loaded."
         if self.player.spouse_id == companion_id:
             return False, "You will not send your spouse away."
-        return self.party.dismiss(companion_id)
+        result = self.party.dismiss(companion_id)
+        self._update_party_composition()
+        return result
 
     def set_companion_active(self, companion_id: str, active: bool) -> tuple[bool, str]:
-        return self.party.set_active(companion_id, active)
+        result = self.party.set_active(companion_id, active)
+        self._update_party_composition()
+        return result
+
+    def _update_party_composition(self) -> None:
+        if not self.player:
+            return
+        races = []
+        for member in self.party.all_members:
+            # member.race_def may exist
+            race_id = getattr(member, "race_def", None)
+            if race_id:
+                races.append(getattr(race_id, "id", "") or getattr(member.definition, "race_id", ""))
+            else:
+                # For definitions?
+                races.append(getattr(member, "race_id", ""))
+        self.player.party_races = [r for r in races if r]
+        self.player.invalidate_stats()
 
     def set_companion_tactics(self, companion_id: str, tactics: Mapping[str, Any]) -> tuple[bool, str]:
         companion = self.party.get(companion_id)
         if companion is None:
             return False, "They are not in your party."
-        allowed = {"stance", "preferred_target", "preserve_mp", "healing_threshold", "ultimate_policy", "protect_target"}
-        companion.set_tactics({key: value for key, value in tactics.items() if key in allowed})
+        allowed = {
+            "stance", "preferred_target", "preserve_mp", "healing_threshold", "ultimate_policy",
+            "protect_target", "preserve_sp", "heal_priority", "protect_priority", "cleanse_priority",
+            "revive_priority", "boss_focus", "racial_skill_bonus", "skill_priorities", "resource_preservation",
+            "allow_cleanse", "allow_revive", "allow_racial_skills"
+        }
+        # Normalize skill_priorities if present
+        filtered = {}
+        for key, value in tactics.items():
+            if key not in allowed:
+                continue
+            if key == "skill_priorities" and isinstance(value, dict):
+                filtered[key] = {str(k): float(v) for k, v in value.items()}
+            else:
+                filtered[key] = value
+        companion.set_tactics(filtered)
         return True, f"Updated tactics for {companion.name}."
 
     def party_lines(self) -> list[str]:
@@ -1708,7 +1810,18 @@ class Game:
         player.faction_reputation = {str(k): int(v) for k, v in (player_data.get("faction_reputation") or {}).items()}
         player.companion_loyalty = {str(k): int(v) for k, v in (player_data.get("companion_loyalty") or {}).items()}
         player.companion_unavailable_until = {str(k): int(v) for k, v in (player_data.get("companion_unavailable_until") or {}).items()}
-        player.item_enchantments = {str(k): str(v) for k, v in (player_data.get("item_enchantments") or {}).items()}
+        # Migration: old saves stored single string per item, new stores list
+        raw_enchants = player_data.get("item_enchantments") or {}
+        migrated: dict[str, list[str]] = {}
+        for k, v in raw_enchants.items():
+            if isinstance(v, (list, tuple)):
+                migrated[str(k)] = [str(x) for x in v]
+            elif isinstance(v, str) and v:
+                migrated[str(k)] = [str(v)]
+            else:
+                # Unknown format - skip
+                continue
+        player.item_enchantments = migrated
         player.item_upgrades = {str(k): int(v) for k, v in (player_data.get("item_upgrades") or {}).items()}
         player.flags = dict(player_data.get("flags") or {})
         player.codex = Codex.from_dict(player_data.get("codex"))

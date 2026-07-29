@@ -71,10 +71,19 @@ class EquipmentWindow(tk.Toplevel):
 
         player = game.player
         rows = []
+        colors = []
+        rarity_cfg = game.config.get("rarities") or {}
         for slot in EQUIPMENT_SLOTS:
             item = player.equipment.get(slot)
-            rows.append((f"{SLOT_LABELS[slot]}: {item.name if item else '(empty)'}", slot))
+            label = f"{SLOT_LABELS[slot]}: {item.name if item else '(empty)'}"
+            if item:
+                label = f"[{item.rarity_label}] {label}"
+                colors.append(rarity_cfg.get(item.rarity.lower(), {}).get("color", theme.FG))
+            else:
+                colors.append(theme.FG)
+            rows.append((label, slot))
         self.slot_list.set_items(rows, keep_selection=True)
+        self.slot_list.set_row_colors(colors)
         self._reload_candidates()
 
     def _reload_candidates(self) -> None:
@@ -83,19 +92,26 @@ class EquipmentWindow(tk.Toplevel):
             self.candidate_list.clear()
             return
         items = self.app.game.equippable_for_slot(slot)
-        self.candidate_list.set_items([(item.name, item) for item in items], keep_selection=False)
+        rarity_cfg = self.app.game.config.get("rarities") or {}
+        # Sort by rarity then name
+        rarity_order = {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
+        items = sorted(items, key=lambda i: (rarity_order.get(i.rarity.lower(), 0), i.name))
+        self.candidate_list.set_items([(f"[{item.rarity_label}] {item.name}", item) for item in items], keep_selection=False)
+        self.candidate_list.set_row_colors([rarity_cfg.get(item.rarity.lower(), {}).get("color", theme.FG) for item in items])
         if items:
             self._on_candidate(self.candidate_list.selected_value)
         else:
             equipped = self.app.game.player.equipment.get(slot)
-            self.detail.set_lines(
-                equipped.detail_lines() if equipped else ["Nothing available for this slot."]
-            )
+            if equipped:
+                self.detail.set_lines(equipped.detail_lines(rarity_cfg))
+            else:
+                self.detail.set_lines(["Nothing available for this slot."])
 
     def _on_candidate(self, item: Item | None) -> None:
         if item is None:
             return
-        self.detail.set_lines(item.detail_lines())
+        rarity_cfg = self.app.game.config.get("rarities") or {}
+        self.detail.set_lines(item.detail_lines(rarity_cfg))
 
     # ------------------------------------------------------------------
     def _equip(self) -> None:

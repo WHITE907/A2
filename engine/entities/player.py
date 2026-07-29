@@ -96,9 +96,11 @@ class Player(Entity):
         self.faction_reputation: dict[str, int] = {}
         self.companion_loyalty: dict[str, int] = {}
         self.companion_unavailable_until: dict[str, int] = {}
-        self.item_enchantments: dict[str, str] = {}
+        #: Mapping item_id -> list[enchantment_id]; migration handles old str form
+        self.item_enchantments: dict[str, list[str]] = {}
         self.item_upgrades: dict[str, int] = {}
         self.flags: dict[str, Any] = {}
+        self.party_races: list[str] = []
         self.codex = Codex(total_achievements=len(self._codex_achievements()))
 
         super().__init__(name=name, level=level, base_stats=StatBlock(), formulas=formulas)
@@ -141,8 +143,39 @@ class Player(Entity):
         for perk in self.class_def.perks:
             special = str(perk.get("special", "")).strip()
             if special:
-                effects.append({"type": special, "value": float(perk.get("special_value", 0.0))})
+                effects.append({"type": special, "value": float(perk.get("special_value", 0.0)), "perk_id": perk.get("id", ""), "perk_name": perk.get("name", special)})
         return effects
+
+    def active_perks(self) -> list[dict[str, Any]]:
+        """Return perks with their active state and reason, for UI feedback."""
+        active = []
+        for perk in self.class_def.perks:
+            trigger = perk.get("trigger", "always")
+            is_active = False
+            reason = ""
+            if trigger == "always":
+                is_active = True
+                reason = "Always active"
+            elif trigger == "low_hp" and hasattr(self, "current_hp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_hp = self.formulas.derive(self.base_stats, self.level).max_hp
+                frac = self.current_hp / max_hp if max_hp else 1.0
+                is_active = frac < threshold
+                reason = f"HP {frac*100:.0f}% < {threshold*100:.0f}%"
+            elif trigger == "low_mp" and hasattr(self, "current_mp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_mp = self.formulas.derive(self.base_stats, self.level).max_mp
+                frac = self.current_mp / max_mp if max_mp else 1.0
+                is_active = frac < threshold
+                reason = f"MP {frac*100:.0f}% < {threshold*100:.0f}%"
+            elif trigger == "low_sp" and hasattr(self, "current_sp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_sp = self.formulas.derive(self.base_stats, self.level).max_sp
+                frac = self.current_sp / max_sp if max_sp else 1.0
+                is_active = frac < threshold
+                reason = f"SP {frac*100:.0f}% < {threshold*100:.0f}%"
+            active.append({"perk": perk, "active": is_active, "reason": reason})
+        return active
 
     def _equipment_modifiers(self) -> ModifierSet:
         """Gear + class passives + learned passive skills + mastery ranks.
@@ -166,9 +199,11 @@ class Player(Entity):
             racial_bonus = item.race_modifiers.get(self.race_id)
             if racial_bonus is not None:
                 combined.merge(racial_bonus)
-            enchantment = self.enchantment_definitions.get(self.item_enchantments.get(item.id, ""))
-            if enchantment is not None:
-                combined.merge(enchantment.modifiers)
+            # Multiple enchantments per item, up to enchant_slots
+            for ench_id in self.item_enchantments.get(item.id, []):
+                enchantment = self.enchantment_definitions.get(ench_id)
+                if enchantment is not None:
+                    combined.merge(enchantment.modifiers)
             for condition in item.conditional_modifiers:
                 threshold = float(condition.get("below_hp_fraction", -1))
                 base_max = self.formulas.derive(self.base_stats, self.level).max_hp
@@ -184,6 +219,30 @@ class Player(Entity):
                 if count >= int(threshold):
                     combined.merge(ModifierSet.from_dict(modifiers))
         combined.merge(self.race_def.combined_modifiers(self.sub_race_id))
+        # Party composition bonuses from race/sub-race passives
+        for eff in self.special_effects():
+            if eff.get("type") == "party_bonus":
+                needed = str(eff.get("race_id","")).lower()
+                if needed and needed in [r.lower() for r in self.party_races]:
+                    stat = str(eff.get("stat","")).lower()
+                    val = float(eff.get("value",0))
+                    # Interpret as pct if value <1, else flat? Use heuristics: if stat is evasion/accuracy etc treat as flat
+                    if stat in ("evasion","accuracy","crit_chance","crit_damage","status_resist"):
+                        combined.add_flat(stat, val)
+                    elif stat in ("physical_power","magic_power","armor","max_hp","max_mp","speed"):
+                        combined.add_pct(stat, val) if val < 1 else combined.add_flat(stat, val)
+                    else:
+                        combined.add_pct(stat, val)
+            elif eff.get("type") in ("accuracy_bonus","evasion_bonus","status_resist_bonus"):
+                # Map to flat stats
+                t = eff.get("type")
+                v = float(eff.get("value",0))
+                if t == "accuracy_bonus":
+                    combined.add_flat("accuracy", v)
+                elif t == "evasion_bonus":
+                    combined.add_flat("evasion", v)
+                elif t == "status_resist_bonus":
+                    combined.add_flat("status_resist", v)
         combined.merge(self.class_def.passive_modifiers)
         # Apply class perks (always-on and conditional)
         for perk in self.class_def.perks:
@@ -518,6 +577,32 @@ class Player(Entity):
             lines.append(f"{key}: {base:.0f}{suffix}")
         return lines
 
+    def perk_lines(self) -> list[str]:
+        """Class perk feedback for Status screen."""
+        lines = []
+        if not self.class_def.perks:
+            return lines
+        lines.append("Perks:")
+        for entry in self.active_perks():
+            perk = entry["perk"]
+            active = entry["active"]
+            reason = entry["reason"]
+            status = "[Active]" if active else "[Inactive]"
+            name = perk.get("name", perk.get("id", "Perk"))
+            desc = perk.get("description", "")
+            special = perk.get("special", "")
+            special_val = perk.get("special_value", 0)
+            line = f"  {status} {name}: {desc}"
+            if special:
+                line += f" ({special}:{special_val})"
+            if reason:
+                line += f" - {reason}"
+            lines.append(line)
+            mods = ModifierSet.from_dict(perk.get("modifiers", {}))
+            for ml in mods.describe():
+                lines.append(f"    {ml}")
+        return lines
+
     # ------------------------------------------------------------------
     # Persistence
     # ------------------------------------------------------------------
@@ -549,7 +634,7 @@ class Player(Entity):
                 "faction_reputation": dict(self.faction_reputation),
                 "companion_loyalty": dict(self.companion_loyalty),
                 "companion_unavailable_until": dict(self.companion_unavailable_until),
-                "item_enchantments": dict(self.item_enchantments),
+                "item_enchantments": {k: list(v) for k, v in self.item_enchantments.items()},
                 "item_upgrades": dict(self.item_upgrades),
                 "flags": dict(self.flags),
                 "codex": self.codex.to_dict(),

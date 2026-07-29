@@ -194,6 +194,14 @@ class ClassDefinition:
         lines.append("Growth: " + ", ".join(f"{k} +{self.growth[k]}" for k in PRIMARY_STATS))
         if self.weapon_types:
             lines.append("Weapons: " + ", ".join(w.title() for w in self.weapon_types))
+        if self.perks:
+            lines.append("Perks:")
+            for perk in self.perks[:3]:  # show first 3 for brevity
+                lines.append(f"  {perk.get('name','Perk')}: {perk.get('description','')}")
+                if perk.get("special"):
+                    lines.append(f"    Special: {perk.get('special')} {perk.get('special_value',0)}")
+            if len(self.perks) > 3:
+                lines.append(f"  ... and {len(self.perks)-3} more")
         return lines
 
     # ------------------------------------------------------------------
