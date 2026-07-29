@@ -577,6 +577,24 @@ class Player(Entity):
             lines.append(f"{key}: {base:.0f}{suffix}")
         return lines
 
+    def party_bonus_lines(self) -> list[str]:
+        lines=[]
+        if not getattr(self, "party_races", None):
+            return lines
+        active=[]
+        for eff in self.special_effects():
+            if eff.get("type")=="party_bonus":
+                needed=eff.get("race_id","")
+                if needed.lower() in [r.lower() for r in self.party_races]:
+                    stat=eff.get("stat","")
+                    val=eff.get("value",0)
+                    active.append(f"{needed.title()} ally: +{val*100:.0f}% {stat}" if val<1 else f"{needed.title()} ally: +{val:.0f} {stat}")
+        if active:
+            lines.append("Party bonuses:")
+            lines.extend(f"  {a}" for a in active)
+            lines.append(f"Party races: {', '.join(self.party_races)}")
+        return lines
+
     def perk_lines(self) -> list[str]:
         """Class perk feedback for Status screen."""
         lines = []

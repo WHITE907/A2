@@ -19,17 +19,25 @@ class QuestWindow(tk.Toplevel):
         self.app = app
 
         theme.style_window(self, "Project Ascension - Quests")
-        theme.center_window(self, 780, 600)
+        theme.center_window(self, 820, 620)
         self.transient(app.root)
 
         body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
         body.pack(fill=tk.BOTH, expand=True)
-        theme.heading_label(body, text="Quest Log").pack(anchor="w", pady=(0, 10))
+        header = tk.Frame(body, bg=theme.BG)
+        header.pack(fill=tk.X)
+        theme.heading_label(header, text="Quest Log").pack(side=tk.LEFT)
+        # Search
+        theme.body_label(header, text="Search:", font=theme.FONT_SMALL).pack(side=tk.LEFT, padx=(12, 4))
+        self.search_var = tk.StringVar(value="")
+        search_entry = tk.Entry(header, textvariable=self.search_var, width=20, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG, font=theme.FONT_SMALL)
+        search_entry.pack(side=tk.LEFT)
+        search_entry.bind("<KeyRelease>", lambda _e: self.refresh())
 
         columns = tk.Frame(body, bg=theme.BG)
-        columns.pack(fill=tk.BOTH, expand=True)
+        columns.pack(fill=tk.BOTH, expand=True, pady=(10, 0))
 
-        left = tk.Frame(columns, bg=theme.BG, width=240)
+        left = tk.Frame(columns, bg=theme.BG, width=260)
         left.pack(side=tk.LEFT, fill=tk.Y)
         left.pack_propagate(False)
 
@@ -44,7 +52,7 @@ class QuestWindow(tk.Toplevel):
 
         right = tk.Frame(columns, bg=theme.BG)
         right.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(18, 0))
-        self.details = StatPanel(right, title="Quest", wrap=470)
+        self.details = StatPanel(right, title="Quest", wrap=500)
         self.details.pack(fill=tk.BOTH, expand=True)
 
         self.accept_button = theme.flat_button(right, "Accept Quest", self._accept)
@@ -52,7 +60,7 @@ class QuestWindow(tk.Toplevel):
         self.complete_button = theme.flat_button(right, "Complete Quest", self._complete)
         self.complete_button.pack(fill=tk.X, pady=(6, 0))
 
-        self.completed_label = theme.body_label(right, text="", fg=theme.FG_DIM, wraplength=470)
+        self.completed_label = theme.body_label(right, text="", fg=theme.FG_DIM, wraplength=500)
         self.completed_label.pack(fill=tk.X, pady=(12, 0))
         theme.flat_button(right, "Close", self._close, width=10).pack(anchor="e", pady=(12, 0))
 
@@ -60,20 +68,32 @@ class QuestWindow(tk.Toplevel):
         self._selected_source: str = ""
         self.refresh()
 
+    def _filter_quests(self, quests: list[QuestDefinition]) -> list[QuestDefinition]:
+        search = self.search_var.get().strip().lower()
+        if not search:
+            return quests
+        return [q for q in quests if search in q.name.lower() or search in q.description.lower() or search in q.id.lower()]
+
     def refresh(self) -> None:
         game = self.app.game
         if not game.has_character:
             self._close()
             return
 
-        active = game.active_quests()
-        available = game.available_quests()
-        self.active_list.set_items([(quest.name, quest) for quest in active])
-        self.available_list.set_items([(quest.name, quest) for quest in available])
+        active = self._filter_quests(game.active_quests())
+        available = self._filter_quests(game.available_quests())
+        self.active_list.set_items([(f"{q.name} (Lv {q.min_level})", q) for q in active])
+        self.available_list.set_items([(f"{q.name} (Lv {q.min_level})", q) for q in available])
 
         completed = game.completed_quests()
-        names = ", ".join(quest.name for quest in completed) if completed else "None"
-        self.completed_label.configure(text=f"Completed: {names}")
+        # Also filter completed by search for label
+        search = self.search_var.get().strip().lower()
+        if search:
+            completed_filtered = [q for q in completed if search in q.name.lower()]
+        else:
+            completed_filtered = completed
+        names = ", ".join(q.name for q in completed_filtered) if completed_filtered else "None"
+        self.completed_label.configure(text=f"Completed ({len(completed_filtered)}/{len(completed)} shown): {names}")
 
         selected = next(
             (quest for quest in [*active, *available] if quest.id == self._selected_id),
@@ -93,7 +113,16 @@ class QuestWindow(tk.Toplevel):
             self._selected_source = ""
             self.details.set_lines(["No active or available quests."])
         else:
-            self.details.set_lines(game.quest_detail_lines(selected.id))
+            lines = game.quest_detail_lines(selected.id)
+            # Add progress bar for objectives
+            ready, unmet = game.quest_completion_check(selected.id)
+            if ready:
+                lines.append("")
+                lines.append("READY TO TURN IN")
+            elif unmet:
+                lines.append("")
+                lines.append("Unmet: " + "; ".join(unmet[:3]))
+            self.details.set_lines(lines)
 
         self.accept_button.configure(
             state=tk.NORMAL if self._selected_source == "available" and selected else tk.DISABLED
@@ -112,11 +141,7 @@ class QuestWindow(tk.Toplevel):
     def _select(self, quest: QuestDefinition | None, source: str) -> None:
         self._selected_id = quest.id if quest else None
         self._selected_source = source if quest else ""
-        self.details.set_lines(
-            self.app.game.quest_detail_lines(quest.id)
-            if quest
-            else ["Select a quest to view its details."]
-        )
+        # Refresh will set details and button states correctly
         self.refresh()
 
     def _accept(self) -> None:

@@ -225,10 +225,28 @@ class InventoryWindow(tk.Toplevel):
         else:
             if item.is_equipment:
                 lines.append(f"Enchant slots: {item.effective_enchant_slots(rarity_cfg)} (empty)")
-        # Upgrades
+        # Upgrades with preview
         up_lvl = game.player.item_upgrades.get(item.id, 0)
+        cfg = game.config.get("equipment_upgrade", {})
+        rate = float(cfg.get("modifier_rate", 0.08))
+        max_lvl = int(cfg.get("max_level", 5))
         if up_lvl:
-            lines.append(f"Upgrade: +{up_lvl}")
+            lines.append(f"Upgrade: +{up_lvl}/{max_lvl}")
+        if item.is_equipment and up_lvl < max_lvl:
+            next_lvl = up_lvl + 1
+            cost = int(cfg.get('base_gold',500)*(next_lvl))
+            rarity_scale = float(game.config.get("rarities", {}).get(item.rarity.lower(), {}).get("modifier_rate", 1.0))
+            curr_scale = (1.0 + rate * up_lvl) * rarity_scale
+            next_scale = (1.0 + rate * next_lvl) * rarity_scale
+            lines.append(f"Next upgrade +{next_lvl} cost: {cost}g")
+            for k, v in item.modifiers.flat.items():
+                curr_val = v * curr_scale
+                next_val = v * next_scale
+                diff = next_val - curr_val
+                if abs(diff) >= 0.1:
+                    lines.append(f"  {k} +{diff:.1f} ({curr_val:.0f}->{next_val:.0f})")
+        elif up_lvl >= max_lvl and item.is_equipment:
+            lines.append(f"Upgrade: MAX (+{max_lvl})")
         # Comparison vs equipped
         if item.is_equipment:
             equipped = game.player.equipment.get(item.slot)

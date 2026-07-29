@@ -441,6 +441,14 @@ class Game:
         if perk_lines:
             lines.append("")
             lines.extend(perk_lines)
+        # Party bonus feedback
+        try:
+            party_lines = self.player.party_bonus_lines()
+            if party_lines:
+                lines.append("")
+                lines.extend(party_lines)
+        except Exception:
+            pass
         # Special effects summary (lifesteal/counter/reflect)
         specials = self.player.special_effects()
         if specials:

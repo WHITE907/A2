@@ -155,12 +155,28 @@ class EquipmentWindow(tk.Toplevel):
             if item.is_equipment:
                 lines.append(f"Enchant slots: {item.effective_enchant_slots(rarity_cfg)} (empty)")
         up_lvl = game.player.item_upgrades.get(item.id, 0)
+        cfg = game.config.get("equipment_upgrade", {})
+        rate = float(cfg.get("modifier_rate", 0.08))
+        max_lvl = int(cfg.get("max_level", 5))
         if up_lvl:
-            lines.append(f"Upgrade: +{up_lvl}")
-            # Upgrade preview next level
+            lines.append(f"Upgrade: +{up_lvl}/{max_lvl}")
+        if up_lvl < max_lvl:
             next_lvl = up_lvl + 1
-            rate = float(game.config.get("equipment_upgrade", {}).get("modifier_rate", 0.08))
-            lines.append(f"Next upgrade +{next_lvl} cost: {int(game.config.get('equipment_upgrade',{}).get('base_gold',500)*(next_lvl))}g")
+            cost = int(cfg.get('base_gold',500)*(next_lvl))
+            lines.append(f"Next upgrade +{next_lvl} cost: {cost}g (room: {item.effective_enchant_slots(rarity_cfg)-len(game.player.item_enchantments.get(item.id, []))} free slots)")
+            # Preview stat increase
+            rarity_scale = float(rarity_cfg.get(item.rarity.lower(), {}).get("modifier_rate", 1.0))
+            curr_scale = (1.0 + rate * up_lvl) * rarity_scale
+            next_scale = (1.0 + rate * next_lvl) * rarity_scale
+            for k, v in item.modifiers.flat.items():
+                curr_val = v * curr_scale
+                next_val = v * next_scale
+                diff = next_val - curr_val
+                if abs(diff) >= 0.1:
+                    lines.append(f"  Upgrade {k}: +{diff:.1f} ({curr_val:.0f} -> {next_val:.0f})")
+        else:
+            if item.is_equipment:
+                lines.append(f"Upgrade: MAX (+{max_lvl})")
         # Comparison
         equipped = game.player.equipment.get(item.slot)
         if equipped and equipped.id != item.id:
