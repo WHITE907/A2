@@ -99,6 +99,7 @@ class Skill:
     category: str = SkillCategory.ACTIVE
     description: str = ""
     mp_cost: float = 0.0
+    sp_cost: float = 0.0
     hp_cost: float = 0.0
     cooldown: int = 0
     targeting: str = SkillTargeting.ENEMY
@@ -115,6 +116,8 @@ class Skill:
     #: Mastery track this skill trains when used (e.g. ``"sword"``).
     mastery_track: str = ""
     icon: str = ""
+    #: Skill tags for categorization and resource determination (e.g. "physical", "magical", "fire")
+    tags: list[str] = field(default_factory=list)
 
     # ------------------------------------------------------------------
     # Classification
@@ -134,6 +137,21 @@ class Skill:
     @property
     def hits_all_enemies(self) -> bool:
         return self.targeting == SkillTargeting.ALL_ENEMIES
+
+    @property
+    def is_physical(self) -> bool:
+        """True if tagged as physical (uses stamina)."""
+        return "physical" in self.tags
+
+    @property
+    def is_magical(self) -> bool:
+        """True if tagged as magical (uses mana)."""
+        return "magical" in self.tags
+
+    @property
+    def is_hybrid(self) -> bool:
+        """True if tagged as both physical and magical."""
+        return self.is_physical and self.is_magical
 
     # ------------------------------------------------------------------
     # Targeting
@@ -179,6 +197,8 @@ class Skill:
             return False, f"{caster.name} cannot act."
         if not caster.can_afford(self.mp_cost):
             return False, f"Not enough MP for {self.name}."
+        if self.sp_cost and not caster.can_afford_sp(self.sp_cost):
+            return False, f"Not enough SP for {self.name}."
         if self.hp_cost and caster.current_hp <= self.hp_cost:
             return False, f"Not enough HP for {self.name}."
         remaining = getattr(caster, "cooldowns", {}).get(self.id, 0)
@@ -207,6 +227,8 @@ class Skill:
             return SkillUseResult(self.name, caster.name, success=False, failure_reason=reason)
 
         caster.spend_mp(self.mp_cost)
+        if self.sp_cost:
+            caster.spend_sp(self.sp_cost)
         if self.hp_cost:
             caster.take_raw_damage(self.hp_cost, damage_type="true", ignore_shield=True)
 
@@ -232,6 +254,8 @@ class Skill:
         bits = []
         if self.mp_cost:
             bits.append(f"{self.mp_cost:.0f} MP")
+        if self.sp_cost:
+            bits.append(f"{self.sp_cost:.0f} SP")
         if self.hp_cost:
             bits.append(f"{self.hp_cost:.0f} HP")
         if self.cooldown:
@@ -246,6 +270,8 @@ class Skill:
     def detail_lines(self) -> list[str]:
         """Full tooltip block for the Skills screen."""
         lines = [f"{self.name}  [{self.category.title()}]"]
+        if self.tags:
+            lines.append(f"Tags: {', '.join(t.title() for t in self.tags)}")
         if self.description:
             lines.append(self.description)
         lines.append(self.cost_text())
@@ -277,6 +303,7 @@ class Skill:
             category=category,
             description=str(payload.get("description", "")),
             mp_cost=float(payload.get("mp_cost", 0.0)),
+            sp_cost=float(payload.get("sp_cost", 0.0)),
             hp_cost=float(payload.get("hp_cost", 0.0)),
             cooldown=int(payload.get("cooldown", 0)),
             targeting=targeting,
@@ -290,4 +317,5 @@ class Skill:
             prerequisites=[str(v) for v in payload.get("prerequisites", [])],
             mastery_track=str(payload.get("mastery_track", "")),
             icon=str(payload.get("icon", "")),
+            tags=[str(t).lower() for t in payload.get("tags", [])],
         )

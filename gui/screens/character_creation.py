@@ -1,4 +1,4 @@
-"""Character Creation - name, gender, and a gender-restricted class list.
+"""Character Creation - name, gender, race/sub-race, and a gender-restricted class list.
 
 Bible section 10: starting classes are gender-restricted, so changing the
 gender re-queries the engine for the available classes rather than filtering a
@@ -12,6 +12,7 @@ import tkinter as tk
 from gui import theme
 from engine.classes import ClassDefinition
 from engine.game import RaceDefinition
+from engine.races import SubRace
 from gui.widgets import SelectList, StatPanel
 
 __all__ = ["CharacterCreationWindow"]
@@ -79,7 +80,7 @@ class CharacterCreationWindow(tk.Toplevel):
         columns.pack(fill=tk.BOTH, expand=True, pady=(16, 0))
 
         self.race_list: SelectList[RaceDefinition] = SelectList(
-            columns, title="Race", height=9, on_select=lambda _race: self._refresh_preview()
+            columns, title="Race", height=9, on_select=self._on_race_selected
         )
         races = self.app.game.race_options()
         self.race_list.set_items([(race.name, race) for race in races], keep_selection=False)
@@ -88,6 +89,11 @@ class CharacterCreationWindow(tk.Toplevel):
         self.race_list.select_index(default_index, notify=False)
         self.race_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
+        self.sub_race_list: SelectList[SubRace] = SelectList(
+            columns, title="Sub-Race", height=9, on_select=lambda _sub: self._refresh_preview()
+        )
+        self.sub_race_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(14, 0))
+
         self.class_list: SelectList[ClassDefinition] = SelectList(
             columns, title="Starting Class", height=9, on_select=self._on_class_selected
         )
@@ -95,6 +101,9 @@ class CharacterCreationWindow(tk.Toplevel):
 
         self.preview = StatPanel(columns, title="Details", wrap=300)
         self.preview.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(14, 0))
+
+        # Initialize sub-race list after all widgets are created
+        self._on_race_selected(self.race_list.selected_value)
 
         # -- actions -----------------------------------------------------
         buttons = tk.Frame(body, bg=theme.BG)
@@ -111,34 +120,51 @@ class CharacterCreationWindow(tk.Toplevel):
         self.class_list.set_items([(c.name, c) for c in classes], keep_selection=False)
         self._on_class_selected(self.class_list.selected_value)
 
+    def _on_race_selected(self, race: RaceDefinition | None) -> None:
+        """Update sub-race list when race changes."""
+        if race is None or not race.sub_races:
+            self.sub_race_list.set_items([], keep_selection=False)
+        else:
+            self.sub_race_list.set_items([(sub.name, sub) for sub in race.sub_races], keep_selection=False)
+        self._refresh_preview()
+
     def _on_class_selected(self, definition: ClassDefinition | None) -> None:
         self._refresh_preview()
 
     def _refresh_preview(self) -> None:
         definition = self.class_list.selected_value
         race = self.race_list.selected_value
+        sub_race = self.sub_race_list.selected_value
         lines: list[str] = []
         if race is not None:
             lines.extend(self.app.game.race_detail_lines(race.id))
-        if race is not None and definition is not None:
+        if race is not None and sub_race is not None:
+            lines.append("")
+            lines.extend(sub_race.detail_lines())
+        if (race is not None or sub_race is not None) and definition is not None:
             lines.append("")
         if definition is not None:
             lines.extend(definition.detail_lines())
-        self.preview.set_lines(lines or ["Choose a race and class."])
+        self.preview.set_lines(lines or ["Choose a race, sub-race, and class."])
 
     # ------------------------------------------------------------------
     def _create(self) -> None:
         definition = self.class_list.selected_value
         race = self.race_list.selected_value
+        sub_race = self.sub_race_list.selected_value
         if definition is None:
             self.app.notify("Choose a class.")
             return
         if race is None:
             self.app.notify("Choose a race.")
             return
+        if race.sub_races and sub_race is None:
+            self.app.notify("Choose a sub-race.")
+            return
 
+        sub_race_id = sub_race.id if sub_race else None
         ok, message = self.app.game.create_character(
-            self.name_var.get(), self.gender_var.get(), definition.id, race.id
+            self.name_var.get(), self.gender_var.get(), definition.id, race.id, sub_race_id
         )
         self.app.notify(message)
         if ok:

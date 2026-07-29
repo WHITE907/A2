@@ -89,6 +89,7 @@ class CompanionDefinition:
     description: str = ""
     role: str = "fighter"
     race_id: str = ""
+    gender: str = ""
     base_stats: StatBlock = field(default_factory=StatBlock)
     growth: StatBlock = field(default_factory=StatBlock)
     skill_ids: list[str] = field(default_factory=list)
@@ -126,6 +127,8 @@ class CompanionDefinition:
         lines.append(f"Role: {self.role.title()}")
         if self.race_id:
             lines.append(f"Race: {self.race_id.replace('_', ' ').title()}")
+        if self.gender:
+            lines.append(f"Gender: {self.gender.title()}")
         if self.weapon_type:
             lines.append(f"Fights with: {self.weapon_type.title()}")
         return lines
@@ -141,6 +144,7 @@ class CompanionDefinition:
             description=str(payload.get("description", "")),
             role=str(payload.get("role", "fighter")),
             race_id=str(payload.get("race_id", "")),
+            gender=str(payload.get("gender", "")).lower(),
             base_stats=StatBlock.from_dict(payload.get("base_stats")),
             growth=StatBlock.from_dict(payload.get("growth")),
             skill_ids=[str(s) for s in payload.get("skill_ids", [])],
@@ -272,6 +276,7 @@ class Companion(Entity):
             f"Level: {self.level}",
             f"HP: {self.hp_text()}",
             f"MP: {self.mp_text()}",
+            f"SP: {self.sp_text()}",
         ]
         if self.statuses:
             lines.append("Status: " + ", ".join(self.status_summaries()))

@@ -15,6 +15,7 @@ from __future__ import annotations
 from typing import Any, Iterable, Mapping
 
 from engine.classes import ClassDefinition
+from engine.codex import Codex
 from engine.entities.entity import Entity
 from engine.items.item import EQUIPMENT_SLOTS, Inventory, Item, SLOT_LABELS
 from engine.mastery import MasteryBook
@@ -54,6 +55,7 @@ class Player(Entity):
         progression: Mapping[str, Any] | None = None,
         equipment_config: Mapping[str, Any] | None = None,
         enchantments: Mapping[str, Any] | None = None,
+        sub_race_id: str | None = None,
     ) -> None:
         progression = progression or {}
         self.equipment_config = dict(equipment_config or {})
@@ -61,6 +63,7 @@ class Player(Entity):
         self.gender = (gender or "any").lower()
         self.class_def = class_def
         self.race_def = race_def
+        self.sub_race_id = sub_race_id or ""
         self.class_history: list[str] = [class_def.id]
 
         # Progression tuning (bible section 9) - JSON-driven, never hardcoded.
@@ -96,11 +99,13 @@ class Player(Entity):
         self.item_enchantments: dict[str, str] = {}
         self.item_upgrades: dict[str, int] = {}
         self.flags: dict[str, Any] = {}
+        self.codex = Codex(total_achievements=len(self._codex_achievements()))
 
         super().__init__(name=name, level=level, base_stats=StatBlock(), formulas=formulas)
         self._recalculate_base_stats()
         self.current_hp = float(self.max_hp)
         self.current_mp = float(self.max_mp)
+        self.current_sp = float(self.max_sp)
 
     # ------------------------------------------------------------------
     # Stats
@@ -109,11 +114,20 @@ class Player(Entity):
     def race_id(self) -> str:
         return self.race_def.id
 
+    @staticmethod
+    def _codex_achievements() -> list:
+        from engine.codex import ACHIEVEMENTS
+        return ACHIEVEMENTS
+
+    def record_achievement(self, track: str, key: str = "", amount: int = 1) -> list[str]:
+        """Record an event for achievement tracking. Returns newly unlocked achievement ids."""
+        return self.codex.record(track, key, amount)
+
     def _recalculate_base_stats(self) -> None:
-        """Class growth + racial primaries + hand-allocated points."""
+        """Class growth + racial primaries (including sub-race) + hand-allocated points."""
         self.base_stats = (
             self.class_def.stats_at_level(self.level)
-            .add(self.race_def.base_stats)
+            .add(self.race_def.combined_stats(self.sub_race_id))
             .add(self.allocated_stats)
         )
         self.invalidate_stats()
@@ -155,8 +169,28 @@ class Player(Entity):
             for threshold, modifiers in (definition.get("bonuses") or {}).items():
                 if count >= int(threshold):
                     combined.merge(ModifierSet.from_dict(modifiers))
-        combined.merge(self.race_def.modifiers)
+        combined.merge(self.race_def.combined_modifiers(self.sub_race_id))
         combined.merge(self.class_def.passive_modifiers)
+        # Apply class perks (always-on and conditional)
+        for perk in self.class_def.perks:
+            trigger = perk.get("trigger", "always")
+            if trigger == "always":
+                combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
+            elif trigger == "low_hp" and hasattr(self, "current_hp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_hp = self.formulas.derive(self.base_stats, self.level).max_hp
+                if max_hp > 0 and self.current_hp / max_hp < threshold:
+                    combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
+            elif trigger == "low_mp" and hasattr(self, "current_mp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_mp = self.formulas.derive(self.base_stats, self.level).max_mp
+                if max_mp > 0 and self.current_mp / max_mp < threshold:
+                    combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
+            elif trigger == "low_sp" and hasattr(self, "current_sp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_sp = self.formulas.derive(self.base_stats, self.level).max_sp
+                if max_sp > 0 and self.current_sp / max_sp < threshold:
+                    combined.merge(ModifierSet.from_dict(perk.get("modifiers", {})))
         for skill in self.known_skills.values():
             if skill.is_passive:
                 combined.merge(skill.passive_modifiers)
@@ -201,10 +235,15 @@ class Player(Entity):
 
         if report.levels_gained:
             self._recalculate_base_stats()
-            # Levelling raises max HP/MP; grant the difference so a level-up
+            # Levelling raises max HP/MP/SP; grant the difference so a level-up
             # mid-fight feels like a reward rather than nothing.
             self.current_hp = min(float(self.max_hp), self.current_hp + report.levels_gained * 5)
             self.current_mp = min(float(self.max_mp), self.current_mp + report.levels_gained * 3)
+            self.current_sp = min(float(self.max_sp), self.current_sp + report.levels_gained * 4)
+            # Codex: track level achievements
+            unlocked = self.record_achievement("level", str(self.level), self.level)
+            for ach_id in unlocked:
+                report.messages.append(f"🏆 Achievement unlocked: {ach_id}")
 
         report.new_level = self.level
         return report
@@ -382,6 +421,7 @@ class Player(Entity):
         self._recalculate_base_stats()
         self.current_hp = float(self.max_hp)
         self.current_mp = float(self.max_mp)
+        self.current_sp = float(self.max_sp)
         messages.insert(0, f"{self.name} promoted to {new_class.name}!")
         return messages
 
@@ -447,6 +487,7 @@ class Player(Entity):
             f"EXP: {current_exp:.0f}/{needed_exp:.0f}",
             f"HP: {self.hp_text()}",
             f"MP: {self.mp_text()}",
+            f"SP: {self.sp_text()}",
             f"Gold: {self.inventory.gold}",
             f"Mastery: {self.mastery.highest_rank()}",
         ]
@@ -472,6 +513,7 @@ class Player(Entity):
             {
                 "gender": self.gender,
                 "race_id": self.race_id,
+                "sub_race_id": self.sub_race_id,
                 "class_id": self.class_def.id,
                 "class_history": list(self.class_history),
                 "exp": self.exp,
@@ -496,6 +538,7 @@ class Player(Entity):
                 "item_enchantments": dict(self.item_enchantments),
                 "item_upgrades": dict(self.item_upgrades),
                 "flags": dict(self.flags),
+                "codex": self.codex.to_dict(),
             }
         )
         return data

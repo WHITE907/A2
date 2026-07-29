@@ -112,7 +112,7 @@
             },
             {
               "id": "own_clause",
-              "text": "Rewrite “protection” as ownership and take the refugees’ oaths.",
+              "text": "Rewrite \u201cprotection\u201d as ownership and take the refugees\u2019 oaths.",
               "conditions": {
                 "race_ids": [
                   "demon"
@@ -158,12 +158,12 @@
         },
         {
           "id": "signed",
-          "text": "‘Merciful,’ Sable says, ‘and perhaps catastrophic. The best contracts often are.’",
+          "text": "\u2018Merciful,\u2019 Sable says, \u2018and perhaps catastrophic. The best contracts often are.\u2019",
           "options": []
         },
         {
           "id": "exposed",
-          "text": "Sable smiles without warmth. ‘Morality is expensive. I hope the Wardens pay promptly.’",
+          "text": "Sable smiles without warmth. \u2018Morality is expensive. I hope the Wardens pay promptly.\u2019",
           "options": []
         },
         {
@@ -173,7 +173,2265 @@
         },
         {
           "id": "enslaved",
-          "text": "Sable reads the new clause twice. “Efficient,” she says softly. “Do not mistake my admiration for approval.”",
+          "text": "Sable reads the new clause twice. \u201cEfficient,\u201d she says softly. \u201cDo not mistake my admiration for approval.\u201d",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "amariel_silver_sapling",
+      "speaker_id": "elder_amariel",
+      "title": "The Silver Sapling",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Elder Amariel tends a silver sapling that seems to glow faintly. She looks up at your approach. 'You can see it, can't you? Most cannot. The sapling chooses who sees its light.'",
+          "options": [
+            {
+              "id": "ask_meaning",
+              "text": "What is this sapling?",
+              "next_node_id": "explain"
+            },
+            {
+              "id": "elven_greeting",
+              "text": "[Elf] 'Mae govannen, elder. The silver reminds me of the old songs.'",
+              "conditions": {
+                "race_ids": [
+                  "elf",
+                  "half_elf"
+                ]
+              },
+              "next_node_id": "elven_path"
+            },
+            {
+              "id": "orc_challenge",
+              "text": "[Orc] 'In my culture, glowing plants mean danger or power. Which is this?'",
+              "conditions": {
+                "race_ids": [
+                  "orc",
+                  "half_orc"
+                ]
+              },
+              "next_node_id": "orc_path"
+            },
+            {
+              "id": "gnome_curious",
+              "text": "[Gnome] 'Fascinating! Is it bioluminescent? Magically infused? Can I take a sample?'",
+              "conditions": {
+                "race_ids": [
+                  "gnome"
+                ]
+              },
+              "next_node_id": "gnome_path"
+            },
+            {
+              "id": "lamia_memory",
+              "text": "[Lamia] 'I remember when this was a seed. Three hundred years ago.'",
+              "conditions": {
+                "race_ids": [
+                  "lamia"
+                ]
+              },
+              "next_node_id": "lamia_path"
+            },
+            {
+              "id": "arachne_web",
+              "text": "[Arachne] 'The threads around it... they're not spider silk. They're memories.'",
+              "conditions": {
+                "race_ids": [
+                  "arachne"
+                ]
+              },
+              "next_node_id": "arachne_path"
+            },
+            {
+              "id": "leave",
+              "text": "Leave the elder to her work.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'It grows from a promise. An elven oath made to the forest before the first road was cut. The oath is fading, and so is the sapling. I need someone to carry its seed to the heart of Mosswood and plant it where the old roots still remember.'",
+          "options": [
+            {
+              "id": "accept_quest",
+              "text": "I'll carry the seed.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "accepted"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "decline",
+              "text": "That sounds like someone else's problem.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "elven_path",
+          "text": "Amariel's eyes widen. 'You know the old tongue. Then you understand what this sapling truly is \u2014 a living memory. The oath was made by my grandmother's grandmother. It was sung, not written.' She offers you a silver seed. 'An elf should carry this. The roots will know your blood.'",
+          "options": [
+            {
+              "id": "elven_accept",
+              "text": "I will carry it with honour.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "elven_carrier"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "elven_pathkeepers",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "elven_accepted"
+            },
+            {
+              "id": "elven_decline",
+              "text": "I'm not the right elf for this.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "orc_path",
+          "text": "Amariel laughs. 'Direct. I like that. It is both danger and power. The forest is dying, and this sapling is its last heartbeat. An orc's strength could carry it through the deep woods where others would falter.'",
+          "options": [
+            {
+              "id": "orc_accept",
+              "text": "Gruk\u2014 I mean, I will carry it. The forest owes me nothing, but I owe it this.'",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "orc_carrier"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "orc_decline",
+              "text": "Not my fight.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "gnome_path",
+          "text": "Amariel smiles. 'A gnome! Perfect. The seed needs careful handling \u2014 temperature, humidity, soil composition. No sample, I'm afraid, but I can give you the seed itself. Your scientific mind might be exactly what it needs.'",
+          "options": [
+            {
+              "id": "gnome_accept",
+              "text": "I'll document everything! Temperature logs, soil samples, the works!",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "gnome_carrier"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "gnome_decline",
+              "text": "Too much responsibility for a seed.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "lamia_path",
+          "text": "Amariel's eyes fill with tears. 'You remember. After all these centuries, someone remembers. The sapling was planted the year you were born, wasn't it? You've watched it grow your entire life.' She presses the seed into your hands. 'Bring it home.'",
+          "options": [
+            {
+              "id": "lamia_accept",
+              "text": "For the memories we share, I will.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "lamia_carrier"
+                },
+                {
+                  "type": "affinity",
+                  "target_id": "elder_amariel",
+                  "amount": 20
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "lamia_decline",
+              "text": "Some memories are better left buried.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "arachne_path",
+          "text": "Amariel nods slowly. 'You see the threads. Yes, they are memories \u2014 woven into the bark by every creature that has passed this way. An arachne could carry the seed and weave new threads along the path, strengthening the old oath.'",
+          "options": [
+            {
+              "id": "arachne_accept",
+              "text": "I will weave a new path for the old promise.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "silver_sapling"
+                },
+                {
+                  "type": "flag",
+                  "key": "amariel_seed",
+                  "value": "arachne_carrier"
+                }
+              ],
+              "next_node_id": "accepted"
+            },
+            {
+              "id": "arachne_decline",
+              "text": "My webs are for hunting, not gardening.",
+              "next_node_id": "declined"
+            }
+          ]
+        },
+        {
+          "id": "accepted",
+          "text": "Amariel places a small silver seed in your palm. It pulses with warmth. 'Plant it at the heart of Mosswood, where the oldest roots meet. The forest will know what to do.'",
+          "options": [
+            {
+              "id": "end_accepted",
+              "text": "I won't let you down.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "elven_accepted",
+          "text": "Amariel places the seed in your palm and whispers a blessing in the old tongue. The seed glows brighter. 'The pathkeepers will hear of this. You carry more than a seed \u2014 you carry a song.'",
+          "options": [
+            {
+              "id": "end_elven",
+              "text": "The song will not be forgotten.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "declined",
+          "text": "Amariel nods. 'I understand. The forest will wait. It has waited before.'",
+          "options": [
+            {
+              "id": "end_declined",
+              "text": "Perhaps someone else will come.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "dorrim_lost_clan",
+      "speaker_id": "thane_dorrim",
+      "title": "The Erased Ledger",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Thane Dorrim holds a blank stone tablet. 'My clan's name was erased from this ledger. Someone wanted us forgotten. I need to know why.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'll help you find the truth.",
+              "next_node_id": "investigate"
+            },
+            {
+              "id": "dwarf_response",
+              "text": "[Dwarf] 'An erased name is a grave insult. I'll find who did this.'",
+              "conditions": {
+                "race_ids": [
+                  "dwarf"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "thane_dorrim",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "dwarf_path"
+            },
+            {
+              "id": "goliath_response",
+              "text": "[Goliath] 'Among my people, score-keeping is sacred. This is a crime.'",
+              "conditions": {
+                "race_ids": [
+                  "goliath"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "thane_dorrim",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "goliath_path"
+            },
+            {
+              "id": "decline",
+              "text": "That sounds like dwarven politics. I'll pass.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "investigate",
+          "text": "'Start in the deep mines. The old records are kept there, if they haven't been destroyed.'",
+          "options": [
+            {
+              "id": "go",
+              "text": "To the mines, then.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dwarf_deep_roads"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "dwarf_path",
+          "text": "Dorrim grips your arm. 'A dwarf who understands. The deep mines hold the answer. Go with my blessing \u2014 and my axe, if you need it.'",
+          "options": [
+            {
+              "id": "dwarf_go",
+              "text": "I won't fail you, Thane.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dwarf_deep_roads"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "stonehaven_clans",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "goliath_path",
+          "text": "Dorrim nods slowly. 'A goliath who respects the score. The deep mines hold the answer. Bring me proof, and the clans will remember your name.'",
+          "options": [
+            {
+              "id": "goliath_go",
+              "text": "The score will be settled.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "goliath_score_keeping"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "stonehaven_clans",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "sol_divine_vision",
+      "speaker_id": "abbess_sol",
+      "title": "The Roofless Chapel",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Abbess Sol stares at the open sky above her chapel. 'The roof was not destroyed. It was taken. Something in the skyreach ruins wants to be seen.'",
+          "options": [
+            {
+              "id": "cleric_response",
+              "text": "[Cleric/High Priest/Inquisitor] 'I feel it too. A divine presence, calling from above.'",
+              "conditions": {
+                "class_ids": [
+                  "cleric",
+                  "high_priest",
+                  "inquisitor",
+                  "oracle"
+                ]
+              },
+              "next_node_id": "divine_path"
+            },
+            {
+              "id": "paladin_response",
+              "text": "[Paladin/Templar] 'My oath compels me to investigate. What do you need?'",
+              "conditions": {
+                "class_ids": [
+                  "paladin",
+                  "templar",
+                  "crusader",
+                  "godsworn"
+                ]
+              },
+              "next_node_id": "oath_path"
+            },
+            {
+              "id": "generic",
+              "text": "What do you think took the roof?",
+              "next_node_id": "explain"
+            },
+            {
+              "id": "decline",
+              "text": "Sounds like a structural problem, not a spiritual one.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "divine_path",
+          "text": "Sol's eyes widen. 'You can feel it? Then you must go. The ruins hold something sacred \u2014 or something that wants to be.'",
+          "options": [
+            {
+              "id": "divine_go",
+              "text": "I'll seek the source.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "genasi_elemental_heritage"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "skyreach_archivists",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "oath_path",
+          "text": "Sol smiles. 'An oath-bound warrior. The ruins are dangerous, but your conviction will light the way. Bring back what you find.'",
+          "options": [
+            {
+              "id": "oath_go",
+              "text": "My oath is my compass.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dragonkin_oath"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "skyreach_archivists",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'Something ancient. Something that remembers when the sky was different. The archivists know more, but they won't speak to just anyone.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'll talk to the archivists.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dragonkin_oath"
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "decline2",
+              "text": "Maybe later.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "lume_forbidden",
+      "speaker_id": "archivist_lume",
+      "title": "The Weather Records",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Archivist Lume shuffles through scrolls. 'I've found something in the weather records. A pattern that shouldn't exist. Someone \u2014 or something \u2014 has been manipulating the storms for centuries.'",
+          "options": [
+            {
+              "id": "lamia_response",
+              "text": "[Lamia] 'Centuries? I remember when the storms first changed. Let me help.'",
+              "conditions": {
+                "race_ids": [
+                  "lamia"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "archivist_lume",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "lamia_path"
+            },
+            {
+              "id": "elf_response",
+              "text": "[Elf] 'The old songs speak of storm-weavers. Perhaps they were real.'",
+              "conditions": {
+                "race_ids": [
+                  "elf",
+                  "half_elf"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "archivist_lume",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "elf_path"
+            },
+            {
+              "id": "genasi_response",
+              "text": "[Genasi] 'Storms? That's my domain. Show me the records.'",
+              "conditions": {
+                "race_ids": [
+                  "genasi"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "archivist_lume",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "genasi_path"
+            },
+            {
+              "id": "generic",
+              "text": "What kind of pattern?",
+              "next_node_id": "explain"
+            }
+          ]
+        },
+        {
+          "id": "lamia_path",
+          "text": "Lume stares. 'You... remember? Three hundred years of weather data and you can verify it from memory? This changes everything. Come, let us compare notes.'",
+          "options": [
+            {
+              "id": "lamia_go",
+              "text": "My memory is long, Archivist.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "lamia_coil_memory"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "skyreach_archivists",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "elf_path",
+          "text": "Lume's eyes light up. 'Storm-weavers! I've read references but never confirmation. The storm plateau may hold answers. Will you investigate?'",
+          "options": [
+            {
+              "id": "elf_go",
+              "text": "The old songs don't lie.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "genasi_storm_calling"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "skyreach_archivists",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "genasi_path",
+          "text": "Lume pushes a stack of scrolls toward you. 'Read these. Your elemental heritage may let you sense what I cannot. The storm plateau is where the pattern converges.'",
+          "options": [
+            {
+              "id": "genasi_go",
+              "text": "I'll read the storms themselves.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "genasi_storm_calling"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "skyreach_archivists",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'Every 47 years, a storm of unusual intensity strikes the same location. The next one is due in three months. I need someone to investigate the convergence point.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'll investigate.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "genasi_elemental_heritage"
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "decline",
+              "text": "Sounds dangerous. Maybe someone else.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "keth_gate_history",
+      "speaker_id": "keth_cloudscar",
+      "title": "The First Gate Oath",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Keth Cloudscar unrolls a crumbling scroll. 'The first oath at the Obsidian Gate was not what the histories say. I have fragments of the true account. Will you help me reconstruct it?'",
+          "options": [
+            {
+              "id": "dragonkin_response",
+              "text": "[Dragonkin] 'The gate oath is in my blood. I must know the truth.'",
+              "conditions": {
+                "race_ids": [
+                  "dragonkin"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "keth_cloudscar",
+                  "amount": 15
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "dragonkin_oathkeepers",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "dragonkin_path"
+            },
+            {
+              "id": "warrior_response",
+              "text": "[Squire/Knight] 'An oath is an oath. The truth matters.'",
+              "conditions": {
+                "class_ids": [
+                  "squire",
+                  "knight",
+                  "paladin",
+                  "berserker",
+                  "warlord"
+                ]
+              },
+              "next_node_id": "warrior_path"
+            },
+            {
+              "id": "scholar_response",
+              "text": "[Acolyte/Mage] 'Historical truth is worth any risk.'",
+              "conditions": {
+                "class_ids": [
+                  "acolyte",
+                  "mage",
+                  "chronomancer",
+                  "necromancer"
+                ]
+              },
+              "next_node_id": "scholar_path"
+            },
+            {
+              "id": "decline",
+              "text": "History is written by the victors. Let it stay that way.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "dragonkin_path",
+          "text": "Keth's scales shimmer. 'A dragonkin who seeks the truth. The fragments point to the cloud ruins and the obsidian gate. Go, and let the oath speak through you.'",
+          "options": [
+            {
+              "id": "dk_go",
+              "text": "The oath will be remembered.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dragonkin_oath"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "warrior_path",
+          "text": "Keth nods. 'A warrior who values honour. The fragments are scattered across the ruins. Bring them to me.'",
+          "options": [
+            {
+              "id": "war_go",
+              "text": "I'll find them.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dragonkin_oath"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "scholar_path",
+          "text": "Keth smiles. 'A scholar after my own heart. The cloud ruins hold the oldest fragments. The obsidian gate holds the newest. Both are dangerous.'",
+          "options": [
+            {
+              "id": "sch_go",
+              "text": "Knowledge is worth the risk.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dragonkin_oath"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "marta_council",
+      "speaker_id": "reeve_marta",
+      "title": "The Council Divided",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Reeve Marta pinches the bridge of her nose. 'The Ashvale council is split. The merchants want to open trade with the Ash Court. The wardens want to seal the borders. I need a tiebreaker.'",
+          "options": [
+            {
+              "id": "merchant_support",
+              "text": "Trade brings prosperity. Support the merchants.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "merchant_caravans",
+                  "amount": 15
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ashvale_council",
+                  "amount": -5
+                }
+              ],
+              "next_node_id": "merchant_end"
+            },
+            {
+              "id": "warden_support",
+              "text": "Security first. Support the wardens.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "emberwatch_wardens",
+                  "amount": 15
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ashvale_council",
+                  "amount": -5
+                }
+              ],
+              "next_node_id": "warden_end"
+            },
+            {
+              "id": "compromise",
+              "text": "There must be a middle path.",
+              "next_node_id": "compromise_path"
+            },
+            {
+              "id": "demon_response",
+              "text": "[Demon/Tiefling] 'The Ash Court is my people. I can negotiate terms.'",
+              "conditions": {
+                "race_ids": [
+                  "demon",
+                  "tiefling"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 10
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ashvale_council",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "demon_path"
+            }
+          ]
+        },
+        {
+          "id": "merchant_end",
+          "text": "Marta sighs. 'The merchants win. I hope you're right about the prosperity.'",
+          "options": [
+            {
+              "id": "me_done",
+              "text": "Trade will strengthen us all.",
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "council_decision",
+                  "value": "trade"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "warden_end",
+          "text": "Marta nods grimly. 'The borders stay sealed. Safety over profit.'",
+          "options": [
+            {
+              "id": "wa_done",
+              "text": "Better safe than sorry.",
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "council_decision",
+                  "value": "seal"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "compromise_path",
+          "text": "Marta raises an eyebrow. 'A compromise? Limited trade through Emberwatch, with warden oversight. It might work, but both sides will need convincing.'",
+          "options": [
+            {
+              "id": "comp_go",
+              "text": "I'll talk to both factions.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "ashvale_council",
+                  "amount": 10
+                },
+                {
+                  "type": "flag",
+                  "key": "council_decision",
+                  "value": "compromise"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "demon_path",
+          "text": "Marta's eyes widen. 'A demon offering to negotiate with the Ash Court? That's... actually perfect. You understand both sides. Can you broker terms?'",
+          "options": [
+            {
+              "id": "demon_go",
+              "text": "Consider it done.",
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "council_decision",
+                  "value": "demon_broker"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "fenn_trust",
+      "speaker_id": "ropewright_fenn",
+      "title": "Rope and Trust",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Ropewright Fenn coils a length of silk rope. 'Trust rope more than stone and people less than either. But you... you might be different. Maybe.'",
+          "options": [
+            {
+              "id": "halfling_response",
+              "text": "[Halfling] 'I know good rope when I see it. And good people.'",
+              "conditions": {
+                "race_ids": [
+                  "halfling"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "ropewright_fenn",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "halfling_path"
+            },
+            {
+              "id": "gnome_response",
+              "text": "[Gnome] 'Interesting tensile strength! What's the core material?'",
+              "conditions": {
+                "race_ids": [
+                  "gnome"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "ropewright_fenn",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "gnome_path"
+            },
+            {
+              "id": "arachne_response",
+              "text": "[Arachne] 'That silk... it's from my people, isn't it?'",
+              "conditions": {
+                "race_ids": [
+                  "arachne"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "ropewright_fenn",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "arachne_path"
+            },
+            {
+              "id": "generic",
+              "text": "What do you need?",
+              "next_node_id": "explain"
+            }
+          ]
+        },
+        {
+          "id": "halfling_path",
+          "text": "Fenn almost smiles. 'A halfling who appreciates rope. Rare. I need someone to test a new line in the glassmarsh. The bogs eat everything else.'",
+          "options": [
+            {
+              "id": "h_go",
+              "text": "I'll test it. Carefully.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "halfling_thief"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "gnome_path",
+          "text": "Fenn's eyes light up. 'You know materials? Spider silk core, treated with alchemical resin. I need a gnome's eye to improve the formula.'",
+          "options": [
+            {
+              "id": "g_go",
+              "text": "Show me the formula!",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "gnome_invention"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "arachne_path",
+          "text": "Fenn freezes. 'You... recognise the silk? I bought it from a trader years ago. I've been trying to find the source ever since. Can you help?'",
+          "options": [
+            {
+              "id": "a_go",
+              "text": "I'll find the weaver who made this.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "arachne_web_fate"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'Need someone trustworthy to test equipment in dangerous places. Most people break my ropes. Or my trust. Usually both.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'm trustworthy.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "halfling_thief"
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "decline",
+              "text": "Find someone else.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "joss_depths",
+      "speaker_id": "miner_joss",
+      "title": "The Deepest Shaft",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Miner Joss wipes soot from his face. 'Found something in the deepest shaft. Something that shouldn't be there. Something alive.'",
+          "options": [
+            {
+              "id": "orc_response",
+              "text": "[Orc] 'Alive? Then it can be fought. Show me.'",
+              "conditions": {
+                "race_ids": [
+                  "orc",
+                  "half_orc"
+                ]
+              },
+              "next_node_id": "orc_path"
+            },
+            {
+              "id": "goliath_response",
+              "text": "[Goliath] 'The deeper the stone, the stronger it is. I'm not afraid.'",
+              "conditions": {
+                "race_ids": [
+                  "goliath"
+                ]
+              },
+              "next_node_id": "goliath_path"
+            },
+            {
+              "id": "dwarf_response",
+              "text": "[Dwarf] 'Something alive in the deep? That's my domain.'",
+              "conditions": {
+                "race_ids": [
+                  "dwarf"
+                ]
+              },
+              "next_node_id": "dwarf_path"
+            },
+            {
+              "id": "generic",
+              "text": "What did you find?",
+              "next_node_id": "explain"
+            }
+          ]
+        },
+        {
+          "id": "orc_path",
+          "text": "Joss grins. 'An orc who doesn't flinch. Good. It's big, it's angry, and it's blocking the deepest vein. Clear it out and the miners will sing your name.'",
+          "options": [
+            {
+              "id": "orc_go",
+              "text": "Point me at it.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "orc_war_song"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "goliath_path",
+          "text": "Joss nods. 'A goliath. Perfect. It's a stone creature \u2014 golem or something older. Needs someone who can match its strength.'",
+          "options": [
+            {
+              "id": "gol_go",
+              "text": "I'll break it like any other stone.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "goliath_endurance"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "dwarf_path",
+          "text": "Joss relaxes slightly. 'A dwarf. Thank the stone. It's some kind of construct \u2014 old dwarven make, maybe. Might respond to dwarven commands.'",
+          "options": [
+            {
+              "id": "dw_go",
+              "text": "I'll speak to it in the old tongue.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "dwarf_deep_roads"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'Big. Stone. Angry. Blocking the best vein we've found in decades. I need someone tough enough to deal with it.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'm tough enough.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "goliath_endurance"
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "decline",
+              "text": "Sounds like a job for someone else.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "nima_routes",
+      "speaker_id": "nima_crossroads",
+      "title": "Which Roads Accept Which Name",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Nima Crossroads leans against a signpost. 'Every road has a name it accepts. Some open for merchants, some for soldiers, some for... other people. Which road are you walking?'",
+          "options": [
+            {
+              "id": "merchant",
+              "text": "The merchant's road. Gold opens all doors.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "merchant_caravans",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "merchant_path"
+            },
+            {
+              "id": "warden",
+              "text": "The warden's road. Duty before all.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "emberwatch_wardens",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "warden_path"
+            },
+            {
+              "id": "ash_court",
+              "text": "The Ash Court's road. Power speaks loudest.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "ash_path"
+            },
+            {
+              "id": "half_elf_response",
+              "text": "[Half-Elf] 'Between worlds, like you. Which road accepts us?'",
+              "conditions": {
+                "race_ids": [
+                  "half_elf"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "nima_crossroads",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "half_elf_path"
+            }
+          ]
+        },
+        {
+          "id": "merchant_path",
+          "text": "Nima nods. 'The merchant road is wide but toll-heavy. I know shortcuts that save gold. Interested?'",
+          "options": [
+            {
+              "id": "m_go",
+              "text": "Always interested in saving gold.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "merchant_caravans",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "warden_path",
+          "text": "Nima salutes. 'The warden road is hard but honest. I can show you the safe routes through dangerous territory.'",
+          "options": [
+            {
+              "id": "w_go",
+              "text": "Show me.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "emberwatch_wardens",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "ash_path",
+          "text": "Nima's expression darkens. 'The Ash Court road is dangerous. But I know which doors it opens \u2014 and which it closes forever.'",
+          "options": [
+            {
+              "id": "a_go",
+              "text": "I'll take the risk.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "half_elf_path",
+          "text": "Nima smiles \u2014 the first genuine smile you've seen. 'Between worlds. Yes. There's a road that only opens for people like us. I'll show you, when you're ready.'",
+          "options": [
+            {
+              "id": "he_go",
+              "text": "I'm ready now.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "elven_pathkeepers",
+                  "amount": 10
+                },
+                {
+                  "type": "flag",
+                  "key": "nima_road",
+                  "value": "between_worlds"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "vex_iron_covenant",
+      "speaker_id": "commander_vex",
+      "title": "The Iron Covenant",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Commander Vex studies you with hard eyes. 'The Iron Covenant needs fighters. Not soldiers \u2014 fighters. People who think. Are you one?'",
+          "options": [
+            {
+              "id": "warrior_response",
+              "text": "[Warrior classes] 'I've fought my way through worse. Point me at the enemy.'",
+              "conditions": {
+                "class_ids": [
+                  "squire",
+                  "knight",
+                  "paladin",
+                  "berserker",
+                  "warlord",
+                  "maiden",
+                  "duelist"
+                ]
+              },
+              "next_node_id": "warrior_path"
+            },
+            {
+              "id": "mage_response",
+              "text": "[Mage classes] 'My magic has felled armies. The Covenant could use that.'",
+              "conditions": {
+                "class_ids": [
+                  "acolyte",
+                  "mage",
+                  "archmage",
+                  "cleric",
+                  "warlock"
+                ]
+              },
+              "next_node_id": "mage_path"
+            },
+            {
+              "id": "rogue_response",
+              "text": "[Rogue classes] 'I work best alone, but I can scout your borders.'",
+              "conditions": {
+                "class_ids": [
+                  "shadow_dancer",
+                  "ranger"
+                ]
+              },
+              "next_node_id": "rogue_path"
+            },
+            {
+              "id": "demon_response",
+              "text": "[Demon/Tiefling] 'The Ash Court and the Covenant are rivals. I can bridge that gap.'",
+              "conditions": {
+                "race_ids": [
+                  "demon",
+                  "tiefling"
+                ]
+              },
+              "next_node_id": "demon_path"
+            },
+            {
+              "id": "decline",
+              "text": "I work alone.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "warrior_path",
+          "text": "Vex nods approvingly. 'Good. The front lines need someone who can take a hit and keep fighting. Report to the eastern gate at dawn.'",
+          "options": [
+            {
+              "id": "w_join",
+              "text": "I'll be there.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 15
+                },
+                {
+                  "type": "flag",
+                  "key": "covenant_role",
+                  "value": "frontline"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "mage_path",
+          "text": "Vex considers. 'We have plenty of sword-arms. What we lack is firepower. Can you hold a ward-line under pressure?'",
+          "options": [
+            {
+              "id": "m_join",
+              "text": "My wards are unbreakable.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 15
+                },
+                {
+                  "type": "flag",
+                  "key": "covenant_role",
+                  "value": "ward_mage"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "rogue_path",
+          "text": "Vex's expression softens slightly. 'Scouts are worth their weight in gold. The void spawn have been probing our eastern border. Find out where they're coming from.'",
+          "options": [
+            {
+              "id": "r_join",
+              "text": "Consider it done.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 15
+                },
+                {
+                  "type": "flag",
+                  "key": "covenant_role",
+                  "value": "scout"
+                },
+                {
+                  "type": "quest",
+                  "quest_id": "ironveil_welcome"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "demon_path",
+          "text": "Vex's hand drifts to her sword, then stops. 'Bold. Very bold. If you can negotiate with the Ash Court without starting a war... the Covenant would owe you a great debt.'",
+          "options": [
+            {
+              "id": "d_join",
+              "text": "I'll arrange a meeting.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 10
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 10
+                },
+                {
+                  "type": "flag",
+                  "key": "covenant_role",
+                  "value": "diplomat"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "zara_invention",
+      "speaker_id": "artificer_zara",
+      "title": "The Resonance Engine",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Artificer Zara gestures at a humming machine the size of a house. 'The Resonance Engine! It can amplify magical energy a hundredfold. Or explode. Still working out the details.'",
+          "options": [
+            {
+              "id": "gnome_response",
+              "text": "[Gnome] 'The harmonic dampeners are wrong. Let me fix them.'",
+              "conditions": {
+                "race_ids": [
+                  "gnome"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "artificer_zara",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "gnome_path"
+            },
+            {
+              "id": "genasi_response",
+              "text": "[Genasi] 'I can feel the elemental resonance. It's unstable because the fire channel is overloaded.'",
+              "conditions": {
+                "race_ids": [
+                  "genasi"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "artificer_zara",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "genasi_path"
+            },
+            {
+              "id": "mage_response",
+              "text": "[Mage] 'I can channel mana directly into the core. Would that help?'",
+              "conditions": {
+                "class_ids": [
+                  "mage",
+                  "archmage",
+                  "chronomancer",
+                  "necromancer",
+                  "warlock",
+                  "dread_lord"
+                ]
+              },
+              "next_node_id": "mage_path"
+            },
+            {
+              "id": "generic",
+              "text": "What does it do, exactly?",
+              "next_node_id": "explain"
+            },
+            {
+              "id": "decline",
+              "text": "I'll stand back. Way back.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "gnome_path",
+          "text": "Zara's eyes widen. 'You can see the harmonics? Of course you can \u2014 fellow gnome! The dampeners need recalibrating to 440 Hz. Can you help?'",
+          "options": [
+            {
+              "id": "g_help",
+              "text": "Hand me a wrench.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 10
+                },
+                {
+                  "type": "quest",
+                  "quest_id": "cinder_heart"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "genasi_path",
+          "text": "Zara stares. 'You can feel it? The elemental resonance? That's... that's exactly what we need! Someone who can tune the channels by instinct!'",
+          "options": [
+            {
+              "id": "ge_help",
+              "text": "Show me the channels.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 10
+                },
+                {
+                  "type": "quest",
+                  "quest_id": "cinder_heart"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "mage_path",
+          "text": "Zara grins. 'A mana battery! Perfect! If you can sustain a steady flow, the engine might actually stabilise. Ready?'",
+          "options": [
+            {
+              "id": "m_help",
+              "text": "I'm ready.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 10
+                },
+                {
+                  "type": "quest",
+                  "quest_id": "cinder_heart"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'It amplifies magical energy. Think of it as a lens for spells. Point it at a ward, the ward gets stronger. Point it at a fireball...' She trails off. 'Let's not point it at fireballs.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'll help test it.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "cinder_heart"
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "decline2",
+              "text": "Sounds dangerous.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "thon_history",
+      "speaker_id": "chronicler_thon",
+      "title": "The First War",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Chronicler Thon unrolls a scroll that seems to go on forever. 'The First War against the Void. Fought before humans built their first city. Before the elves sang their first song. Do you want to know what happened?'",
+          "options": [
+            {
+              "id": "lamia_response",
+              "text": "[Lamia] 'I was there. Or my ancestors were. The memory is... fragmented.'",
+              "conditions": {
+                "race_ids": [
+                  "lamia"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "chronicler_thon",
+                  "amount": 20
+                }
+              ],
+              "next_node_id": "lamia_path"
+            },
+            {
+              "id": "elf_response",
+              "text": "[Elf] 'The old songs speak of the Void War. But they're vague on details.'",
+              "conditions": {
+                "race_ids": [
+                  "elf",
+                  "half_elf"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "chronicler_thon",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "elf_path"
+            },
+            {
+              "id": "scholar_response",
+              "text": "[Acolyte/Mage] 'Historical knowledge is power. Tell me everything.'",
+              "conditions": {
+                "class_ids": [
+                  "acolyte",
+                  "mage",
+                  "archmage",
+                  "chronomancer",
+                  "oracle",
+                  "cleric"
+                ]
+              },
+              "next_node_id": "scholar_path"
+            },
+            {
+              "id": "dragonkin_response",
+              "text": "[Dragonkin] 'The first oath was sworn during that war. I need to know why.'",
+              "conditions": {
+                "race_ids": [
+                  "dragonkin"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "chronicler_thon",
+                  "amount": 15
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "dragonkin_oathkeepers",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "dragonkin_path"
+            },
+            {
+              "id": "generic",
+              "text": "What happened?",
+              "next_node_id": "explain"
+            }
+          ]
+        },
+        {
+          "id": "lamia_path",
+          "text": "Thon's eyes fill with tears. 'You remember. After all these centuries, someone remembers. The war was won, but at a terrible cost. The Void Sovereign was sealed, not destroyed. And now the seal is weakening.'",
+          "options": [
+            {
+              "id": "l_quest",
+              "text": "How do we strengthen the seal?",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "sunken_secrets"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "elf_path",
+          "text": "Thon nods. 'The songs are right, but incomplete. The war was won by an alliance of every race \u2014 dragonkin, elves, dwarves, even the Ash Court. They sealed the Void Sovereign in a throne of nothing.'",
+          "options": [
+            {
+              "id": "e_quest",
+              "text": "And now the seal is failing?",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "sunken_secrets"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "scholar_path",
+          "text": "Thon smiles. 'A scholar! The war lasted seven years. The alliance was forged by a dragonkin oath-keeper and an elven pathkeeper. They created the Void Throne to imprison the Sovereign.'",
+          "options": [
+            {
+              "id": "s_quest",
+              "text": "Where is the Void Throne?",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "sunken_secrets"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "dragonkin_path",
+          "text": "Thon bows his head. 'The first oath was sworn by Kaelthas the Golden, ancestor of your line. He gave his life to seal the Void Sovereign. The oath was to guard the seal forever.'",
+          "options": [
+            {
+              "id": "d_quest",
+              "text": "Then I will honour that oath.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "void_throne_assault"
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "dragonkin_oathkeepers",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'The Void Sovereign was a being of pure entropy. It consumed everything it touched. The alliance sealed it away, but the seal is weakening. The Void Throne is where it's imprisoned.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'll investigate the Void Throne.",
+              "actions": [
+                {
+                  "type": "quest",
+                  "quest_id": "void_throne_assault"
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "decline",
+              "text": "That sounds like someone else's problem.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "sable_ironveil",
+      "speaker_id": "mother_sable",
+      "title": "The Ash Court and Ironveil",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Mother Sable appears in Ironveil's marketplace, drawing wary glances. 'Interesting place. The Iron Covenant and the Ash Court have been rivals for centuries. But the Void changes everything.'",
+          "options": [
+            {
+              "id": "demon_response",
+              "text": "[Demon/Tiefling] 'The Ash Court is my people. I can negotiate.'",
+              "conditions": {
+                "race_ids": [
+                  "demon",
+                  "tiefling"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "affinity",
+                  "target_id": "mother_sable",
+                  "amount": 15
+                }
+              ],
+              "next_node_id": "demon_path"
+            },
+            {
+              "id": "ash_court_rep",
+              "text": "[Ash Court reputation \u2265 20] 'I have standing with the Ash Court. I can arrange a meeting.'",
+              "next_node_id": "rep_path"
+            },
+            {
+              "id": "iron_covenant_rep",
+              "text": "[Iron Covenant reputation \u2265 20] 'Commander Vex trusts me. I can convince her to listen.'",
+              "next_node_id": "covenant_path"
+            },
+            {
+              "id": "generic",
+              "text": "What do you propose?",
+              "next_node_id": "explain"
+            }
+          ]
+        },
+        {
+          "id": "demon_path",
+          "text": "Sable's eyes gleam. 'A demon who can walk both courts. Perfect. The Ash Court has knowledge the Covenant needs \u2014 and vice versa. A temporary alliance against the Void could save us all.'",
+          "options": [
+            {
+              "id": "d_negotiate",
+              "text": "I'll arrange a summit.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 10
+                },
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 10
+                },
+                {
+                  "type": "flag",
+                  "key": "ash_ironveil_alliance",
+                  "value": "negotiated"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "rep_path",
+          "text": "Sable nods. 'If you have standing with the Ash Court, you can speak for them. The Covenant needs to understand that the Void threatens us all equally.'",
+          "options": [
+            {
+              "id": "r_negotiate",
+              "text": "I'll speak to both sides.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 10
+                },
+                {
+                  "type": "flag",
+                  "key": "ash_ironveil_alliance",
+                  "value": "negotiated"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "covenant_path",
+          "text": "Sable smiles. 'If Commander Vex trusts you, she might listen. The Covenant's stubbornness is legendary, but even they can see the Void is worse than the Ash Court.'",
+          "options": [
+            {
+              "id": "c_negotiate",
+              "text": "I'll convince Vex.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "ash_court",
+                  "amount": 10
+                },
+                {
+                  "type": "flag",
+                  "key": "ash_ironveil_alliance",
+                  "value": "negotiated"
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "explain",
+          "text": "'A temporary alliance. The Ash Court has ancient knowledge about the Void. The Covenant has the military strength to act on it. Together, they might actually win.'",
+          "options": [
+            {
+              "id": "accept",
+              "text": "I'll try to broker peace.",
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "ash_ironveil_alliance",
+                  "value": "attempted"
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "decline",
+              "text": "Let them fight their own battles.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "ironveil_citizen",
+      "speaker_id": "commander_vex",
+      "title": "Life in Ironveil",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "An Ironveil guard stops you. 'New face. We don't get many visitors. What brings you to the edge of the world?'",
+          "options": [
+            {
+              "id": "orc_response",
+              "text": "[Orc] 'Fighting. The Void needs to be punched.'",
+              "conditions": {
+                "race_ids": [
+                  "orc",
+                  "half_orc"
+                ]
+              },
+              "next_node_id": "orc_path"
+            },
+            {
+              "id": "dwarf_response",
+              "text": "[Dwarf] 'Stone calls to stone. Your walls are impressive.'",
+              "conditions": {
+                "race_ids": [
+                  "dwarf"
+                ]
+              },
+              "next_node_id": "dwarf_path"
+            },
+            {
+              "id": "halfling_response",
+              "text": "[Halfling] 'Honestly? I got lost. Very lost.'",
+              "conditions": {
+                "race_ids": [
+                  "halfling"
+                ]
+              },
+              "next_node_id": "halfling_path"
+            },
+            {
+              "id": "aracne_response",
+              "text": "[Arachne] 'The threads of fate led me here. Literally.'",
+              "conditions": {
+                "race_ids": [
+                  "arachne"
+                ]
+              },
+              "next_node_id": "arachne_path"
+            },
+            {
+              "id": "warrior_response",
+              "text": "[Warrior] 'I heard you need fighters. I'm a fighter.'",
+              "conditions": {
+                "class_ids": [
+                  "squire",
+                  "knight",
+                  "paladin",
+                  "berserker",
+                  "warlord",
+                  "maiden",
+                  "duelist"
+                ]
+              },
+              "next_node_id": "warrior_path"
+            },
+            {
+              "id": "generic",
+              "text": "Just passing through.",
+              "next_node_id": "passing"
+            }
+          ]
+        },
+        {
+          "id": "orc_path",
+          "text": "The guard grins. 'An orc who speaks plainly! I like that. The Void spawn are tough, but we're tougher. Welcome to Ironveil.'",
+          "options": [
+            {
+              "id": "o_done",
+              "text": "Point me at the nearest fight.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "dwarf_path",
+          "text": "The guard straightens. 'A dwarf who appreciates good masonry! The walls are three thousand years old. Still standing. Like us.'",
+          "options": [
+            {
+              "id": "d_done",
+              "text": "Three thousand years. Impressive.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "halfling_path",
+          "text": "The guard laughs. 'Lost? In Ironveil? That's a first. Most people come here on purpose. Or get dragged here. Welcome anyway.'",
+          "options": [
+            {
+              "id": "h_done",
+              "text": "Is there an inn? I need a pie.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "arachne_path",
+          "text": "The guard blinks. 'Fate threads? That's... poetic. And slightly terrifying. Welcome to Ironveil. Try not to web anything important.'",
+          "options": [
+            {
+              "id": "a_done",
+              "text": "No promises.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "warrior_path",
+          "text": "The guard nods. 'We always need fighters. Commander Vex is in the keep. Tell her Briggs sent you.'",
+          "options": [
+            {
+              "id": "w_done",
+              "text": "Thanks, Briggs.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 5
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "passing",
+          "text": "The guard shrugs. 'Passing through? Watch your step. The Void spawn don't care about tourists.'",
+          "options": [
+            {
+              "id": "p_done",
+              "text": "I'll keep that in mind.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "",
           "options": []
         }
       ]

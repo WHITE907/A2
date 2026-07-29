@@ -9,7 +9,12 @@
       "weapon_type": "sword",
       "description": "Plain, heavy, and entirely reliable.",
       "value": 80,
-      "modifiers": { "flat": { "physical_power": 6, "accuracy": 0.02 } }
+      "modifiers": {
+        "flat": {
+          "physical_power": 6,
+          "accuracy": 0.02
+        }
+      }
     },
     {
       "id": "steel_sword",
@@ -20,7 +25,12 @@
       "description": "Well-balanced steel with a keen edge.",
       "value": 320,
       "required_level": 8,
-      "modifiers": { "flat": { "physical_power": 15, "crit_chance": 0.03 } }
+      "modifiers": {
+        "flat": {
+          "physical_power": 15,
+          "crit_chance": 0.03
+        }
+      }
     },
     {
       "id": "iron_dagger",
@@ -30,7 +40,13 @@
       "weapon_type": "dagger",
       "description": "Short, quick, and quiet.",
       "value": 70,
-      "modifiers": { "flat": { "physical_power": 4, "crit_chance": 0.04, "speed": 2 } }
+      "modifiers": {
+        "flat": {
+          "physical_power": 4,
+          "crit_chance": 0.04,
+          "speed": 2
+        }
+      }
     },
     {
       "id": "shadow_fang",
@@ -42,7 +58,13 @@
       "value": 400,
       "required_level": 10,
       "rarity": "rare",
-      "modifiers": { "flat": { "physical_power": 12, "crit_chance": 0.08, "speed": 4 } }
+      "modifiers": {
+        "flat": {
+          "physical_power": 12,
+          "crit_chance": 0.08,
+          "speed": 4
+        }
+      }
     },
     {
       "id": "battle_axe",
@@ -53,8 +75,17 @@
       "description": "Slow, brutal, and very final.",
       "value": 140,
       "required_level": 5,
-      "required_stats": { "STR": 14 },
-      "modifiers": { "flat": { "physical_power": 12 }, "pct": { "crit_damage": 0.15 } }
+      "required_stats": {
+        "STR": 14
+      },
+      "modifiers": {
+        "flat": {
+          "physical_power": 12
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      }
     },
     {
       "id": "iron_mace",
@@ -64,7 +95,12 @@
       "weapon_type": "mace",
       "description": "Armour is a suggestion.",
       "value": 110,
-      "modifiers": { "flat": { "physical_power": 8, "armor": 2 } }
+      "modifiers": {
+        "flat": {
+          "physical_power": 8,
+          "armor": 2
+        }
+      }
     },
     {
       "id": "hunting_bow",
@@ -74,7 +110,12 @@
       "weapon_type": "bow",
       "description": "Worn smooth at the grip.",
       "value": 100,
-      "modifiers": { "flat": { "physical_power": 7, "accuracy": 0.05 } }
+      "modifiers": {
+        "flat": {
+          "physical_power": 7,
+          "accuracy": 0.05
+        }
+      }
     },
     {
       "id": "apprentice_staff",
@@ -84,7 +125,12 @@
       "weapon_type": "staff",
       "description": "Notched from years of practice.",
       "value": 75,
-      "modifiers": { "flat": { "magic_power": 7, "max_mp": 10 } }
+      "modifiers": {
+        "flat": {
+          "magic_power": 7,
+          "max_mp": 10
+        }
+      }
     },
     {
       "id": "runed_staff",
@@ -95,7 +141,12 @@
       "description": "Runes shift slowly when nobody is watching.",
       "value": 380,
       "required_level": 9,
-      "modifiers": { "flat": { "magic_power": 18, "max_mp": 30 } }
+      "modifiers": {
+        "flat": {
+          "magic_power": 18,
+          "max_mp": 30
+        }
+      }
     },
     {
       "id": "wooden_shield",
@@ -104,7 +155,12 @@
       "slot": "offhand",
       "description": "Battered, splintered, still standing.",
       "value": 60,
-      "modifiers": { "flat": { "armor": 6, "max_hp": 10 } }
+      "modifiers": {
+        "flat": {
+          "armor": 6,
+          "max_hp": 10
+        }
+      }
     },
     {
       "id": "tower_shield",
@@ -114,8 +170,18 @@
       "description": "A wall you can carry.",
       "value": 260,
       "required_level": 8,
-      "required_stats": { "END": 16 },
-      "modifiers": { "flat": { "armor": 16, "max_hp": 30 }, "pct": { "evasion": -0.2 } }
+      "required_stats": {
+        "END": 16
+      },
+      "modifiers": {
+        "flat": {
+          "armor": 16,
+          "max_hp": 30
+        },
+        "pct": {
+          "evasion": -0.2
+        }
+      }
     },
     {
       "id": "leather_vest",
@@ -124,7 +190,12 @@
       "slot": "body",
       "description": "Cheap, light, better than nothing.",
       "value": 55,
-      "modifiers": { "flat": { "armor": 5, "max_hp": 12 } }
+      "modifiers": {
+        "flat": {
+          "armor": 5,
+          "max_hp": 12
+        }
+      }
     },
     {
       "id": "chain_mail",
@@ -134,7 +205,13 @@
       "description": "Heavy links, well maintained.",
       "value": 240,
       "required_level": 7,
-      "modifiers": { "flat": { "armor": 14, "max_hp": 35 }, "flat_speed": 0 }
+      "modifiers": {
+        "flat": {
+          "armor": 14,
+          "max_hp": 35
+        },
+        "flat_speed": 0
+      }
     },
     {
       "id": "cloth_robe",
@@ -143,7 +220,12 @@
       "slot": "body",
       "description": "Comfortable, and stitched with faint wards.",
       "value": 50,
-      "modifiers": { "flat": { "magic_resist": 6, "max_mp": 12 } }
+      "modifiers": {
+        "flat": {
+          "magic_resist": 6,
+          "max_mp": 12
+        }
+      }
     },
     {
       "id": "arcane_robe",
@@ -153,7 +235,13 @@
       "description": "The hem never quite touches the floor.",
       "value": 280,
       "required_level": 9,
-      "modifiers": { "flat": { "magic_resist": 16, "max_mp": 35, "magic_power": 5 } }
+      "modifiers": {
+        "flat": {
+          "magic_resist": 16,
+          "max_mp": 35,
+          "magic_power": 5
+        }
+      }
     },
     {
       "id": "iron_helm",
@@ -162,7 +250,12 @@
       "slot": "head",
       "description": "Dented in a reassuring way.",
       "value": 70,
-      "modifiers": { "flat": { "armor": 5, "max_hp": 10 } }
+      "modifiers": {
+        "flat": {
+          "armor": 5,
+          "max_hp": 10
+        }
+      }
     },
     {
       "id": "leather_gloves",
@@ -171,7 +264,12 @@
       "slot": "hands",
       "description": "Good grip, no frills.",
       "value": 40,
-      "modifiers": { "flat": { "accuracy": 0.02, "physical_power": 2 } }
+      "modifiers": {
+        "flat": {
+          "accuracy": 0.02,
+          "physical_power": 2
+        }
+      }
     },
     {
       "id": "travel_boots",
@@ -180,7 +278,12 @@
       "slot": "feet",
       "description": "They have already walked a very long way.",
       "value": 45,
-      "modifiers": { "flat": { "speed": 3, "evasion": 0.02 } }
+      "modifiers": {
+        "flat": {
+          "speed": 3,
+          "evasion": 0.02
+        }
+      }
     },
     {
       "id": "ring_of_vigor",
@@ -189,7 +292,12 @@
       "slot": "accessory1",
       "description": "Warm to the touch.",
       "value": 200,
-      "modifiers": { "flat": { "max_hp": 40, "END": 3 } }
+      "modifiers": {
+        "flat": {
+          "max_hp": 40,
+          "END": 3
+        }
+      }
     },
     {
       "id": "amulet_of_insight",
@@ -198,7 +306,12 @@
       "slot": "accessory2",
       "description": "Thoughts arrive a moment early.",
       "value": 220,
-      "modifiers": { "flat": { "INT": 4, "max_mp": 25 } }
+      "modifiers": {
+        "flat": {
+          "INT": 4,
+          "max_mp": 25
+        }
+      }
     },
     {
       "id": "minor_potion",
@@ -206,7 +319,13 @@
       "kind": "consumable",
       "description": "Restores a small amount of health.",
       "value": 25,
-      "use_effects": [{ "type": "heal", "base": 40, "target": "self" }]
+      "use_effects": [
+        {
+          "type": "heal",
+          "base": 40,
+          "target": "self"
+        }
+      ]
     },
     {
       "id": "potion",
@@ -214,7 +333,13 @@
       "kind": "consumable",
       "description": "Restores a moderate amount of health.",
       "value": 70,
-      "use_effects": [{ "type": "heal", "base": 110, "target": "self" }]
+      "use_effects": [
+        {
+          "type": "heal",
+          "base": 110,
+          "target": "self"
+        }
+      ]
     },
     {
       "id": "minor_ether",
@@ -222,7 +347,13 @@
       "kind": "consumable",
       "description": "Restores a small amount of magic.",
       "value": 30,
-      "use_effects": [{ "type": "resource", "amount": 30, "target": "self" }]
+      "use_effects": [
+        {
+          "type": "resource",
+          "amount": 30,
+          "target": "self"
+        }
+      ]
     },
     {
       "id": "ether",
@@ -230,7 +361,13 @@
       "kind": "consumable",
       "description": "Restores a good amount of magic.",
       "value": 85,
-      "use_effects": [{ "type": "resource", "amount": 80, "target": "self" }]
+      "use_effects": [
+        {
+          "type": "resource",
+          "amount": 80,
+          "target": "self"
+        }
+      ]
     },
     {
       "id": "antidote",
@@ -238,7 +375,13 @@
       "kind": "consumable",
       "description": "A bitter draught that settles the blood.",
       "value": 20,
-      "use_effects": [{ "type": "heal", "base": 10, "target": "self" }]
+      "use_effects": [
+        {
+          "type": "heal",
+          "base": 10,
+          "target": "self"
+        }
+      ]
     },
     {
       "id": "elixir_of_might",
@@ -246,7 +389,14 @@
       "kind": "consumable",
       "description": "Grants surging strength for a short time.",
       "value": 120,
-      "use_effects": [{ "type": "apply_status", "status_id": "might", "target": "self", "resistible": false }]
+      "use_effects": [
+        {
+          "type": "apply_status",
+          "status_id": "might",
+          "target": "self",
+          "resistible": false
+        }
+      ]
     },
     {
       "id": "wolf_pelt",
@@ -362,7 +512,9 @@
       "description": "A ring that binds two people, whoever they are. Required to propose.",
       "value": 1200,
       "stack_size": 1,
-      "tags": ["marriage"]
+      "tags": [
+        "marriage"
+      ]
     },
     {
       "id": "greater_potion",
@@ -1147,6 +1299,352 @@
         }
       ],
       "rarity": "epic"
+    },
+    {
+      "id": "berserker_horn",
+      "name": "Berserker's Horn",
+      "description": "A war horn that calls forth primal fury.",
+      "value": 150,
+      "kind": "key"
+    },
+    {
+      "id": "commanders_sigil",
+      "name": "Commander's Sigil",
+      "description": "A badge of battlefield authority.",
+      "value": 150,
+      "kind": "key"
+    },
+    {
+      "id": "rangers_compass",
+      "name": "Ranger's Compass",
+      "description": "An enchanted compass that always points toward prey.",
+      "value": 150,
+      "kind": "key"
+    },
+    {
+      "id": "shadow_cloak",
+      "name": "Shadow Cloak",
+      "description": "A cloak woven from midnight threads.",
+      "value": 150,
+      "kind": "key"
+    },
+    {
+      "id": "holy_water",
+      "name": "Holy Water",
+      "description": "Blessed water from a sacred spring.",
+      "value": 150,
+      "kind": "key"
+    },
+    {
+      "id": "eldritch_pact",
+      "name": "Eldritch Pact",
+      "description": "A contract signed in blood with an otherworldly patron.",
+      "value": 150,
+      "kind": "key"
+    },
+    {
+      "id": "pipe_weed",
+      "name": "Pipe Weed",
+      "kind": "consumable",
+      "description": "A halfling favourite. Calms the nerves.",
+      "value": 15,
+      "use_effects": [
+        {
+          "type": "heal",
+          "base": 10
+        }
+      ]
+    },
+    {
+      "id": "halfling_pie",
+      "name": "Halfling Pie",
+      "kind": "consumable",
+      "description": "A hearty pie that fills you with warmth and second breakfast.",
+      "value": 25,
+      "use_effects": [
+        {
+          "type": "heal",
+          "base": 30,
+          "percent_max_hp": 0.1
+        }
+      ]
+    },
+    {
+      "id": "dwarven_axe",
+      "name": "Dwarven Axe",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "axe",
+      "description": "Forged in the deep halls, sharp enough to split stone.",
+      "value": 300,
+      "modifiers": {
+        "flat": {
+          "physical_power": 8,
+          "crit_chance": 0.03
+        }
+      }
+    },
+    {
+      "id": "stone_shield",
+      "name": "Stone Shield",
+      "kind": "equipment",
+      "slot": "offhand",
+      "description": "A shield carved from living rock.",
+      "value": 250,
+      "modifiers": {
+        "flat": {
+          "armor": 10,
+          "max_hp": 25
+        }
+      }
+    },
+    {
+      "id": "giant_hammer",
+      "name": "Giant's Hammer",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "mace",
+      "description": "A hammer sized for goliath hands.",
+      "value": 400,
+      "modifiers": {
+        "flat": {
+          "physical_power": 12,
+          "armor": 4
+        }
+      },
+      "required_stats": {
+        "STR": 20
+      }
+    },
+    {
+      "id": "masterwork_plate",
+      "name": "Masterwork Plate",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Dwarven plate armour, nearly indestructible.",
+      "value": 600,
+      "modifiers": {
+        "flat": {
+          "armor": 18,
+          "max_hp": 50
+        }
+      },
+      "set_id": "dwarven_deepforge"
+    },
+    {
+      "id": "tinker_tools",
+      "name": "Tinker Tools",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A gnome's toolkit, always buzzing with tiny mechanisms.",
+      "value": 200,
+      "modifiers": {
+        "flat": {
+          "accuracy": 0.05,
+          "crit_chance": 0.03
+        }
+      }
+    },
+    {
+      "id": "elven_bow",
+      "name": "Elven Bow",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "bow",
+      "description": "A bow of silver wood that sings when drawn.",
+      "value": 350,
+      "modifiers": {
+        "flat": {
+          "physical_power": 7,
+          "accuracy": 0.06
+        }
+      },
+      "set_id": "elven_moonweave"
+    },
+    {
+      "id": "elemental_gem",
+      "name": "Elemental Gem",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A gem that shifts between the four elements.",
+      "value": 300,
+      "modifiers": {
+        "flat": {
+          "magic_power": 8,
+          "magic_resist": 6
+        }
+      }
+    },
+    {
+      "id": "alchemical_kit",
+      "name": "Alchemical Kit",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A gnome's portable laboratory.",
+      "value": 250,
+      "modifiers": {
+        "flat": {
+          "magic_power": 5,
+          "accuracy": 0.04
+        }
+      }
+    },
+    {
+      "id": "infernal_tome",
+      "name": "Infernal Tome",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A book bound in leather that whispers when opened.",
+      "value": 400,
+      "modifiers": {
+        "flat": {
+          "magic_power": 10,
+          "crit_damage": 0.08
+        }
+      }
+    },
+    {
+      "id": "serpent_staff",
+      "name": "Serpent Staff",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "staff",
+      "description": "A staff carved from a single piece of jade, shaped like a coiling serpent.",
+      "value": 350,
+      "modifiers": {
+        "flat": {
+          "magic_power": 9,
+          "magic_resist": 5
+        }
+      }
+    },
+    {
+      "id": "drake_scale_armor",
+      "name": "Drake Scale Armor",
+      "kind": "equipment",
+      "slot": "body",
+      "description": "Armour crafted from dragonkin shed scales.",
+      "value": 500,
+      "modifiers": {
+        "flat": {
+          "armor": 14,
+          "magic_resist": 10
+        }
+      },
+      "set_id": "dragonkin_scalemail"
+    },
+    {
+      "id": "silk_cloak",
+      "name": "Silk Cloak",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A cloak woven from arachne silk, lighter than air.",
+      "value": 300,
+      "modifiers": {
+        "flat": {
+          "evasion": 0.06,
+          "speed": 4
+        }
+      }
+    },
+    {
+      "id": "moonstone_amulet",
+      "name": "Moonstone Amulet",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "An elven amulet that glows faintly in moonlight.",
+      "value": 350,
+      "modifiers": {
+        "flat": {
+          "magic_power": 6,
+          "max_mp": 20
+        }
+      },
+      "set_id": "elven_moonweave"
+    },
+    {
+      "id": "ancient_scroll",
+      "name": "Ancient Scroll",
+      "kind": "equipment",
+      "slot": "accessory1",
+      "description": "A scroll of forgotten lore, readable only by the patient.",
+      "value": 400,
+      "modifiers": {
+        "flat": {
+          "magic_power": 8,
+          "magic_resist": 8
+        }
+      }
+    },
+    {
+      "id": "orcish_cleaver",
+      "name": "Orcish Cleaver",
+      "kind": "equipment",
+      "slot": "weapon",
+      "weapon_type": "axe",
+      "description": "A brutal axe favoured by orc warriors.",
+      "value": 280,
+      "modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "crit_damage": 0.06
+        }
+      }
+    },
+    {
+      "id": "war_paint",
+      "name": "War Paint",
+      "kind": "consumable",
+      "description": "Orcish war paint that fills the wearer with fury.",
+      "value": 50,
+      "use_effects": [
+        {
+          "type": "apply_status",
+          "status_id": "might"
+        }
+      ]
+    },
+    {
+      "id": "berserker_totem",
+      "name": "Berserker Totem",
+      "kind": "key",
+      "description": "A carved totem pulsing with primal rage.",
+      "value": 400
+    },
+    {
+      "id": "commanders_banner",
+      "name": "Commander's Banner",
+      "kind": "key",
+      "description": "A battle standard that inspires courage.",
+      "value": 400
+    },
+    {
+      "id": "phantom_mask",
+      "name": "Phantom Mask",
+      "kind": "key",
+      "description": "A mask that blurs the wearer's features.",
+      "value": 400
+    },
+    {
+      "id": "wardens_oath",
+      "name": "Warden's Oath",
+      "kind": "key",
+      "description": "A sworn promise to protect the wild.",
+      "value": 400
+    },
+    {
+      "id": "holy_symbol",
+      "name": "Holy Symbol",
+      "kind": "key",
+      "description": "A sacred emblem of divine power.",
+      "value": 400
+    },
+    {
+      "id": "soul_gem",
+      "name": "Soul Gem",
+      "kind": "key",
+      "description": "A crystallised fragment of trapped essence.",
+      "value": 400
     }
   ]
 }

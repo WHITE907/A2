@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from engine.classes import ClassDefinition
+from engine.codex import Codex
 from engine.combat.ai import default_registry
 from engine.combat.combat import Battle, CombatState
 from engine.entities.companion import Companion
@@ -304,6 +305,7 @@ class Game:
         gender: str,
         class_id: str,
         race_id: str | None = None,
+        sub_race_id: str | None = None,
     ) -> tuple[bool, str]:
         """Build a fresh player and place them in the starting area."""
         name = (name or "").strip()
@@ -323,6 +325,10 @@ class Game:
         if race is None:
             return False, "Please choose a race."
 
+        # Validate sub-race if provided
+        if sub_race_id and race.get_sub_race(sub_race_id) is None:
+            return False, "Invalid sub-race selection."
+
         progression = self.config.get("progression", {})
         player = Player(
             name=name,
@@ -334,6 +340,7 @@ class Game:
             progression=progression,
             equipment_config=self.config,
             enchantments=self.enchantments.definitions,
+            sub_race_id=sub_race_id,
         )
         player.mastery = self._new_mastery_book()
 
@@ -543,7 +550,13 @@ class Game:
         skill = self.skills.get(skill_id)
         if skill is None:
             return False, "Unknown skill."
-        return self.player.learn_skill(skill)
+        ok, message = self.player.learn_skill(skill)
+        if ok:
+            # Codex: track skills learned
+            unlocked = self.player.record_achievement("skills_learned", skill_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
+        return ok, message
 
     # ==================================================================
     # Promotion
@@ -554,7 +567,13 @@ class Game:
     def promote(self, target_class_id: str) -> tuple[bool, list[str]]:
         if not self.player:
             return False, ["No character loaded."]
-        return self.classes.promote(self.player, target_class_id)
+        ok, messages = self.classes.promote(self.player, target_class_id)
+        if ok:
+            # Codex: track promotions
+            unlocked = self.player.record_achievement("promotions", target_class_id)
+            for ach_id in unlocked:
+                messages.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
+        return ok, messages
 
     # ==================================================================
     # Quests
@@ -723,6 +742,10 @@ class Game:
             lines.extend(report.messages)
         for item_line in self.items.grant_many(self.player.inventory, definition.rewards.items):
             lines.append(f"Received {item_line}.")
+        # Codex: track quests completed
+        unlocked = self.player.record_achievement("quests_completed", quest_id)
+        for ach_id in unlocked:
+            lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
         return True, lines
 
     # ==================================================================
@@ -751,12 +774,123 @@ class Game:
         ok, message = self.world.travel_to(area_id, self.player.level)
         if ok:
             self.quests.record_event(self.player, "visit_area", area_id)
+            # Codex: track area visited
+            unlocked = self.player.record_achievement("areas_visited", area_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
+            # Random travel event (20% chance)
+            event = self._random_travel_event(area_id)
+            if event:
+                message += "\n\n" + event
             for companion in self.party.active:
                 self.quests.record_event(self.player, "travel_with_companion", companion.id)
             banter = self.trigger_banter("travel", area_id=area_id)
             if banter:
                 message += "\n" + "\n".join(banter)
         return ok, message
+
+    def _random_travel_event(self, area_id: str) -> str | None:
+        """Generate a random event during travel. 20% chance per journey."""
+        if not self.player or not self.rng:
+            return None
+        if not self.rng.chance(0.2):
+            return None
+
+        events = [
+            # Positive events
+            ("merchant", "You encounter a travelling merchant who offers you a fair price for your wares.", lambda: self._event_merchant()),
+            ("shrine", "You find a roadside shrine that fills you with renewed vigour.", lambda: self._event_shrine()),
+            ("traveller", "A fellow traveller shares news of the road ahead.", lambda: self._event_traveller()),
+            ("herbs", "You spot rare healing herbs growing by the roadside.", lambda: self._event_herbs()),
+            ("treasure", "You discover a hidden cache left by a previous adventurer.", lambda: self._event_treasure()),
+            # Negative events
+            ("ambush", "Bandits leap from the undergrowth!", lambda: self._event_ambush()),
+            ("storm", "A sudden storm forces you to take shelter, costing time.", lambda: self._event_storm()),
+            ("trap", "You stumble into a hunter's trap!", lambda: self._event_trap()),
+            # Neutral events
+            ("ruins", "You pass ancient ruins. Something stirs within, but does not emerge.", lambda: self._event_ruins()),
+            ("omen", "A raven circles overhead three times before flying south. An omen?", lambda: self._event_omen()),
+        ]
+
+        event_type, text, handler = self.rng.choice(events)
+        result = handler()
+        if result:
+            return f"📍 {text}\n{result}"
+        return f"📍 {text}"
+
+    def _event_merchant(self) -> str:
+        if self.player and self.player.inventory.gold >= 50:
+            self.player.inventory.spend_gold(50)
+            return "You trade 50 gold for useful supplies."
+        return "You have nothing to trade."
+
+    def _event_shrine(self) -> str:
+        if self.player:
+            heal = int(self.player.max_hp * 0.2)
+            self.player.heal(heal)
+            mana = int(self.player.max_mp * 0.2)
+            self.player.change_mp(mana)
+            sp = int(self.player.max_sp * 0.2)
+            self.player.change_sp(sp)
+            return f"The shrine's blessing restores {heal} HP, {mana} MP, and {sp} SP."
+        return ""
+
+    def _event_traveller(self) -> str:
+        if self.player:
+            self.player.gain_exp(50)
+            return "You gain 50 EXP from the shared knowledge."
+        return ""
+
+    def _event_herbs(self) -> str:
+        if self.player:
+            item = self.items.get("minor_potion")
+            if item:
+                self.player.inventory.add(item, 1)
+                return "You gather enough herbs to brew a Minor Potion."
+        return ""
+
+    def _event_treasure(self) -> str:
+        if self.player:
+            gold = self.rng.randint(30, 120) if self.rng else 50
+            self.player.inventory.add_gold(gold)
+            return f"You find {gold} gold in the cache!"
+        return ""
+
+    def _event_ambush(self) -> str:
+        if self.player:
+            damage = int(self.player.max_hp * 0.1)
+            self.player.take_raw_damage(damage, damage_type="physical")
+            return f"The bandits wound you for {damage} damage before fleeing."
+        return ""
+
+    def _event_storm(self) -> str:
+        return "You lose an hour waiting for the storm to pass."
+
+    def _event_trap(self) -> str:
+        if self.player:
+            damage = int(self.player.max_hp * 0.08)
+            self.player.take_raw_damage(damage, damage_type="physical")
+            return f"You take {damage} damage from the trap."
+        return ""
+
+    def _event_ruins(self) -> str:
+        if self.player:
+            self.player.gain_exp(30)
+            return "You gain 30 EXP from exploring the ruins."
+        return ""
+
+    def _event_omen(self) -> str:
+        if self.player:
+            self.player.gain_exp(20)
+            return "You ponder the omen and gain 20 EXP."
+        return ""
+
+    def _achievement_name(self, achievement_id: str) -> str:
+        from engine.codex import ACHIEVEMENTS
+        for ach in ACHIEVEMENTS:
+            if ach.id == achievement_id:
+                return ach.name
+        return achievement_id
 
     def explore(self) -> tuple[str, Battle | None]:
         """Take one exploration step; starts a battle on an encounter.
@@ -825,6 +959,17 @@ class Game:
                         self.world.defeated_bosses.add(enemy.template.id)
                         lines.append(f"World updated: {enemy.template.name} has been defeated.")
             if self.player:
+                # Codex: track enemy defeats
+                for eid in defeated_ids:
+                    unlocked = self.player.record_achievement("enemies_defeated", eid)
+                    for ach_id in unlocked:
+                        lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
+                # Codex: track unique enemy types
+                unique = self.player.codex.count_for("enemies_defeated")
+                if len(set(defeated_ids)) > 0:
+                    unlocked = self.player.record_achievement("unique_enemies", "total", len(set(defeated_ids)))
+                    for ach_id in unlocked:
+                        lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
                 changed = self.quests.record_defeats(self.player, defeated_ids)
                 for quest_id in changed:
                     definition = self.quests.require(quest_id)
@@ -836,6 +981,12 @@ class Game:
                 if battle.round <= 5:
                     self.quests.record_event(self.player, "battle_turn_limit", "5")
                 if boss_victory:
+                    # Codex: track boss kills
+                    for enemy in battle.enemies:
+                        if enemy.is_boss:
+                            unlocked = self.player.record_achievement("bosses_slain", enemy.template.id)
+                            for ach_id in unlocked:
+                                lines.append(f"🏆 Achievement unlocked: {self._achievement_name(ach_id)}")
                     lines.extend(self.trigger_banter("boss_victory"))
                 for family in {enemy.template.family for enemy in battle.enemies}:
                     lines.extend(self.trigger_banter("enemy_family", enemy_family=family))
@@ -1012,6 +1163,10 @@ class Game:
         if joined:
             self.quests.record_event(self.player, "recruit_companion", companion_id)
             self.player.companion_loyalty.setdefault(companion_id, 0)
+            # Codex: track companions recruited
+            unlocked = self.player.record_achievement("companions_recruited", companion_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
         return joined, [message]
 
     def dismiss_companion(self, companion_id: str) -> tuple[bool, str]:
@@ -1214,6 +1369,10 @@ class Game:
             if member is not None:
                 self._apply_spouse_bonus(member)
             self.notices.extend(self.trigger_banter("marriage", companion_id=target_id))
+            # Codex: track marriage
+            unlocked = self.player.record_achievement("marriages", target_id)
+            for ach_id in unlocked:
+                message += f"\n🏆 Achievement unlocked: {self._achievement_name(ach_id)}"
         return ok, message
 
     # ==================================================================
@@ -1388,6 +1547,8 @@ class Game:
             if cond.get("spouse_in_party") and not (self.player.spouse_id and self.party.has(self.player.spouse_id)):
                 continue
             seen[entry.id] = True
+            # Codex: track banter heard
+            self.player.record_achievement("banter_heard", entry.id)
             return list(entry.lines)
         return []
 
@@ -1466,6 +1627,7 @@ class Game:
         race = self.races.get(race_id) or self.races.get(default_race_id)
         if race is None:
             return False, f"This save uses race '{race_id}', which no longer exists."
+        sub_race_id = str(player_data.get("sub_race_id", "") or "")
         player = Player(
             name=str(player_data.get("name", "Hero")),
             gender=str(player_data.get("gender", "male")),
@@ -1476,6 +1638,7 @@ class Game:
             progression=progression,
             equipment_config=self.config,
             enchantments=self.enchantments.definitions,
+            sub_race_id=sub_race_id,
         )
 
         player.class_history = [str(c) for c in player_data.get("class_history", [class_id])]
@@ -1531,6 +1694,7 @@ class Game:
         player.item_enchantments = {str(k): str(v) for k, v in (player_data.get("item_enchantments") or {}).items()}
         player.item_upgrades = {str(k): int(v) for k, v in (player_data.get("item_upgrades") or {}).items()}
         player.flags = dict(player_data.get("flags") or {})
+        player.codex = Codex.from_dict(player_data.get("codex"))
 
         player._recalculate_base_stats()
         player._restore_common(player_data)

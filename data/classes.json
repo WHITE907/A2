@@ -7,23 +7,98 @@
       "tier": 1,
       "gender_restriction": "male",
       "description": "A young man trained to the blade, still learning what it costs.",
-      "base_stats": { "STR": 8, "END": 7, "INT": 3, "AGI": 5 },
-      "growth": { "STR": 2, "END": 2, "INT": 0, "AGI": 1 },
+      "base_stats": {
+        "STR": 8,
+        "END": 7,
+        "INT": 3,
+        "AGI": 5
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 0,
+        "AGI": 1
+      },
       "core_skill_id": "strike",
-      "granted_skill_ids": ["power_strike"],
-      "skill_tree_ids": ["toughness", "sunder_armor", "keen_edge", "second_wind"],
-      "weapon_types": ["sword", "axe", "mace"],
-      "starting_items": { "iron_sword": 1, "leather_vest": 1, "minor_potion": 3 },
+      "granted_skill_ids": [
+        "power_strike"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "sunder_armor",
+        "keen_edge",
+        "second_wind"
+      ],
+      "weapon_types": [
+        "sword",
+        "axe",
+        "mace"
+      ],
+      "starting_items": {
+        "iron_sword": 1,
+        "leather_vest": 1,
+        "minor_potion": 3
+      },
       "starting_gold": 50,
       "promotions": {
         "knight": {
           "level": 10,
-          "stats": { "STR": 20, "END": 18 },
-          "mastery": { "sword": "D" },
-          "items": { "knights_seal": 1 },
+          "stats": {
+            "STR": 20,
+            "END": 18
+          },
+          "mastery": {
+            "sword": "D"
+          },
+          "items": {
+            "knights_seal": 1
+          },
+          "gold": 200
+        },
+        "berserker": {
+          "level": 10,
+          "stats": {
+            "STR": 22,
+            "END": 14
+          },
+          "mastery": {
+            "axe": "D"
+          },
+          "items": {
+            "berserker_horn": 1
+          },
+          "gold": 200
+        },
+        "warlord": {
+          "level": 10,
+          "stats": {
+            "STR": 18,
+            "END": 18,
+            "INT": 12
+          },
+          "mastery": {
+            "sword": "D"
+          },
+          "items": {
+            "commanders_sigil": 1
+          },
           "gold": 200
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "iron_will",
+          "name": "Iron Will",
+          "description": "Below 30% HP, gain +15% armor",
+          "trigger": "low_hp",
+          "threshold": 0.3,
+          "modifiers": {
+            "pct": {
+              "armor": 0.15
+            }
+          }
+        }
+      ]
     },
     {
       "id": "maiden",
@@ -31,23 +106,97 @@
       "tier": 1,
       "gender_restriction": "female",
       "description": "A young woman with a quick blade and quicker feet.",
-      "base_stats": { "STR": 6, "END": 5, "INT": 5, "AGI": 8 },
-      "growth": { "STR": 1, "END": 1, "INT": 1, "AGI": 3 },
+      "base_stats": {
+        "STR": 6,
+        "END": 5,
+        "INT": 5,
+        "AGI": 8
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 1,
+        "AGI": 3
+      },
       "core_skill_id": "pierce",
-      "granted_skill_ids": ["venom_edge"],
-      "skill_tree_ids": ["fleet_footed", "shadowstep", "keen_edge", "second_wind"],
-      "weapon_types": ["dagger", "sword", "bow"],
-      "starting_items": { "iron_dagger": 1, "leather_vest": 1, "minor_potion": 3 },
+      "granted_skill_ids": [
+        "venom_edge"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "shadowstep",
+        "keen_edge",
+        "second_wind"
+      ],
+      "weapon_types": [
+        "dagger",
+        "sword",
+        "bow"
+      ],
+      "starting_items": {
+        "iron_dagger": 1,
+        "leather_vest": 1,
+        "minor_potion": 3
+      },
       "starting_gold": 50,
       "promotions": {
         "duelist": {
           "level": 10,
-          "stats": { "AGI": 22, "STR": 14 },
-          "mastery": { "dagger": "D" },
-          "items": { "duelists_token": 1 },
+          "stats": {
+            "AGI": 22,
+            "STR": 14
+          },
+          "mastery": {
+            "dagger": "D"
+          },
+          "items": {
+            "duelists_token": 1
+          },
+          "gold": 200
+        },
+        "ranger": {
+          "level": 10,
+          "stats": {
+            "AGI": 22,
+            "STR": 14
+          },
+          "mastery": {
+            "bow": "D"
+          },
+          "items": {
+            "rangers_compass": 1
+          },
+          "gold": 200
+        },
+        "shadow_dancer": {
+          "level": 10,
+          "stats": {
+            "AGI": 22,
+            "INT": 14
+          },
+          "mastery": {
+            "dagger": "D",
+            "shadow": "E"
+          },
+          "items": {
+            "shadow_cloak": 1
+          },
           "gold": 200
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "evasive_grace",
+          "name": "Evasive Grace",
+          "description": "+5% evasion at all times",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.05
+            }
+          }
+        }
+      ]
     },
     {
       "id": "acolyte",
@@ -55,23 +204,95 @@
       "tier": 1,
       "gender_restriction": "any",
       "description": "A student of the arcane, dangerous well before they are wise.",
-      "base_stats": { "STR": 3, "END": 4, "INT": 10, "AGI": 5 },
-      "growth": { "STR": 0, "END": 1, "INT": 3, "AGI": 1 },
+      "base_stats": {
+        "STR": 3,
+        "END": 4,
+        "INT": 10,
+        "AGI": 5
+      },
+      "growth": {
+        "STR": 0,
+        "END": 1,
+        "INT": 3,
+        "AGI": 1
+      },
       "core_skill_id": "arcane_bolt",
-      "granted_skill_ids": ["fireball"],
-      "skill_tree_ids": ["arcane_mind", "frost_lance", "mend", "steady_breath"],
-      "weapon_types": ["staff", "dagger"],
-      "starting_items": { "apprentice_staff": 1, "cloth_robe": 1, "minor_ether": 3 },
+      "granted_skill_ids": [
+        "fireball"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "frost_lance",
+        "mend",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "starting_items": {
+        "apprentice_staff": 1,
+        "cloth_robe": 1,
+        "minor_ether": 3
+      },
       "starting_gold": 50,
       "promotions": {
         "mage": {
           "level": 10,
-          "stats": { "INT": 24 },
-          "mastery": { "fire": "D" },
-          "items": { "arcane_focus": 1 },
+          "stats": {
+            "INT": 24
+          },
+          "mastery": {
+            "fire": "D"
+          },
+          "items": {
+            "arcane_focus": 1
+          },
+          "gold": 200
+        },
+        "cleric": {
+          "level": 10,
+          "stats": {
+            "INT": 22,
+            "END": 14
+          },
+          "mastery": {
+            "light": "D"
+          },
+          "items": {
+            "holy_water": 1
+          },
+          "gold": 200
+        },
+        "warlock": {
+          "level": 10,
+          "stats": {
+            "INT": 24,
+            "END": 10
+          },
+          "mastery": {
+            "shadow": "D",
+            "fire": "E"
+          },
+          "items": {
+            "eldritch_pact": 1
+          },
           "gold": 200
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "arcane_focus",
+          "name": "Arcane Focus",
+          "description": "+8% magic power",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.08
+            }
+          }
+        }
+      ]
     },
     {
       "id": "knight",
@@ -79,22 +300,100 @@
       "tier": 2,
       "gender_restriction": "any",
       "description": "Sworn, armoured, and immovable.",
-      "base_stats": { "STR": 18, "END": 20, "INT": 6, "AGI": 9 },
-      "growth": { "STR": 3, "END": 3, "INT": 1, "AGI": 1 },
+      "base_stats": {
+        "STR": 18,
+        "END": 20,
+        "INT": 6,
+        "AGI": 9
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 1,
+        "AGI": 1
+      },
       "core_skill_id": "smite",
-      "granted_skill_ids": ["shield_wall", "rallying_cry"],
-      "skill_tree_ids": ["toughness", "cleave", "warding_spirit", "sunder_armor"],
-      "weapon_types": ["sword", "axe", "mace"],
-      "passive_modifiers": { "flat": { "armor": 6 } },
+      "granted_skill_ids": [
+        "shield_wall",
+        "rallying_cry"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "cleave",
+        "warding_spirit",
+        "sunder_armor"
+      ],
+      "weapon_types": [
+        "sword",
+        "axe",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 6
+        }
+      },
       "promotions": {
         "paladin": {
           "level": 20,
-          "stats": { "STR": 34, "END": 34, "INT": 16 },
-          "mastery": { "sword": "C", "light": "E" },
-          "items": { "oath_sigil": 1 },
+          "stats": {
+            "STR": 34,
+            "END": 34,
+            "INT": 16
+          },
+          "mastery": {
+            "sword": "C",
+            "light": "E"
+          },
+          "items": {
+            "oath_sigil": 1
+          },
+          "gold": 600
+        },
+        "dark_knight": {
+          "level": 20,
+          "stats": {
+            "STR": 38,
+            "END": 34,
+            "INT": 22
+          },
+          "mastery": {
+            "sword": "C",
+            "shadow": "E"
+          },
+          "items": {
+            "shadow_pact": 1
+          },
+          "gold": 600
+        },
+        "sentinel": {
+          "level": 20,
+          "stats": {
+            "STR": 32,
+            "END": 40
+          },
+          "mastery": {
+            "sword": "C"
+          },
+          "items": {
+            "oath_sigil": 1
+          },
           "gold": 600
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "shield_mastery",
+          "name": "Shield Mastery",
+          "description": "+10% armor, shields last 1 extra turn",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.1
+            }
+          }
+        }
+      ]
     },
     {
       "id": "duelist",
@@ -102,22 +401,98 @@
       "tier": 2,
       "gender_restriction": "any",
       "description": "One blade, one opening, one answer.",
-      "base_stats": { "STR": 15, "END": 12, "INT": 8, "AGI": 24 },
-      "growth": { "STR": 2, "END": 1, "INT": 1, "AGI": 4 },
+      "base_stats": {
+        "STR": 15,
+        "END": 12,
+        "INT": 8,
+        "AGI": 24
+      },
+      "growth": {
+        "STR": 2,
+        "END": 1,
+        "INT": 1,
+        "AGI": 4
+      },
       "core_skill_id": "pierce",
-      "granted_skill_ids": ["shadowstep", "hunters_mark"],
-      "skill_tree_ids": ["fleet_footed", "keen_edge", "venom_edge", "aimed_shot"],
-      "weapon_types": ["dagger", "sword", "bow"],
-      "passive_modifiers": { "flat": { "evasion": 0.04 } },
+      "granted_skill_ids": [
+        "shadowstep",
+        "hunters_mark"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "venom_edge",
+        "aimed_shot"
+      ],
+      "weapon_types": [
+        "dagger",
+        "sword",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.04
+        }
+      },
       "promotions": {
         "assassin": {
           "level": 20,
-          "stats": { "AGI": 40, "STR": 24 },
-          "mastery": { "dagger": "C", "shadow": "E" },
-          "items": { "shadow_pact": 1 },
+          "stats": {
+            "AGI": 40,
+            "STR": 24
+          },
+          "mastery": {
+            "dagger": "C",
+            "shadow": "E"
+          },
+          "items": {
+            "shadow_pact": 1
+          },
+          "gold": 600
+        },
+        "blademaster": {
+          "level": 20,
+          "stats": {
+            "STR": 28,
+            "AGI": 46
+          },
+          "mastery": {
+            "dagger": "C"
+          },
+          "items": {
+            "duelists_token": 1
+          },
+          "gold": 600
+        },
+        "trickster": {
+          "level": 20,
+          "stats": {
+            "AGI": 44,
+            "INT": 18
+          },
+          "mastery": {
+            "dagger": "C",
+            "shadow": "E"
+          },
+          "items": {
+            "shadow_cloak": 1
+          },
           "gold": 600
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "precision_strikes",
+          "name": "Precision Strikes",
+          "description": "+8% crit chance",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "crit_chance": 0.08
+            }
+          }
+        }
+      ]
     },
     {
       "id": "mage",
@@ -125,22 +500,97 @@
       "tier": 2,
       "gender_restriction": "any",
       "description": "The arcane, understood well enough to be aimed.",
-      "base_stats": { "STR": 5, "END": 10, "INT": 26, "AGI": 10 },
-      "growth": { "STR": 0, "END": 1, "INT": 4, "AGI": 1 },
+      "base_stats": {
+        "STR": 5,
+        "END": 10,
+        "INT": 26,
+        "AGI": 10
+      },
+      "growth": {
+        "STR": 0,
+        "END": 1,
+        "INT": 4,
+        "AGI": 1
+      },
       "core_skill_id": "arcane_bolt",
-      "granted_skill_ids": ["flame_wave", "mind_over_matter"],
-      "skill_tree_ids": ["arcane_mind", "frost_lance", "renewal", "warding_spirit"],
-      "weapon_types": ["staff", "dagger"],
-      "passive_modifiers": { "pct": { "magic_power": 0.1 } },
+      "granted_skill_ids": [
+        "flame_wave",
+        "mind_over_matter"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "frost_lance",
+        "renewal",
+        "warding_spirit"
+      ],
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "pct": {
+          "magic_power": 0.1
+        }
+      },
       "promotions": {
         "archmage": {
           "level": 20,
-          "stats": { "INT": 46 },
-          "mastery": { "fire": "C", "ice": "E" },
-          "items": { "grimoire_of_ages": 1 },
+          "stats": {
+            "INT": 46
+          },
+          "mastery": {
+            "fire": "C",
+            "ice": "E"
+          },
+          "items": {
+            "grimoire_of_ages": 1
+          },
+          "gold": 600
+        },
+        "chronomancer": {
+          "level": 20,
+          "stats": {
+            "INT": 50
+          },
+          "mastery": {
+            "fire": "C",
+            "ice": "E"
+          },
+          "items": {
+            "arcane_focus": 1
+          },
+          "gold": 600
+        },
+        "necromancer": {
+          "level": 20,
+          "stats": {
+            "INT": 46,
+            "END": 20
+          },
+          "mastery": {
+            "shadow": "C",
+            "fire": "E"
+          },
+          "items": {
+            "soul_gem": 1
+          },
           "gold": 600
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "mana_efficiency",
+          "name": "Mana Efficiency",
+          "description": "Below 30% MP, gain +20% magic power",
+          "trigger": "low_mp",
+          "threshold": 0.3,
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2
+            }
+          }
+        }
+      ]
     },
     {
       "id": "paladin",
@@ -148,25 +598,82 @@
       "tier": 3,
       "gender_restriction": "any",
       "description": "A blade held in service of something larger.",
-      "base_stats": { "STR": 36, "END": 38, "INT": 20, "AGI": 14 },
-      "growth": { "STR": 4, "END": 4, "INT": 2, "AGI": 1 },
+      "base_stats": {
+        "STR": 36,
+        "END": 38,
+        "INT": 20,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 2,
+        "AGI": 1
+      },
       "core_skill_id": "smite",
-      "granted_skill_ids": ["renewal", "shield_wall", "rallying_cry"],
-      "skill_tree_ids": ["toughness", "warding_spirit", "cleave", "mend", "radiant_aegis", "guardian_resolve", "executioners_arc"],
-      "ultimate_skill_ids": ["divine_judgment"],
+      "granted_skill_ids": [
+        "renewal",
+        "shield_wall",
+        "rallying_cry"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "warding_spirit",
+        "cleave",
+        "mend",
+        "radiant_aegis",
+        "guardian_resolve",
+        "executioners_arc"
+      ],
+      "ultimate_skill_ids": [
+        "divine_judgment"
+      ],
       "ultimate_unlock_level": 30,
-      "weapon_types": ["sword", "mace"],
-      "passive_modifiers": { "flat": { "armor": 10, "magic_resist": 8 } },
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 10,
+          "magic_resist": 8
+        }
+      },
       "promotions": {
         "templar": {
           "level": 35,
-          "stats": { "STR": 60, "END": 60, "INT": 34 },
-          "mastery": { "sword": "B", "light": "C" },
-          "items": { "sacred_relic": 1 },
-          "quests": ["trial_of_the_dawn"],
+          "stats": {
+            "STR": 60,
+            "END": 60,
+            "INT": 34
+          },
+          "mastery": {
+            "sword": "B",
+            "light": "C"
+          },
+          "items": {
+            "sacred_relic": 1
+          },
+          "quests": [
+            "trial_of_the_dawn"
+          ],
           "gold": 2000
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "holy_shield",
+          "name": "Holy Shield",
+          "description": "+15% armor, +10% magic resist",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.15,
+              "magic_resist": 0.1
+            }
+          }
+        }
+      ]
     },
     {
       "id": "assassin",
@@ -174,25 +681,81 @@
       "tier": 3,
       "gender_restriction": "any",
       "description": "The fight ends before most people know it started.",
-      "base_stats": { "STR": 26, "END": 18, "INT": 14, "AGI": 44 },
-      "growth": { "STR": 3, "END": 2, "INT": 1, "AGI": 5 },
+      "base_stats": {
+        "STR": 26,
+        "END": 18,
+        "INT": 14,
+        "AGI": 44
+      },
+      "growth": {
+        "STR": 3,
+        "END": 2,
+        "INT": 1,
+        "AGI": 5
+      },
       "core_skill_id": "pierce",
-      "granted_skill_ids": ["shadow_bind", "shadowstep"],
-      "skill_tree_ids": ["fleet_footed", "keen_edge", "venom_edge", "smoke_veil", "predatory_focus", "heartseeker"],
-      "ultimate_skill_ids": ["thousand_cuts"],
+      "granted_skill_ids": [
+        "shadow_bind",
+        "shadowstep"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "venom_edge",
+        "smoke_veil",
+        "predatory_focus",
+        "heartseeker"
+      ],
+      "ultimate_skill_ids": [
+        "thousand_cuts"
+      ],
       "ultimate_unlock_level": 30,
-      "weapon_types": ["dagger", "bow"],
-      "passive_modifiers": { "flat": { "crit_chance": 0.06, "evasion": 0.05 } },
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.06,
+          "evasion": 0.05
+        }
+      },
       "promotions": {
         "nightblade": {
           "level": 35,
-          "stats": { "AGI": 70, "STR": 40 },
-          "mastery": { "dagger": "B", "shadow": "C" },
-          "items": { "void_shard": 1 },
-          "quests": ["the_silent_contract"],
+          "stats": {
+            "AGI": 70,
+            "STR": 40
+          },
+          "mastery": {
+            "dagger": "B",
+            "shadow": "C"
+          },
+          "items": {
+            "void_shard": 1
+          },
+          "quests": [
+            "the_silent_contract"
+          ],
           "gold": 2000
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "lethal_precision",
+          "name": "Lethal Precision",
+          "description": "+12% crit chance, +20% crit damage",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "crit_chance": 0.12
+            },
+            "pct": {
+              "crit_damage": 0.2
+            }
+          }
+        }
+      ]
     },
     {
       "id": "archmage",
@@ -200,25 +763,80 @@
       "tier": 3,
       "gender_restriction": "any",
       "description": "Magic no longer answers a request. It answers a command.",
-      "base_stats": { "STR": 8, "END": 18, "INT": 50, "AGI": 14 },
-      "growth": { "STR": 0, "END": 2, "INT": 6, "AGI": 1 },
+      "base_stats": {
+        "STR": 8,
+        "END": 18,
+        "INT": 50,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 0,
+        "END": 2,
+        "INT": 6,
+        "AGI": 1
+      },
       "core_skill_id": "arcane_bolt",
-      "granted_skill_ids": ["flame_wave", "frost_lance", "mind_over_matter"],
-      "skill_tree_ids": ["arcane_mind", "warding_spirit", "renewal", "chain_lightning", "ley_attunement", "glacial_prison"],
-      "ultimate_skill_ids": ["meteor"],
+      "granted_skill_ids": [
+        "flame_wave",
+        "frost_lance",
+        "mind_over_matter"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "renewal",
+        "chain_lightning",
+        "ley_attunement",
+        "glacial_prison"
+      ],
+      "ultimate_skill_ids": [
+        "meteor"
+      ],
       "ultimate_unlock_level": 30,
-      "weapon_types": ["staff"],
-      "passive_modifiers": { "pct": { "magic_power": 0.2 }, "flat": { "max_mp": 40 } },
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "pct": {
+          "magic_power": 0.2
+        },
+        "flat": {
+          "max_mp": 40
+        }
+      },
       "promotions": {
         "archon": {
           "level": 35,
-          "stats": { "INT": 80 },
-          "mastery": { "fire": "B", "ice": "B" },
-          "items": { "codex_infinite": 1 },
-          "quests": ["the_unwritten_page"],
+          "stats": {
+            "INT": 80
+          },
+          "mastery": {
+            "fire": "B",
+            "ice": "B"
+          },
+          "items": {
+            "codex_infinite": 1
+          },
+          "quests": [
+            "the_unwritten_page"
+          ],
           "gold": 2000
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "arcane_mastery",
+          "name": "Arcane Mastery",
+          "description": "+20% magic power, +15% max MP",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2,
+              "max_mp": 0.15
+            }
+          }
+        }
+      ]
     },
     {
       "id": "templar",
@@ -226,25 +844,86 @@
       "tier": 4,
       "gender_restriction": "any",
       "description": "The oath made flesh, armour and judgment.",
-      "base_stats": { "STR": 64, "END": 66, "INT": 38, "AGI": 20 },
-      "growth": { "STR": 5, "END": 5, "INT": 3, "AGI": 2 },
+      "base_stats": {
+        "STR": 64,
+        "END": 66,
+        "INT": 38,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 5,
+        "END": 5,
+        "INT": 3,
+        "AGI": 2
+      },
       "core_skill_id": "smite",
-      "granted_skill_ids": ["divine_judgment", "renewal", "shield_wall"],
-      "skill_tree_ids": ["toughness", "warding_spirit", "cleave", "radiant_aegis", "guardian_resolve", "executioners_arc"],
-      "ultimate_skill_ids": ["divine_judgment", "titans_wrath"],
+      "granted_skill_ids": [
+        "divine_judgment",
+        "renewal",
+        "shield_wall"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "warding_spirit",
+        "cleave",
+        "radiant_aegis",
+        "guardian_resolve",
+        "executioners_arc"
+      ],
+      "ultimate_skill_ids": [
+        "divine_judgment",
+        "titans_wrath"
+      ],
       "ultimate_unlock_level": 40,
-      "weapon_types": ["sword", "mace"],
-      "passive_modifiers": { "flat": { "armor": 18, "magic_resist": 14 }, "pct": { "max_hp": 0.1 } },
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 18,
+          "magic_resist": 14
+        },
+        "pct": {
+          "max_hp": 0.1
+        }
+      },
       "promotions": {
         "crusader": {
           "level": 50,
-          "stats": { "STR": 95, "END": 95, "INT": 55 },
-          "mastery": { "sword": "A", "light": "B" },
-          "items": { "sacred_relic": 2 },
-          "quests": ["the_last_bastion"],
+          "stats": {
+            "STR": 95,
+            "END": 95,
+            "INT": 55
+          },
+          "mastery": {
+            "sword": "A",
+            "light": "B"
+          },
+          "items": {
+            "sacred_relic": 2
+          },
+          "quests": [
+            "the_last_bastion"
+          ],
           "gold": 6000
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "divine_aegis",
+          "name": "Divine Aegis",
+          "description": "+20% armor, +15% magic resist, +10% max HP",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.2,
+              "magic_resist": 0.15,
+              "max_hp": 0.1
+            }
+          }
+        }
+      ]
     },
     {
       "id": "nightblade",
@@ -252,25 +931,82 @@
       "tier": 4,
       "gender_restriction": "any",
       "description": "Half shadow now, and the half that remains is sharp.",
-      "base_stats": { "STR": 42, "END": 30, "INT": 26, "AGI": 74 },
-      "growth": { "STR": 4, "END": 3, "INT": 2, "AGI": 7 },
+      "base_stats": {
+        "STR": 42,
+        "END": 30,
+        "INT": 26,
+        "AGI": 74
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 2,
+        "AGI": 7
+      },
       "core_skill_id": "pierce",
-      "granted_skill_ids": ["thousand_cuts", "shadow_bind"],
-      "skill_tree_ids": ["fleet_footed", "keen_edge", "venom_edge", "smoke_veil", "predatory_focus", "heartseeker"],
-      "ultimate_skill_ids": ["thousand_cuts"],
+      "granted_skill_ids": [
+        "thousand_cuts",
+        "shadow_bind"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "venom_edge",
+        "smoke_veil",
+        "predatory_focus",
+        "heartseeker"
+      ],
+      "ultimate_skill_ids": [
+        "thousand_cuts"
+      ],
       "ultimate_unlock_level": 40,
-      "weapon_types": ["dagger", "bow"],
-      "passive_modifiers": { "flat": { "crit_chance": 0.1, "evasion": 0.08 } },
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.1,
+          "evasion": 0.08
+        }
+      },
       "promotions": {
         "shadowlord": {
           "level": 50,
-          "stats": { "AGI": 120, "STR": 65 },
-          "mastery": { "dagger": "A", "shadow": "B" },
-          "items": { "void_shard": 2 },
-          "quests": ["the_moonless_night"],
+          "stats": {
+            "AGI": 120,
+            "STR": 65
+          },
+          "mastery": {
+            "dagger": "A",
+            "shadow": "B"
+          },
+          "items": {
+            "void_shard": 2
+          },
+          "quests": [
+            "the_moonless_night"
+          ],
           "gold": 6000
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "shadow_mastery",
+          "name": "Shadow Mastery",
+          "description": "+15% crit chance, +25% crit damage, +12% evasion",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "crit_chance": 0.15,
+              "evasion": 0.12
+            },
+            "pct": {
+              "crit_damage": 0.25
+            }
+          }
+        }
+      ]
     },
     {
       "id": "archon",
@@ -278,25 +1014,79 @@
       "tier": 4,
       "gender_restriction": "any",
       "description": "A mind wide enough to hold a storm.",
-      "base_stats": { "STR": 12, "END": 30, "INT": 86, "AGI": 20 },
-      "growth": { "STR": 1, "END": 3, "INT": 8, "AGI": 2 },
+      "base_stats": {
+        "STR": 12,
+        "END": 30,
+        "INT": 86,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 1,
+        "END": 3,
+        "INT": 8,
+        "AGI": 2
+      },
       "core_skill_id": "arcane_bolt",
-      "granted_skill_ids": ["meteor", "flame_wave"],
-      "skill_tree_ids": ["arcane_mind", "warding_spirit", "renewal", "chain_lightning", "ley_attunement", "glacial_prison"],
-      "ultimate_skill_ids": ["meteor"],
+      "granted_skill_ids": [
+        "meteor",
+        "flame_wave"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "renewal",
+        "chain_lightning",
+        "ley_attunement",
+        "glacial_prison"
+      ],
+      "ultimate_skill_ids": [
+        "meteor"
+      ],
       "ultimate_unlock_level": 40,
-      "weapon_types": ["staff"],
-      "passive_modifiers": { "pct": { "magic_power": 0.35 }, "flat": { "max_mp": 80 } },
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "pct": {
+          "magic_power": 0.35
+        },
+        "flat": {
+          "max_mp": 80
+        }
+      },
       "promotions": {
         "sorcerer_king": {
           "level": 50,
-          "stats": { "INT": 140 },
-          "mastery": { "fire": "A", "ice": "A" },
-          "items": { "codex_infinite": 2 },
-          "quests": ["the_hollow_crown"],
+          "stats": {
+            "INT": 140
+          },
+          "mastery": {
+            "fire": "A",
+            "ice": "A"
+          },
+          "items": {
+            "codex_infinite": 2
+          },
+          "quests": [
+            "the_hollow_crown"
+          ],
           "gold": 6000
         }
-      }
+      },
+      "perks": [
+        {
+          "id": "arcane_supremacy",
+          "name": "Arcane Supremacy",
+          "description": "+25% magic power, +20% max MP, spells cost 10% less",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.25,
+              "max_mp": 0.2
+            }
+          }
+        }
+      ]
     },
     {
       "id": "crusader",
@@ -304,21 +1094,61 @@
       "tier": 5,
       "gender_restriction": "any",
       "description": "A one-person siege.",
-      "base_stats": { "STR": 100, "END": 100, "INT": 60, "AGI": 30 },
-      "growth": { "STR": 7, "END": 7, "INT": 4, "AGI": 2 },
+      "base_stats": {
+        "STR": 100,
+        "END": 100,
+        "INT": 60,
+        "AGI": 30
+      },
+      "growth": {
+        "STR": 7,
+        "END": 7,
+        "INT": 4,
+        "AGI": 2
+      },
       "core_skill_id": "smite",
-      "granted_skill_ids": ["divine_judgment", "titans_wrath"],
-      "skill_tree_ids": ["toughness", "warding_spirit"],
-      "ultimate_skill_ids": ["divine_judgment", "titans_wrath"],
+      "granted_skill_ids": [
+        "divine_judgment",
+        "titans_wrath"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "warding_spirit"
+      ],
+      "ultimate_skill_ids": [
+        "divine_judgment",
+        "titans_wrath"
+      ],
       "ultimate_unlock_level": 55,
-      "weapon_types": ["sword", "mace", "axe"],
-      "passive_modifiers": { "flat": { "armor": 30, "magic_resist": 24 }, "pct": { "max_hp": 0.2 } },
+      "weapon_types": [
+        "sword",
+        "mace",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 30,
+          "magic_resist": 24
+        },
+        "pct": {
+          "max_hp": 0.2
+        }
+      },
       "promotions": {
         "godsworn": {
           "level": 70,
-          "stats": { "STR": 150, "END": 150, "INT": 90 },
-          "mastery": { "sword": "S", "light": "A" },
-          "quests": ["the_final_oath"],
+          "stats": {
+            "STR": 150,
+            "END": 150,
+            "INT": 90
+          },
+          "mastery": {
+            "sword": "S",
+            "light": "A"
+          },
+          "quests": [
+            "the_final_oath"
+          ],
           "gold": 20000
         }
       }
@@ -329,21 +1159,55 @@
       "tier": 5,
       "gender_restriction": "any",
       "description": "The dark does not hide them. It obeys them.",
-      "base_stats": { "STR": 70, "END": 50, "INT": 44, "AGI": 126 },
-      "growth": { "STR": 5, "END": 4, "INT": 3, "AGI": 10 },
+      "base_stats": {
+        "STR": 70,
+        "END": 50,
+        "INT": 44,
+        "AGI": 126
+      },
+      "growth": {
+        "STR": 5,
+        "END": 4,
+        "INT": 3,
+        "AGI": 10
+      },
       "core_skill_id": "pierce",
-      "granted_skill_ids": ["thousand_cuts", "shadow_bind"],
-      "skill_tree_ids": ["fleet_footed", "keen_edge"],
-      "ultimate_skill_ids": ["thousand_cuts"],
+      "granted_skill_ids": [
+        "thousand_cuts",
+        "shadow_bind"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge"
+      ],
+      "ultimate_skill_ids": [
+        "thousand_cuts"
+      ],
       "ultimate_unlock_level": 55,
-      "weapon_types": ["dagger", "bow"],
-      "passive_modifiers": { "flat": { "crit_chance": 0.15, "evasion": 0.12 } },
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.15,
+          "evasion": 0.12
+        }
+      },
       "promotions": {
         "eclipse": {
           "level": 70,
-          "stats": { "AGI": 200, "STR": 100 },
-          "mastery": { "dagger": "S", "shadow": "A" },
-          "quests": ["the_devouring_dark"],
+          "stats": {
+            "AGI": 200,
+            "STR": 100
+          },
+          "mastery": {
+            "dagger": "S",
+            "shadow": "A"
+          },
+          "quests": [
+            "the_devouring_dark"
+          ],
           "gold": 20000
         }
       }
@@ -354,21 +1218,55 @@
       "tier": 5,
       "gender_restriction": "any",
       "description": "Reality has learned to be polite.",
-      "base_stats": { "STR": 18, "END": 50, "INT": 150, "AGI": 30 },
-      "growth": { "STR": 1, "END": 4, "INT": 11, "AGI": 2 },
+      "base_stats": {
+        "STR": 18,
+        "END": 50,
+        "INT": 150,
+        "AGI": 30
+      },
+      "growth": {
+        "STR": 1,
+        "END": 4,
+        "INT": 11,
+        "AGI": 2
+      },
       "core_skill_id": "arcane_bolt",
-      "granted_skill_ids": ["meteor", "flame_wave"],
-      "skill_tree_ids": ["arcane_mind", "warding_spirit"],
-      "ultimate_skill_ids": ["meteor"],
+      "granted_skill_ids": [
+        "meteor",
+        "flame_wave"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit"
+      ],
+      "ultimate_skill_ids": [
+        "meteor"
+      ],
       "ultimate_unlock_level": 55,
-      "weapon_types": ["staff"],
-      "passive_modifiers": { "pct": { "magic_power": 0.5 }, "flat": { "max_mp": 150 } },
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "pct": {
+          "magic_power": 0.5
+        },
+        "flat": {
+          "max_mp": 150
+        }
+      },
       "promotions": {
         "worldweaver": {
           "level": 70,
-          "stats": { "INT": 240 },
-          "mastery": { "fire": "S", "ice": "S" },
-          "quests": ["the_first_word"],
+          "stats": {
+            "INT": 240
+          },
+          "mastery": {
+            "fire": "S",
+            "ice": "S"
+          },
+          "quests": [
+            "the_first_word"
+          ],
           "gold": 20000
         }
       }
@@ -379,21 +1277,61 @@
       "tier": 6,
       "gender_restriction": "any",
       "description": "Something answered the oath. It has not left since.",
-      "base_stats": { "STR": 160, "END": 160, "INT": 100, "AGI": 45 },
-      "growth": { "STR": 10, "END": 10, "INT": 6, "AGI": 3 },
+      "base_stats": {
+        "STR": 160,
+        "END": 160,
+        "INT": 100,
+        "AGI": 45
+      },
+      "growth": {
+        "STR": 10,
+        "END": 10,
+        "INT": 6,
+        "AGI": 3
+      },
       "core_skill_id": "smite",
-      "granted_skill_ids": ["divine_judgment", "titans_wrath"],
-      "skill_tree_ids": ["toughness", "warding_spirit"],
-      "ultimate_skill_ids": ["divine_judgment", "titans_wrath"],
+      "granted_skill_ids": [
+        "divine_judgment",
+        "titans_wrath"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "warding_spirit"
+      ],
+      "ultimate_skill_ids": [
+        "divine_judgment",
+        "titans_wrath"
+      ],
       "ultimate_unlock_level": 75,
-      "weapon_types": ["sword", "mace", "axe"],
-      "passive_modifiers": { "flat": { "armor": 55, "magic_resist": 45 }, "pct": { "max_hp": 0.35 } },
+      "weapon_types": [
+        "sword",
+        "mace",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 55,
+          "magic_resist": 45
+        },
+        "pct": {
+          "max_hp": 0.35
+        }
+      },
       "promotions": {
         "ascendant": {
           "level": 99,
-          "stats": { "STR": 250, "END": 250, "INT": 150 },
-          "mastery": { "sword": "Master", "light": "SS" },
-          "quests": ["ascension"],
+          "stats": {
+            "STR": 250,
+            "END": 250,
+            "INT": 150
+          },
+          "mastery": {
+            "sword": "Master",
+            "light": "SS"
+          },
+          "quests": [
+            "ascension"
+          ],
           "gold": 100000
         }
       }
@@ -404,21 +1342,55 @@
       "tier": 6,
       "gender_restriction": "any",
       "description": "Where they pass, the light simply declines to follow.",
-      "base_stats": { "STR": 110, "END": 80, "INT": 70, "AGI": 210 },
-      "growth": { "STR": 7, "END": 6, "INT": 5, "AGI": 14 },
+      "base_stats": {
+        "STR": 110,
+        "END": 80,
+        "INT": 70,
+        "AGI": 210
+      },
+      "growth": {
+        "STR": 7,
+        "END": 6,
+        "INT": 5,
+        "AGI": 14
+      },
       "core_skill_id": "pierce",
-      "granted_skill_ids": ["thousand_cuts", "shadow_bind"],
-      "skill_tree_ids": ["fleet_footed", "keen_edge"],
-      "ultimate_skill_ids": ["thousand_cuts"],
+      "granted_skill_ids": [
+        "thousand_cuts",
+        "shadow_bind"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge"
+      ],
+      "ultimate_skill_ids": [
+        "thousand_cuts"
+      ],
       "ultimate_unlock_level": 75,
-      "weapon_types": ["dagger", "bow"],
-      "passive_modifiers": { "flat": { "crit_chance": 0.22, "evasion": 0.18 } },
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.22,
+          "evasion": 0.18
+        }
+      },
       "promotions": {
         "ascendant": {
           "level": 99,
-          "stats": { "AGI": 330, "STR": 170 },
-          "mastery": { "dagger": "Master", "shadow": "SS" },
-          "quests": ["ascension"],
+          "stats": {
+            "AGI": 330,
+            "STR": 170
+          },
+          "mastery": {
+            "dagger": "Master",
+            "shadow": "SS"
+          },
+          "quests": [
+            "ascension"
+          ],
           "gold": 100000
         }
       }
@@ -429,21 +1401,55 @@
       "tier": 6,
       "gender_restriction": "any",
       "description": "They do not cast spells. They revise the terrain.",
-      "base_stats": { "STR": 28, "END": 80, "INT": 250, "AGI": 45 },
-      "growth": { "STR": 2, "END": 6, "INT": 16, "AGI": 3 },
+      "base_stats": {
+        "STR": 28,
+        "END": 80,
+        "INT": 250,
+        "AGI": 45
+      },
+      "growth": {
+        "STR": 2,
+        "END": 6,
+        "INT": 16,
+        "AGI": 3
+      },
       "core_skill_id": "arcane_bolt",
-      "granted_skill_ids": ["meteor", "flame_wave"],
-      "skill_tree_ids": ["arcane_mind", "warding_spirit"],
-      "ultimate_skill_ids": ["meteor"],
+      "granted_skill_ids": [
+        "meteor",
+        "flame_wave"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit"
+      ],
+      "ultimate_skill_ids": [
+        "meteor"
+      ],
       "ultimate_unlock_level": 75,
-      "weapon_types": ["staff"],
-      "passive_modifiers": { "pct": { "magic_power": 0.8 }, "flat": { "max_mp": 300 } },
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "pct": {
+          "magic_power": 0.8
+        },
+        "flat": {
+          "max_mp": 300
+        }
+      },
       "promotions": {
         "ascendant": {
           "level": 99,
-          "stats": { "INT": 400 },
-          "mastery": { "fire": "Master", "ice": "SS" },
-          "quests": ["ascension"],
+          "stats": {
+            "INT": 400
+          },
+          "mastery": {
+            "fire": "Master",
+            "ice": "SS"
+          },
+          "quests": [
+            "ascension"
+          ],
           "gold": 100000
         }
       }
@@ -454,19 +1460,3761 @@
       "tier": 7,
       "gender_restriction": "any",
       "description": "The end of the climb, and the beginning of the view.",
-      "base_stats": { "STR": 280, "END": 280, "INT": 280, "AGI": 280 },
-      "growth": { "STR": 14, "END": 14, "INT": 14, "AGI": 14 },
+      "base_stats": {
+        "STR": 280,
+        "END": 280,
+        "INT": 280,
+        "AGI": 280
+      },
+      "growth": {
+        "STR": 14,
+        "END": 14,
+        "INT": 14,
+        "AGI": 14
+      },
       "core_skill_id": "smite",
-      "granted_skill_ids": ["divine_judgment", "titans_wrath", "meteor", "thousand_cuts"],
-      "skill_tree_ids": ["toughness", "warding_spirit", "arcane_mind", "keen_edge", "fleet_footed"],
-      "ultimate_skill_ids": ["divine_judgment", "titans_wrath", "meteor", "thousand_cuts"],
+      "granted_skill_ids": [
+        "divine_judgment",
+        "titans_wrath",
+        "meteor",
+        "thousand_cuts"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "warding_spirit",
+        "arcane_mind",
+        "keen_edge",
+        "fleet_footed"
+      ],
+      "ultimate_skill_ids": [
+        "divine_judgment",
+        "titans_wrath",
+        "meteor",
+        "thousand_cuts"
+      ],
       "ultimate_unlock_level": 99,
       "weapon_types": [],
       "passive_modifiers": {
-        "flat": { "armor": 90, "magic_resist": 90, "crit_chance": 0.15 },
-        "pct": { "max_hp": 0.5, "physical_power": 0.4, "magic_power": 0.4 }
+        "flat": {
+          "armor": 90,
+          "magic_resist": 90,
+          "crit_chance": 0.15
+        },
+        "pct": {
+          "max_hp": 0.5,
+          "physical_power": 0.4,
+          "magic_power": 0.4
+        }
       },
       "promotions": {}
+    },
+    {
+      "id": "berserker",
+      "name": "Berserker",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "Fury made flesh, trading defence for devastating offense.",
+      "base_stats": {
+        "STR": 22,
+        "END": 16,
+        "INT": 4,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 4,
+        "END": 2,
+        "INT": 0,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "power_strike",
+        "whirlwind"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "cleave",
+        "keen_edge",
+        "sunder_armor"
+      ],
+      "weapon_types": [
+        "sword",
+        "axe",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 8
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      },
+      "promotions": {
+        "berserker_champion": {
+          "level": 20,
+          "stats": {
+            "STR": 42,
+            "END": 26
+          },
+          "mastery": {
+            "axe": "C"
+          },
+          "items": {
+            "berserker_horn": 1
+          },
+          "gold": 600
+        },
+        "bloodrager": {
+          "level": 20,
+          "stats": {
+            "STR": 38,
+            "END": 30
+          },
+          "mastery": {
+            "axe": "C"
+          },
+          "items": {
+            "berserker_horn": 1
+          },
+          "gold": 600
+        },
+        "warchief": {
+          "level": 20,
+          "stats": {
+            "STR": 40,
+            "END": 28
+          },
+          "mastery": {
+            "axe": "C",
+            "sword": "E"
+          },
+          "items": {
+            "commanders_sigil": 1
+          },
+          "gold": 600
+        }
+      },
+      "perks": [
+        {
+          "id": "blood_rage",
+          "name": "Blood Rage",
+          "description": "Below 40% HP, gain +25% physical power",
+          "trigger": "low_hp",
+          "threshold": 0.4,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.25
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "warlord",
+      "name": "Warlord",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "A battlefield commander who strengthens allies and breaks enemy morale.",
+      "base_stats": {
+        "STR": 16,
+        "END": 18,
+        "INT": 10,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 2,
+        "AGI": 1
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "shield_wall"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "sunder_armor",
+        "keen_edge",
+        "second_wind"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 5,
+          "max_hp": 20
+        }
+      },
+      "promotions": {
+        "high_commander": {
+          "level": 20,
+          "stats": {
+            "STR": 28,
+            "END": 32,
+            "INT": 20
+          },
+          "mastery": {
+            "sword": "C"
+          },
+          "items": {
+            "commanders_sigil": 1
+          },
+          "gold": 600
+        },
+        "tactician": {
+          "level": 20,
+          "stats": {
+            "STR": 24,
+            "END": 28,
+            "INT": 26
+          },
+          "mastery": {
+            "sword": "C"
+          },
+          "items": {
+            "commanders_sigil": 1
+          },
+          "gold": 600
+        },
+        "banneret": {
+          "level": 20,
+          "stats": {
+            "STR": 30,
+            "END": 30,
+            "AGI": 20
+          },
+          "mastery": {
+            "sword": "C"
+          },
+          "items": {
+            "commanders_banner": 1
+          },
+          "gold": 600
+        }
+      },
+      "perks": [
+        {
+          "id": "inspirational_presence",
+          "name": "Inspirational Presence",
+          "description": "+5% physical power for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.05
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ranger",
+      "name": "Ranger",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "A master of the bow and wilderness survival.",
+      "base_stats": {
+        "STR": 12,
+        "END": 14,
+        "INT": 8,
+        "AGI": 26
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 1,
+        "AGI": 4
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "hunters_mark"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "shadowstep",
+        "second_wind"
+      ],
+      "weapon_types": [
+        "bow",
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.06,
+          "evasion": 0.03
+        }
+      },
+      "promotions": {
+        "pathfinder": {
+          "level": 20,
+          "stats": {
+            "AGI": 42,
+            "END": 24
+          },
+          "mastery": {
+            "bow": "C"
+          },
+          "items": {
+            "rangers_compass": 1
+          },
+          "gold": 600
+        },
+        "beastmaster": {
+          "level": 20,
+          "stats": {
+            "STR": 20,
+            "AGI": 40,
+            "END": 22
+          },
+          "mastery": {
+            "bow": "C"
+          },
+          "items": {
+            "rangers_compass": 1
+          },
+          "gold": 600
+        },
+        "marksman": {
+          "level": 20,
+          "stats": {
+            "AGI": 48
+          },
+          "mastery": {
+            "bow": "C"
+          },
+          "items": {
+            "wardens_oath": 1
+          },
+          "gold": 600
+        }
+      },
+      "perks": [
+        {
+          "id": "hunters_eye",
+          "name": "Hunter's Eye",
+          "description": "+10% accuracy, +5% crit chance",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.1,
+              "crit_chance": 0.05
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "shadow_dancer",
+      "name": "Shadow Dancer",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "A silent killer who moves between shadows and strikes without warning.",
+      "base_stats": {
+        "STR": 14,
+        "END": 10,
+        "INT": 12,
+        "AGI": 26
+      },
+      "growth": {
+        "STR": 2,
+        "END": 1,
+        "INT": 2,
+        "AGI": 4
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "shadowstep",
+        "venom_edge"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "shadow_bind",
+        "hunters_mark"
+      ],
+      "weapon_types": [
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.06,
+          "evasion": 0.05
+        }
+      },
+      "promotions": {
+        "phantom": {
+          "level": 20,
+          "stats": {
+            "AGI": 48,
+            "INT": 18
+          },
+          "mastery": {
+            "dagger": "C",
+            "shadow": "E"
+          },
+          "items": {
+            "phantom_mask": 1
+          },
+          "gold": 600
+        },
+        "nightstalker": {
+          "level": 20,
+          "stats": {
+            "AGI": 42,
+            "INT": 26
+          },
+          "mastery": {
+            "dagger": "C",
+            "shadow": "C"
+          },
+          "items": {
+            "shadow_pact": 1
+          },
+          "gold": 600
+        },
+        "saboteur": {
+          "level": 20,
+          "stats": {
+            "AGI": 44,
+            "INT": 22
+          },
+          "mastery": {
+            "dagger": "C",
+            "shadow": "E"
+          },
+          "items": {
+            "phantom_mask": 1
+          },
+          "gold": 600
+        }
+      },
+      "perks": [
+        {
+          "id": "shadow_step",
+          "name": "Shadow Step",
+          "description": "+10% evasion, +5% speed",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.1,
+              "speed": 5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cleric",
+      "name": "Cleric",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "A divine healer and protector, channeling holy power to mend and shield.",
+      "base_stats": {
+        "STR": 8,
+        "END": 14,
+        "INT": 24,
+        "AGI": 8
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 4,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "mend",
+        "renewal"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "shield_wall",
+        "warding_spirit",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "mace",
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 25,
+          "magic_resist": 6
+        }
+      },
+      "promotions": {
+        "high_priest": {
+          "level": 20,
+          "stats": {
+            "INT": 42,
+            "END": 24
+          },
+          "mastery": {
+            "light": "C"
+          },
+          "items": {
+            "holy_water": 1
+          },
+          "gold": 600
+        },
+        "inquisitor": {
+          "level": 20,
+          "stats": {
+            "STR": 22,
+            "INT": 34,
+            "END": 26
+          },
+          "mastery": {
+            "light": "C",
+            "sword": "E"
+          },
+          "items": {
+            "holy_symbol": 1
+          },
+          "gold": 600
+        },
+        "oracle": {
+          "level": 20,
+          "stats": {
+            "INT": 46,
+            "AGI": 14
+          },
+          "mastery": {
+            "light": "C"
+          },
+          "items": {
+            "holy_water": 1
+          },
+          "gold": 600
+        }
+      },
+      "perks": [
+        {
+          "id": "divine_grace",
+          "name": "Divine Grace",
+          "description": "+15% healing done, +10% magic resist",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "magic_resist": 5
+            },
+            "pct": {
+              "healing_done": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "warlock",
+      "name": "Warlock",
+      "tier": 2,
+      "gender_restriction": "any",
+      "description": "A wielder of forbidden arts, trading soul for power over shadow and flame.",
+      "base_stats": {
+        "STR": 6,
+        "END": 10,
+        "INT": 28,
+        "AGI": 10
+      },
+      "growth": {
+        "STR": 0,
+        "END": 1,
+        "INT": 5,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "fireball"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "frost_lance",
+        "mind_over_matter",
+        "venom_edge"
+      ],
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "pct": {
+          "magic_power": 0.12
+        },
+        "flat": {
+          "crit_damage": 0.08
+        }
+      },
+      "promotions": {
+        "dread_lord": {
+          "level": 20,
+          "stats": {
+            "INT": 50
+          },
+          "mastery": {
+            "shadow": "C",
+            "fire": "C"
+          },
+          "items": {
+            "eldritch_pact": 1
+          },
+          "gold": 600
+        },
+        "hexblade": {
+          "level": 20,
+          "stats": {
+            "STR": 24,
+            "INT": 36
+          },
+          "mastery": {
+            "shadow": "C",
+            "sword": "E"
+          },
+          "items": {
+            "eldritch_pact": 1
+          },
+          "gold": 600
+        },
+        "soulbinder": {
+          "level": 20,
+          "stats": {
+            "INT": 46,
+            "END": 24
+          },
+          "mastery": {
+            "shadow": "C"
+          },
+          "items": {
+            "soul_gem": 1
+          },
+          "gold": 600
+        }
+      },
+      "perks": [
+        {
+          "id": "soul_siphon",
+          "name": "Soul Siphon",
+          "description": "10% lifesteal on magical attacks",
+          "trigger": "always",
+          "special": "lifesteal",
+          "special_value": 0.1
+        }
+      ]
+    },
+    {
+      "id": "dark_knight",
+      "name": "Dark Knight",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A warrior who channels shadow into steel, trading holy light for devastating dark power.",
+      "base_stats": {
+        "STR": 38,
+        "END": 36,
+        "INT": 22,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 3,
+        "AGI": 1
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "sunder_armor",
+        "keen_edge",
+        "smoke_veil"
+      ],
+      "weapon_types": [
+        "sword",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 12,
+          "physical_power": 8
+        },
+        "pct": {
+          "crit_damage": 0.1
+        }
+      },
+      "promotions": {
+        "shadow_reaver": {
+          "level": 35,
+          "stats": {
+            "STR": 62,
+            "END": 58,
+            "INT": 36,
+            "AGI": 22
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "shadow_embrace",
+          "name": "Shadow Embrace",
+          "description": "Below 30% HP, gain +30% physical power and +15% lifesteal",
+          "trigger": "low_hp",
+          "threshold": 0.3,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.3
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "sentinel",
+      "name": "Sentinel",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "An immovable guardian whose shield becomes a wall between allies and death.",
+      "base_stats": {
+        "STR": 34,
+        "END": 42,
+        "INT": 18,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 3,
+        "END": 5,
+        "INT": 2,
+        "AGI": 1
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "shield_wall",
+        "taunt_skill"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "guardian_resolve",
+        "warding_spirit",
+        "rallying_cry"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 18,
+          "max_hp": 80,
+          "status_resist": 0.1
+        }
+      },
+      "promotions": {
+        "iron_bastion": {
+          "level": 35,
+          "stats": {
+            "STR": 56,
+            "END": 70,
+            "INT": 30,
+            "AGI": 18
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "unbreakable",
+          "name": "Unbreakable",
+          "description": "+20% armor, +15% max HP",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.2,
+              "max_hp": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "blademaster",
+      "name": "Blademaster",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A warrior whose blade moves faster than thought, striking a dozen times before the enemy falls.",
+      "base_stats": {
+        "STR": 30,
+        "END": 22,
+        "INT": 12,
+        "AGI": 48
+      },
+      "growth": {
+        "STR": 3,
+        "END": 2,
+        "INT": 1,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "thousand_cuts",
+        "shadowstep"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "predatory_focus",
+        "heartseeker"
+      ],
+      "weapon_types": [
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.08,
+          "speed": 6
+        },
+        "pct": {
+          "crit_damage": 0.12
+        }
+      },
+      "promotions": {
+        "stormblade": {
+          "level": 35,
+          "stats": {
+            "STR": 50,
+            "END": 34,
+            "INT": 16,
+            "AGI": 78
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "whirlwind_stance",
+          "name": "Whirlwind Stance",
+          "description": "+10% physical power, +8% speed",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.1
+            },
+            "flat": {
+              "speed": 8
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "trickster",
+      "name": "Trickster",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A cunning fighter who wins through misdirection, evasion, and perfectly-timed debuffs.",
+      "base_stats": {
+        "STR": 22,
+        "END": 18,
+        "INT": 18,
+        "AGI": 46
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 2,
+        "AGI": 5
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "venom_edge",
+        "smoke_veil"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "shadowstep",
+        "hunters_mark",
+        "curse_mirror"
+      ],
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.08,
+          "crit_chance": 0.05,
+          "speed": 4
+        }
+      },
+      "promotions": {
+        "illusionist": {
+          "level": 35,
+          "stats": {
+            "STR": 34,
+            "END": 28,
+            "INT": 32,
+            "AGI": 74
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "misdirection",
+          "name": "Misdirection",
+          "description": "+15% evasion, enemies have -10% accuracy against you",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "chronomancer",
+      "name": "Chronomancer",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A mage who bends time itself, accelerating allies and freezing foes in temporal loops.",
+      "base_stats": {
+        "STR": 6,
+        "END": 20,
+        "INT": 52,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 0,
+        "END": 2,
+        "INT": 6,
+        "AGI": 2
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "temporal_shift",
+        "glacial_prison"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "ley_attunement",
+        "mind_over_matter"
+      ],
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 60,
+          "speed": 4
+        },
+        "pct": {
+          "magic_power": 0.18
+        }
+      },
+      "promotions": {
+        "time_weaver": {
+          "level": 35,
+          "stats": {
+            "STR": 8,
+            "END": 32,
+            "INT": 82,
+            "AGI": 28
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "time_warp",
+          "name": "Time Warp",
+          "description": "+10% speed, cooldowns reduced by 1 turn",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "necromancer",
+      "name": "Necromancer",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A master of death magic who drains life from foes and commands the undead.",
+      "base_stats": {
+        "STR": 8,
+        "END": 22,
+        "INT": 48,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 1,
+        "END": 3,
+        "INT": 5,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "shadow_bind"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 10,
+          "max_mp": 40
+        },
+        "pct": {
+          "magic_power": 0.15
+        }
+      },
+      "promotions": {
+        "lich_lord": {
+          "level": 35,
+          "stats": {
+            "STR": 12,
+            "END": 36,
+            "INT": 78,
+            "AGI": 18
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "death_embrace",
+          "name": "Death Embrace",
+          "description": "15% lifesteal, +10% magic power below 40% HP",
+          "trigger": "always",
+          "special": "lifesteal",
+          "special_value": 0.15,
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "berserker_champion",
+      "name": "Berserker Champion",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A warrior whose rage knows no bounds, dealing devastating damage at the cost of all defence.",
+      "base_stats": {
+        "STR": 44,
+        "END": 28,
+        "INT": 4,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 5,
+        "END": 3,
+        "INT": 0,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "power_strike",
+        "executioners_arc",
+        "whirlwind"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "cleave",
+        "keen_edge",
+        "predatory_focus"
+      ],
+      "weapon_types": [
+        "axe",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 12
+        },
+        "pct": {
+          "crit_damage": 0.2
+        }
+      },
+      "promotions": {
+        "bloodlord": {
+          "level": 35,
+          "stats": {
+            "STR": 72,
+            "END": 46,
+            "INT": 4,
+            "AGI": 28
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "unbridled_fury",
+          "name": "Unbridled Fury",
+          "description": "Below 50% HP, gain +40% physical power and +20% speed",
+          "trigger": "low_hp",
+          "threshold": 0.5,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.4
+            },
+            "flat": {
+              "speed": 20
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bloodrager",
+      "name": "Bloodrager",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A warrior who feeds on the life force of enemies, healing through carnage.",
+      "base_stats": {
+        "STR": 40,
+        "END": 32,
+        "INT": 8,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 1,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "cleave",
+        "second_wind"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "sunder_armor",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "axe",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 8,
+          "max_hp": 60
+        }
+      },
+      "promotions": {
+        "blood_sovereign": {
+          "level": 35,
+          "stats": {
+            "STR": 66,
+            "END": 54,
+            "INT": 12,
+            "AGI": 24
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "blood_feast",
+          "name": "Blood Feast",
+          "description": "20% lifesteal, +15% physical power below 40% HP",
+          "trigger": "low_hp",
+          "threshold": 0.4,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "warchief",
+      "name": "Warchief",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A berserker who leads through strength, inspiring allies with devastating war cries.",
+      "base_stats": {
+        "STR": 42,
+        "END": 30,
+        "INT": 10,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 5,
+        "END": 3,
+        "INT": 1,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "power_strike",
+        "cleave"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "sunder_armor",
+        "whirlwind"
+      ],
+      "weapon_types": [
+        "axe",
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "max_hp": 40
+        }
+      },
+      "promotions": {
+        "horde_lord": {
+          "level": 35,
+          "stats": {
+            "STR": 70,
+            "END": 48,
+            "INT": 16,
+            "AGI": 24
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "battle_command",
+          "name": "Battle Command",
+          "description": "+10% physical power, +10% armor for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.1,
+              "armor": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "high_commander",
+      "name": "High Commander",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A battlefield general whose presence alone strengthens every ally within sight.",
+      "base_stats": {
+        "STR": 30,
+        "END": 34,
+        "INT": 22,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 3,
+        "END": 4,
+        "INT": 3,
+        "AGI": 1
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "shield_wall",
+        "challenging_shout"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "guardian_resolve",
+        "warding_spirit",
+        "sunder_armor"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 12,
+          "max_hp": 60
+        }
+      },
+      "promotions": {
+        "supreme_commander": {
+          "level": 35,
+          "stats": {
+            "STR": 52,
+            "END": 58,
+            "INT": 38,
+            "AGI": 22
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "tactical_genius",
+          "name": "Tactical Genius",
+          "description": "+15% accuracy, +10% evasion for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.15,
+              "evasion": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tactician",
+      "name": "Tactician",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A master strategist who reads the battlefield like a chess board and counters every move.",
+      "base_stats": {
+        "STR": 26,
+        "END": 30,
+        "INT": 28,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 3,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "riposte_stance",
+        "sunder_armor",
+        "hunters_mark"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "warding_spirit",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 8,
+          "accuracy": 0.06,
+          "crit_chance": 0.04
+        }
+      },
+      "promotions": {
+        "grand_strategist": {
+          "level": 35,
+          "stats": {
+            "STR": 48,
+            "END": 52,
+            "INT": 46,
+            "AGI": 28
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "counter_stance",
+          "name": "Counter Stance",
+          "description": "15% chance to counter attacks, +10% armor",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.1
+            }
+          },
+          "special": "counter",
+          "special_value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "banneret",
+      "name": "Banneret",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A mounted warrior whose banner inspires charges and whose lance breaks formations.",
+      "base_stats": {
+        "STR": 32,
+        "END": 32,
+        "INT": 16,
+        "AGI": 22
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 2,
+        "AGI": 3
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "power_strike",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "fleet_footed",
+        "cleave"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 6,
+          "speed": 6,
+          "armor": 8
+        }
+      },
+      "promotions": {
+        "cavalry_lord": {
+          "level": 35,
+          "stats": {
+            "STR": 56,
+            "END": 52,
+            "INT": 28,
+            "AGI": 38
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "rallying_banner",
+          "name": "Rallying Banner",
+          "description": "+10% all stats for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.1,
+              "magic_power": 0.1,
+              "armor": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "pathfinder",
+      "name": "Pathfinder",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A wilderness master who reads the land like a book and never loses their way.",
+      "base_stats": {
+        "STR": 20,
+        "END": 26,
+        "INT": 16,
+        "AGI": 44
+      },
+      "growth": {
+        "STR": 2,
+        "END": 3,
+        "INT": 2,
+        "AGI": 5
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "hunters_mark",
+        "fleet_footed"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "shadowstep",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "bow",
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.08,
+          "evasion": 0.05,
+          "speed": 6
+        }
+      },
+      "promotions": {
+        "trail_warden": {
+          "level": 35,
+          "stats": {
+            "STR": 36,
+            "END": 42,
+            "INT": 28,
+            "AGI": 72
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "wilderness_mastery",
+          "name": "Wilderness Mastery",
+          "description": "+12% speed, +10% evasion, +8% accuracy",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 12,
+              "evasion": 0.1,
+              "accuracy": 0.08
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "beastmaster",
+      "name": "Beastmaster",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A ranger who bonds with wild creatures, fighting alongside loyal animal companions.",
+      "base_stats": {
+        "STR": 22,
+        "END": 24,
+        "INT": 18,
+        "AGI": 42
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 2,
+        "AGI": 4
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "hunters_mark",
+        "challenging_shout"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "toughness",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "bow",
+        "sword",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 6,
+          "max_hp": 40,
+          "accuracy": 0.05
+        }
+      },
+      "promotions": {
+        "alpha_predator": {
+          "level": 35,
+          "stats": {
+            "STR": 40,
+            "END": 42,
+            "INT": 30,
+            "AGI": 68
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "pack_leader",
+          "name": "Pack Leader",
+          "description": "+15% physical power, summons deal +20% damage",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "marksman",
+      "name": "Marksman",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A precision shooter whose arrows find the smallest gap in any armour.",
+      "base_stats": {
+        "STR": 18,
+        "END": 20,
+        "INT": 14,
+        "AGI": 50
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 1,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "heartseeker",
+        "hunters_mark"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "predatory_focus",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "bow",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.1,
+          "crit_chance": 0.06,
+          "crit_damage": 0.08
+        }
+      },
+      "promotions": {
+        "deadeye": {
+          "level": 35,
+          "stats": {
+            "STR": 32,
+            "END": 34,
+            "INT": 20,
+            "AGI": 80
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "dead_eye",
+          "name": "Dead Eye",
+          "description": "+15% accuracy, +12% crit chance, +25% crit damage",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.15,
+              "crit_chance": 0.12
+            },
+            "pct": {
+              "crit_damage": 0.25
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "phantom",
+      "name": "Phantom",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A ghost-like assassin who moves unseen and strikes from impossible angles.",
+      "base_stats": {
+        "STR": 24,
+        "END": 18,
+        "INT": 20,
+        "AGI": 50
+      },
+      "growth": {
+        "STR": 3,
+        "END": 2,
+        "INT": 2,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "shadowstep",
+        "shadow_bind",
+        "venom_edge"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "smoke_veil",
+        "predatory_focus"
+      ],
+      "weapon_types": [
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.1,
+          "crit_chance": 0.07,
+          "speed": 6
+        }
+      },
+      "promotions": {
+        "wraith_lord": {
+          "level": 35,
+          "stats": {
+            "STR": 42,
+            "END": 30,
+            "INT": 34,
+            "AGI": 80
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "ghost_walk",
+          "name": "Ghost Walk",
+          "description": "+20% evasion, +15% speed, untargetable for 1 turn after killing",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.2,
+              "speed": 15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "nightstalker",
+      "name": "Nightstalker",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A shadow-mage who blends dark magic with blade work, striking from the void itself.",
+      "base_stats": {
+        "STR": 26,
+        "END": 20,
+        "INT": 28,
+        "AGI": 44
+      },
+      "growth": {
+        "STR": 3,
+        "END": 2,
+        "INT": 3,
+        "AGI": 5
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "shadowstep",
+        "vampiric_strike"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "arcane_mind",
+        "smoke_veil"
+      ],
+      "weapon_types": [
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 8,
+          "crit_chance": 0.06,
+          "evasion": 0.06
+        }
+      },
+      "promotions": {
+        "void_walker": {
+          "level": 35,
+          "stats": {
+            "STR": 46,
+            "END": 32,
+            "INT": 46,
+            "AGI": 72
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "shadow_fusion",
+          "name": "Shadow Fusion",
+          "description": "+15% magic power, +15% physical power, +10% evasion",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.15,
+              "physical_power": 0.15
+            },
+            "flat": {
+              "evasion": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "saboteur",
+      "name": "Saboteur",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A master of traps, poisons, and sabotage who weakens enemies before the killing blow.",
+      "base_stats": {
+        "STR": 22,
+        "END": 22,
+        "INT": 24,
+        "AGI": 46
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 3,
+        "AGI": 5
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "venom_edge",
+        "time_bomb",
+        "sunder_armor"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "hunters_mark",
+        "smoke_veil"
+      ],
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.06,
+          "crit_chance": 0.05,
+          "speed": 4
+        }
+      },
+      "promotions": {
+        "demolitionist": {
+          "level": 35,
+          "stats": {
+            "STR": 36,
+            "END": 34,
+            "INT": 42,
+            "AGI": 74
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "trap_master",
+          "name": "Trap Master",
+          "description": "Traps deal +30% damage, +10% accuracy",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "high_priest",
+      "name": "High Priest",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A divine conduit whose healing power can pull allies back from the brink of death.",
+      "base_stats": {
+        "STR": 14,
+        "END": 26,
+        "INT": 44,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 1,
+        "END": 3,
+        "INT": 5,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "mend",
+        "renewal",
+        "purifying_light"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "steady_breath",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "mace",
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 50,
+          "magic_resist": 10
+        },
+        "pct": {
+          "magic_power": 0.12
+        }
+      },
+      "promotions": {
+        "divine_oracle": {
+          "level": 35,
+          "stats": {
+            "STR": 20,
+            "END": 42,
+            "INT": 72,
+            "AGI": 18
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "divine_conduit",
+          "name": "Divine Conduit",
+          "description": "+25% healing done, +15% magic resist, +10% max MP",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "magic_resist": 8
+            },
+            "pct": {
+              "max_mp": 0.1,
+              "healing_done": 0.25
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "inquisitor",
+      "name": "Inquisitor",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A holy warrior who burns away corruption with righteous fire and purifying steel.",
+      "base_stats": {
+        "STR": 24,
+        "END": 28,
+        "INT": 36,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 4,
+        "AGI": 1
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "purifying_light",
+        "executioners_arc",
+        "mend"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "warding_spirit",
+        "arcane_mind"
+      ],
+      "weapon_types": [
+        "mace",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 6,
+          "magic_power": 8,
+          "armor": 8
+        }
+      },
+      "promotions": {
+        "purifier": {
+          "level": 35,
+          "stats": {
+            "STR": 46,
+            "END": 46,
+            "INT": 60,
+            "AGI": 22
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "righteous_fury",
+          "name": "Righteous Fury",
+          "description": "+15% physical power, +15% magic power, +10% armor",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15,
+              "armor": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "oracle",
+      "name": "Oracle",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A seer who glimpses the threads of fate, bending time and fortune to protect allies.",
+      "base_stats": {
+        "STR": 10,
+        "END": 22,
+        "INT": 48,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 6,
+        "AGI": 2
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "temporal_shift",
+        "renewal",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "ley_attunement",
+        "mind_over_matter"
+      ],
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 45,
+          "magic_resist": 8,
+          "speed": 4
+        },
+        "pct": {
+          "magic_power": 0.15
+        }
+      },
+      "promotions": {
+        "fate_weaver": {
+          "level": 35,
+          "stats": {
+            "STR": 16,
+            "END": 36,
+            "INT": 76,
+            "AGI": 28
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "fate_weaver",
+          "name": "Fate Weaver",
+          "description": "+12% speed, cooldowns reduced by 1, +10% magic power",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 12
+            },
+            "pct": {
+              "magic_power": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "dread_lord",
+      "name": "Dread Lord",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A master of forbidden arts whose dark power corrupts everything it touches.",
+      "base_stats": {
+        "STR": 10,
+        "END": 22,
+        "INT": 52,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 6,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "flame_wave",
+        "vampiric_strike"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "frost_lance"
+      ],
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 12,
+          "crit_damage": 0.1
+        },
+        "pct": {
+          "magic_power": 0.18
+        }
+      },
+      "promotions": {
+        "archfiend": {
+          "level": 35,
+          "stats": {
+            "STR": 14,
+            "END": 36,
+            "INT": 82,
+            "AGI": 20
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "void_embrace",
+          "name": "Void Embrace",
+          "description": "20% lifesteal, +20% magic power, +15% max MP",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2,
+              "max_mp": 0.15
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "hexblade",
+      "name": "Hexblade",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A warrior-mage who channels dark magic through their weapon, striking with cursed steel.",
+      "base_stats": {
+        "STR": 26,
+        "END": 24,
+        "INT": 38,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 4,
+        "AGI": 2
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "venom_edge",
+        "vampiric_strike"
+      ],
+      "skill_tree_ids": [
+        "keen_edge",
+        "arcane_mind",
+        "warding_spirit",
+        "sunder_armor"
+      ],
+      "weapon_types": [
+        "sword",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 6,
+          "magic_power": 8,
+          "crit_chance": 0.04
+        }
+      },
+      "promotions": {
+        "doom_blade": {
+          "level": 35,
+          "stats": {
+            "STR": 48,
+            "END": 38,
+            "INT": 62,
+            "AGI": 28
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "cursed_blade",
+          "name": "Cursed Blade",
+          "description": "+15% physical power, +15% magic power, 15% lifesteal",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "magic_power": 0.15
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "soulbinder",
+      "name": "Soulbinder",
+      "tier": 3,
+      "gender_restriction": "any",
+      "description": "A warlock who binds enemy souls, draining their essence and turning it against them.",
+      "base_stats": {
+        "STR": 12,
+        "END": 26,
+        "INT": 48,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 1,
+        "END": 3,
+        "INT": 5,
+        "AGI": 2
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "curse_mirror",
+        "shadow_bind"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 10,
+          "max_hp": 40,
+          "max_mp": 35
+        }
+      },
+      "promotions": {
+        "soul_reaper": {
+          "level": 35,
+          "stats": {
+            "STR": 18,
+            "END": 44,
+            "INT": 76,
+            "AGI": 24
+          },
+          "gold": 2000
+        }
+      },
+      "perks": [
+        {
+          "id": "soul_harvest",
+          "name": "Soul Harvest",
+          "description": "25% lifesteal, +15% magic power, gain 5% max HP on kill",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.15
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.25
+        }
+      ]
+    },
+    {
+      "id": "shadow_reaver",
+      "name": "Shadow Reaver",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A warrior consumed by shadow, wielding darkness as both weapon and armour.",
+      "base_stats": {
+        "STR": 62,
+        "END": 58,
+        "INT": 36,
+        "AGI": 22
+      },
+      "growth": {
+        "STR": 5,
+        "END": 4,
+        "INT": 4,
+        "AGI": 2
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "executioners_arc",
+        "smoke_veil"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "sunder_armor",
+        "keen_edge",
+        "predatory_focus"
+      ],
+      "weapon_types": [
+        "sword",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 14,
+          "physical_power": 10,
+          "crit_chance": 0.05
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "void_blade",
+          "name": "Void Blade",
+          "description": "Below 30% HP, +40% physical power, 20% lifesteal",
+          "trigger": "low_hp",
+          "threshold": 0.3,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.4
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "iron_bastion",
+      "name": "Iron Bastion",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "An unbreakable wall of steel and will, the last line of defence.",
+      "base_stats": {
+        "STR": 56,
+        "END": 70,
+        "INT": 30,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 4,
+        "END": 6,
+        "INT": 2,
+        "AGI": 1
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "shield_wall",
+        "rallying_cry",
+        "challenging_shout"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "guardian_resolve",
+        "warding_spirit",
+        "toughness"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 24,
+          "max_hp": 120,
+          "status_resist": 0.15
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "fortress",
+          "name": "Fortress",
+          "description": "+25% armor, +20% max HP, reflect 10% damage",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.25,
+              "max_hp": 0.2
+            }
+          },
+          "special": "reflect",
+          "special_value": 0.1
+        }
+      ]
+    },
+    {
+      "id": "stormblade",
+      "name": "Stormblade",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A whirlwind of steel whose strikes fall like lightning.",
+      "base_stats": {
+        "STR": 50,
+        "END": 34,
+        "INT": 16,
+        "AGI": 78
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 1,
+        "AGI": 7
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "thousand_cuts",
+        "shadowstep",
+        "heartseeker"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "predatory_focus",
+        "executioners_arc"
+      ],
+      "weapon_types": [
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.12,
+          "speed": 8
+        },
+        "pct": {
+          "crit_damage": 0.2
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "lightning_reflexes",
+          "name": "Lightning Reflexes",
+          "description": "+15% speed, +12% crit chance, +20% crit damage",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15,
+              "crit_chance": 0.12
+            },
+            "pct": {
+              "crit_damage": 0.2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "illusionist",
+      "name": "Illusionist",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A master of misdirection who fights with shadows and deceit.",
+      "base_stats": {
+        "STR": 34,
+        "END": 28,
+        "INT": 32,
+        "AGI": 74
+      },
+      "growth": {
+        "STR": 3,
+        "END": 2,
+        "INT": 3,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "venom_edge",
+        "smoke_veil",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "shadowstep",
+        "hunters_mark",
+        "shadow_bind"
+      ],
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.12,
+          "crit_chance": 0.07,
+          "speed": 6
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "mirror_image",
+          "name": "Mirror Image",
+          "description": "+20% evasion, 15% chance to dodge completely",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "time_weaver",
+      "name": "Time Weaver",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A mage who bends the fabric of time itself, accelerating allies and freezing foes.",
+      "base_stats": {
+        "STR": 8,
+        "END": 32,
+        "INT": 82,
+        "AGI": 28
+      },
+      "growth": {
+        "STR": 0,
+        "END": 3,
+        "INT": 8,
+        "AGI": 3
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "temporal_shift",
+        "glacial_prison",
+        "chain_lightning"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "ley_attunement",
+        "mind_over_matter"
+      ],
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 80,
+          "speed": 6
+        },
+        "pct": {
+          "magic_power": 0.25
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "temporal_mastery",
+          "name": "Temporal Mastery",
+          "description": "+15% speed, cooldowns reduced by 2, +15% magic power",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15
+            },
+            "pct": {
+              "magic_power": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "lich_lord",
+      "name": "Lich Lord",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A master of death who has transcended mortality, draining life from all who oppose.",
+      "base_stats": {
+        "STR": 12,
+        "END": 36,
+        "INT": 78,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 1,
+        "END": 4,
+        "INT": 7,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "shadow_bind",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 14,
+          "max_mp": 60,
+          "max_hp": 40
+        },
+        "pct": {
+          "magic_power": 0.2
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "undying_will",
+          "name": "Undying Will",
+          "description": "25% lifesteal, +20% magic power, survive lethal blow once per battle",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.25
+        }
+      ]
+    },
+    {
+      "id": "bloodlord",
+      "name": "Bloodlord",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A warrior whose rage is matched only by the devastation they leave behind.",
+      "base_stats": {
+        "STR": 72,
+        "END": 46,
+        "INT": 4,
+        "AGI": 28
+      },
+      "growth": {
+        "STR": 6,
+        "END": 4,
+        "INT": 0,
+        "AGI": 3
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "power_strike",
+        "executioners_arc",
+        "whirlwind",
+        "titans_wrath"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "cleave",
+        "keen_edge",
+        "predatory_focus"
+      ],
+      "weapon_types": [
+        "axe",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 16
+        },
+        "pct": {
+          "crit_damage": 0.25
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "savage_fury",
+          "name": "Savage Fury",
+          "description": "Below 50% HP, +50% physical power, +25% speed",
+          "trigger": "low_hp",
+          "threshold": 0.5,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.5
+            },
+            "flat": {
+              "speed": 25
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "blood_sovereign",
+      "name": "Blood Sovereign",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A warrior who feasts on the life force of enemies, growing stronger with every kill.",
+      "base_stats": {
+        "STR": 66,
+        "END": 54,
+        "INT": 12,
+        "AGI": 24
+      },
+      "growth": {
+        "STR": 5,
+        "END": 5,
+        "INT": 1,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "cleave",
+        "second_wind",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "sunder_armor",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "axe",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 12,
+          "max_hp": 80
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "blood_lord",
+          "name": "Blood Lord",
+          "description": "30% lifesteal, +20% physical power below 40% HP",
+          "trigger": "low_hp",
+          "threshold": 0.4,
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "horde_lord",
+      "name": "Horde Lord",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A war leader whose battle cries inspire armies and shatter enemy morale.",
+      "base_stats": {
+        "STR": 70,
+        "END": 48,
+        "INT": 16,
+        "AGI": 24
+      },
+      "growth": {
+        "STR": 6,
+        "END": 4,
+        "INT": 2,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "power_strike",
+        "cleave",
+        "whirlwind"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "sunder_armor",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "axe",
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 14,
+          "max_hp": 60,
+          "armor": 6
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "warlords_banner",
+          "name": "Warlord's Banner",
+          "description": "+15% physical power, +15% armor for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "armor": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "supreme_commander",
+      "name": "Supreme Commander",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A general whose presence alone turns the tide of battle.",
+      "base_stats": {
+        "STR": 52,
+        "END": 58,
+        "INT": 38,
+        "AGI": 22
+      },
+      "growth": {
+        "STR": 4,
+        "END": 5,
+        "INT": 4,
+        "AGI": 2
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "shield_wall",
+        "challenging_shout",
+        "guardian_bond"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "guardian_resolve",
+        "warding_spirit",
+        "sunder_armor"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 16,
+          "max_hp": 80,
+          "status_resist": 0.1
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "grand_strategy",
+          "name": "Grand Strategy",
+          "description": "+20% accuracy, +15% evasion for you and allies",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.2,
+              "evasion": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "grand_strategist",
+      "name": "Grand Strategist",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A master of warfare who reads the battlefield like a chess grandmaster.",
+      "base_stats": {
+        "STR": 48,
+        "END": 52,
+        "INT": 46,
+        "AGI": 28
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 4,
+        "AGI": 3
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "riposte_stance",
+        "sunder_armor",
+        "hunters_mark",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "warding_spirit",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "armor": 12,
+          "accuracy": 0.08,
+          "crit_chance": 0.06
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "perfect_defense",
+          "name": "Perfect Defense",
+          "description": "20% counter chance, +15% armor, +10% evasion",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "armor": 0.15
+            },
+            "flat": {
+              "evasion": 0.1
+            }
+          },
+          "special": "counter",
+          "special_value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "cavalry_lord",
+      "name": "Cavalry Lord",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A mounted champion whose charge breaks formations and inspires charges.",
+      "base_stats": {
+        "STR": 56,
+        "END": 52,
+        "INT": 28,
+        "AGI": 38
+      },
+      "growth": {
+        "STR": 5,
+        "END": 4,
+        "INT": 3,
+        "AGI": 4
+      },
+      "core_skill_id": "strike",
+      "granted_skill_ids": [
+        "rallying_cry",
+        "power_strike",
+        "executioners_arc",
+        "cleave"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "fleet_footed",
+        "sunder_armor"
+      ],
+      "weapon_types": [
+        "sword",
+        "mace",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "speed": 8,
+          "armor": 10
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "charging_strike",
+          "name": "Charging Strike",
+          "description": "+15% physical power, +15% speed, +10% armor",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.15,
+              "armor": 0.1
+            },
+            "flat": {
+              "speed": 15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "trail_warden",
+      "name": "Trail Warden",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A master of the wilderness who can track any prey and survive any terrain.",
+      "base_stats": {
+        "STR": 36,
+        "END": 42,
+        "INT": 28,
+        "AGI": 72
+      },
+      "growth": {
+        "STR": 3,
+        "END": 4,
+        "INT": 3,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "hunters_mark",
+        "fleet_footed",
+        "heartseeker"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "shadowstep",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "bow",
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.1,
+          "evasion": 0.07,
+          "speed": 8
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "pathfinder_mastery",
+          "name": "Pathfinder Mastery",
+          "description": "+15% speed, +12% evasion, +10% accuracy",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15,
+              "evasion": 0.12,
+              "accuracy": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "alpha_predator",
+      "name": "Alpha Predator",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A ranger who fights alongside a pack of loyal beasts, the alpha of all predators.",
+      "base_stats": {
+        "STR": 40,
+        "END": 42,
+        "INT": 30,
+        "AGI": 68
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 3,
+        "AGI": 5
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "hunters_mark",
+        "challenging_shout",
+        "heartseeker"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "toughness",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "bow",
+        "sword",
+        "axe"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "max_hp": 60,
+          "accuracy": 0.07
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "apex_predator",
+          "name": "Apex Predator",
+          "description": "+20% physical power, summons deal +30% damage",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "deadeye",
+      "name": "Deadeye",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A sniper whose arrows never miss and whose shots always find the kill zone.",
+      "base_stats": {
+        "STR": 32,
+        "END": 34,
+        "INT": 20,
+        "AGI": 80
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 2,
+        "AGI": 7
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "aimed_shot",
+        "heartseeker",
+        "hunters_mark",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "predatory_focus",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "bow",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.14,
+          "crit_chance": 0.08
+        },
+        "pct": {
+          "crit_damage": 0.15
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "perfect_aim",
+          "name": "Perfect Aim",
+          "description": "+20% accuracy, +15% crit chance, +30% crit damage",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.2,
+              "crit_chance": 0.15
+            },
+            "pct": {
+              "crit_damage": 0.3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "wraith_lord",
+      "name": "Wraith Lord",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A ghost-like assassin who exists between worlds, striking from the void.",
+      "base_stats": {
+        "STR": 42,
+        "END": 30,
+        "INT": 34,
+        "AGI": 80
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 3,
+        "AGI": 7
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "shadowstep",
+        "shadow_bind",
+        "venom_edge",
+        "thousand_cuts"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "smoke_veil",
+        "predatory_focus"
+      ],
+      "weapon_types": [
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.14,
+          "crit_chance": 0.1,
+          "speed": 8
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "spectral_form",
+          "name": "Spectral Form",
+          "description": "+25% evasion, +20% speed, 50% chance to avoid AoE",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "evasion": 0.25,
+              "speed": 20
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "void_walker",
+      "name": "Void Walker",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A shadow-mage who steps through the void itself, appearing behind enemies.",
+      "base_stats": {
+        "STR": 46,
+        "END": 32,
+        "INT": 46,
+        "AGI": 72
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 4,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "shadowstep",
+        "vampiric_strike",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "arcane_mind",
+        "smoke_veil"
+      ],
+      "weapon_types": [
+        "dagger",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 10,
+          "crit_chance": 0.08,
+          "evasion": 0.08
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "void_mastery",
+          "name": "Void Mastery",
+          "description": "+20% magic power, +20% physical power, +15% evasion",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2,
+              "physical_power": 0.2
+            },
+            "flat": {
+              "evasion": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "demolitionist",
+      "name": "Demolitionist",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A master of traps and sabotage who destroys enemies before they know they're in danger.",
+      "base_stats": {
+        "STR": 36,
+        "END": 34,
+        "INT": 42,
+        "AGI": 74
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 4,
+        "AGI": 6
+      },
+      "core_skill_id": "pierce",
+      "granted_skill_ids": [
+        "venom_edge",
+        "time_bomb",
+        "sunder_armor",
+        "curse_mirror"
+      ],
+      "skill_tree_ids": [
+        "fleet_footed",
+        "keen_edge",
+        "hunters_mark",
+        "smoke_veil"
+      ],
+      "weapon_types": [
+        "dagger",
+        "bow"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "accuracy": 0.08,
+          "crit_chance": 0.07,
+          "speed": 6
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "master_saboteur",
+          "name": "Master Saboteur",
+          "description": "Traps deal +50% damage, +15% accuracy",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "accuracy": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "divine_oracle",
+      "name": "Divine Oracle",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A conduit of divine power whose healing can pull allies back from death itself.",
+      "base_stats": {
+        "STR": 20,
+        "END": 42,
+        "INT": 72,
+        "AGI": 18
+      },
+      "growth": {
+        "STR": 2,
+        "END": 4,
+        "INT": 6,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "mend",
+        "renewal",
+        "purifying_light",
+        "divine_judgment"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "steady_breath",
+        "guardian_resolve"
+      ],
+      "weapon_types": [
+        "mace",
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 70,
+          "magic_resist": 14
+        },
+        "pct": {
+          "magic_power": 0.18
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "divine_mastery",
+          "name": "Divine Mastery",
+          "description": "+35% healing done, +20% magic resist, +15% max MP",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "magic_resist": 12
+            },
+            "pct": {
+              "max_mp": 0.15,
+              "healing_done": 0.35
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "purifier",
+      "name": "Purifier",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A holy warrior who burns away corruption with righteous fire and purifying steel.",
+      "base_stats": {
+        "STR": 46,
+        "END": 46,
+        "INT": 60,
+        "AGI": 22
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 5,
+        "AGI": 2
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "purifying_light",
+        "executioners_arc",
+        "mend",
+        "divine_judgment"
+      ],
+      "skill_tree_ids": [
+        "toughness",
+        "keen_edge",
+        "warding_spirit",
+        "arcane_mind"
+      ],
+      "weapon_types": [
+        "mace",
+        "sword"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "magic_power": 10,
+          "armor": 10
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "holy_wrath",
+          "name": "Holy Wrath",
+          "description": "+20% physical power, +20% magic power, +15% armor",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2,
+              "magic_power": 0.2,
+              "armor": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fate_weaver",
+      "name": "Fate Weaver",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A seer who glimpses the threads of fate, bending time and fortune to protect allies.",
+      "base_stats": {
+        "STR": 16,
+        "END": 36,
+        "INT": 76,
+        "AGI": 28
+      },
+      "growth": {
+        "STR": 1,
+        "END": 3,
+        "INT": 7,
+        "AGI": 3
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "temporal_shift",
+        "renewal",
+        "curse_mirror",
+        "glacial_prison"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "ley_attunement",
+        "mind_over_matter"
+      ],
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 65,
+          "magic_resist": 10,
+          "speed": 6
+        },
+        "pct": {
+          "magic_power": 0.2
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "fate_mastery",
+          "name": "Fate Mastery",
+          "description": "+15% speed, cooldowns reduced by 2, +15% magic power",
+          "trigger": "always",
+          "modifiers": {
+            "flat": {
+              "speed": 15
+            },
+            "pct": {
+              "magic_power": 0.15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "archfiend",
+      "name": "Archfiend",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A master of forbidden arts whose dark power corrupts everything it touches.",
+      "base_stats": {
+        "STR": 14,
+        "END": 36,
+        "INT": 82,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 1,
+        "END": 3,
+        "INT": 8,
+        "AGI": 2
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "flame_wave",
+        "vampiric_strike",
+        "meteor"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "frost_lance"
+      ],
+      "weapon_types": [
+        "staff"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 16,
+          "crit_damage": 0.12
+        },
+        "pct": {
+          "magic_power": 0.25
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "infernal_mastery",
+          "name": "Infernal Mastery",
+          "description": "30% lifesteal, +25% magic power, +20% max MP",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.25,
+              "max_mp": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "doom_blade",
+      "name": "Doom Blade",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A warrior-mage whose cursed weapon drinks the souls of those it strikes.",
+      "base_stats": {
+        "STR": 48,
+        "END": 38,
+        "INT": 62,
+        "AGI": 28
+      },
+      "growth": {
+        "STR": 4,
+        "END": 4,
+        "INT": 5,
+        "AGI": 3
+      },
+      "core_skill_id": "smite",
+      "granted_skill_ids": [
+        "shadow_bind",
+        "venom_edge",
+        "vampiric_strike",
+        "executioners_arc"
+      ],
+      "skill_tree_ids": [
+        "keen_edge",
+        "arcane_mind",
+        "warding_spirit",
+        "sunder_armor"
+      ],
+      "weapon_types": [
+        "sword",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "magic_power": 10,
+          "crit_chance": 0.06
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "cursed_mastery",
+          "name": "Cursed Mastery",
+          "description": "+20% physical power, +20% magic power, 20% lifesteal",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2,
+              "magic_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "soul_reaper",
+      "name": "Soul Reaper",
+      "tier": 4,
+      "gender_restriction": "any",
+      "description": "A warlock who harvests souls, growing stronger with each life claimed.",
+      "base_stats": {
+        "STR": 18,
+        "END": 44,
+        "INT": 76,
+        "AGI": 24
+      },
+      "growth": {
+        "STR": 2,
+        "END": 4,
+        "INT": 7,
+        "AGI": 2
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [
+        "vampiric_strike",
+        "curse_mirror",
+        "shadow_bind",
+        "status_transfer"
+      ],
+      "skill_tree_ids": [
+        "arcane_mind",
+        "warding_spirit",
+        "mind_over_matter",
+        "steady_breath"
+      ],
+      "weapon_types": [
+        "staff",
+        "dagger"
+      ],
+      "passive_modifiers": {
+        "flat": {
+          "magic_power": 14,
+          "max_hp": 60,
+          "max_mp": 50
+        }
+      },
+      "promotions": {},
+      "perks": [
+        {
+          "id": "soul_mastery",
+          "name": "Soul Mastery",
+          "description": "35% lifesteal, +20% magic power, gain 8% max HP on kill",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.35
+        }
+      ]
     }
   ]
 }

@@ -655,7 +655,8 @@
       "unlock_level": 38,
       "quiet_chance": 0.06,
       "connections": [
-        "cloud_ruins"
+        "cloud_ruins",
+        "ironveil_approach"
       ],
       "encounters": [
         {
@@ -688,6 +689,316 @@
         }
       ],
       "npc_ids": []
+    },
+    {
+      "id": "ironveil_approach",
+      "name": "Ironveil Approach",
+      "description": "The road to Ironveil winds through petrified forest, where ancient trees stand as stone sentinels.",
+      "is_town": false,
+      "recommended_level": 41,
+      "connections": [
+        "obsidian_gate",
+        "town_ironveil"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "stone_revenant"
+          ],
+          "weight": 1.0,
+          "level_min": 41,
+          "level_max": 43
+        },
+        {
+          "enemy_ids": [
+            "petrified_treant",
+            "stone_revenant"
+          ],
+          "weight": 0.8,
+          "level_min": 42,
+          "level_max": 44
+        },
+        {
+          "enemy_ids": [
+            "void_stalker"
+          ],
+          "weight": 0.5,
+          "level_min": 43,
+          "level_max": 45
+        }
+      ],
+      "quiet_chance": 0.2,
+      "unlock_level": 40
+    },
+    {
+      "id": "town_ironveil",
+      "name": "Ironveil",
+      "description": "A fortress-city carved into a mountainside, seat of the Iron Covenant faction. The walls hum with ancient wards.",
+      "is_town": true,
+      "recommended_level": 42,
+      "connections": [
+        "ironveil_approach",
+        "ashen_wastes",
+        "sunken_citadel"
+      ],
+      "npc_ids": [
+        "commander_vex",
+        "artificer_zara",
+        "chronicler_thon"
+      ],
+      "shop_ids": [
+        "ironveil_armory",
+        "ironveil_arcanist"
+      ],
+      "quiet_chance": 0.8,
+      "unlock_level": 40
+    },
+    {
+      "id": "ashen_wastes",
+      "name": "Ashen Wastes",
+      "description": "A blasted landscape where an ancient battle scorched the earth. Embers still glow beneath the ash.",
+      "is_town": false,
+      "recommended_level": 44,
+      "connections": [
+        "town_ironveil",
+        "cinder_depths"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "ash_wraith"
+          ],
+          "weight": 1.0,
+          "level_min": 44,
+          "level_max": 46
+        },
+        {
+          "enemy_ids": [
+            "ember_elemental",
+            "ash_wraith"
+          ],
+          "weight": 0.8,
+          "level_min": 45,
+          "level_max": 47
+        },
+        {
+          "enemy_ids": [
+            "cinder_fiend"
+          ],
+          "weight": 0.5,
+          "level_min": 46,
+          "level_max": 48
+        }
+      ],
+      "quiet_chance": 0.15,
+      "unlock_level": 42
+    },
+    {
+      "id": "cinder_depths",
+      "name": "Cinder Depths",
+      "description": "Volcanic caverns where magma rivers flow between obsidian pillars. The heat is oppressive.",
+      "is_town": false,
+      "recommended_level": 47,
+      "connections": [
+        "ashen_wastes",
+        "molten_sanctum"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "magma_golem"
+          ],
+          "weight": 1.0,
+          "level_min": 47,
+          "level_max": 49
+        },
+        {
+          "enemy_ids": [
+            "fire_drake",
+            "ember_elemental"
+          ],
+          "weight": 0.8,
+          "level_min": 48,
+          "level_max": 50
+        },
+        {
+          "enemy_ids": [
+            "cinder_fiend",
+            "magma_golem"
+          ],
+          "weight": 0.6,
+          "level_min": 49,
+          "level_max": 51
+        }
+      ],
+      "quiet_chance": 0.15,
+      "unlock_level": 45
+    },
+    {
+      "id": "sunken_citadel",
+      "name": "Sunken Citadel",
+      "description": "A drowned fortress rising from a black lake. The water is unnaturally still and cold.",
+      "is_town": false,
+      "recommended_level": 46,
+      "connections": [
+        "town_ironveil",
+        "abyssal_halls"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "drowned_knight"
+          ],
+          "weight": 1.0,
+          "level_min": 46,
+          "level_max": 48
+        },
+        {
+          "enemy_ids": [
+            "abyssal_horror"
+          ],
+          "weight": 0.7,
+          "level_min": 47,
+          "level_max": 49
+        },
+        {
+          "enemy_ids": [
+            "drowned_knight",
+            "void_stalker"
+          ],
+          "weight": 0.5,
+          "level_min": 48,
+          "level_max": 50
+        }
+      ],
+      "quiet_chance": 0.15,
+      "unlock_level": 44
+    },
+    {
+      "id": "abyssal_halls",
+      "name": "Abyssal Halls",
+      "description": "The deepest chambers of the Sunken Citadel, where reality thins and the void seeps through.",
+      "is_town": false,
+      "recommended_level": 50,
+      "connections": [
+        "sunken_citadel",
+        "void_throne"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "void_stalker",
+            "abyssal_horror"
+          ],
+          "weight": 1.0,
+          "level_min": 50,
+          "level_max": 52
+        },
+        {
+          "enemy_ids": [
+            "void_archon"
+          ],
+          "weight": 0.5,
+          "level_min": 51,
+          "level_max": 53
+        },
+        {
+          "enemy_ids": [
+            "void_stalker",
+            "void_stalker",
+            "abyssal_horror"
+          ],
+          "weight": 0.3,
+          "level_min": 52,
+          "level_max": 54
+        }
+      ],
+      "quiet_chance": 0.1,
+      "unlock_level": 48
+    },
+    {
+      "id": "molten_sanctum",
+      "name": "Molten Sanctum",
+      "description": "The heart of the volcano, where an ancient dragon once forged weapons of terrible power.",
+      "is_town": false,
+      "recommended_level": 52,
+      "connections": [
+        "cinder_depths",
+        "void_throne"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "fire_drake",
+            "magma_golem"
+          ],
+          "weight": 1.0,
+          "level_min": 52,
+          "level_max": 54
+        },
+        {
+          "enemy_ids": [
+            "infernal_titan"
+          ],
+          "weight": 0.4,
+          "level_min": 53,
+          "level_max": 55
+        },
+        {
+          "enemy_ids": [
+            "cinder_fiend",
+            "fire_drake"
+          ],
+          "weight": 0.6,
+          "level_min": 53,
+          "level_max": 55
+        }
+      ],
+      "quiet_chance": 0.1,
+      "unlock_level": 50
+    },
+    {
+      "id": "void_throne",
+      "name": "The Void Throne",
+      "description": "A chamber at the edge of reality, where the Void Sovereign sits upon a throne of nothing.",
+      "is_town": false,
+      "recommended_level": 55,
+      "connections": [
+        "abyssal_halls",
+        "molten_sanctum"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "void_archon",
+            "void_stalker"
+          ],
+          "weight": 1.0,
+          "level_min": 54,
+          "level_max": 56
+        },
+        {
+          "enemy_ids": [
+            "void_archon",
+            "void_archon"
+          ],
+          "weight": 0.4,
+          "level_min": 55,
+          "level_max": 57
+        },
+        {
+          "enemy_ids": [
+            "void_sovereign"
+          ],
+          "weight": 0.1,
+          "level_min": 55,
+          "level_max": 55,
+          "is_boss": true,
+          "boss_id": "void_sovereign"
+        }
+      ],
+      "quiet_chance": 0.1,
+      "unlock_level": 52
     }
   ],
   "shops": [
@@ -710,7 +1021,17 @@
         "wanderers_knot",
         "bridgewalkers_charm"
       ],
-      "faction_id": "merchant_caravans"
+      "faction_id": "merchant_caravans",
+      "race_buy_rates": {
+        "halfling": 0.9,
+        "human": 0.85
+      },
+      "race_item_ids": {
+        "halfling": [
+          "pipe_weed",
+          "halfling_pie"
+        ]
+      }
     },
     {
       "id": "ashvale_smith",
@@ -729,7 +1050,21 @@
         "chain_mail",
         "steel_sword"
       ],
-      "faction_id": "ashvale_council"
+      "faction_id": "ashvale_council",
+      "race_buy_rates": {
+        "dwarf": 0.8,
+        "goliath": 0.85,
+        "orc": 0.9
+      },
+      "race_item_ids": {
+        "dwarf": [
+          "dwarven_axe",
+          "stone_shield"
+        ],
+        "goliath": [
+          "giant_hammer"
+        ]
+      }
     },
     {
       "id": "emberwatch_outfitter",
@@ -746,7 +1081,20 @@
         "mossweave_coat",
         "marshwalker_boots"
       ],
-      "faction_id": "emberwatch_wardens"
+      "faction_id": "emberwatch_wardens",
+      "race_buy_rates": {
+        "dragonkin": 0.85,
+        "demon": 0.9,
+        "arachne": 0.9
+      },
+      "race_item_ids": {
+        "dragonkin": [
+          "drake_scale_armor"
+        ],
+        "arachne": [
+          "silk_cloak"
+        ]
+      }
     },
     {
       "id": "emberwatch_apothecary",
@@ -788,7 +1136,20 @@
         "runic_gauntlets",
         "warden_charm"
       ],
-      "faction_id": "stonehaven_clans"
+      "faction_id": "stonehaven_clans",
+      "race_buy_rates": {
+        "dwarf": 0.8,
+        "goliath": 0.85,
+        "gnome": 0.9
+      },
+      "race_item_ids": {
+        "dwarf": [
+          "masterwork_plate"
+        ],
+        "gnome": [
+          "tinker_tools"
+        ]
+      }
     },
     {
       "id": "stonehaven_arcanist",
@@ -803,7 +1164,23 @@
         "greater_ether",
         "stormglass_pendant"
       ],
-      "faction_id": "stonehaven_clans"
+      "faction_id": "stonehaven_clans",
+      "race_buy_rates": {
+        "gnome": 0.8,
+        "tiefling": 0.85,
+        "lamia": 0.9
+      },
+      "race_item_ids": {
+        "gnome": [
+          "alchemical_kit"
+        ],
+        "tiefling": [
+          "infernal_tome"
+        ],
+        "lamia": [
+          "serpent_staff"
+        ]
+      }
     },
     {
       "id": "skyreach_quartermaster",
@@ -818,7 +1195,20 @@
         "greater_potion",
         "greater_ether"
       ],
-      "faction_id": "skyreach_archivists"
+      "faction_id": "skyreach_archivists",
+      "race_buy_rates": {
+        "elf": 0.85,
+        "genasi": 0.9,
+        "dragonkin": 0.9
+      },
+      "race_item_ids": {
+        "elf": [
+          "elven_bow"
+        ],
+        "genasi": [
+          "elemental_gem"
+        ]
+      }
     },
     {
       "id": "skyreach_reliquary",
@@ -833,7 +1223,74 @@
         "greater_ether",
         "wildclaw_pendant"
       ],
-      "faction_id": "skyreach_archivists"
+      "faction_id": "skyreach_archivists",
+      "race_buy_rates": {
+        "elf": 0.85,
+        "half_elf": 0.9,
+        "lamia": 0.9
+      },
+      "race_item_ids": {
+        "elf": [
+          "moonstone_amulet"
+        ],
+        "lamia": [
+          "ancient_scroll"
+        ]
+      }
+    },
+    {
+      "id": "ironveil_armory",
+      "name": "Ironveil Armory",
+      "item_ids": [
+        "iron_sword",
+        "steel_sword",
+        "leather_vest",
+        "chain_mail",
+        "greater_potion",
+        "greater_ether"
+      ],
+      "buy_rate": 1.0,
+      "sell_rate": 0.45,
+      "faction_id": "iron_covenant",
+      "race_buy_rates": {
+        "dwarf": 0.85,
+        "goliath": 0.9
+      },
+      "race_item_ids": {
+        "dwarf": [
+          "masterwork_plate"
+        ],
+        "goliath": [
+          "giant_hammer"
+        ]
+      }
+    },
+    {
+      "id": "ironveil_arcanist",
+      "name": "Zara's Workshop",
+      "item_ids": [
+        "apprentice_staff",
+        "runed_staff",
+        "minor_ether",
+        "ether",
+        "greater_ether",
+        "alchemical_kit"
+      ],
+      "buy_rate": 1.0,
+      "sell_rate": 0.45,
+      "race_buy_rates": {
+        "gnome": 0.8,
+        "elf": 0.9
+      },
+      "race_item_ids": {
+        "gnome": [
+          "tinker_tools"
+        ],
+        "elf": [
+          "elven_bow",
+          "moonstone_amulet"
+        ]
+      }
     }
   ],
   "npcs": [
@@ -854,7 +1311,8 @@
         "Stay as long as you like. People usually don't.",
         "The well's older than the town. Don't drop anything in it."
       ],
-      "race_id": "human"
+      "race_id": "human",
+      "gender": "female"
     },
     {
       "id": "smith_dorn",
@@ -873,7 +1331,8 @@
         "Everything breaks. Question is how loudly.",
         "Cheap armour costs more. You'll see."
       ],
-      "race_id": "dwarf"
+      "race_id": "dwarf",
+      "gender": "male"
     },
     {
       "id": "scholar_iven",
@@ -892,7 +1351,8 @@
         "Mastery isn't talent. It's repetition nobody watched.",
         "If you find anything written down out there, bring it back intact."
       ],
-      "race_id": "half_elf"
+      "race_id": "half_elf",
+      "gender": "male"
     },
     {
       "id": "warden_hela",
@@ -910,7 +1370,8 @@
         "Emberwatch was rebuilt six times. We kept the name to save paint.",
         "West road is open. Safe would be a stronger word."
       ],
-      "race_id": "dragonkin"
+      "race_id": "dragonkin",
+      "gender": "female"
     },
     {
       "id": "alchemist_pell",
@@ -929,7 +1390,8 @@
         "I need marsh ichor. Need is perhaps too gentle a word.",
         "If it bubbles clockwise, leave the room calmly."
       ],
-      "race_id": "tiefling"
+      "race_id": "tiefling",
+      "gender": "male"
     },
     {
       "id": "cartographer_senn",
@@ -945,7 +1407,8 @@
         "Stonehaven is west, down, and louder than expected.",
         "A blank place on a map is not an invitation. Usually."
       ],
-      "race_id": "elf"
+      "race_id": "elf",
+      "gender": "male"
     },
     {
       "id": "reeve_marta",
@@ -963,7 +1426,8 @@
         "The mine is singing in a new key. Nobody likes it.",
         "If Tala says a tunnel is safe, it is. If Orren says it, ask Tala."
       ],
-      "race_id": "dwarf"
+      "race_id": "dwarf",
+      "gender": "female"
     },
     {
       "id": "miner_joss",
@@ -981,7 +1445,8 @@
         "Don't whistle underground. The crystals answer.",
         "Colossus used to guard us. Pronouns changed somewhere along the way."
       ],
-      "race_id": "beastkin"
+      "race_id": "beastkin",
+      "gender": "male"
     },
     {
       "id": "runekeeper_ada",
@@ -998,7 +1463,8 @@
         "Bring me anything that glows without heat.",
         "The plateau inscriptions all point upward. Grammatically, not geographically."
       ],
-      "race_id": "tiefling"
+      "race_id": "tiefling",
+      "gender": "female"
     },
     {
       "id": "archivist_lume",
@@ -1016,7 +1482,8 @@
         "The Obsidian Gate predates the mountain road.",
         "Morning through the gate arrives from the wrong direction."
       ],
-      "race_id": "elf"
+      "race_id": "elf",
+      "gender": "male"
     },
     {
       "id": "ropewright_fenn",
@@ -1034,7 +1501,8 @@
         "Check the wind, then check it again after it lies.",
         "Falling is free. Everything before it costs."
       ],
-      "race_id": "half_elf"
+      "race_id": "half_elf",
+      "gender": "male"
     },
     {
       "id": "abbess_sol",
@@ -1051,7 +1519,8 @@
         "The thing at the gate calls itself dawn. Names are claims.",
         "Go prepared. Faith is not a substitute for armour."
       ],
-      "race_id": "demon"
+      "race_id": "demon",
+      "gender": "female"
     },
     {
       "id": "elder_amariel",
@@ -1069,7 +1538,8 @@
         "Lethira lost something in Mosswood. The wood found it first.",
         "I came for one season. That was eighty-three years ago.",
         "Emberwatch ash makes excellent roses. Angry roses, but excellent."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "nima_crossroads",
@@ -1088,7 +1558,8 @@
         "Two families taught me two ways to get lost.",
         "Ashvale is where roads come to reconsider.",
         "I deliver secrets sealed. Reading them costs extra and my self-respect."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "thane_dorrim",
@@ -1106,7 +1577,8 @@
         "Brokk hears songs because he refuses sensible silence.",
         "Our ledger has one clean cut. History is rarely that tidy.",
         "I do not hold grudges. I archive them."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "mother_sable",
@@ -1125,7 +1597,8 @@
         "Veyra mistakes escape for absolution. She needs both.",
         "Demons do not all lie. That rumour was started by honest lawyers.",
         "Tea is a contract: patience in exchange for flavour."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "keth_cloudscar",
@@ -1144,7 +1617,8 @@
         "Rhazek inherited an oath with half the verbs missing.",
         "The gate was sealed against dawn, not darkness.",
         "History written in fire is difficult to alphabetise."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "siv_quickpaw",
@@ -1163,6 +1637,201 @@
         "My tail is for balance, not public commentary.",
         "Sentinels hate bells. I carry seven.",
         "I found a crown yesterday. Turned out to be plumbing."
+      ],
+      "gender": "female"
+    },
+    {
+      "id": "thrakk_warbringer",
+      "name": "Thrakk Warbringer",
+      "race_id": "orc",
+      "gender": "male",
+      "description": "An orcish weapons merchant who believes every problem has an axe-shaped solution.",
+      "location_id": "old_road",
+      "marriageable": false,
+      "dialogue": [
+        "You want weapon? Thrakk has weapon. Many weapons.",
+        "This axe killed three trolls. The trolls were not impressed.",
+        "Orc steel is honest steel. It breaks before it bends.",
+        "Buy something or fight me. Both are honourable.",
+        "My prices are fair. My temper is not.",
+        "You look like someone who needs a bigger sword."
+      ]
+    },
+    {
+      "id": "cogsworth_tinkerton",
+      "name": "Cogsworth Tinkerton",
+      "race_id": "gnome",
+      "gender": "male",
+      "description": "A gnome merchant whose wares occasionally tick, whirr, or explode.",
+      "location_id": "town_emberwatch",
+      "marriageable": false,
+      "dialogue": [
+        "Welcome to Cogsworth's Curios! Satisfaction guaranteed* (*some conditions apply).",
+        "This device does something. I'm just not sure what yet.",
+        "All sales final. Especially the explosive ones.",
+        "My latest invention! It makes tea AND predicts the weather. Mostly.",
+        "Have you tried percussive maintenance? It works 30% of the time.",
+        "I once sold a clock that ran backwards. Customer loved it. Said it gave him more time."
+      ]
+    },
+    {
+      "id": "butterbur_goodbody",
+      "name": "Butterbur Goodbody",
+      "race_id": "halfling",
+      "gender": "female",
+      "description": "A halfling innkeeper whose cooking is legendary and whose gossip is better.",
+      "location_id": "town_ashvale",
+      "marriageable": true,
+      "marriage_affinity": 65,
+      "gift_item_ids": [
+        "potion",
+        "travel_boots",
+        "minor_ether"
+      ],
+      "dialogue": [
+        "Welcome, welcome! Have you eaten? You look thin.",
+        "My grandmother's pie recipe. Secret ingredient is love. And lard. Mostly lard.",
+        "The rooms are clean, the beds are soft, and the breakfast is mandatory.",
+        "I know everyone's business. It's not gossip if it's true.",
+        "Halfling hospitality: you'll leave fuller than you arrived.",
+        "Second breakfast is at eleven. Elevenses is at ten. Don't be late."
+      ]
+    },
+    {
+      "id": "zephyr_stormcaller",
+      "name": "Zephyr Stormcaller",
+      "race_id": "genasi",
+      "gender": "nonbinary",
+      "description": "An air genasi weather mage who reads the winds like others read books.",
+      "location_id": "town_skyreach",
+      "marriageable": false,
+      "dialogue": [
+        "The winds speak of change. They always do.",
+        "I don't predict weather. I negotiate with it.",
+        "My mood affects the local barometric pressure. Fair warning.",
+        "Air genasi don't get grounded. We get... redirected.",
+        "Tomorrow will be windy with a chance of existential dread.",
+        "I once calmed a hurricane. It was very apologetic afterwards."
+      ]
+    },
+    {
+      "id": "granite_heart",
+      "name": "Granite Heart",
+      "race_id": "goliath",
+      "gender": "female",
+      "description": "A goliath stonemason whose sculptures are said to move when no one watches.",
+      "location_id": "town_stonehaven",
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "gift_item_ids": [
+        "granite_core",
+        "stonecleaver",
+        "greater_potion"
+      ],
+      "dialogue": [
+        "Stone remembers. I just help it speak.",
+        "My chisel is sharp. My patience is sharper.",
+        "Every boulder is a statue waiting to be freed.",
+        "Goliaths measure worth in deeds, not words. So let me work.",
+        "This sculpture took three years. The mountain took three million.",
+        "I don't carve stone. I convince it to be something else."
+      ]
+    },
+    {
+      "id": "ophidia_scalesinger",
+      "name": "Ophidia Scalesinger",
+      "race_id": "lamia",
+      "gender": "female",
+      "description": "A lamia historian whose memory stretches back centuries.",
+      "location_id": "hollow_cave",
+      "marriageable": false,
+      "dialogue": [
+        "I remember when this cave was a cathedral. And before that, a sea.",
+        "History is not past. It is simply elsewhere.",
+        "My scales carry the stories of a thousand years.",
+        "Young ones always rush. I have learned patience from the stone.",
+        "The old magics still whisper, if you know how to listen.",
+        "I once debated a dragon about the nature of time. We both won."
+      ]
+    },
+    {
+      "id": "spinner_fateweaver",
+      "name": "Spinner Fateweaver",
+      "race_id": "arachne",
+      "gender": "female",
+      "description": "An arachne weaver whose tapestries are said to show glimpses of possible futures.",
+      "location_id": "mosswood",
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "moonleaf_brooch",
+        "wraith_lantern",
+        "briar_heart"
+      ],
+      "dialogue": [
+        "Every thread is a choice. Every pattern, a consequence.",
+        "I weave what might be, not what will be. The difference matters.",
+        "My silk catches more than flies. It catches moments.",
+        "Eight eyes see eight truths. Which one do you want?",
+        "This tapestry shows your future. Or perhaps your past. Time is flexible.",
+        "I don't predict fate. I illustrate it."
+      ]
+    },
+    {
+      "id": "commander_vex",
+      "name": "Commander Vex",
+      "race_id": "human",
+      "gender": "female",
+      "description": "The stern commander of Ironveil, scarred from decades of border wars.",
+      "location_id": "town_ironveil",
+      "marriageable": false,
+      "dialogue": [
+        "Ironveil stands because we do not bend.",
+        "The Void Sovereign grows stronger. We must act before it's too late.",
+        "Every soldier under my command has earned their place. Have you?",
+        "The walls are old. Older than the city. Older than the mountain.",
+        "I've buried too many good people. I won't bury more if I can help it.",
+        "You want to help? Good. We need every blade we can get."
+      ]
+    },
+    {
+      "id": "artificer_zara",
+      "name": "Artificer Zara",
+      "race_id": "gnome",
+      "gender": "female",
+      "description": "A gnome artificer whose workshop fills half a city block with humming machinery.",
+      "location_id": "town_ironveil",
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": [
+        "ember_scale",
+        "crystal_carapace",
+        "runed_staff"
+      ],
+      "dialogue": [
+        "This machine? Oh, it only explodes on Tuesdays. Today is... not Tuesday.",
+        "I've been working on a device that can fold space. It currently folds my laundry instead.",
+        "The Void Throne interests me. Scientifically. Not existentially. Mostly.",
+        "My last apprentice was very talented. Unfortunately, so was the explosion.",
+        "Ironveil's wards are my design. They hum at exactly 440 Hz. Perfect A.",
+        "You want enchantments? I want test subjects. Fair trade?"
+      ]
+    },
+    {
+      "id": "chronicler_thon",
+      "name": "Chronicler Thon",
+      "race_id": "lamia",
+      "gender": "male",
+      "description": "An ancient lamia who has recorded every event in Ironveil's history.",
+      "location_id": "town_ironveil",
+      "marriageable": false,
+      "dialogue": [
+        "I remember when this mountain was a hill. Time is a funny thing.",
+        "The Void Sovereign is not new. It has waited since before the first city.",
+        "History is not just dates and battles. It's the smell of bread on a winter morning.",
+        "I've written four hundred volumes. I'm running out of shelves.",
+        "The old texts speak of a weapon that can seal the void. If they're not lying.",
+        "You remind me of someone. Someone who didn't come back. Be careful."
       ]
     }
   ]

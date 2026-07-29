@@ -12,91 +12,866 @@
         ]
       },
       "lines": [
-        "Rook: ‘Still badly paved. Comforting that some failures are permanent.’"
+        "Rook: 'Still badly paved. Comforting that some failures are permanent.'"
       ],
       "once": false
     },
     {
-      "id": "kess_rook",
+      "id": "rook_ashvale",
       "trigger": "travel",
       "conditions": {
+        "area_ids": [
+          "ashvale"
+        ],
         "companions": [
-          "rook",
+          "rook"
+        ]
+      },
+      "lines": [
+        "Rook: 'Ashvale. Smells like wet dog and bad decisions. Home sweet home.'"
+      ]
+    },
+    {
+      "id": "sister_elen_mosswood",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "mosswood"
+        ],
+        "companions": [
+          "sister_elen"
+        ]
+      },
+      "lines": [
+        "Sister Elen: 'The trees here remember prayers older than the shrine. Listen carefully.'"
+      ]
+    },
+    {
+      "id": "kess_glassmarsh",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "glassmarsh"
+        ],
+        "companions": [
           "kess"
         ]
       },
       "lines": [
-        "Kess: ‘Shortcut?’",
-        "Rook: ‘No.’",
-        "Kess: ‘You did not even look.’",
-        "Rook: ‘Experience.’"
+        "Kess: 'Glassmarsh. Where the ground tries to eat you and the air tries to drown you. Fun!'"
       ]
     },
     {
-      "id": "tiefling_veyra",
-      "trigger": "rest",
-      "conditions": {
-        "player_race_ids": [
-          "tiefling"
-        ],
-        "companions": [
-          "veyra_ashhorn"
-        ]
-      },
-      "lines": [
-        "Veyra compares horn-care oils with you until the innkeeper asks both of you to stop."
-      ]
-    },
-    {
-      "id": "brokk_mines",
+      "id": "voss_drowned_archive",
       "trigger": "travel",
       "conditions": {
         "area_ids": [
-          "crystal_mines"
+          "drowned_archive"
+        ],
+        "companions": [
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Voss: 'The Drowned Archive! Finally, research that hasn't been dumbed down for surface-dwellers.'"
+      ]
+    },
+    {
+      "id": "brann_emberwatch",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "emberwatch"
+        ],
+        "companions": [
+          "captain_brann"
+        ]
+      },
+      "lines": [
+        "Brann: 'Emberwatch. My city. Try not to embarrass me in front of the guards.'"
+      ]
+    },
+    {
+      "id": "nyra_mosswood",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "mosswood"
+        ],
+        "companions": [
+          "nyra_reed"
+        ]
+      },
+      "lines": [
+        "Nyra: 'Mosswood. I know every root, every shadow, every place something might be watching us.'"
+      ]
+    },
+    {
+      "id": "orren_stonehaven",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "stonehaven"
+        ],
+        "companions": [
+          "orren_quill"
+        ]
+      },
+      "lines": [
+        "Orren: 'Stonehaven's runes are fascinating. Also, slightly likely to explode. Worth it.'"
+      ]
+    },
+    {
+      "id": "tala_stonehaven",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "stonehaven"
+        ],
+        "companions": [
+          "tala_stone"
+        ]
+      },
+      "lines": [
+        "Tala: 'Stonehaven. Where the beer's strong and the rocks are stronger. My kind of place.'"
+      ]
+    },
+    {
+      "id": "seraphine_skyreach",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "skyreach"
+        ],
+        "companions": [
+          "seraphine_gale"
+        ]
+      },
+      "lines": [
+        "Seraphine: 'Skyreach. The air tastes like lightning and old magic. Perfect weather for research.'"
+      ]
+    },
+    {
+      "id": "cael_skyreach",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "skyreach"
+        ],
+        "companions": [
+          "cael_sunward"
+        ]
+      },
+      "lines": [
+        "Cael: 'Skyreach. Where the dragons once ruled. You can still feel them watching from the clouds.'"
+      ]
+    },
+    {
+      "id": "lethira_mosswood",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "mosswood"
+        ],
+        "companions": [
+          "lethira_vale"
+        ]
+      },
+      "lines": [
+        "Lethira: 'Mosswood. The trees whisper my name, but I cannot remember why they know it.'"
+      ]
+    },
+    {
+      "id": "brokk_stonehaven",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "stonehaven"
         ],
         "companions": [
           "brokk_embervein"
         ]
       },
       "lines": [
-        "Brokk hums one low note. The mine answers with two."
+        "Brokk: 'Stonehaven. The deep songs are louder here. My clan's secrets echo in these walls.'"
       ]
     },
     {
-      "id": "boss_aftermath",
-      "trigger": "boss_victory",
+      "id": "veyra_emberwatch",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "emberwatch"
+        ],
+        "companions": [
+          "veyra_ashhorn"
+        ]
+      },
+      "lines": [
+        "Veyra: 'Emberwatch. So many contracts, so little fine print. A hex medic's paradise.'"
+      ]
+    },
+    {
+      "id": "rhazek_skyreach",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "skyreach"
+        ],
+        "companions": [
+          "rhazek_dawnscale"
+        ]
+      },
+      "lines": [
+        "Rhazek: 'Skyreach. The first oath was sworn here. I can feel my ancestors judging my posture.'"
+      ]
+    },
+    {
+      "id": "gruk_old_road",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "old_road"
+        ],
+        "companions": [
+          "gruk_ironjaw"
+        ]
+      },
+      "lines": [
+        "Gruk: 'Old Road. Good fighting. Bad walking. Gruk approves.'"
+      ]
+    },
+    {
+      "id": "pip_emberwatch",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "emberwatch"
+        ],
+        "companions": [
+          "pip_sprocket"
+        ]
+      },
+      "lines": [
+        "Pip: 'Emberwatch! The forges here are magnificent. I have seventeen ideas and all of them might explode.'"
+      ]
+    },
+    {
+      "id": "rose_ashvale",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "ashvale"
+        ],
+        "companions": [
+          "rose_underhill"
+        ]
+      },
+      "lines": [
+        "Rose: 'Ashvale. The innkeeper owes me a pie. And an apology. And possibly a small fortune.'"
+      ]
+    },
+    {
+      "id": "ember_emberwatch",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "emberwatch"
+        ],
+        "companions": [
+          "ember_skysong"
+        ]
+      },
+      "lines": [
+        "Ember: 'Emberwatch. The heat here feels like home. Literally. I'm slightly on fire. Don't worry about it.'"
+      ]
+    },
+    {
+      "id": "korrath_stonehaven",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "stonehaven"
+        ],
+        "companions": [
+          "korrath_peaks"
+        ]
+      },
+      "lines": [
+        "Korrath: 'Stonehaven. These mountains are small. Cute, like pebbles. But the beer is acceptable.'"
+      ]
+    },
+    {
+      "id": "sythia_drowned_archive",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "drowned_archive"
+        ],
+        "companions": [
+          "sythia_coils"
+        ]
+      },
+      "lines": [
+        "Sythia: 'The Drowned Archive. Three centuries of accumulated knowledge. I remember when it was new.'"
+      ]
+    },
+    {
+      "id": "nethys_mosswood",
+      "trigger": "travel",
+      "conditions": {
+        "area_ids": [
+          "mosswood"
+        ],
+        "companions": [
+          "nethys_websong"
+        ]
+      },
+      "lines": [
+        "Nethys: 'Mosswood. The spiders here are distant cousins. They've agreed not to eat us. Probably.'"
+      ]
+    },
+    {
+      "id": "rook_brann",
+      "trigger": "travel",
       "conditions": {
         "companions": [
+          "rook",
+          "captain_brann"
+        ]
+      },
+      "lines": [
+        "Brann: 'Your stance is sloppy.'",
+        "Rook: 'Your beard is on fire.'",
+        "Brann: '...Fair point.'"
+      ]
+    },
+    {
+      "id": "elen_veyra",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "sister_elen",
+          "veyra_ashhorn"
+        ]
+      },
+      "lines": [
+        "Elen: 'Your healing methods are unorthodox.'",
+        "Veyra: 'Your healing methods involve praying to a silent god.'",
+        "Elen: '...Also fair.'"
+      ]
+    },
+    {
+      "id": "kess_nyra",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "kess",
+          "nyra_reed"
+        ]
+      },
+      "lines": [
+        "Kess: 'Race you to the next landmark?'",
+        "Nyra: 'I know a shortcut.'",
+        "Kess: 'You always know a shortcut.'",
+        "Nyra: 'That's why I always win.'"
+      ]
+    },
+    {
+      "id": "voss_orren",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "magister_voss",
+          "orren_quill"
+        ]
+      },
+      "lines": [
+        "Voss: 'Your rune work is derivative.'",
+        "Orren: 'Your spellcasting is reckless.'",
+        "Voss: '...Shall we compare notes?'",
+        "Orren: 'After you stop setting things on fire.'"
+      ]
+    },
+    {
+      "id": "tala_brokk",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "tala_stone",
+          "brokk_embervein"
+        ]
+      },
+      "lines": [
+        "Tala: 'Your songs are too quiet.'",
+        "Brokk: 'Your axe is too loud.'",
+        "Tala: 'That's the point.'",
+        "Brokk: 'So is mine.'"
+      ]
+    },
+    {
+      "id": "seraphine_cael",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "seraphine_gale",
           "cael_sunward"
         ]
       },
       "lines": [
-        "Cael: ‘We lived. I had prepared a much more dignified final sentence.’"
+        "Seraphine: 'The storm patterns here are fascinating.'",
+        "Cael: 'You say that about every storm.'",
+        "Seraphine: 'Because every storm is fascinating.'"
       ]
     },
     {
-      "id": "spouse_rest",
-      "trigger": "rest",
+      "id": "lethira_nethys",
+      "trigger": "travel",
       "conditions": {
-        "spouse_in_party": true
+        "companions": [
+          "lethira_vale",
+          "nethys_websong"
+        ]
       },
       "lines": [
-        "Your spouse saves you a seat near the fire without making a ceremony of it."
+        "Lethira: 'Your webs remind me of something I've forgotten.'",
+        "Nethys: 'Memory is a thread. Pull one, and the whole tapestry unravels.'",
+        "Lethira: 'That's... unsettlingly poetic.'"
       ]
     },
     {
-      "id": "kess_humanoids",
+      "id": "gruk_tala",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "gruk_ironjaw",
+          "tala_stone"
+        ]
+      },
+      "lines": [
+        "Gruk: 'Your axe is small.'",
+        "Tala: 'Your brain is small.'",
+        "Gruk: '...Gruk respects this.'"
+      ]
+    },
+    {
+      "id": "pip_orren",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "pip_sprocket",
+          "orren_quill"
+        ]
+      },
+      "lines": [
+        "Pip: 'What if we combined clockwork with runes?'",
+        "Orren: 'That would be incredibly dangerous.'",
+        "Pip: 'So you're interested?'",
+        "Orren: '...Show me the schematics.'"
+      ]
+    },
+    {
+      "id": "rose_kess",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "rose_underhill",
+          "kess"
+        ]
+      },
+      "lines": [
+        "Rose: 'I found a pie.'",
+        "Kess: 'Where?'",
+        "Rose: 'Does it matter?'",
+        "Kess: '...Fair point.'"
+      ]
+    },
+    {
+      "id": "ember_seraphine",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "ember_skysong",
+          "seraphine_gale"
+        ]
+      },
+      "lines": [
+        "Ember: 'The weather is reacting to my mood again.'",
+        "Seraphine: 'Fascinating! Can you get angry at that cloud?'",
+        "Ember: '...You're not helping.'"
+      ]
+    },
+    {
+      "id": "korrath_brokk",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "korrath_peaks",
+          "brokk_embervein"
+        ]
+      },
+      "lines": [
+        "Korrath: 'Your mountains are small.'",
+        "Brokk: 'Your stories are long.'",
+        "Korrath: '...We shall see who breaks first.'"
+      ]
+    },
+    {
+      "id": "sythia_voss",
+      "trigger": "travel",
+      "conditions": {
+        "companions": [
+          "sythia_coils",
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Sythia: 'Your research methods are... hasty.'",
+        "Voss: 'Your research methods take decades.'",
+        "Sythia: 'Quality requires patience.'",
+        "Voss: 'Results require action.'"
+      ]
+    },
+    {
+      "id": "rook_undead",
       "trigger": "enemy_family",
       "conditions": {
         "enemy_families": [
-          "humanoid"
+          "undead"
+        ],
+        "companions": [
+          "rook"
+        ]
+      },
+      "lines": [
+        "Rook: 'Undead. They don't stay down. Reminds me of my ex-wife.'"
+      ]
+    },
+    {
+      "id": "elen_undead",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "undead"
+        ],
+        "companions": [
+          "sister_elen"
+        ]
+      },
+      "lines": [
+        "Sister Elen: 'The dead should rest. Let me help them.'"
+      ]
+    },
+    {
+      "id": "kess_beast",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "beast"
         ],
         "companions": [
           "kess"
         ]
       },
       "lines": [
-        "Kess checks the fallen purses, then looks offended that you noticed."
+        "Kess: 'Beasts! Finally, something that fights fair. Mostly.'"
+      ]
+    },
+    {
+      "id": "voss_construct",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "construct"
+        ],
+        "companions": [
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Voss: 'Constructs! Ancient magical engineering. I want to take one apart. After we kill it.'"
+      ]
+    },
+    {
+      "id": "brann_humanoid",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "humanoid"
+        ],
+        "companions": [
+          "captain_brann"
+        ]
+      },
+      "lines": [
+        "Brann: 'Bandits. Always bandits. When will they learn?'"
+      ]
+    },
+    {
+      "id": "veyra_demon",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "demon"
+        ],
+        "companions": [
+          "veyra_ashhorn"
+        ]
+      },
+      "lines": [
+        "Veyra: 'Demons. Let me check their contracts for loopholes.'"
+      ]
+    },
+    {
+      "id": "cael_dragon",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "dragon"
+        ],
+        "companions": [
+          "cael_sunward"
+        ]
+      },
+      "lines": [
+        "Cael: 'Dragonkin. Honorable foes. I shall salute them before striking.'"
+      ]
+    },
+    {
+      "id": "gruk_humanoid",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "humanoid"
+        ],
+        "companions": [
+          "gruk_ironjaw"
+        ]
+      },
+      "lines": [
+        "Gruk: 'Humanoids fight. Gruk fights better. Simple math.'"
+      ]
+    },
+    {
+      "id": "pip_construct",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "construct"
+        ],
+        "companions": [
+          "pip_sprocket"
+        ]
+      },
+      "lines": [
+        "Pip: 'Constructs! I can see seventeen design flaws. And three brilliant innovations!'"
+      ]
+    },
+    {
+      "id": "rose_beast",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "beast"
+        ],
+        "companions": [
+          "rose_underhill"
+        ]
+      },
+      "lines": [
+        "Rose: 'Beasts. At least they don't ask questions before trying to eat you.'"
+      ]
+    },
+    {
+      "id": "ember_elemental",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "elemental"
+        ],
+        "companions": [
+          "ember_skysong"
+        ]
+      },
+      "lines": [
+        "Ember: 'Elementals! Cousins, in a way. Angry, violent cousins.'"
+      ]
+    },
+    {
+      "id": "korrath_elemental",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "elemental"
+        ],
+        "companions": [
+          "korrath_peaks"
+        ]
+      },
+      "lines": [
+        "Korrath: 'Elementals. The mountains taught me to respect them. Then punch them.'"
+      ]
+    },
+    {
+      "id": "sythia_undead",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "undead"
+        ],
+        "companions": [
+          "sythia_coils"
+        ]
+      },
+      "lines": [
+        "Sythia: 'Undead. I remember when some of these were alive. Uncomfortable.'"
+      ]
+    },
+    {
+      "id": "nethys_beast",
+      "trigger": "enemy_family",
+      "conditions": {
+        "enemy_families": [
+          "beast"
+        ],
+        "companions": [
+          "nethys_websong"
+        ]
+      },
+      "lines": [
+        "Nethys: 'Beasts. My webs work better on things with legs. These have too many.'"
+      ]
+    },
+    {
+      "id": "rook_bandit_chief",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "rook"
+        ]
+      },
+      "lines": [
+        "Rook: 'Bandit chief down. Sloppy form, but effective. I'll take it.'"
+      ]
+    },
+    {
+      "id": "elen_shadow_warden",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "sister_elen"
+        ]
+      },
+      "lines": [
+        "Sister Elen: 'The Shadow Warden is at peace now. As are we, for the moment.'"
+      ]
+    },
+    {
+      "id": "kess_iron_colossus",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "kess"
+        ]
+      },
+      "lines": [
+        "Kess: 'Giant metal thing destroyed. I'm adding 'colossus-slayer' to my resume.'"
+      ]
+    },
+    {
+      "id": "voss_dawn_tyrant",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Voss: 'The Dawn Tyrant falls! The magical residue alone is worth the fight!'"
+      ]
+    },
+    {
+      "id": "brann_any_boss",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "captain_brann"
+        ]
+      },
+      "lines": [
+        "Brann: 'Another threat to Emberwatch neutralized. The city sleeps safer tonight.'"
+      ]
+    },
+    {
+      "id": "gruk_any_boss",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "gruk_ironjaw"
+        ]
+      },
+      "lines": [
+        "Gruk: 'Strong enemy. Gruk stronger. This is good fight.'"
+      ]
+    },
+    {
+      "id": "pip_any_boss",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "pip_sprocket"
+        ]
+      },
+      "lines": [
+        "Pip: 'Boss defeated! Now, can I scavenge the parts? Please?'"
+      ]
+    },
+    {
+      "id": "ember_any_boss",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "ember_skysong"
+        ]
+      },
+      "lines": [
+        "Ember: 'Victory! I'm so excited I might accidentally set something on fire. Stand back.'"
+      ]
+    },
+    {
+      "id": "korrath_any_boss",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "korrath_peaks"
+        ]
+      },
+      "lines": [
+        "Korrath: 'The mountain falls. The goliath stands. As it should be.'"
+      ]
+    },
+    {
+      "id": "sythia_any_boss",
+      "trigger": "boss_victory",
+      "conditions": {
+        "companions": [
+          "sythia_coils"
+        ]
+      },
+      "lines": [
+        "Sythia: 'Another chapter closed. I shall record this in my chronicles.'"
+      ]
+    },
+    {
+      "id": "rook_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "rook"
+        ]
+      },
+      "lines": [
+        "Rook groans: 'I've had worse. Get me up. This isn't over.'"
       ]
     },
     {
@@ -105,42 +880,404 @@
       "conditions": {
         "companion_ids": [
           "sister_elen"
-        ],
+        ]
+      },
+      "lines": [
+        "Sister Elen whispers: 'The shrine... will heal me... just need... rest...'"
+      ]
+    },
+    {
+      "id": "kess_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "kess"
+        ]
+      },
+      "lines": [
+        "Kess coughs: 'Okay, that was... actually pretty impressive. On their part. Ow.'"
+      ]
+    },
+    {
+      "id": "voss_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Voss mutters: 'Fascinating... the pain is... quite educational...'"
+      ]
+    },
+    {
+      "id": "brann_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "captain_brann"
+        ]
+      },
+      "lines": [
+        "Brann growls: 'Emberwatch... doesn't fall... and neither do I...'"
+      ]
+    },
+    {
+      "id": "gruk_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "gruk_ironjaw"
+        ]
+      },
+      "lines": [
+        "Gruk roars: 'Gruk not dead yet! Gruk just... resting!'"
+      ]
+    },
+    {
+      "id": "pip_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "pip_sprocket"
+        ]
+      },
+      "lines": [
+        "Pip wheezes: 'Note to self... that invention... needs more testing...'"
+      ]
+    },
+    {
+      "id": "ember_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "ember_skysong"
+        ]
+      },
+      "lines": [
+        "Ember gasps: 'My fire... dimming... need to... reignite...'"
+      ]
+    },
+    {
+      "id": "korrath_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "korrath_peaks"
+        ]
+      },
+      "lines": [
+        "Korrath rumbles: 'The mountain... cracks... but does not... break...'"
+      ]
+    },
+    {
+      "id": "sythia_downed",
+      "trigger": "companion_downed",
+      "conditions": {
+        "companion_ids": [
+          "sythia_coils"
+        ]
+      },
+      "lines": [
+        "Sythia hisses: 'Three centuries... and this is how... I fall...'"
+      ]
+    },
+    {
+      "id": "rook_inn",
+      "trigger": "rest",
+      "conditions": {
         "companions": [
           "rook"
         ]
       },
       "lines": [
-        "Rook: ‘Elen is down. End this now.’"
+        "Rook: 'Ale's terrible. Bed's lumpy. Perfect. Reminds me of the good old days.'"
+      ]
+    },
+    {
+      "id": "elen_inn",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "sister_elen"
+        ]
+      },
+      "lines": [
+        "Sister Elen: 'A warm bed and quiet prayers. The shrine would approve.'"
+      ]
+    },
+    {
+      "id": "kess_inn",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "kess"
+        ]
+      },
+      "lines": [
+        "Kess: 'I found three secret exits, two hidden compartments, and the innkeeper's secret stash. Busy night.'"
+      ]
+    },
+    {
+      "id": "voss_inn",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Voss: 'I've been reading all night. Did you know this inn was built on ancient burial grounds? No? Just me?'"
+      ]
+    },
+    {
+      "id": "rose_inn",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "rose_underhill"
+        ]
+      },
+      "lines": [
+        "Rose: 'Second breakfast, elevenses, lunch, afternoon tea, dinner, and supper. Productive day.'"
+      ]
+    },
+    {
+      "id": "pip_inn",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "pip_sprocket"
+        ]
+      },
+      "lines": [
+        "Pip: 'I took apart the inn's clock and put it back together. It now runs backwards. Oops.'"
+      ]
+    },
+    {
+      "id": "ember_inn",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "ember_skysong"
+        ]
+      },
+      "lines": [
+        "Ember: 'I tried to keep my temperature down, but I think I scorched the sheets. Again.'"
+      ]
+    },
+    {
+      "id": "nethys_inn",
+      "trigger": "rest",
+      "conditions": {
+        "companions": [
+          "nethys_websong"
+        ]
+      },
+      "lines": [
+        "Nethys: 'I may have webbed the corners of my room. Old habits. The spiders understand.'"
       ]
     },
     {
       "id": "rook_marriage",
       "trigger": "marriage",
       "conditions": {
-        "companion_ids": [
+        "companions": [
           "rook"
         ]
       },
       "lines": [
-        "Kess loudly loses a bet about whether Rook would ever propose first."
+        "Rook: 'Married, eh? My condolences. Or congratulations. Whichever applies.'"
       ]
     },
     {
-      "id": "mage_voss",
+      "id": "elen_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companions": [
+          "sister_elen"
+        ]
+      },
+      "lines": [
+        "Sister Elen: 'Blessings upon your union. May the shrine watch over you both.'"
+      ]
+    },
+    {
+      "id": "kess_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companions": [
+          "kess"
+        ]
+      },
+      "lines": [
+        "Kess: 'Married! Does this mean I can't flirt with you anymore? Asking for research purposes.'"
+      ]
+    },
+    {
+      "id": "voss_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companions": [
+          "magister_voss"
+        ]
+      },
+      "lines": [
+        "Voss: 'Fascinating. Marriage. I shall observe the dynamics closely. For science.'"
+      ]
+    },
+    {
+      "id": "veyra_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companions": [
+          "veyra_ashhorn"
+        ]
+      },
+      "lines": [
+        "Veyra: 'Married. Let me check the contract for loopholes. Just in case.'"
+      ]
+    },
+    {
+      "id": "rose_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companions": [
+          "rose_underhill"
+        ]
+      },
+      "lines": [
+        "Rose: 'Married! Does this mean more pie at the wedding feast? Please say yes.'"
+      ]
+    },
+    {
+      "id": "ember_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companions": [
+          "ember_skysong"
+        ]
+      },
+      "lines": [
+        "Ember: 'Congratulations! I'm so happy I might—oh no, the curtains are on fire. Sorry.'"
+      ]
+    },
+    {
+      "id": "sythia_marriage",
+      "trigger": "marriage",
+      "conditions": {
+        "companions": [
+          "sythia_coils"
+        ]
+      },
+      "lines": [
+        "Sythia: 'In my three centuries, I have seen many unions. Yours shows promise.'"
+      ]
+    },
+    {
+      "id": "rook_orc_player",
       "trigger": "travel",
       "conditions": {
-        "player_class_ids": [
-          "mage",
-          "archmage",
-          "archon"
+        "player_race_ids": [
+          "orc",
+          "half_orc"
+        ],
+        "companions": [
+          "rook"
+        ]
+      },
+      "lines": [
+        "Rook: 'An orc. Good. I needed someone who understands the value of a well-placed axe.'"
+      ]
+    },
+    {
+      "id": "elen_halfling_player",
+      "trigger": "travel",
+      "conditions": {
+        "player_race_ids": [
+          "halfling"
+        ],
+        "companions": [
+          "sister_elen"
+        ]
+      },
+      "lines": [
+        "Sister Elen: 'A halfling. The shrine teaches that the small often carry the greatest burdens.'"
+      ]
+    },
+    {
+      "id": "kess_gnome_player",
+      "trigger": "travel",
+      "conditions": {
+        "player_race_ids": [
+          "gnome"
+        ],
+        "companions": [
+          "kess"
+        ]
+      },
+      "lines": [
+        "Kess: 'A gnome! Do you have gadgets? Explosions? I love gadgets and explosions.'"
+      ]
+    },
+    {
+      "id": "voss_genasi_player",
+      "trigger": "travel",
+      "conditions": {
+        "player_race_ids": [
+          "genasi"
         ],
         "companions": [
           "magister_voss"
         ]
       },
       "lines": [
-        "Voss critiques your spell posture for three uninterrupted miles."
+        "Voss: 'A genasi! Elemental heritage. Fascinating. Can I run some tests?'"
+      ]
+    },
+    {
+      "id": "brann_goliath_player",
+      "trigger": "travel",
+      "conditions": {
+        "player_race_ids": [
+          "goliath"
+        ],
+        "companions": [
+          "captain_brann"
+        ]
+      },
+      "lines": [
+        "Brann: 'A goliath. Emberwatch could use more of your strength. And your height.'"
+      ]
+    },
+    {
+      "id": "veyra_lamia_player",
+      "trigger": "travel",
+      "conditions": {
+        "player_race_ids": [
+          "lamia"
+        ],
+        "companions": [
+          "veyra_ashhorn"
+        ]
+      },
+      "lines": [
+        "Veyra: 'A lamia. Ancient and wise. Also, excellent at intimidating debtors.'"
+      ]
+    },
+    {
+      "id": "cael_arachne_player",
+      "trigger": "travel",
+      "conditions": {
+        "player_race_ids": [
+          "arachne"
+        ],
+        "companions": [
+          "cael_sunward"
+        ]
+      },
+      "lines": [
+        "Cael: 'An arachne. The dragonkin respect all who weave their own destiny.'"
       ]
     }
   ]

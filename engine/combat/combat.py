@@ -411,13 +411,20 @@ class Battle:
         return False
 
     def end_round(self) -> None:
-        """End-of-round upkeep: DOT/HOT ticks and cooldown countdowns."""
+        """End-of-round upkeep: DOT/HOT ticks, resource regen, and cooldown countdowns."""
         if self.is_over:
             return
         for entity in [*self.living_allies, *self.living_enemies]:
             report = entity.tick_status_effects()
             for message in report.messages:
                 self._say(message, kind="status")
+            # Per-turn MP and SP regeneration
+            if hasattr(entity, "regenerate_resources"):
+                mp_gained, sp_gained = entity.regenerate_resources()
+                if mp_gained > 0:
+                    self._say(f"{entity.name} recovers {mp_gained:.0f} MP.", kind="status")
+                if sp_gained > 0:
+                    self._say(f"{entity.name} recovers {sp_gained:.0f} SP.", kind="status")
             if hasattr(entity, "tick_cooldowns"):
                 entity.tick_cooldowns()
 
@@ -521,6 +528,7 @@ class Battle:
         lines = [
             f"HP: {self.player.hp_text()}",
             f"MP: {self.player.mp_text()}",
+            f"SP: {self.player.sp_text()}",
             f"Round: {self.round}",
         ]
         if self.player.statuses:

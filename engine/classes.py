@@ -145,6 +145,8 @@ class ClassDefinition:
     passive_modifiers: ModifierSet = field(default_factory=ModifierSet)
     starting_items: dict[str, int] = field(default_factory=dict)
     starting_gold: int = 0
+    #: Unique class perks that provide conditional or always-on bonuses.
+    perks: list[dict[str, Any]] = field(default_factory=list)
 
     # ------------------------------------------------------------------
     @property
@@ -305,4 +307,5 @@ class ClassDefinition:
             passive_modifiers=ModifierSet.from_dict(payload.get("passive_modifiers")),
             starting_items=starting_items,
             starting_gold=int(payload.get("starting_gold", 0)),
+            perks=[dict(p) for p in payload.get("perks", [])],
         )

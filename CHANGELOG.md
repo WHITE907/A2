@@ -2,6 +2,241 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.11.1 - Skills Expansion and Class Perks
+
+### Skills expansion (50 new skills, 122 total)
+- **15 race-specific skills** (one per race, gated by `required_race_ids`):
+  Adaptive Strike (Human), Moonlight Arrow (Elf), Stoneguard (Dwarf),
+  Dragon Breath (Dragonkin), Hellfire (Demon), Infernal Charm (Tiefling),
+  Predator's Rush (Beastkin), Dual Nature (Half-Elf), Blood Fury (Orc),
+  Tinker's Trap (Gnome), Lucky Dodge (Halfling), Elemental Burst (Genasi),
+  Mountain's Endurance (Goliath), Constrict (Lamia), Web Trap (Arachne)
+- **20 class-specific skills** (gated by `required_class_ids`):
+  Oath Strike, Shadow Cleave, Fortify, Blade Flourish, Multishot, Vanish,
+  Arcane Barrage, Time Stop, Rampage, Blood Strike, Command: Attack,
+  Analyze Weakness, Mass Heal, Smite Evil, Prophecy, Curse of Agony,
+  Cursed Strike, Divine Judgment, Shadow Dance
+- **15 general utility skills**: Meditation, Catch Breath, Battle Cry,
+  War Horn, Intimidate, Taunting Shout, Feint, Arcane Shield, Iron Skin,
+  Berserker Rage, Focus Mind, Evasive Maneuvers, Steady Aim, Blood Pact,
+  Adrenaline Rush
+
+### Class perks system (66 classes)
+- New `perks` field on `ClassDefinition` with `trigger`, `threshold`,
+  `modifiers`, and `special` properties
+- Always-on perks (e.g. Mage: +8% magic power, Sentinel: +20% armor)
+- Conditional perks (e.g. Berserker: +25% power below 40% HP)
+- Special perks stored but not yet wired into combat (lifesteal, counter, reflect)
+- Perks applied automatically in `Player._equipment_modifiers()`
+
+### Content totals
+- Skills: 122 (was 72)
+- Classes with perks: 66 of 73
+- Tests: 443
+
+## v0.11.0 - Tier 3→4 Chains, Level 41–55 Content, and Travel Events
+
+### Tier 3→4 promotion chains
+- All 27 tier-3 classes now have tier-4 promotion targets (24 new tier-4 classes)
+- 73 total classes with complete tier 1→2→3→4 chains for all 9 class lines
+- New tier-4 classes: Shadow Reaver, Iron Bastion, Stormblade, Illusionist,
+  Time Weaver, Lich Lord, Bloodlord, Blood Sovereign, Horde Lord, Supreme
+  Commander, Grand Strategist, Cavalry Lord, Trail Warden, Alpha Predator,
+  Deadeye, Wraith Lord, Void Walker, Demolitionist, Divine Oracle, Purifier,
+  Fate Weaver, Archfiend, Doom Blade, Soul Reaper
+
+### Levels 41–55 content
+- 8 new areas: Ironveil Approach, Ironveil (faction capital), Ashen Wastes,
+  Cinder Depths, Sunken Citadel, Abyssal Halls, Molten Sanctum, Void Throne
+- 13 new enemies: Stone Revenant, Petrified Treant, Void Stalker, Ash Wraith,
+  Ember Elemental, Cinder Fiend, Magma Golem, Fire Drake, Drowned Knight,
+  Abyssal Horror, Void Archon, Infernal Titan
+- 1 new phased boss: Void Sovereign (3 phases, enrage, telegraph, environment)
+- 5 new quests: Welcome to Ironveil, Ashen Expedition, Heart of Cinder,
+  Secrets of the Sunken Citadel, The Void Throne
+- New faction: Iron Covenant
+- 3 new NPCs: Commander Vex, Artificer Zara, Chronicler Thon
+- 2 new shops: Ironveil Armory, Zara's Workshop
+
+### Random travel events
+- 10 event types triggered during travel (20% chance per journey)
+- Positive: merchant, shrine, traveller, herbs, treasure
+- Negative: ambush, storm, trap
+- Neutral: ruins, omen
+- Events affect HP, MP, SP, gold, and EXP
+
+### Branching dialogues
+- 5 new dialogue trees (15 total)
+- Iron Covenant recruitment (class-specific paths)
+- Artificer Zara's Resonance Engine (gnome/genasi/mage paths)
+- Chronicler Thon's First War history (lamia/elf/dragonkin/scholar paths)
+- Mother Sable's Ash Court negotiation (demon/faction-specific)
+- Ironveil citizen greetings (orc/dwarf/halfling/arachne/class paths)
+
+### Content totals
+- Classes: 73 (was 49)
+- Enemies: 43 (was 30)
+- Areas: 25 (was 17)
+- Quests: 44 (was 39)
+- Dialogues: 15 (was 10)
+- Factions: 9 (was 8)
+- Skills: 72 (was 71)
+- Tests: 443
+
+## v0.10.0 - Promotions, Quests, Achievements, and Dialogue
+
+A systems and content expansion completing the promotion framework and adding
+narrative depth.
+
+### Tier 2→3 lateral promotions
+- All 9 tier-2 classes now have 3 promotion paths each (24 new tier-3 classes)
+- Knight → Paladin | Dark Knight | Sentinel
+- Duelist → Assassin | Blademaster | Trickster
+- Mage → Archmage | Chronomancer | Necromancer
+- Berserker → Berserker Champion | Bloodrager | Warchief
+- Warlord → High Commander | Tactician | Banneret
+- Ranger → Pathfinder | Beastmaster | Marksman
+- Shadow Dancer → Phantom | Nightstalker | Saboteur
+- Cleric → High Priest | Inquisitor | Oracle
+- Warlock → Dread Lord | Hexblade | Soulbinder
+- 49 total classes (up from 25)
+
+### Race-specific questlines
+- 20 new race-specific quests covering all 15 races
+- Heritage quests, cultural challenges, and race-gated dialogue
+- Orc blood-debt chain, Gnome invention quests, Halfling community stories,
+  Genasi elemental heritage, Goliath endurance trials, Lamia ancient lore,
+  Arachne fate-weaving
+- 39 total quests (up from 19)
+
+### Achievement/Codex system
+- New `engine/codex.py` module with `Codex` class and 36 achievement definitions
+- Tracks: enemies defeated, bosses slain, areas visited, skills learned,
+  quests completed, companions recruited, banter heard, marriages, promotions, levels
+- Wired into game flow: combat, travel, recruitment, quests, skills, banter, marriage
+- Codex persisted in save/load
+- Achievement unlock notifications in game messages
+
+### Branching dialogues
+- 8 new branching dialogue trees (10 total)
+- Race-specific paths: Dwarf, Goliath, Lamia, Elf, Genasi, Dragonkin, Half-Elf,
+  Demon/Tiefling, Halfling, Gnome, Arachne, Orc
+- Class-specific paths: Cleric, Paladin, Mage
+- Faction-specific paths: Ashvale Council, Merchant Caravans, Emberwatch Wardens
+- Dialogues set flags, change reputation, and trigger quests
+
+### Content totals
+- Classes: 49 (was 25)
+- Quests: 39 (was 19)
+- Dialogues: 10 (was 2)
+- Skills: 71 (was 70)
+- Items: 118 (was 112)
+- Achievements: 36 (new)
+- Tests: 443
+
+## v0.9.0 - Content Enrichment
+
+A content-focused expansion building on v0.8.0's systems: companion banter,
+race reactivity, boss design, equipment sets, and advanced skills.
+
+### Companion banter (92 entries)
+- 92 banter entries across all 6 trigger types (travel, rest, boss_victory,
+  enemy_family, companion_downed, marriage)
+- Companion-to-companion pair banter (Rook+Brann, Elen+Veyra, Kess+Nyra, etc.)
+- Race-specific banter (companions react to player being orc, gnome, lamia, etc.)
+- Area-specific travel banter for all major locations
+- Enemy family banter for undead, beasts, constructs, demons, elementals
+
+### Race reactivity
+- All 8 shops now have race-reactive pricing (`race_buy_rates`) and exclusive stock (`race_item_ids`)
+- 18 new race-themed items (Dwarven Axe, Elven Bow, Drake Scale Armor, Silk Cloak, etc.)
+- Second branching dialogue tree (Silver Sapling) with 5 race-specific paths
+  (Elf, Orc, Gnome, Lamia, Arachne) plus a generic path
+
+### Boss design
+- All 5 bosses now have advanced mechanics:
+  - Bandit Chief: 2 phases, enrage timer, telegraph attacks
+  - Shadow Warden: 3 phases, telegraph, environmental hazards, phase shields
+  - Mire Oracle: 3 phases, enrage, telegraph, environment, summons
+  - Iron Colossus: 3 phases, enrage, telegraph, environment, summons, shields
+  - Dawn Tyrant: 3 phases, enrage, telegraph, environment (existing)
+
+### Equipment sets (9 total)
+- 8 new equipment sets added (up from 1):
+  - Race-themed: Elven Moonweave, Dwarven Deepforge, Dragonkin Scalemail
+  - Class-line: Paladin's Vestments, Assassin's Shrouds, Archmage's Regalia
+  - Boss drops: Dawn Tyrant's Spoils, Shadow Warden's Relics
+- Each set has 2/3/4 piece bonuses with meaningful power progression
+
+### Advanced skills (10 new)
+- 10 new skills using previously-unused advanced effect types:
+  - Vampiric Strike (life_drain), Executioner's Blade (execute)
+  - Purifying Light (cleanse), Arcane Disruption (dispel)
+  - Riposte Stance (counter), Challenging Shout (taunt)
+  - Temporal Shift (cooldown reduction), Curse Mirror (status_transfer)
+  - Time Bomb (delayed_attack), Guardian Bond (damage_redirect)
+
+### Content totals
+- Skills: 70 (was 60)
+- Items: 112 (was 94)
+- Banter: 92 (was 10)
+- Dialogues: 2 (was 1)
+- Equipment sets: 9 (was 1)
+- Bosses with phases: 5 (was 1)
+- Tests: 443
+
+## v0.8.0 - Resources, Races, and Branching Paths
+
+A major systems expansion adding stamina, sub-races, lateral promotions, and new peoples.
+
+### Mana + Stamina split
+- Added Stamina (SP) as a second combat resource alongside Mana (MP)
+- SP scales off END (+ STR minor), MP continues to scale off INT
+- Both resources regenerate per turn in combat, scaling off their respective stats
+- Skills now have ``sp_cost`` field alongside ``mp_cost``
+- Pure physical skills use SP, pure magical skills use MP, hybrid skills can use both
+- Entity base class tracks current_sp with full lifecycle (spend, restore, serialise)
+- ResourceEffect supports both MP and SP restoration via ``"resource"`` key
+
+### Skill tags
+- Every skill now carries a ``tags`` list (e.g. ``["physical", "melee", "fire"]``)
+- Helper properties: ``is_physical``, ``is_magical``, ``is_hybrid``
+- Tags drive resource determination, UI categorisation, and filtering
+- Tags shown in skill detail tooltips
+
+### Sub-races
+- Every race now has 2-3 sub-races with unique bonus stats, modifiers, and traits
+- Character creation flow: Race → Sub-Race → Class
+- Sub-race bonuses stack with base race bonuses
+- Save/load persists sub-race selection
+- Example: Elf → High Elf (+INT, +magic_power), Wood Elf (+AGI, +evasion), Drow (+INT, +crit_damage)
+
+### Lateral class promotions
+- Starting classes now have 3 promotion paths each instead of 1
+- Squire → Knight (tank) | Berserker (DPS) | Warlord (support)
+- Maiden → Duelist (agility) | Ranger (ranged) | Shadow Dancer (stealth)
+- Acolyte → Mage (elemental) | Cleric (healing) | Warlock (dark magic)
+- 6 new tier-2 classes added (25 total, up from 19)
+
+### New races
+- 7 new races added: Orc, Gnome, Halfling, Genasi, Goliath, Lamia, Arachne
+- Each with 2-3 sub-races and unique traits (15 total races, up from 8)
+- 7 new companions representing each new race (21 total, up from 14)
+- 7 new NPCs with dialogue for each new race (25 total NPCs)
+
+### Gender display
+- Companions and NPCs now have a ``gender`` field
+- Gender displayed in Party, Talk, and companion detail screens
+- All 21 companions and 25 NPCs have assigned genders
+
+### Content totals
+- Classes: 25 (was 19)
+- Races: 15 (was 8)
+- Companions: 21 (was 14)
+- Items: 94 (was 88)
+- NPCs: 25 (was 18)
+- Tests: 443 (was 442, +1 new SP test)
+
 ## v0.7.0 - Living Systems
 
 A broad engine expansion focused on reusable behaviours rather than one-off

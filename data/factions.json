@@ -1,10 +1,80 @@
-{"factions":[
-{"id":"ashvale_council","name":"Ashvale Council","rivals":["merchant_caravans"],"shop_discount_per_point":0.001,"max_discount":0.12},
-{"id":"emberwatch_wardens","name":"Emberwatch Wardens","rivals":["ash_court"],"shop_discount_per_point":0.0015,"max_discount":0.15},
-{"id":"stonehaven_clans","name":"Stonehaven Clans","rivals":[],"shop_discount_per_point":0.0012,"max_discount":0.14},
-{"id":"skyreach_archivists","name":"Skyreach Archivists","rivals":[],"shop_discount_per_point":0.0012,"max_discount":0.14},
-{"id":"ash_court","name":"Ash Court","rivals":["emberwatch_wardens","dragonkin_oathkeepers"],"shop_discount_per_point":0.001,"max_discount":0.12},
-{"id":"elven_pathkeepers","name":"Elven Pathkeepers","rivals":[],"shop_discount_per_point":0.001,"max_discount":0.12},
-{"id":"dragonkin_oathkeepers","name":"Dragonkin Oathkeepers","rivals":["ash_court"],"shop_discount_per_point":0.001,"max_discount":0.12},
-{"id":"merchant_caravans","name":"Merchant Caravans","rivals":["ashvale_council"],"shop_discount_per_point":0.002,"max_discount":0.2}
-]}
+{
+  "factions": [
+    {
+      "id": "ashvale_council",
+      "name": "Ashvale Council",
+      "rivals": [
+        "merchant_caravans"
+      ],
+      "shop_discount_per_point": 0.001,
+      "max_discount": 0.12
+    },
+    {
+      "id": "emberwatch_wardens",
+      "name": "Emberwatch Wardens",
+      "rivals": [
+        "ash_court"
+      ],
+      "shop_discount_per_point": 0.0015,
+      "max_discount": 0.15
+    },
+    {
+      "id": "stonehaven_clans",
+      "name": "Stonehaven Clans",
+      "rivals": [],
+      "shop_discount_per_point": 0.0012,
+      "max_discount": 0.14
+    },
+    {
+      "id": "skyreach_archivists",
+      "name": "Skyreach Archivists",
+      "rivals": [],
+      "shop_discount_per_point": 0.0012,
+      "max_discount": 0.14
+    },
+    {
+      "id": "ash_court",
+      "name": "Ash Court",
+      "rivals": [
+        "emberwatch_wardens",
+        "dragonkin_oathkeepers"
+      ],
+      "shop_discount_per_point": 0.001,
+      "max_discount": 0.12
+    },
+    {
+      "id": "elven_pathkeepers",
+      "name": "Elven Pathkeepers",
+      "rivals": [],
+      "shop_discount_per_point": 0.001,
+      "max_discount": 0.12
+    },
+    {
+      "id": "dragonkin_oathkeepers",
+      "name": "Dragonkin Oathkeepers",
+      "rivals": [
+        "ash_court"
+      ],
+      "shop_discount_per_point": 0.001,
+      "max_discount": 0.12
+    },
+    {
+      "id": "merchant_caravans",
+      "name": "Merchant Caravans",
+      "rivals": [
+        "ashvale_council"
+      ],
+      "shop_discount_per_point": 0.002,
+      "max_discount": 0.2
+    },
+    {
+      "id": "iron_covenant",
+      "name": "Iron Covenant",
+      "rivals": [
+        "ash_court"
+      ],
+      "shop_discount_per_point": 0.0015,
+      "max_discount": 0.18
+    }
+  ]
+}

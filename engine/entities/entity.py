@@ -69,6 +69,7 @@ class Entity(ABC):
         derived = self.derived_stats()
         self.current_hp: float = float(derived.max_hp)
         self.current_mp: float = float(derived.max_mp)
+        self.current_sp: float = float(derived.max_sp)
 
     # ------------------------------------------------------------------
     # Modifier sourcing
@@ -97,7 +98,7 @@ class Entity(ABC):
     def invalidate_stats(self) -> None:
         """Drop the derived-stat cache.
 
-        Called by anything that changes stats, level, gear or statuses.  HP/MP
+        Called by anything that changes stats, level, gear or statuses.  HP/MP/SP
         are clamped to the new maximums but *not* refilled - losing a +max-HP
         buff should not heal you.
         """
@@ -107,6 +108,7 @@ class Entity(ABC):
             derived = self.derived_stats()
             self.current_hp = min(self.current_hp, float(derived.max_hp))
             self.current_mp = min(self.current_mp, float(derived.max_mp))
+            self.current_sp = min(self.current_sp, float(derived.max_sp))
 
     def derived_stats(self) -> DerivedStats:
         if self._cached is None:
@@ -127,6 +129,10 @@ class Entity(ABC):
         return self.derived_stats().max_mp
 
     @property
+    def max_sp(self) -> int:
+        return self.derived_stats().max_sp
+
+    @property
     def is_alive(self) -> bool:
         return self.current_hp > 0
 
@@ -137,6 +143,10 @@ class Entity(ABC):
     @property
     def mp_fraction(self) -> float:
         return 0.0 if self.max_mp <= 0 else max(0.0, min(1.0, self.current_mp / self.max_mp))
+
+    @property
+    def sp_fraction(self) -> float:
+        return 0.0 if self.max_sp <= 0 else max(0.0, min(1.0, self.current_sp / self.max_sp))
 
     # ------------------------------------------------------------------
     # Damage / healing
@@ -216,6 +226,12 @@ class Entity(ABC):
         self.current_mp = max(0.0, min(float(self.max_mp), self.current_mp + float(amount)))
         return self.current_mp - before
 
+    def change_sp(self, amount: float) -> float:
+        """Add (or subtract) SP; returns the actual delta after clamping."""
+        before = self.current_sp
+        self.current_sp = max(0.0, min(float(self.max_sp), self.current_sp + float(amount)))
+        return self.current_sp - before
+
     def can_afford(self, cost: float) -> bool:
         return self.current_mp >= cost
 
@@ -226,12 +242,38 @@ class Entity(ABC):
         self.current_mp -= float(cost)
         return True
 
+    def can_afford_sp(self, cost: float) -> bool:
+        return self.current_sp >= cost
+
+    def spend_sp(self, cost: float) -> bool:
+        """Pay an SP cost.  Returns ``False`` and spends nothing if too poor."""
+        if not self.can_afford_sp(cost):
+            return False
+        self.current_sp -= float(cost)
+        return True
+
     def restore_fully(self) -> None:
         """Full heal and clear all statuses - inn rest, respawn, new battle."""
         self.statuses.clear()
         self.invalidate_stats()
         self.current_hp = float(self.max_hp)
         self.current_mp = float(self.max_mp)
+        self.current_sp = float(self.max_sp)
+
+    def regenerate_resources(self) -> tuple[float, float]:
+        """Per-turn MP and SP regeneration, scaling off INT and END respectively.
+        
+        Returns (mp_gained, sp_gained) for combat log messages.
+        """
+        primaries = self.effective_primaries()
+        # MP regen: base 2 + 5% of INT
+        mp_regen = 2.0 + primaries.get("INT", 0.0) * 0.05
+        # SP regen: base 3 + 5% of END
+        sp_regen = 3.0 + primaries.get("END", 0.0) * 0.05
+        
+        mp_gained = self.change_mp(mp_regen)
+        sp_gained = self.change_sp(sp_regen)
+        return mp_gained, sp_gained
 
     def kill(self) -> None:
         self.current_hp = 0.0
@@ -352,6 +394,9 @@ class Entity(ABC):
     def mp_text(self) -> str:
         return f"{int(self.current_mp)}/{self.max_mp}"
 
+    def sp_text(self) -> str:
+        return f"{int(self.current_sp)}/{self.max_sp}"
+
     def __repr__(self) -> str:  # pragma: no cover - debugging aid
         return f"<{type(self).__name__} {self.name} Lv{self.level} {self.hp_text()}>"
 
@@ -365,6 +410,7 @@ class Entity(ABC):
             "base_stats": self.base_stats.to_dict(),
             "current_hp": self.current_hp,
             "current_mp": self.current_mp,
+            "current_sp": self.current_sp,
             "statuses": [status.to_dict() for status in self.statuses],
         }
 
@@ -373,3 +419,4 @@ class Entity(ABC):
         self.invalidate_stats()
         self.current_hp = float(payload.get("current_hp", self.max_hp))
         self.current_mp = float(payload.get("current_mp", self.max_mp))
+        self.current_sp = float(payload.get("current_sp", self.max_sp))
