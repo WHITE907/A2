@@ -93,6 +93,13 @@ LOG_COLORS = {
     "heal": "#7fc98a",
     "status": "#d8c07a",
     "system": FG_DIM,
+    "common": "#d8d8d8",
+    "uncommon": "#65c466",
+    "rare": "#5da9e9",
+    "epic": "#b678e5",
+    "legendary": "#e5a83f",
+    "quest": "#7fb5e0",
+    "achievement": "#f0d060",
 }
 
 

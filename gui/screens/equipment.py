@@ -64,6 +64,7 @@ class EquipmentWindow(tk.Toplevel):
         theme.flat_button(buttons, "Unequip", self._unequip, width=10).pack(side=tk.LEFT, padx=8)
         theme.flat_button(buttons, "Enchant", self._enchant, width=10).pack(side=tk.LEFT, padx=8)
         theme.flat_button(buttons, "Upgrade", self._upgrade, width=10).pack(side=tk.LEFT, padx=8)
+        theme.flat_button(buttons, "Best", self._equip_best, width=8).pack(side=tk.LEFT, padx=8)
         theme.flat_button(buttons, "Close", self._close, width=10).pack(side=tk.RIGHT)
 
         self.refresh()
@@ -91,12 +92,26 @@ class EquipmentWindow(tk.Toplevel):
         self.slot_list.set_items(rows, keep_selection=True)
         self.slot_list.set_row_colors(colors)
 
-        # Set bonuses
-        bonuses = player.active_set_bonuses()
-        if bonuses:
-            self.set_bonus_label.configure(text="Set bonuses: " + ", ".join(bonuses))
-        else:
-            self.set_bonus_label.configure(text="No set bonuses active")
+        # Set bonuses with next tier preview
+        counts = {}
+        for it in player.equipment.values():
+            if it and it.set_id:
+                counts[it.set_id] = counts.get(it.set_id, 0) + 1
+        active = player.active_set_bonuses()
+        lines = []
+        if active:
+            lines.append("Active: " + ", ".join(active))
+        # Next thresholds
+        for set_id, count in counts.items():
+            defn = game.config.get("equipment_sets", {}).get(set_id, {})
+            thresholds = sorted(int(k) for k in (defn.get("bonuses") or {}).keys())
+            for thr in thresholds:
+                if count < thr:
+                    lines.append(f"Next {defn.get('name', set_id)}: {count}/{thr} pieces")
+                    break
+        if not lines:
+            lines.append("No set bonuses active")
+        self.set_bonus_label.configure(text=" | ".join(lines))
 
         self._reload_candidates()
 
@@ -212,6 +227,36 @@ class EquipmentWindow(tk.Toplevel):
             return
         ok, msg = self.app.game.upgrade_item(item.id)
         self.app.notify(msg)
+        self.app.refresh_active()
+
+    def _equip_best(self) -> None:
+        # Simple heuristic: best by effective power (flat mods * rarity scale)
+        game = self.app.game
+        rarity_cfg = game.config.get("rarities") or {}
+        best_for_slot = {}
+        for entry in game.player.inventory.equipment_entries():
+            it = entry.item
+            score = sum(it.modifiers.flat.values()) * float(rarity_cfg.get(it.rarity.lower(), {}).get("modifier_rate", 1.0))
+            score += sum(it.modifiers.pct.values()) * 100  # weight pct
+            # Prefer higher rarity
+            score += {"common":0, "uncommon":5, "rare":15, "epic":30, "legendary":50}.get(it.rarity.lower(),0)
+            if it.slot not in best_for_slot or score > best_for_slot[it.slot][0]:
+                best_for_slot[it.slot] = (score, it)
+        equipped_count = 0
+        for slot, (score, it) in best_for_slot.items():
+            current = game.player.equipment.get(slot)
+            # Only equip if better than current (or empty)
+            curr_score = 0
+            if current:
+                curr_score = sum(current.modifiers.flat.values()) * float(rarity_cfg.get(current.rarity.lower(), {}).get("modifier_rate",1.0))
+                curr_score += sum(current.modifiers.pct.values())*100
+                curr_score += {"common":0,"uncommon":5,"rare":15,"epic":30,"legendary":50}.get(current.rarity.lower(),0)
+            if not current or score > curr_score:
+                ok, msg = game.equip_item(it.id)
+                if ok:
+                    equipped_count += 1
+        game.player.invalidate_stats()
+        self.app.notify(f"Equipped {equipped_count} best items.")
         self.app.refresh_active()
 
     def _open_enchant_window(self, item: Item) -> None:

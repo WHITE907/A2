@@ -494,12 +494,24 @@ class Battle:
 
         Kept separate from ``_finish_victory`` so the engine core has no hard
         dependency on ItemManager - the caller decides when loot is collected.
+        Logs use rarity as kind so battle log can color by rarity.
         """
         if not self.rewards.items:
             return []
-        lines = item_manager.grant_many(self.player.inventory, self.rewards.items)
-        for line in lines:
-            self._say(f"Obtained {line}.", kind="system")
+        # Grant and capture rarity
+        lines = []
+        for item_id, qty in self.rewards.items:
+            item = item_manager.get(item_id)
+            added = item_manager.grant(self.player.inventory, item_id, qty)
+            if added > 0 and item is not None:
+                label = f"[{item.rarity_label}] {item.name}"
+                text = f"{label} x{added}" if added > 1 else label
+                lines.append(text)
+                # Use rarity as log kind for color
+                self._say(f"Obtained {text}.", kind=item.rarity.lower())
+            elif added > 0:
+                self._say(f"Obtained {item_id} x{added}.", kind="system")
+                lines.append(f"{item_id} x{added}")
         return lines
 
     # ------------------------------------------------------------------
