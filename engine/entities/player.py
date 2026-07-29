@@ -54,6 +54,7 @@ class Player(Entity):
         progression: Mapping[str, Any] | None = None,
         equipment_config: Mapping[str, Any] | None = None,
         enchantments: Mapping[str, Any] | None = None,
+        sub_race_id: str | None = None,
     ) -> None:
         progression = progression or {}
         self.equipment_config = dict(equipment_config or {})
@@ -61,6 +62,7 @@ class Player(Entity):
         self.gender = (gender or "any").lower()
         self.class_def = class_def
         self.race_def = race_def
+        self.sub_race_id = sub_race_id or ""
         self.class_history: list[str] = [class_def.id]
 
         # Progression tuning (bible section 9) - JSON-driven, never hardcoded.
@@ -101,6 +103,7 @@ class Player(Entity):
         self._recalculate_base_stats()
         self.current_hp = float(self.max_hp)
         self.current_mp = float(self.max_mp)
+        self.current_sp = float(self.max_sp)
 
     # ------------------------------------------------------------------
     # Stats
@@ -110,10 +113,10 @@ class Player(Entity):
         return self.race_def.id
 
     def _recalculate_base_stats(self) -> None:
-        """Class growth + racial primaries + hand-allocated points."""
+        """Class growth + racial primaries (including sub-race) + hand-allocated points."""
         self.base_stats = (
             self.class_def.stats_at_level(self.level)
-            .add(self.race_def.base_stats)
+            .add(self.race_def.combined_stats(self.sub_race_id))
             .add(self.allocated_stats)
         )
         self.invalidate_stats()
@@ -155,7 +158,7 @@ class Player(Entity):
             for threshold, modifiers in (definition.get("bonuses") or {}).items():
                 if count >= int(threshold):
                     combined.merge(ModifierSet.from_dict(modifiers))
-        combined.merge(self.race_def.modifiers)
+        combined.merge(self.race_def.combined_modifiers(self.sub_race_id))
         combined.merge(self.class_def.passive_modifiers)
         for skill in self.known_skills.values():
             if skill.is_passive:
@@ -201,10 +204,11 @@ class Player(Entity):
 
         if report.levels_gained:
             self._recalculate_base_stats()
-            # Levelling raises max HP/MP; grant the difference so a level-up
+            # Levelling raises max HP/MP/SP; grant the difference so a level-up
             # mid-fight feels like a reward rather than nothing.
             self.current_hp = min(float(self.max_hp), self.current_hp + report.levels_gained * 5)
             self.current_mp = min(float(self.max_mp), self.current_mp + report.levels_gained * 3)
+            self.current_sp = min(float(self.max_sp), self.current_sp + report.levels_gained * 4)
 
         report.new_level = self.level
         return report
@@ -382,6 +386,7 @@ class Player(Entity):
         self._recalculate_base_stats()
         self.current_hp = float(self.max_hp)
         self.current_mp = float(self.max_mp)
+        self.current_sp = float(self.max_sp)
         messages.insert(0, f"{self.name} promoted to {new_class.name}!")
         return messages
 
@@ -447,6 +452,7 @@ class Player(Entity):
             f"EXP: {current_exp:.0f}/{needed_exp:.0f}",
             f"HP: {self.hp_text()}",
             f"MP: {self.mp_text()}",
+            f"SP: {self.sp_text()}",
             f"Gold: {self.inventory.gold}",
             f"Mastery: {self.mastery.highest_rank()}",
         ]
@@ -472,6 +478,7 @@ class Player(Entity):
             {
                 "gender": self.gender,
                 "race_id": self.race_id,
+                "sub_race_id": self.sub_race_id,
                 "class_id": self.class_def.id,
                 "class_history": list(self.class_history),
                 "exp": self.exp,

@@ -44,6 +44,7 @@ PRIMARY_STAT_NAMES: dict[str, str] = {
 DERIVED_STATS: tuple[str, ...] = (
     "max_hp",
     "max_mp",
+    "max_sp",
     "physical_power",
     "magic_power",
     "armor",
@@ -236,6 +237,7 @@ class DerivedStats:
 
     max_hp: int = 1
     max_mp: int = 0
+    max_sp: int = 0
     physical_power: float = 0.0
     magic_power: float = 0.0
     armor: float = 0.0
@@ -283,6 +285,7 @@ class Formulas:
 
     hp: dict[str, float] = field(default_factory=dict)
     mp: dict[str, float] = field(default_factory=dict)
+    sp: dict[str, float] = field(default_factory=dict)
     physical_power: dict[str, float] = field(default_factory=dict)
     magic_power: dict[str, float] = field(default_factory=dict)
     armor: dict[str, float] = field(default_factory=dict)
@@ -302,6 +305,7 @@ class Formulas:
         return cls(
             hp=_coeff(config, "hp"),
             mp=_coeff(config, "mp"),
+            sp=_coeff(config, "sp"),
             physical_power=_coeff(config, "physical_power"),
             magic_power=_coeff(config, "magic_power"),
             armor=_coeff(config, "armor"),
@@ -357,6 +361,7 @@ class Formulas:
         return DerivedStats(
             max_hp=max(1, int(round(resolve("max_hp", self.hp)))),
             max_mp=max(0, int(round(resolve("max_mp", self.mp)))),
+            max_sp=max(0, int(round(resolve("max_sp", self.sp)))),
             physical_power=max(0.0, resolve("physical_power", self.physical_power)),
             magic_power=max(0.0, resolve("magic_power", self.magic_power)),
             armor=max(0.0, resolve("armor", self.armor)),

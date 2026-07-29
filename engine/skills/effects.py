@@ -378,41 +378,56 @@ class HealEffect(Effect):
 
 
 # ----------------------------------------------------------------------
-# 3. Resource (MP)
+# 3. Resource (MP/SP)
 # ----------------------------------------------------------------------
 @register_effect("resource")
 class ResourceEffect(Effect):
-    """Restore or drain MP.  Negative ``amount`` drains."""
+    """Restore or drain MP or SP.  Negative ``amount`` drains.
+
+    The ``resource`` key selects the pool: ``"mp"`` (default) or ``"sp"``.
+    """
 
     def __init__(self, payload: Mapping[str, Any] | None = None) -> None:
         super().__init__(payload)
         payload = payload or {}
+        self.resource: str = str(payload.get("resource", "mp")).lower()
         self.amount: float = float(payload.get("amount", 0.0))
         self.percent_max_mp: float = float(payload.get("percent_max_mp", 0.0))
+        self.percent_max_sp: float = float(payload.get("percent_max_sp", 0.0))
         if not self.target_override:
             self.target_override = "self"
 
     def apply(self, caster: "Entity", target: "Entity", ctx: EffectContext) -> EffectResult | None:
         if not target.is_alive or not self.roll_fires(ctx):
             return None
-        amount = self.amount + target.max_mp * self.percent_max_mp
-        changed = target.change_mp(amount)
+        label = "SP" if self.resource == "sp" else "MP"
+        if self.resource == "sp":
+            amount = self.amount + target.max_sp * self.percent_max_sp
+            changed = target.change_sp(amount)
+        else:
+            amount = self.amount + target.max_mp * self.percent_max_mp
+            changed = target.change_mp(amount)
         if not changed:
             return None
         if changed > 0:
-            message = f"{target.name} recovers {changed:.0f} MP."
+            message = f"{target.name} recovers {changed:.0f} {label}."
         else:
-            message = f"{target.name} loses {abs(changed):.0f} MP."
+            message = f"{target.name} loses {abs(changed):.0f} {label}."
         return EffectResult(target_name=target.name, kind="resource", amount=changed, message=message)
 
     def describe(self) -> str:
+        label = "SP" if self.resource == "sp" else "MP"
         bits = []
         if self.amount:
             bits.append(f"{abs(self.amount):.0f}")
-        if self.percent_max_mp:
-            bits.append(f"{abs(self.percent_max_mp) * 100:.0f}% max MP")
-        verb = "Restores" if (self.amount + self.percent_max_mp) >= 0 else "Drains"
-        return f"{verb} {' + '.join(bits) or '0'} MP" + self._suffix()
+        if self.resource == "sp":
+            if self.percent_max_sp:
+                bits.append(f"{abs(self.percent_max_sp) * 100:.0f}% max SP")
+        else:
+            if self.percent_max_mp:
+                bits.append(f"{abs(self.percent_max_mp) * 100:.0f}% max MP")
+        verb = "Restores" if (self.amount + self.percent_max_mp + self.percent_max_sp) >= 0 else "Drains"
+        return f"{verb} {' + '.join(bits) or '0'} {label}" + self._suffix()
 
 
 # ----------------------------------------------------------------------

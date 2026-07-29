@@ -854,7 +854,8 @@
         "Stay as long as you like. People usually don't.",
         "The well's older than the town. Don't drop anything in it."
       ],
-      "race_id": "human"
+      "race_id": "human",
+      "gender": "female"
     },
     {
       "id": "smith_dorn",
@@ -873,7 +874,8 @@
         "Everything breaks. Question is how loudly.",
         "Cheap armour costs more. You'll see."
       ],
-      "race_id": "dwarf"
+      "race_id": "dwarf",
+      "gender": "male"
     },
     {
       "id": "scholar_iven",
@@ -892,7 +894,8 @@
         "Mastery isn't talent. It's repetition nobody watched.",
         "If you find anything written down out there, bring it back intact."
       ],
-      "race_id": "half_elf"
+      "race_id": "half_elf",
+      "gender": "male"
     },
     {
       "id": "warden_hela",
@@ -910,7 +913,8 @@
         "Emberwatch was rebuilt six times. We kept the name to save paint.",
         "West road is open. Safe would be a stronger word."
       ],
-      "race_id": "dragonkin"
+      "race_id": "dragonkin",
+      "gender": "female"
     },
     {
       "id": "alchemist_pell",
@@ -929,7 +933,8 @@
         "I need marsh ichor. Need is perhaps too gentle a word.",
         "If it bubbles clockwise, leave the room calmly."
       ],
-      "race_id": "tiefling"
+      "race_id": "tiefling",
+      "gender": "male"
     },
     {
       "id": "cartographer_senn",
@@ -945,7 +950,8 @@
         "Stonehaven is west, down, and louder than expected.",
         "A blank place on a map is not an invitation. Usually."
       ],
-      "race_id": "elf"
+      "race_id": "elf",
+      "gender": "male"
     },
     {
       "id": "reeve_marta",
@@ -963,7 +969,8 @@
         "The mine is singing in a new key. Nobody likes it.",
         "If Tala says a tunnel is safe, it is. If Orren says it, ask Tala."
       ],
-      "race_id": "dwarf"
+      "race_id": "dwarf",
+      "gender": "female"
     },
     {
       "id": "miner_joss",
@@ -981,7 +988,8 @@
         "Don't whistle underground. The crystals answer.",
         "Colossus used to guard us. Pronouns changed somewhere along the way."
       ],
-      "race_id": "beastkin"
+      "race_id": "beastkin",
+      "gender": "male"
     },
     {
       "id": "runekeeper_ada",
@@ -998,7 +1006,8 @@
         "Bring me anything that glows without heat.",
         "The plateau inscriptions all point upward. Grammatically, not geographically."
       ],
-      "race_id": "tiefling"
+      "race_id": "tiefling",
+      "gender": "female"
     },
     {
       "id": "archivist_lume",
@@ -1016,7 +1025,8 @@
         "The Obsidian Gate predates the mountain road.",
         "Morning through the gate arrives from the wrong direction."
       ],
-      "race_id": "elf"
+      "race_id": "elf",
+      "gender": "male"
     },
     {
       "id": "ropewright_fenn",
@@ -1034,7 +1044,8 @@
         "Check the wind, then check it again after it lies.",
         "Falling is free. Everything before it costs."
       ],
-      "race_id": "half_elf"
+      "race_id": "half_elf",
+      "gender": "male"
     },
     {
       "id": "abbess_sol",
@@ -1051,7 +1062,8 @@
         "The thing at the gate calls itself dawn. Names are claims.",
         "Go prepared. Faith is not a substitute for armour."
       ],
-      "race_id": "demon"
+      "race_id": "demon",
+      "gender": "female"
     },
     {
       "id": "elder_amariel",
@@ -1069,7 +1081,8 @@
         "Lethira lost something in Mosswood. The wood found it first.",
         "I came for one season. That was eighty-three years ago.",
         "Emberwatch ash makes excellent roses. Angry roses, but excellent."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "nima_crossroads",
@@ -1088,7 +1101,8 @@
         "Two families taught me two ways to get lost.",
         "Ashvale is where roads come to reconsider.",
         "I deliver secrets sealed. Reading them costs extra and my self-respect."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "thane_dorrim",
@@ -1106,7 +1120,8 @@
         "Brokk hears songs because he refuses sensible silence.",
         "Our ledger has one clean cut. History is rarely that tidy.",
         "I do not hold grudges. I archive them."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "mother_sable",
@@ -1125,7 +1140,8 @@
         "Veyra mistakes escape for absolution. She needs both.",
         "Demons do not all lie. That rumour was started by honest lawyers.",
         "Tea is a contract: patience in exchange for flavour."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "keth_cloudscar",
@@ -1144,7 +1160,8 @@
         "Rhazek inherited an oath with half the verbs missing.",
         "The gate was sealed against dawn, not darkness.",
         "History written in fire is difficult to alphabetise."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "siv_quickpaw",
@@ -1163,6 +1180,144 @@
         "My tail is for balance, not public commentary.",
         "Sentinels hate bells. I carry seven.",
         "I found a crown yesterday. Turned out to be plumbing."
+      ],
+      "gender": "female"
+    },
+    {
+      "id": "thrakk_warbringer",
+      "name": "Thrakk Warbringer",
+      "race_id": "orc",
+      "gender": "male",
+      "description": "An orcish weapons merchant who believes every problem has an axe-shaped solution.",
+      "location_id": "old_road",
+      "marriageable": false,
+      "dialogue": [
+        "You want weapon? Thrakk has weapon. Many weapons.",
+        "This axe killed three trolls. The trolls were not impressed.",
+        "Orc steel is honest steel. It breaks before it bends.",
+        "Buy something or fight me. Both are honourable.",
+        "My prices are fair. My temper is not.",
+        "You look like someone who needs a bigger sword."
+      ]
+    },
+    {
+      "id": "cogsworth_tinkerton",
+      "name": "Cogsworth Tinkerton",
+      "race_id": "gnome",
+      "gender": "male",
+      "description": "A gnome merchant whose wares occasionally tick, whirr, or explode.",
+      "location_id": "town_emberwatch",
+      "marriageable": false,
+      "dialogue": [
+        "Welcome to Cogsworth's Curios! Satisfaction guaranteed* (*some conditions apply).",
+        "This device does something. I'm just not sure what yet.",
+        "All sales final. Especially the explosive ones.",
+        "My latest invention! It makes tea AND predicts the weather. Mostly.",
+        "Have you tried percussive maintenance? It works 30% of the time.",
+        "I once sold a clock that ran backwards. Customer loved it. Said it gave him more time."
+      ]
+    },
+    {
+      "id": "butterbur_goodbody",
+      "name": "Butterbur Goodbody",
+      "race_id": "halfling",
+      "gender": "female",
+      "description": "A halfling innkeeper whose cooking is legendary and whose gossip is better.",
+      "location_id": "town_ashvale",
+      "marriageable": true,
+      "marriage_affinity": 65,
+      "gift_item_ids": [
+        "potion",
+        "travel_boots",
+        "minor_ether"
+      ],
+      "dialogue": [
+        "Welcome, welcome! Have you eaten? You look thin.",
+        "My grandmother's pie recipe. Secret ingredient is love. And lard. Mostly lard.",
+        "The rooms are clean, the beds are soft, and the breakfast is mandatory.",
+        "I know everyone's business. It's not gossip if it's true.",
+        "Halfling hospitality: you'll leave fuller than you arrived.",
+        "Second breakfast is at eleven. Elevenses is at ten. Don't be late."
+      ]
+    },
+    {
+      "id": "zephyr_stormcaller",
+      "name": "Zephyr Stormcaller",
+      "race_id": "genasi",
+      "gender": "nonbinary",
+      "description": "An air genasi weather mage who reads the winds like others read books.",
+      "location_id": "town_skyreach",
+      "marriageable": false,
+      "dialogue": [
+        "The winds speak of change. They always do.",
+        "I don't predict weather. I negotiate with it.",
+        "My mood affects the local barometric pressure. Fair warning.",
+        "Air genasi don't get grounded. We get... redirected.",
+        "Tomorrow will be windy with a chance of existential dread.",
+        "I once calmed a hurricane. It was very apologetic afterwards."
+      ]
+    },
+    {
+      "id": "granite_heart",
+      "name": "Granite Heart",
+      "race_id": "goliath",
+      "gender": "female",
+      "description": "A goliath stonemason whose sculptures are said to move when no one watches.",
+      "location_id": "town_stonehaven",
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "gift_item_ids": [
+        "granite_core",
+        "stonecleaver",
+        "greater_potion"
+      ],
+      "dialogue": [
+        "Stone remembers. I just help it speak.",
+        "My chisel is sharp. My patience is sharper.",
+        "Every boulder is a statue waiting to be freed.",
+        "Goliaths measure worth in deeds, not words. So let me work.",
+        "This sculpture took three years. The mountain took three million.",
+        "I don't carve stone. I convince it to be something else."
+      ]
+    },
+    {
+      "id": "ophidia_scalesinger",
+      "name": "Ophidia Scalesinger",
+      "race_id": "lamia",
+      "gender": "female",
+      "description": "A lamia historian whose memory stretches back centuries.",
+      "location_id": "hollow_cave",
+      "marriageable": false,
+      "dialogue": [
+        "I remember when this cave was a cathedral. And before that, a sea.",
+        "History is not past. It is simply elsewhere.",
+        "My scales carry the stories of a thousand years.",
+        "Young ones always rush. I have learned patience from the stone.",
+        "The old magics still whisper, if you know how to listen.",
+        "I once debated a dragon about the nature of time. We both won."
+      ]
+    },
+    {
+      "id": "spinner_fateweaver",
+      "name": "Spinner Fateweaver",
+      "race_id": "arachne",
+      "gender": "female",
+      "description": "An arachne weaver whose tapestries are said to show glimpses of possible futures.",
+      "location_id": "mosswood",
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "moonleaf_brooch",
+        "wraith_lantern",
+        "briar_heart"
+      ],
+      "dialogue": [
+        "Every thread is a choice. Every pattern, a consequence.",
+        "I weave what might be, not what will be. The difference matters.",
+        "My silk catches more than flies. It catches moments.",
+        "Eight eyes see eight truths. Which one do you want?",
+        "This tapestry shows your future. Or perhaps your past. Time is flexible.",
+        "I don't predict fate. I illustrate it."
       ]
     }
   ]

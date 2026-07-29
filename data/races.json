@@ -1,5 +1,5 @@
 {
-  "_comment": "Playable and world races. Primary adjustments are added to class stats; modifiers are always-on racial traits. Race ids are content, never special-cased in Python.",
+  "_comment": "Playable and world races. Primary adjustments are added to class stats; modifiers are always-on racial traits. Race ids are content, never special-cased in Python. Sub-races add unique bonus traits and stats.",
   "races": [
     {
       "id": "human",
@@ -7,63 +7,1124 @@
       "description": "Adaptable people found in every settlement and profession.",
       "base_stats": {},
       "modifiers": {},
-      "traits": ["Versatile: no fixed strengths or penalties", "Open Roads: no culture treats you as wholly unfamiliar"]
+      "traits": [
+        "Versatile: no fixed strengths or penalties",
+        "Open Roads: no culture treats you as wholly unfamiliar"
+      ],
+      "sub_races": [
+        {
+          "id": "lowlander",
+          "name": "Lowlander",
+          "description": "From the fertile plains, traders and farmers by heritage.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 1,
+            "INT": 1,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_hp": 10
+            }
+          },
+          "bonus_traits": [
+            "Trade Tongue: better prices in human settlements"
+          ]
+        },
+        {
+          "id": "highlander",
+          "name": "Highlander",
+          "description": "Mountain-born, hardened by wind and altitude.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 2,
+            "INT": 0,
+            "AGI": -1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "armor": 3,
+              "status_resist": 0.05
+            }
+          },
+          "bonus_traits": [
+            "Mountain Blood: resistant to cold and fatigue"
+          ]
+        },
+        {
+          "id": "seafarer",
+          "name": "Seafarer",
+          "description": "Coastal people who read tides like others read books.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 0,
+            "INT": 0,
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.03,
+              "speed": 2
+            }
+          },
+          "bonus_traits": [
+            "Sea Legs: improved balance and agility"
+          ]
+        }
+      ]
     },
     {
       "id": "elf",
       "name": "Elf",
       "description": "Long-lived keepers of songs that remember landscapes before roads.",
-      "base_stats": { "STR": -1, "END": 0, "INT": 2, "AGI": 3 },
-      "modifiers": { "flat": { "max_mp": 15, "evasion": 0.03, "accuracy": 0.02 } },
-      "traits": ["Keen Senses: improved accuracy and evasion", "Long Memory: strong affinity for magic and old places"]
+      "base_stats": {
+        "STR": -1,
+        "END": 0,
+        "INT": 2,
+        "AGI": 3
+      },
+      "modifiers": {
+        "flat": {
+          "max_mp": 15,
+          "evasion": 0.03,
+          "accuracy": 0.02
+        }
+      },
+      "traits": [
+        "Keen Senses: improved accuracy and evasion",
+        "Long Memory: strong affinity for magic and old places"
+      ],
+      "sub_races": [
+        {
+          "id": "high_elf",
+          "name": "High Elf",
+          "description": "Scholars of the silver towers, masters of arcane theory.",
+          "bonus_stats": {
+            "STR": -1,
+            "END": -1,
+            "INT": 3,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_mp": 20,
+              "magic_power": 4
+            }
+          },
+          "bonus_traits": [
+            "Arcane Heritage: enhanced magical aptitude"
+          ]
+        },
+        {
+          "id": "wood_elf",
+          "name": "Wood Elf",
+          "description": "Forest-dwelling hunters and pathfinders.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 0,
+            "INT": 0,
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.04,
+              "accuracy": 0.03
+            }
+          },
+          "bonus_traits": [
+            "Forest Stride: move silently through natural terrain"
+          ]
+        },
+        {
+          "id": "drow",
+          "name": "Drow",
+          "description": "Underdark elves, marked by shadow and suspicion.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 0,
+            "INT": 2,
+            "AGI": 1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "crit_damage": 0.08,
+              "magic_resist": 5
+            }
+          },
+          "bonus_traits": [
+            "Shadow Sight: see in darkness, feared by surface dwellers"
+          ]
+        }
+      ]
     },
     {
       "id": "half_elf",
       "name": "Half-Elf",
       "description": "Heirs to two histories, frequently asked to explain both and belonging fully to neither.",
-      "base_stats": { "STR": 0, "END": 1, "INT": 1, "AGI": 2 },
-      "modifiers": { "flat": { "status_resist": 0.08, "speed": 2, "max_mp": 8 } },
-      "traits": ["Between Worlds: increased status resistance", "Quick Study: balanced physical and magical aptitude"]
+      "base_stats": {
+        "STR": 0,
+        "END": 1,
+        "INT": 1,
+        "AGI": 2
+      },
+      "modifiers": {
+        "flat": {
+          "status_resist": 0.08,
+          "speed": 2,
+          "max_mp": 8
+        }
+      },
+      "traits": [
+        "Between Worlds: increased status resistance",
+        "Quick Study: balanced physical and magical aptitude"
+      ],
+      "sub_races": [
+        {
+          "id": "half_elf_noble",
+          "name": "Noble-Born",
+          "description": "Raised in courts, trained in diplomacy and intrigue.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 0,
+            "INT": 2,
+            "AGI": 1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_mp": 12
+            }
+          },
+          "bonus_traits": [
+            "Courtly Grace: advantage in social encounters"
+          ]
+        },
+        {
+          "id": "half_elf_wanderer",
+          "name": "Wanderer",
+          "description": "Road-raised, belonging everywhere and nowhere.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 2,
+            "INT": 0,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_hp": 15,
+              "speed": 2
+            }
+          },
+          "bonus_traits": [
+            "Road Wisdom: survival instincts and adaptability"
+          ]
+        }
+      ]
     },
     {
       "id": "dwarf",
       "name": "Dwarf",
       "description": "Stonewise clans whose promises are expected to outlast the halls where they were made.",
-      "base_stats": { "STR": 2, "END": 3, "INT": 0, "AGI": -2 },
-      "modifiers": { "flat": { "armor": 8, "max_hp": 30, "status_resist": 0.06 } },
-      "traits": ["Stoneborn: increased armour and health", "Unyielding: improved resistance to hostile effects"]
+      "base_stats": {
+        "STR": 2,
+        "END": 3,
+        "INT": 0,
+        "AGI": -2
+      },
+      "modifiers": {
+        "flat": {
+          "armor": 8,
+          "max_hp": 30,
+          "status_resist": 0.06
+        }
+      },
+      "traits": [
+        "Stoneborn: increased armour and health",
+        "Unyielding: improved resistance to hostile effects"
+      ],
+      "sub_races": [
+        {
+          "id": "mountain_dwarf",
+          "name": "Mountain Dwarf",
+          "description": "High-altitude miners and warriors, toughest of the tough.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 3,
+            "INT": -1,
+            "AGI": -1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "armor": 6,
+              "max_hp": 25
+            }
+          },
+          "bonus_traits": [
+            "Deep Rooted: nearly impossible to knock down"
+          ]
+        },
+        {
+          "id": "hill_dwarf",
+          "name": "Hill Dwarf",
+          "description": "Surface-dwelling farmers and craftspeople, more sociable.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 1,
+            "INT": 1,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "physical_power": 3,
+              "max_hp": 10
+            }
+          },
+          "bonus_traits": [
+            "Clan Bonds: stronger community ties"
+          ]
+        },
+        {
+          "id": "forge_dwarf",
+          "name": "Forge Dwarf",
+          "description": "Master smiths who live by the anvil's heat.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 2,
+            "INT": 0,
+            "AGI": -2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "armor": 4,
+              "status_resist": 0.08
+            }
+          },
+          "bonus_traits": [
+            "Fire-Touched: resistant to heat and flame"
+          ]
+        }
+      ]
     },
     {
       "id": "dragonkin",
       "name": "Dragonkin",
       "description": "Scaled descendants of old draconic pacts, carrying heat in their blood and pride in their posture.",
-      "base_stats": { "STR": 2, "END": 2, "INT": 1, "AGI": -1 },
-      "modifiers": { "flat": { "armor": 5, "magic_resist": 8, "physical_power": 3 } },
-      "traits": ["Scaled Hide: increased physical and magical defence", "Drakeblood: increased physical power"]
+      "base_stats": {
+        "STR": 2,
+        "END": 2,
+        "INT": 1,
+        "AGI": -1
+      },
+      "modifiers": {
+        "flat": {
+          "armor": 5,
+          "magic_resist": 8,
+          "physical_power": 3
+        }
+      },
+      "traits": [
+        "Scaled Hide: increased physical and magical defence",
+        "Drakeblood: increased physical power"
+      ],
+      "sub_races": [
+        {
+          "id": "red_dragonkin",
+          "name": "Red Dragonkin",
+          "description": "Fire-blooded, fierce and proud, drawn to flame and conquest.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 1,
+            "INT": 0,
+            "AGI": -1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "physical_power": 5,
+              "magic_power": 3
+            }
+          },
+          "bonus_traits": [
+            "Fire Breath: innate flame attack, immune to fire"
+          ]
+        },
+        {
+          "id": "gold_dragonkin",
+          "name": "Gold Dragonkin",
+          "description": "Noble and wise, guardians of ancient oaths.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 2,
+            "INT": 2,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_resist": 10,
+              "armor": 4
+            }
+          },
+          "bonus_traits": [
+            "Draconic Majesty: inspiring presence, resistant to fear"
+          ]
+        },
+        {
+          "id": "blue_dragonkin",
+          "name": "Blue Dragonkin",
+          "description": "Storm-touched, quick and cunning, masters of lightning.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 0,
+            "INT": 2,
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "speed": 4,
+              "crit_chance": 0.03
+            }
+          },
+          "bonus_traits": [
+            "Lightning Reflexes: enhanced speed and reaction"
+          ]
+        }
+      ]
     },
     {
       "id": "demon",
       "name": "Demon",
       "description": "People of the Ash Courts, defined by fierce contracts rather than the frightening stories told about them.",
-      "base_stats": { "STR": 2, "END": -2, "INT": 3, "AGI": 1 },
-      "modifiers": { "flat": { "magic_power": 6, "crit_damage": 0.08, "max_hp": -15 } },
-      "traits": ["Ashborn: increased magical force", "Dangerous Ambition: greater critical damage at the cost of resilience"]
+      "base_stats": {
+        "STR": 2,
+        "END": -2,
+        "INT": 3,
+        "AGI": 1
+      },
+      "modifiers": {
+        "flat": {
+          "magic_power": 6,
+          "crit_damage": 0.08,
+          "max_hp": -15
+        }
+      },
+      "traits": [
+        "Ashborn: increased magical force",
+        "Dangerous Ambition: greater critical damage at the cost of resilience"
+      ],
+      "sub_races": [
+        {
+          "id": "pit_fiend",
+          "name": "Pit Fiend",
+          "description": "Brutal warriors of the lower courts, strength over subtlety.",
+          "bonus_stats": {
+            "STR": 3,
+            "END": 1,
+            "INT": -1,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "physical_power": 6,
+              "max_hp": 10
+            }
+          },
+          "bonus_traits": [
+            "Infernal Might: devastating melee attacks"
+          ]
+        },
+        {
+          "id": "succubus",
+          "name": "Succubus/Incubus",
+          "description": "Charmers and manipulators, wielding allure as a weapon.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": -1,
+            "INT": 2,
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 5,
+              "crit_chance": 0.04
+            }
+          },
+          "bonus_traits": [
+            "Enthralling: charm and persuasion enhanced"
+          ]
+        },
+        {
+          "id": "balor",
+          "name": "Balor",
+          "description": "Wreathed in flame and shadow, destruction incarnate.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 0,
+            "INT": 2,
+            "AGI": -1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 8,
+              "crit_damage": 0.1
+            }
+          },
+          "bonus_traits": [
+            "Flame Aura: burns those who strike you"
+          ]
+        }
+      ]
     },
     {
       "id": "tiefling",
       "name": "Tiefling",
       "description": "Mortal bloodlines touched by the outer realms, marked by horns, tails, unusual eyes, and endless assumptions.",
-      "base_stats": { "STR": 0, "END": -1, "INT": 2, "AGI": 2 },
-      "modifiers": { "flat": { "magic_resist": 7, "crit_chance": 0.03, "max_mp": 10 } },
-      "traits": ["Planar Blood: increased magic resistance", "Devil's Luck: increased critical chance"]
+      "base_stats": {
+        "STR": 0,
+        "END": -1,
+        "INT": 2,
+        "AGI": 2
+      },
+      "modifiers": {
+        "flat": {
+          "magic_resist": 7,
+          "crit_chance": 0.03,
+          "max_mp": 10
+        }
+      },
+      "traits": [
+        "Planar Blood: increased magic resistance",
+        "Devil's Luck: increased critical chance"
+      ],
+      "sub_races": [
+        {
+          "id": "infernal_tiefling",
+          "name": "Infernal Tiefling",
+          "description": "Devil-blooded, marked by order and contracts.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 0,
+            "INT": 2,
+            "AGI": 1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_resist": 5,
+              "max_mp": 15
+            }
+          },
+          "bonus_traits": [
+            "Hellish Resistance: immune to fire and poison"
+          ]
+        },
+        {
+          "id": "abyssal_tiefling",
+          "name": "Abyssal Tiefling",
+          "description": "Demon-touched, chaotic and unpredictable.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 1,
+            "INT": 1,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "crit_damage": 0.06,
+              "status_resist": 0.05
+            }
+          },
+          "bonus_traits": [
+            "Abyssal Fury: damage increases when wounded"
+          ]
+        }
+      ]
     },
     {
       "id": "beastkin",
       "name": "Beastkin",
       "description": "Many furred, feathered, and keen-eared peoples joined by shared migration routes rather than one ancestry.",
-      "base_stats": { "STR": 2, "END": 0, "INT": -1, "AGI": 3 },
-      "modifiers": { "flat": { "speed": 5, "crit_chance": 0.02, "evasion": 0.02 } },
-      "traits": ["Wild Instinct: increased speed and evasion", "Hunter's Blood: increased critical chance"]
+      "base_stats": {
+        "STR": 2,
+        "END": 0,
+        "INT": -1,
+        "AGI": 3
+      },
+      "modifiers": {
+        "flat": {
+          "speed": 5,
+          "crit_chance": 0.02,
+          "evasion": 0.02
+        }
+      },
+      "traits": [
+        "Wild Instinct: increased speed and evasion",
+        "Hunter's Blood: increased critical chance"
+      ],
+      "sub_races": [
+        {
+          "id": "feline",
+          "name": "Feline",
+          "description": "Cat-folk, graceful and independent, with night vision.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": -1,
+            "INT": 0,
+            "AGI": 3
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.05,
+              "crit_chance": 0.03
+            }
+          },
+          "bonus_traits": [
+            "Feline Grace: always land on your feet, see in darkness"
+          ]
+        },
+        {
+          "id": "canine",
+          "name": "Canine",
+          "description": "Wolf-folk, loyal pack hunters with keen senses.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 1,
+            "INT": 0,
+            "AGI": 1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "accuracy": 0.04,
+              "speed": 3
+            }
+          },
+          "bonus_traits": [
+            "Pack Tactics: bonuses when fighting with allies"
+          ]
+        },
+        {
+          "id": "avian",
+          "name": "Avian",
+          "description": "Bird-folk, swift and keen-eyed, some can glide.",
+          "bonus_stats": {
+            "STR": -1,
+            "END": 0,
+            "INT": 1,
+            "AGI": 3
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "speed": 6,
+              "accuracy": 0.05
+            }
+          },
+          "bonus_traits": [
+            "Keen Sight: enhanced perception and ranged accuracy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orc",
+      "name": "Orc",
+      "description": "Fierce warriors of the steppes, bound by honour and blood-oath.",
+      "base_stats": {
+        "STR": 3,
+        "END": 2,
+        "INT": -1,
+        "AGI": 0
+      },
+      "modifiers": {
+        "flat": {
+          "physical_power": 5,
+          "max_hp": 20
+        }
+      },
+      "traits": [
+        "Blood Fury: damage increases when wounded",
+        "War Born: natural fighters from birth"
+      ],
+      "sub_races": [
+        {
+          "id": "half_orc",
+          "name": "Half-Orc",
+          "description": "Straddling two worlds, tougher than most humans and cleverer than most orcs.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 1,
+            "INT": 1,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_hp": 10,
+              "status_resist": 0.04
+            }
+          },
+          "bonus_traits": [
+            "Dual Heritage: accepted in more places than full-bloods"
+          ]
+        },
+        {
+          "id": "war_orc",
+          "name": "War Orc",
+          "description": "Bred for battle, stronger and fiercer than their kin.",
+          "bonus_stats": {
+            "STR": 3,
+            "END": 1,
+            "INT": -2,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "physical_power": 6,
+              "crit_damage": 0.06
+            }
+          },
+          "bonus_traits": [
+            "Battle Rage: bonus damage below half health"
+          ]
+        },
+        {
+          "id": "shaman_orc",
+          "name": "Shaman Orc",
+          "description": "Spirit-callers who commune with ancestral totems.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 1,
+            "INT": 2,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 4,
+              "max_mp": 12
+            }
+          },
+          "bonus_traits": [
+            "Ancestor Bond: enhanced spiritual magic"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gnome",
+      "name": "Gnome",
+      "description": "Small inventors and tinkerers whose curiosity is exceeded only by their explosions.",
+      "base_stats": {
+        "STR": -2,
+        "END": 0,
+        "INT": 3,
+        "AGI": 2
+      },
+      "modifiers": {
+        "flat": {
+          "accuracy": 0.04,
+          "crit_chance": 0.03,
+          "speed": 2
+        }
+      },
+      "traits": [
+        "Tinker: bonus to crafting and mechanical devices",
+        "Curious Mind: faster skill learning"
+      ],
+      "sub_races": [
+        {
+          "id": "rock_gnome",
+          "name": "Rock Gnome",
+          "description": "Inventors of clockwork marvels and alchemical wonders.",
+          "bonus_stats": {
+            "STR": -1,
+            "END": 1,
+            "INT": 2,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 3,
+              "max_mp": 10
+            }
+          },
+          "bonus_traits": [
+            "Alchemical Mind: resistance to poison and acid"
+          ]
+        },
+        {
+          "id": "forest_gnome",
+          "name": "Forest Gnome",
+          "description": "Reclusive illusionists who befriend woodland creatures.",
+          "bonus_stats": {
+            "STR": -1,
+            "END": 0,
+            "INT": 1,
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.04,
+              "magic_resist": 4
+            }
+          },
+          "bonus_traits": [
+            "Natural Illusionist: innate minor illusion magic"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "halfling",
+      "name": "Halfling",
+      "description": "Small folk with great luck and greater appetites.",
+      "base_stats": {
+        "STR": -2,
+        "END": 1,
+        "INT": 1,
+        "AGI": 3
+      },
+      "modifiers": {
+        "flat": {
+          "evasion": 0.05,
+          "crit_chance": 0.04,
+          "speed": 3
+        }
+      },
+      "traits": [
+        "Halfling Luck: supernatural good fortune",
+        "Small Frame: harder to hit"
+      ],
+      "sub_races": [
+        {
+          "id": "lightfoot_halfling",
+          "name": "Lightfoot",
+          "description": "Sociable and stealthy, able to hide behind anyone taller.",
+          "bonus_stats": {
+            "STR": -1,
+            "END": 0,
+            "INT": 0,
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.03,
+              "speed": 2
+            }
+          },
+          "bonus_traits": [
+            "Naturally Stealthy: can hide behind creatures one size larger"
+          ]
+        },
+        {
+          "id": "stout_halfling",
+          "name": "Stout",
+          "description": "Hardier than most halflings, with dwarven resilience.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 2,
+            "INT": 0,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_hp": 15,
+              "status_resist": 0.06
+            }
+          },
+          "bonus_traits": [
+            "Stout Resilience: resistant to poison"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "genasi",
+      "name": "Genasi",
+      "description": "Mortals touched by the elemental planes, carrying fire, water, earth, or air in their blood.",
+      "base_stats": {
+        "STR": 1,
+        "END": 1,
+        "INT": 1,
+        "AGI": 1
+      },
+      "modifiers": {
+        "flat": {
+          "magic_resist": 5,
+          "max_mp": 8
+        }
+      },
+      "traits": [
+        "Elemental Heritage: innate connection to the planes",
+        "Planar Adaptation: balanced stats"
+      ],
+      "sub_races": [
+        {
+          "id": "fire_genasi",
+          "name": "Fire Genasi",
+          "description": "Flame-haired and hot-tempered, wreathed in perpetual warmth.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 0,
+            "INT": 2,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 5,
+              "max_mp": 12
+            }
+          },
+          "bonus_traits": [
+            "Fire Resistance: immune to flame damage"
+          ]
+        },
+        {
+          "id": "water_genasi",
+          "name": "Water Genasi",
+          "description": "Flowing and adaptable, at home in any body of water.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 2,
+            "INT": 1,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_hp": 12,
+              "magic_resist": 5
+            }
+          },
+          "bonus_traits": [
+            "Amphibious: breathe water and land equally"
+          ]
+        },
+        {
+          "id": "earth_genasi",
+          "name": "Earth Genasi",
+          "description": "Solid and unyielding, with stone-like skin and deep patience.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 2,
+            "INT": 0,
+            "AGI": -1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "armor": 6,
+              "max_hp": 20
+            }
+          },
+          "bonus_traits": [
+            "Stone Skin: natural armour bonus"
+          ]
+        },
+        {
+          "id": "air_genasi",
+          "name": "Air Genasi",
+          "description": "Quick and mercurial, lighter on their feet than gravity suggests.",
+          "bonus_stats": {
+            "STR": -1,
+            "END": 0,
+            "INT": 1,
+            "AGI": 3
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "speed": 5,
+              "evasion": 0.04
+            }
+          },
+          "bonus_traits": [
+            "Unbound: can slow falls and resist wind"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "goliath",
+      "name": "Goliath",
+      "description": "Giant-kin who live among the peaks, measuring worth in deeds rather than words.",
+      "base_stats": {
+        "STR": 3,
+        "END": 3,
+        "INT": -1,
+        "AGI": -1
+      },
+      "modifiers": {
+        "flat": {
+          "armor": 6,
+          "max_hp": 35,
+          "physical_power": 4
+        }
+      },
+      "traits": [
+        "Stone's Endurance: shrug off damage once per battle",
+        "Mountain Born: acclimated to altitude and cold"
+      ],
+      "sub_races": [
+        {
+          "id": "frost_goliath",
+          "name": "Frost Goliath",
+          "description": "Peak-dwelling giants adapted to extreme cold.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 2,
+            "INT": -1,
+            "AGI": -1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "armor": 4,
+              "status_resist": 0.06
+            }
+          },
+          "bonus_traits": [
+            "Frost Touched: immune to cold damage"
+          ]
+        },
+        {
+          "id": "storm_goliath",
+          "name": "Storm Goliath",
+          "description": "Thunder-voiced giants who live where lightning strikes.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 1,
+            "INT": 0,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "physical_power": 5,
+              "crit_damage": 0.06
+            }
+          },
+          "bonus_traits": [
+            "Thunder Clap: innate shockwave ability"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lamia",
+      "name": "Lamia",
+      "description": "Serpentine people with humanoid torsos and powerful coils, ancient and wise.",
+      "base_stats": {
+        "STR": 2,
+        "END": 1,
+        "INT": 2,
+        "AGI": 0
+      },
+      "modifiers": {
+        "flat": {
+          "magic_power": 4,
+          "magic_resist": 6,
+          "speed": 3
+        }
+      },
+      "traits": [
+        "Serpentine Grace: constrict attacks and enhanced grappling",
+        "Ancient Wisdom: bonus to magical learning"
+      ],
+      "sub_races": [
+        {
+          "id": "naga_lamia",
+          "name": "Naga Lamia",
+          "description": "Royal serpents with innate magical abilities.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 0,
+            "INT": 3,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 6,
+              "max_mp": 18
+            }
+          },
+          "bonus_traits": [
+            "Innate Sorcery: natural spellcasting ability"
+          ]
+        },
+        {
+          "id": "hunter_lamia",
+          "name": "Hunter Lamia",
+          "description": "Predatory coils built for ambush and constriction.",
+          "bonus_stats": {
+            "STR": 3,
+            "END": 1,
+            "INT": 0,
+            "AGI": -1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "physical_power": 5,
+              "crit_chance": 0.03
+            }
+          },
+          "bonus_traits": [
+            "Constrict: bonus grappling and restraint"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arachne",
+      "name": "Arachne",
+      "description": "Spider-folk with humanoid upper bodies and arachnid lower halves, weavers of fate and silk.",
+      "base_stats": {
+        "STR": 1,
+        "END": 0,
+        "INT": 2,
+        "AGI": 2
+      },
+      "modifiers": {
+        "flat": {
+          "evasion": 0.04,
+          "speed": 4,
+          "crit_chance": 0.02
+        }
+      },
+      "traits": [
+        "Web Weaver: create silk traps and bindings",
+        "Wall Walker: climb any surface"
+      ],
+      "sub_races": [
+        {
+          "id": "weaver_arachne",
+          "name": "Weaver Arachne",
+          "description": "Artisan spider-folk whose silk becomes art and armour.",
+          "bonus_stats": {
+            "STR": 0,
+            "END": 1,
+            "INT": 2,
+            "AGI": 0
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_power": 4,
+              "max_mp": 12
+            }
+          },
+          "bonus_traits": [
+            "Silk Artisan: craft superior silk items"
+          ]
+        },
+        {
+          "id": "predator_arachne",
+          "name": "Predator Arachne",
+          "description": "Hunting spiders, patient ambush predators with venom.",
+          "bonus_stats": {
+            "STR": 2,
+            "END": 0,
+            "INT": 0,
+            "AGI": 1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "physical_power": 4,
+              "crit_damage": 0.06
+            }
+          },
+          "bonus_traits": [
+            "Venomous Bite: innate poison attack"
+          ]
+        }
+      ]
     }
   ]
 }

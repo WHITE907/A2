@@ -423,12 +423,21 @@ class TestSkills(unittest.TestCase):
         self.assertEqual(self.player.current_mp, before - skill.mp_cost)
 
     def test_insufficient_mp_is_rejected_and_costs_nothing(self):
-        skill = self.game.skills.require("power_strike")
+        skill = self.game.skills.require("fireball")
         enemy = self.game.enemies.spawn("green_slime", 1)
         self.player.current_mp = 0
         result = skill.use(self.player, [enemy], self.ctx, enemies=[enemy])
         self.assertFalse(result.success)
         self.assertEqual(self.player.current_mp, 0)
+        self.assertEqual(enemy.current_hp, float(enemy.max_hp))
+
+    def test_insufficient_sp_is_rejected_and_costs_nothing(self):
+        skill = self.game.skills.require("power_strike")
+        enemy = self.game.enemies.spawn("green_slime", 1)
+        self.player.current_sp = 0
+        result = skill.use(self.player, [enemy], self.ctx, enemies=[enemy])
+        self.assertFalse(result.success)
+        self.assertEqual(self.player.current_sp, 0)
         self.assertEqual(enemy.current_hp, float(enemy.max_hp))
 
     def test_cooldown_blocks_reuse_then_clears(self):
@@ -761,9 +770,10 @@ class TestClassesAndPromotion(unittest.TestCase):
     def test_promotion_checklist_reports_each_requirement(self):
         self.game.create_character("Tester", "male", "squire")
         checks = self.game.promotion_options()
-        self.assertEqual(len(checks), 1)
-        self.assertFalse(checks[0].eligible)
-        self.assertTrue(checks[0].unmet)
+        self.assertEqual(len(checks), 3)  # Squire now has 3 promotion paths
+        for check in checks:
+            self.assertFalse(check.eligible)
+            self.assertTrue(check.unmet)
 
     def test_successful_promotion_swaps_core_keeps_learned(self):
         self.game.create_character("Tester", "male", "squire")

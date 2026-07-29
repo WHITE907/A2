@@ -39,6 +39,12 @@
       "per_int": 5.0,
       "per_level": 2.0
     },
+    "sp": {
+      "base": 20,
+      "per_end": 6.0,
+      "per_str": 2.0,
+      "per_level": 3.0
+    },
     "physical_power": {
       "base": 3,
       "per_str": 1.6,

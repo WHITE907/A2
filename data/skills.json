@@ -9,7 +9,16 @@
       "targeting": "enemy",
       "mp_cost": 0,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 1.0 }
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 4,
+          "power_ratio": 1.0
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee"
       ]
     },
     {
@@ -20,7 +29,17 @@
       "targeting": "enemy",
       "mp_cost": 0,
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 4, "power_ratio": 1.0, "accuracy_bonus": 0.05 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 4,
+          "power_ratio": 1.0,
+          "accuracy_bonus": 0.05
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged"
       ]
     },
     {
@@ -31,7 +50,17 @@
       "targeting": "enemy",
       "mp_cost": 0,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 3, "power_ratio": 0.9, "penetration_pct": 0.25 }
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 3,
+          "power_ratio": 0.9,
+          "penetration_pct": 0.25
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee"
       ]
     },
     {
@@ -42,8 +71,22 @@
       "targeting": "enemy",
       "mp_cost": 0,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 3, "scaling": { "STR": 1.0, "INT": 0.5 } }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 3,
+          "scaling": {
+            "STR": 1.0,
+            "INT": 0.5
+          }
+        }
+      ],
+      "tags": [
+        "physical",
+        "magical",
+        "melee"
+      ],
+      "sp_cost": 0
     },
     {
       "id": "power_strike",
@@ -51,11 +94,21 @@
       "category": "active",
       "description": "A heavy overhead blow.",
       "targeting": "enemy",
-      "mp_cost": 6,
+      "mp_cost": 0,
       "mastery_track": "sword",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 8, "power_ratio": 1.45 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 8,
+          "power_ratio": 1.45
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee"
+      ],
+      "sp_cost": 6
     },
     {
       "id": "sunder_armor",
@@ -63,12 +116,27 @@
       "category": "active",
       "description": "Cripples the target's defences.",
       "targeting": "enemy",
-      "mp_cost": 8,
+      "mp_cost": 0,
       "cooldown": 3,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 0.8 },
-        { "type": "apply_status", "status_id": "sundered", "chance": 0.8 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 4,
+          "power_ratio": 0.8
+        },
+        {
+          "type": "apply_status",
+          "status_id": "sundered",
+          "chance": 0.8
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "debuff"
+      ],
+      "sp_cost": 8
     },
     {
       "id": "whirlwind",
@@ -76,12 +144,23 @@
       "category": "active",
       "description": "A spinning attack that strikes every foe.",
       "targeting": "all_enemies",
-      "mp_cost": 14,
+      "mp_cost": 0,
       "cooldown": 2,
       "required_level": 5,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 5, "power_ratio": 0.85 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 5,
+          "power_ratio": 0.85
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "aoe"
+      ],
+      "sp_cost": 14
     },
     {
       "id": "rallying_cry",
@@ -89,12 +168,24 @@
       "category": "active",
       "description": "A roar that steels the body for battle.",
       "targeting": "self",
-      "mp_cost": 10,
+      "mp_cost": 0,
       "cooldown": 4,
       "effects": [
-        { "type": "apply_status", "status_id": "might" },
-        { "type": "apply_status", "status_id": "iron_skin" }
-      ]
+        {
+          "type": "apply_status",
+          "status_id": "might"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "iron_skin"
+        }
+      ],
+      "tags": [
+        "physical",
+        "buff",
+        "support"
+      ],
+      "sp_cost": 10
     },
     {
       "id": "shield_wall",
@@ -102,11 +193,26 @@
       "category": "active",
       "description": "Raises a barrier that absorbs damage and punishes attackers.",
       "targeting": "self",
-      "mp_cost": 12,
+      "mp_cost": 0,
       "cooldown": 4,
       "effects": [
-        { "type": "shield", "name": "Shield Wall", "base": 20, "scaling": { "END": 2.0 }, "duration": 3, "reflect_pct": 0.15 }
-      ]
+        {
+          "type": "shield",
+          "name": "Shield Wall",
+          "base": 20,
+          "scaling": {
+            "END": 2.0
+          },
+          "duration": 3,
+          "reflect_pct": 0.15
+        }
+      ],
+      "tags": [
+        "physical",
+        "buff",
+        "defense"
+      ],
+      "sp_cost": 12
     },
     {
       "id": "fireball",
@@ -117,8 +223,22 @@
       "mp_cost": 10,
       "mastery_track": "fire",
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 10, "power_ratio": 1.4 },
-        { "type": "apply_status", "status_id": "burn", "chance": 0.45 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 10,
+          "power_ratio": 1.4
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.45
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "fire"
       ]
     },
     {
@@ -130,8 +250,23 @@
       "mp_cost": 9,
       "mastery_track": "ice",
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 8, "power_ratio": 1.2 },
-        { "type": "apply_status", "status_id": "slowed", "chance": 0.6 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 8,
+          "power_ratio": 1.2
+        },
+        {
+          "type": "apply_status",
+          "status_id": "slowed",
+          "chance": 0.6
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "ice",
+        "debuff"
       ]
     },
     {
@@ -145,8 +280,23 @@
       "required_level": 6,
       "mastery_track": "fire",
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 9, "power_ratio": 1.0 },
-        { "type": "apply_status", "status_id": "burn", "chance": 0.3 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 9,
+          "power_ratio": 1.0
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.3
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "fire",
+        "aoe"
       ]
     },
     {
@@ -158,8 +308,19 @@
       "mp_cost": 8,
       "cooldown": 4,
       "effects": [
-        { "type": "apply_status", "status_id": "focus" },
-        { "type": "apply_status", "status_id": "meditation" }
+        {
+          "type": "apply_status",
+          "status_id": "focus"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "meditation"
+        }
+      ],
+      "tags": [
+        "magical",
+        "buff",
+        "support"
       ]
     },
     {
@@ -171,7 +332,18 @@
       "mp_cost": 8,
       "mastery_track": "light",
       "effects": [
-        { "type": "heal", "base": 18, "scaling": { "INT": 1.3 } }
+        {
+          "type": "heal",
+          "base": 18,
+          "scaling": {
+            "INT": 1.3
+          }
+        }
+      ],
+      "tags": [
+        "magical",
+        "healing",
+        "light"
       ]
     },
     {
@@ -184,8 +356,23 @@
       "cooldown": 3,
       "mastery_track": "light",
       "effects": [
-        { "type": "heal", "base": 8, "scaling": { "INT": 0.5 } },
-        { "type": "apply_status", "status_id": "regeneration" }
+        {
+          "type": "heal",
+          "base": 8,
+          "scaling": {
+            "INT": 0.5
+          }
+        },
+        {
+          "type": "apply_status",
+          "status_id": "regeneration"
+        }
+      ],
+      "tags": [
+        "magical",
+        "healing",
+        "light",
+        "hot"
       ]
     },
     {
@@ -198,8 +385,23 @@
       "cooldown": 4,
       "mastery_track": "shadow",
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 6, "power_ratio": 0.7 },
-        { "type": "apply_status", "status_id": "stunned", "chance": 0.55 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 6,
+          "power_ratio": 0.7
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stunned",
+          "chance": 0.55
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "shadow",
+        "cc"
       ]
     },
     {
@@ -208,12 +410,27 @@
       "category": "active",
       "description": "A coated blade that leaves poison behind.",
       "targeting": "enemy",
-      "mp_cost": 7,
+      "mp_cost": 0,
       "mastery_track": "dagger",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 5, "power_ratio": 1.0 },
-        { "type": "apply_status", "status_id": "poison", "chance": 0.7 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 5,
+          "power_ratio": 1.0
+        },
+        {
+          "type": "apply_status",
+          "status_id": "poison",
+          "chance": 0.7
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "debuff"
+      ],
+      "sp_cost": 7
     },
     {
       "id": "shadowstep",
@@ -221,14 +438,33 @@
       "category": "active",
       "description": "Slips into the dark, striking twice from nowhere.",
       "targeting": "enemy",
-      "mp_cost": 12,
+      "mp_cost": 0,
       "cooldown": 3,
       "required_level": 4,
       "mastery_track": "dagger",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 0.75, "hits": 2, "penetration_pct": 0.2 },
-        { "type": "apply_status", "status_id": "haste", "target": "self", "resistible": false }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 4,
+          "power_ratio": 0.75,
+          "hits": 2,
+          "penetration_pct": 0.2
+        },
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "shadow",
+        "mobility"
+      ],
+      "sp_cost": 12
     },
     {
       "id": "hunters_mark",
@@ -236,14 +472,33 @@
       "category": "active",
       "description": "Marks the prey, blinding and weakening it.",
       "targeting": "enemy",
-      "mp_cost": 9,
+      "mp_cost": 0,
       "cooldown": 3,
       "mastery_track": "bow",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 4, "power_ratio": 0.9 },
-        { "type": "apply_status", "status_id": "blinded", "chance": 0.65 },
-        { "type": "apply_status", "status_id": "weakened", "chance": 0.5 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 4,
+          "power_ratio": 0.9
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blinded",
+          "chance": 0.65
+        },
+        {
+          "type": "apply_status",
+          "status_id": "weakened",
+          "chance": 0.5
+        }
+      ],
+      "tags": [
+        "physical",
+        "ranged",
+        "debuff"
+      ],
+      "sp_cost": 9
     },
     {
       "id": "cleave",
@@ -251,13 +506,31 @@
       "category": "weapon",
       "description": "A wide swing that bites deep. Requires an axe or sword.",
       "targeting": "enemy",
-      "mp_cost": 6,
-      "required_weapon_types": ["axe", "sword"],
+      "mp_cost": 0,
+      "required_weapon_types": [
+        "axe",
+        "sword"
+      ],
       "mastery_track": "axe",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 6, "power_ratio": 1.25 },
-        { "type": "apply_status", "status_id": "bleed", "chance": 0.4 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 6,
+          "power_ratio": 1.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "bleed",
+          "chance": 0.4
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "aoe"
+      ],
+      "sp_cost": 6
     },
     {
       "id": "aimed_shot",
@@ -265,12 +538,26 @@
       "category": "weapon",
       "description": "A patient shot that finds the gap. Requires a bow.",
       "targeting": "enemy",
-      "mp_cost": 7,
-      "required_weapon_types": ["bow"],
+      "mp_cost": 0,
+      "required_weapon_types": [
+        "bow"
+      ],
       "mastery_track": "bow",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 7, "power_ratio": 1.3, "accuracy_bonus": 0.1, "penetration_pct": 0.15 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 7,
+          "power_ratio": 1.3,
+          "accuracy_bonus": 0.1,
+          "penetration_pct": 0.15
+        }
+      ],
+      "tags": [
+        "physical",
+        "ranged"
+      ],
+      "sp_cost": 7
     },
     {
       "id": "crushing_blow",
@@ -278,13 +565,31 @@
       "category": "weapon",
       "description": "A blunt impact that rattles armour. Requires a mace.",
       "targeting": "enemy",
-      "mp_cost": 8,
-      "required_weapon_types": ["mace"],
+      "mp_cost": 0,
+      "required_weapon_types": [
+        "mace"
+      ],
       "mastery_track": "mace",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 7, "power_ratio": 1.2, "penetration_flat": 15 },
-        { "type": "apply_status", "status_id": "stunned", "chance": 0.2 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 7,
+          "power_ratio": 1.2,
+          "penetration_flat": 15
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stunned",
+          "chance": 0.2
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "cc"
+      ],
+      "sp_cost": 8
     },
     {
       "id": "staff_channel",
@@ -294,10 +599,19 @@
       "targeting": "self",
       "mp_cost": 0,
       "cooldown": 3,
-      "required_weapon_types": ["staff"],
+      "required_weapon_types": [
+        "staff"
+      ],
       "mastery_track": "staff",
       "effects": [
-        { "type": "resource", "amount": 14 }
+        {
+          "type": "resource",
+          "amount": 14
+        }
+      ],
+      "tags": [
+        "magical",
+        "support"
       ]
     },
     {
@@ -309,8 +623,17 @@
       "mp_cost": 0,
       "cooldown": 5,
       "effects": [
-        { "type": "heal", "base": 10, "percent_max_hp": 0.15 }
-      ]
+        {
+          "type": "heal",
+          "base": 10,
+          "percent_max_hp": 0.15
+        }
+      ],
+      "tags": [
+        "physical",
+        "healing"
+      ],
+      "sp_cost": 0
     },
     {
       "id": "steady_breath",
@@ -321,7 +644,14 @@
       "mp_cost": 0,
       "cooldown": 4,
       "effects": [
-        { "type": "resource", "percent_max_mp": 0.2 }
+        {
+          "type": "resource",
+          "percent_max_mp": 0.2
+        }
+      ],
+      "tags": [
+        "magical",
+        "support"
       ]
     },
     {
@@ -329,35 +659,89 @@
       "name": "Toughness",
       "category": "passive",
       "description": "Years of hardship harden the body.",
-      "passive_modifiers": { "flat": { "max_hp": 25, "armor": 4 } }
+      "passive_modifiers": {
+        "flat": {
+          "max_hp": 25,
+          "armor": 4
+        }
+      },
+      "tags": [
+        "physical",
+        "passive",
+        "defense"
+      ]
     },
     {
       "id": "keen_edge",
       "name": "Keen Edge",
       "category": "passive",
       "description": "A trained eye for weak points.",
-      "passive_modifiers": { "flat": { "crit_chance": 0.05 }, "pct": { "crit_damage": 0.1 } }
+      "passive_modifiers": {
+        "flat": {
+          "crit_chance": 0.05
+        },
+        "pct": {
+          "crit_damage": 0.1
+        }
+      },
+      "tags": [
+        "physical",
+        "passive",
+        "offense"
+      ]
     },
     {
       "id": "arcane_mind",
       "name": "Arcane Mind",
       "category": "passive",
       "description": "A deep well of magical reserve.",
-      "passive_modifiers": { "flat": { "max_mp": 20 }, "pct": { "magic_power": 0.12 } }
+      "passive_modifiers": {
+        "flat": {
+          "max_mp": 20
+        },
+        "pct": {
+          "magic_power": 0.12
+        }
+      },
+      "tags": [
+        "magical",
+        "passive",
+        "support"
+      ]
     },
     {
       "id": "fleet_footed",
       "name": "Fleet Footed",
       "category": "passive",
       "description": "Light on the feet, hard to pin down.",
-      "passive_modifiers": { "flat": { "evasion": 0.06, "speed": 3 } }
+      "passive_modifiers": {
+        "flat": {
+          "evasion": 0.06,
+          "speed": 3
+        }
+      },
+      "tags": [
+        "physical",
+        "passive",
+        "mobility"
+      ]
     },
     {
       "id": "warding_spirit",
       "name": "Warding Spirit",
       "category": "passive",
       "description": "An inner calm that turns aside curses.",
-      "passive_modifiers": { "flat": { "magic_resist": 8, "status_resist": 0.15 } }
+      "passive_modifiers": {
+        "flat": {
+          "magic_resist": 8,
+          "status_resist": 0.15
+        }
+      },
+      "tags": [
+        "magical",
+        "passive",
+        "defense"
+      ]
     },
     {
       "id": "titans_wrath",
@@ -365,13 +749,30 @@
       "category": "ultimate",
       "description": "An earth-splitting blow that shatters everything before it.",
       "targeting": "all_enemies",
-      "mp_cost": 30,
+      "mp_cost": 0,
       "cooldown": 6,
       "skill_point_cost": 3,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 25, "power_ratio": 2.2, "penetration_pct": 0.4 },
-        { "type": "apply_status", "status_id": "sundered", "chance": 0.75 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 25,
+          "power_ratio": 2.2,
+          "penetration_pct": 0.4
+        },
+        {
+          "type": "apply_status",
+          "status_id": "sundered",
+          "chance": 0.75
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "aoe",
+        "ultimate"
+      ],
+      "sp_cost": 30
     },
     {
       "id": "meteor",
@@ -384,8 +785,25 @@
       "skill_point_cost": 3,
       "mastery_track": "fire",
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 28, "power_ratio": 2.4, "penetration_pct": 0.3 },
-        { "type": "apply_status", "status_id": "burn", "chance": 0.9 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 28,
+          "power_ratio": 2.4,
+          "penetration_pct": 0.3
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.9
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "fire",
+        "aoe",
+        "ultimate"
       ]
     },
     {
@@ -394,14 +812,32 @@
       "category": "ultimate",
       "description": "A blur of strikes too fast to count.",
       "targeting": "enemy",
-      "mp_cost": 28,
+      "mp_cost": 0,
       "cooldown": 5,
       "skill_point_cost": 3,
       "mastery_track": "dagger",
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 6, "power_ratio": 0.7, "hits": 5, "penetration_pct": 0.25 },
-        { "type": "apply_status", "status_id": "bleed", "chance": 0.8, "stacks": 2 }
-      ]
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 6,
+          "power_ratio": 0.7,
+          "hits": 5,
+          "penetration_pct": 0.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "bleed",
+          "chance": 0.8,
+          "stacks": 2
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "ultimate"
+      ],
+      "sp_cost": 28
     },
     {
       "id": "divine_judgment",
@@ -414,9 +850,34 @@
       "skill_point_cost": 3,
       "mastery_track": "light",
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 22, "power_ratio": 1.9 },
-        { "type": "heal", "target": "self", "base": 30, "scaling": { "INT": 1.0 } },
-        { "type": "apply_status", "status_id": "regeneration", "target": "self", "resistible": false }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 22,
+          "power_ratio": 1.9
+        },
+        {
+          "type": "heal",
+          "target": "self",
+          "base": 30,
+          "scaling": {
+            "INT": 1.0
+          }
+        },
+        {
+          "type": "apply_status",
+          "status_id": "regeneration",
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "light",
+        "aoe",
+        "healing",
+        "ultimate"
       ]
     },
     {
@@ -427,7 +888,16 @@
       "targeting": "enemy",
       "mp_cost": 0,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 3, "power_ratio": 1.0 }
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 3,
+          "power_ratio": 1.0
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee"
       ]
     },
     {
@@ -438,8 +908,22 @@
       "targeting": "enemy",
       "mp_cost": 4,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 5, "power_ratio": 1.15 },
-        { "type": "apply_status", "status_id": "bleed", "chance": 0.35 }
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 5,
+          "power_ratio": 1.15
+        },
+        {
+          "type": "apply_status",
+          "status_id": "bleed",
+          "chance": 0.35
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "debuff"
       ]
     },
     {
@@ -450,8 +934,22 @@
       "targeting": "enemy",
       "mp_cost": 6,
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 4, "power_ratio": 0.9 },
-        { "type": "apply_status", "status_id": "poison", "chance": 0.5 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 4,
+          "power_ratio": 0.9
+        },
+        {
+          "type": "apply_status",
+          "status_id": "poison",
+          "chance": 0.5
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "debuff"
       ]
     },
     {
@@ -463,7 +961,14 @@
       "mp_cost": 5,
       "cooldown": 4,
       "effects": [
-        { "type": "apply_status", "status_id": "might" }
+        {
+          "type": "apply_status",
+          "status_id": "might"
+        }
+      ],
+      "tags": [
+        "physical",
+        "buff"
       ]
     },
     {
@@ -474,8 +979,23 @@
       "targeting": "enemy",
       "mp_cost": 8,
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 8, "power_ratio": 1.25 },
-        { "type": "apply_status", "status_id": "cursed", "chance": 0.4 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 8,
+          "power_ratio": 1.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "cursed",
+          "chance": 0.4
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "shadow",
+        "debuff"
       ]
     },
     {
@@ -487,7 +1007,17 @@
       "mp_cost": 10,
       "cooldown": 3,
       "effects": [
-        { "type": "heal", "base": 14, "scaling": { "INT": 1.0 } }
+        {
+          "type": "heal",
+          "base": 14,
+          "scaling": {
+            "INT": 1.0
+          }
+        }
+      ],
+      "tags": [
+        "magical",
+        "healing"
       ]
     },
     {
@@ -499,8 +1029,23 @@
       "mp_cost": 12,
       "cooldown": 2,
       "effects": [
-        { "type": "damage", "damage_type": "physical", "base": 12, "power_ratio": 1.6, "penetration_flat": 20 },
-        { "type": "apply_status", "status_id": "stunned", "chance": 0.25 }
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 12,
+          "power_ratio": 1.6,
+          "penetration_flat": 20
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stunned",
+          "chance": 0.25
+        }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "cc"
       ]
     },
     {
@@ -512,8 +1057,24 @@
       "mp_cost": 16,
       "cooldown": 3,
       "effects": [
-        { "type": "damage", "damage_type": "magic", "base": 14, "power_ratio": 1.5 },
-        { "type": "apply_status", "status_id": "frozen", "chance": 0.3 }
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 14,
+          "power_ratio": 1.5
+        },
+        {
+          "type": "apply_status",
+          "status_id": "frozen",
+          "chance": 0.3
+        }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "ice",
+        "aoe",
+        "cc"
       ]
     },
     {
@@ -522,7 +1083,7 @@
       "category": "active",
       "description": "Conviction becomes a brilliant barrier.",
       "targeting": "self",
-      "mp_cost": 20,
+      "mp_cost": 10.0,
       "cooldown": 4,
       "required_level": 20,
       "required_class_ids": [
@@ -548,7 +1109,15 @@
           "status_id": "valor",
           "resistible": false
         }
-      ]
+      ],
+      "tags": [
+        "magical",
+        "physical",
+        "buff",
+        "defense",
+        "light"
+      ],
+      "sp_cost": 12.0
     },
     {
       "id": "executioners_arc",
@@ -556,7 +1125,7 @@
       "category": "weapon",
       "description": "A disciplined sweep that leaves no safe approach.",
       "targeting": "all_enemies",
-      "mp_cost": 18,
+      "mp_cost": 0,
       "cooldown": 3,
       "required_level": 24,
       "required_weapon_types": [
@@ -572,7 +1141,13 @@
           "power_ratio": 1.35,
           "penetration_pct": 0.2
         }
-      ]
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "aoe"
+      ],
+      "sp_cost": 18
     },
     {
       "id": "guardian_resolve",
@@ -592,7 +1167,12 @@
           "armor": 12,
           "status_resist": 0.1
         }
-      }
+      },
+      "tags": [
+        "physical",
+        "passive",
+        "defense"
+      ]
     },
     {
       "id": "smoke_veil",
@@ -600,7 +1180,7 @@
       "category": "active",
       "description": "Vanish into smoke and return with the wind at your back.",
       "targeting": "self",
-      "mp_cost": 14,
+      "mp_cost": 0,
       "cooldown": 4,
       "required_level": 20,
       "required_class_ids": [
@@ -621,7 +1201,14 @@
           "status_id": "stormguard",
           "resistible": false
         }
-      ]
+      ],
+      "tags": [
+        "physical",
+        "shadow",
+        "buff",
+        "mobility"
+      ],
+      "sp_cost": 14
     },
     {
       "id": "heartseeker",
@@ -629,7 +1216,7 @@
       "category": "weapon",
       "description": "One patient strike through the smallest opening.",
       "targeting": "enemy",
-      "mp_cost": 16,
+      "mp_cost": 0,
       "cooldown": 3,
       "required_level": 24,
       "required_weapon_types": [
@@ -652,7 +1239,13 @@
           "chance": 0.75,
           "stacks": 2
         }
-      ]
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "ranged"
+      ],
+      "sp_cost": 16
     },
     {
       "id": "predatory_focus",
@@ -675,7 +1268,12 @@
         "pct": {
           "crit_damage": 0.15
         }
-      }
+      },
+      "tags": [
+        "physical",
+        "passive",
+        "offense"
+      ]
     },
     {
       "id": "chain_lightning",
@@ -704,6 +1302,11 @@
           "status_id": "electrified",
           "chance": 0.55
         }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "aoe"
       ]
     },
     {
@@ -739,6 +1342,13 @@
           "status_id": "brittle",
           "chance": 0.8
         }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "ice",
+        "cc",
+        "debuff"
       ]
     },
     {
@@ -762,7 +1372,12 @@
         "pct": {
           "magic_power": 0.12
         }
-      }
+      },
+      "tags": [
+        "magical",
+        "passive",
+        "support"
+      ]
     },
     {
       "id": "enemy_ember_bite",
@@ -782,6 +1397,12 @@
           "status_id": "burn",
           "chance": 0.55
         }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "fire",
+        "debuff"
       ]
     },
     {
@@ -802,6 +1423,11 @@
           "status_id": "rooted",
           "chance": 0.3
         }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "cc"
       ]
     },
     {
@@ -828,6 +1454,12 @@
           "status_id": "slowed",
           "chance": 0.5
         }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "debuff",
+        "cc"
       ]
     },
     {
@@ -849,6 +1481,11 @@
           "status_id": "weakened",
           "chance": 0.5
         }
+      ],
+      "tags": [
+        "magical",
+        "melee",
+        "debuff"
       ]
     },
     {
@@ -871,6 +1508,11 @@
           "status_id": "stunned",
           "chance": 0.25
         }
+      ],
+      "tags": [
+        "physical",
+        "melee",
+        "cc"
       ]
     },
     {
@@ -892,6 +1534,12 @@
           "status_id": "brittle",
           "chance": 0.55
         }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "aoe",
+        "debuff"
       ]
     },
     {
@@ -913,6 +1561,10 @@
           "status_id": "electrified",
           "chance": 0.65
         }
+      ],
+      "tags": [
+        "physical",
+        "melee"
       ]
     },
     {
@@ -934,6 +1586,11 @@
           "status_id": "electrified",
           "chance": 0.7
         }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "aoe"
       ]
     },
     {
@@ -956,6 +1613,13 @@
           "status_id": "burn",
           "chance": 0.8
         }
+      ],
+      "tags": [
+        "magical",
+        "ranged",
+        "fire",
+        "aoe",
+        "debuff"
       ]
     }
   ]

@@ -8,20 +8,61 @@
       "race_id": "human",
       "description": "A retired sellsword who stayed in Ashvale because leaving cost more than staying.",
       "location_id": "town_ashvale",
-      "base_stats": { "STR": 10, "END": 12, "INT": 3, "AGI": 5 },
-      "growth": { "STR": 2, "END": 3, "INT": 0, "AGI": 1 },
-      "skill_ids": ["strike", "power_strike", "shield_wall", "rallying_cry"],
+      "base_stats": {
+        "STR": 10,
+        "END": 12,
+        "INT": 3,
+        "AGI": 5
+      },
+      "growth": {
+        "STR": 2,
+        "END": 3,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "power_strike",
+        "shield_wall",
+        "rallying_cry"
+      ],
       "ai_behavior_id": "defensive",
       "level_offset": 0,
       "weapon_type": "sword",
-      "modifiers": { "flat": { "armor": 6, "max_hp": 30 } },
-      "recruit": { "level": 2, "gold": 120 },
+      "modifiers": {
+        "flat": {
+          "armor": 6,
+          "max_hp": 30
+        }
+      },
+      "recruit": {
+        "level": 2,
+        "gold": 120
+      },
       "marriageable": true,
       "marriage_affinity": 70,
-      "gift_item_ids": ["troll_hide", "steel_sword", "potion"],
-      "loyalty_skill_ids": {"Devoted": ["sunder_armor"], "Sworn": ["titans_wrath"]},
-      "loyalty_titles": {"Trusted": "Old Shield", "Devoted": "Road Captain", "Sworn": "The Unbroken Rook"},
-      "loyalty_outfits": {"Devoted": "veteran_mail", "Sworn": "oathplate"},
+      "gift_item_ids": [
+        "troll_hide",
+        "steel_sword",
+        "potion"
+      ],
+      "loyalty_skill_ids": {
+        "Devoted": [
+          "sunder_armor"
+        ],
+        "Sworn": [
+          "titans_wrath"
+        ]
+      },
+      "loyalty_titles": {
+        "Trusted": "Old Shield",
+        "Devoted": "Road Captain",
+        "Sworn": "The Unbroken Rook"
+      },
+      "loyalty_outfits": {
+        "Devoted": "veteran_mail",
+        "Sworn": "oathplate"
+      },
       "dialogue": [
         "Stay behind me and this stays simple.",
         "I've buried better fighters than either of us. Keep your guard up.",
@@ -30,7 +71,8 @@
         "I once guarded a duke's hat for three days. The duke was elsewhere.",
         "Soup is tactics. Bad soup ruins morale before the enemy gets a chance.",
         "Ashvale's well owes me money. Long story."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "sister_elen",
@@ -39,17 +81,47 @@
       "race_id": "half_elf",
       "description": "Left the shrine when it stopped answering questions. Still keeps the vows that mattered.",
       "location_id": "town_ashvale",
-      "base_stats": { "STR": 3, "END": 7, "INT": 12, "AGI": 6 },
-      "growth": { "STR": 0, "END": 1, "INT": 3, "AGI": 1 },
-      "skill_ids": ["arcane_bolt", "mend", "renewal", "steady_breath"],
+      "base_stats": {
+        "STR": 3,
+        "END": 7,
+        "INT": 12,
+        "AGI": 6
+      },
+      "growth": {
+        "STR": 0,
+        "END": 1,
+        "INT": 3,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "mend",
+        "renewal",
+        "steady_breath"
+      ],
       "ai_behavior_id": "tactical",
       "level_offset": -1,
       "weapon_type": "staff",
-      "modifiers": { "flat": { "max_mp": 25, "magic_resist": 5 } },
-      "recruit": { "level": 4, "affinity": 15, "items": { "minor_ether": 2 } },
+      "modifiers": {
+        "flat": {
+          "max_mp": 25,
+          "magic_resist": 5
+        }
+      },
+      "recruit": {
+        "level": 4,
+        "affinity": 15,
+        "items": {
+          "minor_ether": 2
+        }
+      },
       "marriageable": true,
       "marriage_affinity": 80,
-      "gift_item_ids": ["minor_ether", "ether", "antidote"],
+      "gift_item_ids": [
+        "minor_ether",
+        "ether",
+        "antidote"
+      ],
       "dialogue": [
         "You're hurt. Sit. That wasn't a request.",
         "The shrine taught mercy. The road taught triage.",
@@ -58,7 +130,8 @@
         "I collect terrible jokes. They remind patients to keep breathing.",
         "Half my family prays before meals. The other half checks for poison.",
         "Voss tried to label my medicine cabinet. He has recovered."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "kess",
@@ -67,17 +140,45 @@
       "race_id": "beastkin",
       "description": "Fast, cheerful, and entirely unbothered by the word 'ambush'.",
       "location_id": "old_road",
-      "base_stats": { "STR": 7, "END": 6, "INT": 5, "AGI": 14 },
-      "growth": { "STR": 1, "END": 1, "INT": 1, "AGI": 3 },
-      "skill_ids": ["pierce", "venom_edge", "shadowstep", "hunters_mark"],
+      "base_stats": {
+        "STR": 7,
+        "END": 6,
+        "INT": 5,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 1,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "pierce",
+        "venom_edge",
+        "shadowstep",
+        "hunters_mark"
+      ],
       "ai_behavior_id": "opportunist",
       "level_offset": 0,
       "weapon_type": "dagger",
-      "modifiers": { "flat": { "crit_chance": 0.05, "speed": 4 } },
-      "recruit": { "level": 6, "gold": 250, "affinity": 10 },
+      "modifiers": {
+        "flat": {
+          "crit_chance": 0.05,
+          "speed": 4
+        }
+      },
+      "recruit": {
+        "level": 6,
+        "gold": 250,
+        "affinity": 10
+      },
       "marriageable": true,
       "marriage_affinity": 75,
-      "gift_item_ids": ["shadow_fang", "bandit_coin", "travel_boots"],
+      "gift_item_ids": [
+        "shadow_fang",
+        "bandit_coin",
+        "travel_boots"
+      ],
       "dialogue": [
         "Found you a shortcut. It's only a bit haunted.",
         "Rook says I'm reckless. Rook is slow. Draw your own conclusions.",
@@ -86,7 +187,8 @@
         "I named my left boot. The right one hasn't earned it.",
         "Beastkin ears are excellent. Yours are very loud, somehow.",
         "If this plan works, I invented it. If not, Rook did."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "magister_voss",
@@ -95,17 +197,50 @@
       "race_id": "elf",
       "description": "Studies the Sunken Shrine because nobody sensible will. Glass, but the sharp kind.",
       "location_id": "hollow_cave",
-      "base_stats": { "STR": 2, "END": 5, "INT": 18, "AGI": 7 },
-      "growth": { "STR": 0, "END": 1, "INT": 4, "AGI": 1 },
-      "skill_ids": ["arcane_bolt", "fireball", "frost_lance", "mind_over_matter"],
+      "base_stats": {
+        "STR": 2,
+        "END": 5,
+        "INT": 18,
+        "AGI": 7
+      },
+      "growth": {
+        "STR": 0,
+        "END": 1,
+        "INT": 4,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "fireball",
+        "frost_lance",
+        "mind_over_matter"
+      ],
       "ai_behavior_id": "aggressive",
       "level_offset": -1,
       "weapon_type": "staff",
-      "modifiers": { "pct": { "magic_power": 0.15 }, "flat": { "max_hp": -10 } },
-      "recruit": { "level": 9, "affinity": 20, "gold": 400, "items": { "shadow_essence": 1 } },
+      "modifiers": {
+        "pct": {
+          "magic_power": 0.15
+        },
+        "flat": {
+          "max_hp": -10
+        }
+      },
+      "recruit": {
+        "level": 9,
+        "affinity": 20,
+        "gold": 400,
+        "items": {
+          "shadow_essence": 1
+        }
+      },
       "marriageable": true,
       "marriage_affinity": 85,
-      "gift_item_ids": ["shadow_essence", "runed_staff", "amulet_of_insight"],
+      "gift_item_ids": [
+        "shadow_essence",
+        "runed_staff",
+        "amulet_of_insight"
+      ],
       "dialogue": [
         "The shrine is older than the language on it. Doesn't that trouble you?",
         "Stand clear of the target. I mean genuinely clear.",
@@ -114,7 +249,8 @@
         "I am not banned from the archive. The archive is banned from me.",
         "Elven patience is real. I simply spend mine quickly.",
         "A wisp followed me home once. We disagreed about rent."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "captain_brann",
@@ -172,7 +308,8 @@
         "Dwarven tea should hold a spoon upright. Anything weaker is weather.",
         "My beard caught fire once. The recruits learned faster afterward.",
         "Walls listen better than officers and interrupt less."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "nyra_reed",
@@ -229,7 +366,8 @@
         "My elven side reads the stars. My human side asks where supper is.",
         "Never trust a frog with nothing to say.",
         "I have six maps of this marsh. At most two are lying."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "orren_quill",
@@ -287,7 +425,8 @@
         "The horns are useful for hanging measuring string. Dignity adapts.",
         "I wrote a rune for silence. Tala smashed it for being suspiciously quiet.",
         "Tea tastes better from a beaker. This is not negotiable."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "tala_stone",
@@ -344,7 +483,8 @@
         "My axe is called Delicate Negotiation.",
         "I can sing mining songs or sing well. Pick one.",
         "Orren says crystals remember insults. Good. Saves me repeating them."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "seraphine_gale",
@@ -403,7 +543,8 @@
         "Demons invented contracts because handshakes kept setting things on fire.",
         "I asked the cloud its name. It rained on me for an hour.",
         "My forecast for supper is bread with a strong chance of cheese."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "cael_sunward",
@@ -461,7 +602,8 @@
         "Dragonkin shed scales. No, you may not sell mine.",
         "I polish my sword when nervous. It has become extremely shiny.",
         "The Tyrant called me hatchling. Technically correct. Still rude."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "lethira_vale",
@@ -519,7 +661,8 @@
         "Kess once challenged me to a race. I let the story improve in the retelling.",
         "If I recover every memory, I hope at least one explains this hat.",
         "The forest is not silent. It is choosing whether to include us."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "brokk_embervein",
@@ -577,7 +720,8 @@
         "Tala swings first. I make sure the ceiling agrees.",
         "I baked this bread myself. It doubles as an off-hand shield.",
         "Stone forgets nothing, but it can be persuaded to keep quiet."
-      ]
+      ],
+      "gender": "male"
     },
     {
       "id": "veyra_ashhorn",
@@ -635,7 +779,8 @@
         "My tail knocked over that bottle. We have discussed boundaries.",
         "I left the Ash Court with one coat and several enemies. Good coat.",
         "Mercy and loopholes are cousins. I am fond of both."
-      ]
+      ],
+      "gender": "female"
     },
     {
       "id": "rhazek_dawnscale",
@@ -694,6 +839,408 @@
         "A dragonkin bow is mostly horns and apologies.",
         "I keep one sun fragment as a night-light. It is excessive.",
         "Duty should be carried like a spear, not worn like a chain."
+      ],
+      "gender": "male"
+    },
+    {
+      "id": "gruk_ironjaw",
+      "name": "Gruk Ironjaw",
+      "role": "berserker",
+      "race_id": "orc",
+      "gender": "male",
+      "description": "An orcish warrior seeking honourable combat to repay a blood debt.",
+      "location_id": "old_road",
+      "base_stats": {
+        "STR": 18,
+        "END": 14,
+        "INT": 3,
+        "AGI": 8
+      },
+      "growth": {
+        "STR": 4,
+        "END": 3,
+        "INT": 0,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "power_strike",
+        "cleave",
+        "rallying_cry"
+      ],
+      "ai_behavior_id": "berserk",
+      "weapon_type": "axe",
+      "modifiers": {
+        "flat": {
+          "physical_power": 10,
+          "max_hp": 50
+        }
+      },
+      "recruit": {
+        "level": 8,
+        "gold": 350,
+        "affinity": 10
+      },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "steel_sword",
+        "troll_hide",
+        "greater_potion"
+      ],
+      "dialogue": [
+        "Gruk fights. Gruk wins. Gruk eats.",
+        "Honour is not spoken. It is done.",
+        "Your enemies will know my name before they know the ground.",
+        "In my clan, we settle arguments with axes. Efficient.",
+        "Small friend, big heart. This I respect.",
+        "My jaw is iron. My cooking is questionable.",
+        "Orcs do not retreat. We advance in the opposite direction."
+      ]
+    },
+    {
+      "id": "pip_sprocket",
+      "name": "Pip Sprocket",
+      "role": "tinkerer",
+      "race_id": "gnome",
+      "gender": "male",
+      "description": "A gnome artificer whose inventions work approximately 60% of the time.",
+      "location_id": "town_emberwatch",
+      "base_stats": {
+        "STR": 2,
+        "END": 6,
+        "INT": 16,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 0,
+        "END": 1,
+        "INT": 4,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "fireball",
+        "frost_lance",
+        "mind_over_matter"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 10,
+          "accuracy": 0.06,
+          "crit_chance": 0.04
+        }
+      },
+      "recruit": {
+        "level": 12,
+        "affinity": 15,
+        "gold": 600
+      },
+      "marriageable": true,
+      "marriage_affinity": 75,
+      "gift_item_ids": [
+        "ember_scale",
+        "runed_staff",
+        "amulet_of_insight"
+      ],
+      "dialogue": [
+        "Stand back. This might explode. Actually, stand further back.",
+        "I call this invention 'The Problem Solver'. The problem is usually still there, but on fire.",
+        "Gnomes don't fail. We discover unexpected learning opportunities.",
+        "My last apprentice was very understanding. About the explosion. Not about the eyebrows.",
+        "Have you considered that the door might be locked for a reason? No? Good. Stand back.",
+        "I measured twice and cut once. Both measurements were wrong.",
+        "Every great invention begins with 'What could possibly go wrong?'"
+      ]
+    },
+    {
+      "id": "rose_underhill",
+      "name": "Rose Underhill",
+      "role": "scout",
+      "race_id": "halfling",
+      "gender": "female",
+      "description": "A halfling scout who has never met a locked door or an untried pie she didn't like.",
+      "location_id": "town_ashvale",
+      "base_stats": {
+        "STR": 4,
+        "END": 8,
+        "INT": 8,
+        "AGI": 16
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 1,
+        "AGI": 3
+      },
+      "skill_ids": [
+        "pierce",
+        "venom_edge",
+        "shadowstep",
+        "hunters_mark"
+      ],
+      "ai_behavior_id": "opportunist",
+      "weapon_type": "dagger",
+      "modifiers": {
+        "flat": {
+          "evasion": 0.08,
+          "crit_chance": 0.06,
+          "speed": 5
+        }
+      },
+      "recruit": {
+        "level": 5,
+        "affinity": 10,
+        "gold": 180
+      },
+      "marriageable": true,
+      "marriage_affinity": 70,
+      "gift_item_ids": [
+        "bandit_coin",
+        "travel_boots",
+        "potion"
+      ],
+      "dialogue": [
+        "Second breakfast was the best invention. Elevenses was a close second.",
+        "I'm not hiding. I'm strategically absent.",
+        "Locked doors are just suggestions with better hardware.",
+        "The best adventures end with a meal. The worst ones don't end at all.",
+        "You call it 'breaking in.' I call it 'uninvited visiting.'",
+        "Big folk always look up. Never look down. Their mistake.",
+        "I once stole a pie from under a sleeping dragon. The pie was excellent."
+      ]
+    },
+    {
+      "id": "ember_skysong",
+      "name": "Ember Skysong",
+      "role": "elementalist",
+      "race_id": "genasi",
+      "gender": "female",
+      "description": "A fire genasi whose emotions are uncomfortably visible as temperature changes.",
+      "location_id": "town_emberwatch",
+      "base_stats": {
+        "STR": 6,
+        "END": 10,
+        "INT": 22,
+        "AGI": 14
+      },
+      "growth": {
+        "STR": 1,
+        "END": 2,
+        "INT": 4,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "fireball",
+        "flame_wave",
+        "mind_over_matter"
+      ],
+      "ai_behavior_id": "aggressive",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 16,
+          "speed": 5,
+          "max_mp": 40
+        }
+      },
+      "recruit": {
+        "level": 22,
+        "affinity": 20,
+        "gold": 1800
+      },
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": [
+        "ember_scale",
+        "runed_staff",
+        "greater_ether"
+      ],
+      "dialogue": [
+        "When I'm angry, things near me tend to catch fire. Fair warning.",
+        "My mother was a fire elemental. My father was a very brave bard.",
+        "I don't get colds. I get small, controlled infernos.",
+        "Emberwatch is the only town where my temperature isn't alarming.",
+        "Sorry about the singed eyebrows. Again.",
+        "I meditate to stay cool. Literally.",
+        "My tea is always the perfect temperature. That's one advantage."
+      ]
+    },
+    {
+      "id": "korrath_peaks",
+      "name": "Korrath Peaks",
+      "role": "vanguard",
+      "race_id": "goliath",
+      "gender": "male",
+      "description": "A goliath warrior who measures all challenges against the mountains of his youth.",
+      "location_id": "town_stonehaven",
+      "base_stats": {
+        "STR": 24,
+        "END": 22,
+        "INT": 6,
+        "AGI": 6
+      },
+      "growth": {
+        "STR": 5,
+        "END": 5,
+        "INT": 1,
+        "AGI": 1
+      },
+      "skill_ids": [
+        "strike",
+        "power_strike",
+        "shield_wall",
+        "cleave"
+      ],
+      "ai_behavior_id": "defensive",
+      "weapon_type": "mace",
+      "modifiers": {
+        "flat": {
+          "armor": 16,
+          "max_hp": 100,
+          "physical_power": 8
+        }
+      },
+      "recruit": {
+        "level": 25,
+        "affinity": 20,
+        "items": {
+          "granite_core": 3
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 80,
+      "gift_item_ids": [
+        "stonecleaver",
+        "granite_core",
+        "greater_potion"
+      ],
+      "dialogue": [
+        "The mountain does not flinch. Neither do I.",
+        "Among goliaths, we keep score. Always.",
+        "Your problems are smaller than my mountains. This is encouraging.",
+        "I have faced avalanches. Your enemy is less impressive.",
+        "Endurance is not about never falling. It is about standing each time.",
+        "My name means 'summit' in the old tongue. I try to live up to it.",
+        "Goliath cooking has two spices: rock and more rock."
+      ]
+    },
+    {
+      "id": "sythia_coils",
+      "name": "Sythia Coils",
+      "role": "enchanter",
+      "race_id": "lamia",
+      "gender": "female",
+      "description": "A naga lamia scholar studying the boundary between mortal and divine magic.",
+      "location_id": "hollow_cave",
+      "base_stats": {
+        "STR": 10,
+        "END": 12,
+        "INT": 24,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 5,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "arcane_bolt",
+        "shadow_bind",
+        "frost_lance",
+        "renewal"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "staff",
+      "modifiers": {
+        "flat": {
+          "magic_power": 14,
+          "magic_resist": 12,
+          "max_mp": 50
+        }
+      },
+      "recruit": {
+        "level": 20,
+        "affinity": 25,
+        "items": {
+          "shadow_essence": 2
+        }
+      },
+      "marriageable": true,
+      "marriage_affinity": 90,
+      "gift_item_ids": [
+        "runed_staff",
+        "shadow_essence",
+        "amulet_of_insight"
+      ],
+      "dialogue": [
+        "My coils are quite comfortable, thank you for not staring.",
+        "I have studied for three centuries. I still feel behind.",
+        "The divine and the arcane are siblings who refuse to speak.",
+        "Yes, I can constrict you. No, that is not an invitation.",
+        "Warm-blooded folk are so impatient. I blame the mortality.",
+        "I shed my skin once a year. It is less dramatic than it sounds.",
+        "My library has books older than your kingdom's founding."
+      ]
+    },
+    {
+      "id": "nethys_websong",
+      "name": "Nethys Websong",
+      "role": "trapper",
+      "race_id": "arachne",
+      "gender": "female",
+      "description": "A weaver arachne whose silk traps have stopped entire warbands.",
+      "location_id": "mosswood",
+      "base_stats": {
+        "STR": 10,
+        "END": 10,
+        "INT": 16,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 2,
+        "END": 2,
+        "INT": 3,
+        "AGI": 4
+      },
+      "skill_ids": [
+        "pierce",
+        "shadow_bind",
+        "venom_edge",
+        "hunters_mark"
+      ],
+      "ai_behavior_id": "tactical",
+      "weapon_type": "bow",
+      "modifiers": {
+        "flat": {
+          "accuracy": 0.07,
+          "evasion": 0.05,
+          "speed": 6
+        }
+      },
+      "recruit": {
+        "level": 18,
+        "affinity": 15
+      },
+      "marriageable": true,
+      "marriage_affinity": 85,
+      "gift_item_ids": [
+        "moonleaf_brooch",
+        "briar_bow",
+        "wraith_lantern"
+      ],
+      "dialogue": [
+        "Eight legs, eight perspectives. It is quite useful, actually.",
+        "My silk is stronger than steel and softer than moonlight.",
+        "Do not fear the web. Fear what built it.",
+        "I find the assumption that I eat mates both rude and inaccurate.",
+        "My grandmother could weave a tapestry that predicted the future.",
+        "Surface folk always look at my legs first. Then my eyes. Eventually.",
+        "I do not trap my friends. Only my enemies. And the occasional rabbit."
       ]
     }
   ]

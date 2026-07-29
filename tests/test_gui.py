@@ -390,7 +390,7 @@ class TestCharacterCreation(unittest.TestCase):
         self.assertGreater(self.window.class_list.count, 0)
 
     def test_lists_playable_races(self):
-        self.assertEqual(self.window.race_list.count, 8)
+        self.assertEqual(self.window.race_list.count, 15)
 
     def test_selecting_a_race_shows_traits(self):
         elf_index = next(

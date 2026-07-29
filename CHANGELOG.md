@@ -2,6 +2,58 @@
 
 Bible §18: update the changelog after versions.
 
+## v0.8.0 - Resources, Races, and Branching Paths
+
+A major systems expansion adding stamina, sub-races, lateral promotions, and new peoples.
+
+### Mana + Stamina split
+- Added Stamina (SP) as a second combat resource alongside Mana (MP)
+- SP scales off END (+ STR minor), MP continues to scale off INT
+- Both resources regenerate per turn in combat, scaling off their respective stats
+- Skills now have ``sp_cost`` field alongside ``mp_cost``
+- Pure physical skills use SP, pure magical skills use MP, hybrid skills can use both
+- Entity base class tracks current_sp with full lifecycle (spend, restore, serialise)
+- ResourceEffect supports both MP and SP restoration via ``"resource"`` key
+
+### Skill tags
+- Every skill now carries a ``tags`` list (e.g. ``["physical", "melee", "fire"]``)
+- Helper properties: ``is_physical``, ``is_magical``, ``is_hybrid``
+- Tags drive resource determination, UI categorisation, and filtering
+- Tags shown in skill detail tooltips
+
+### Sub-races
+- Every race now has 2-3 sub-races with unique bonus stats, modifiers, and traits
+- Character creation flow: Race → Sub-Race → Class
+- Sub-race bonuses stack with base race bonuses
+- Save/load persists sub-race selection
+- Example: Elf → High Elf (+INT, +magic_power), Wood Elf (+AGI, +evasion), Drow (+INT, +crit_damage)
+
+### Lateral class promotions
+- Starting classes now have 3 promotion paths each instead of 1
+- Squire → Knight (tank) | Berserker (DPS) | Warlord (support)
+- Maiden → Duelist (agility) | Ranger (ranged) | Shadow Dancer (stealth)
+- Acolyte → Mage (elemental) | Cleric (healing) | Warlock (dark magic)
+- 6 new tier-2 classes added (25 total, up from 19)
+
+### New races
+- 7 new races added: Orc, Gnome, Halfling, Genasi, Goliath, Lamia, Arachne
+- Each with 2-3 sub-races and unique traits (15 total races, up from 8)
+- 7 new companions representing each new race (21 total, up from 14)
+- 7 new NPCs with dialogue for each new race (25 total NPCs)
+
+### Gender display
+- Companions and NPCs now have a ``gender`` field
+- Gender displayed in Party, Talk, and companion detail screens
+- All 21 companions and 25 NPCs have assigned genders
+
+### Content totals
+- Classes: 25 (was 19)
+- Races: 15 (was 8)
+- Companions: 21 (was 14)
+- Items: 94 (was 88)
+- NPCs: 25 (was 18)
+- Tests: 443 (was 442, +1 new SP test)
+
 ## v0.7.0 - Living Systems
 
 A broad engine expansion focused on reusable behaviours rather than one-off

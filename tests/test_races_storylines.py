@@ -23,7 +23,8 @@ class TestRaceEngine(unittest.TestCase):
         ids = {race.id for race in game.race_options()}
         self.assertEqual(
             ids,
-            {"human", "elf", "half_elf", "dwarf", "dragonkin", "demon", "tiefling", "beastkin"},
+            {"human", "elf", "half_elf", "dwarf", "dragonkin", "demon", "tiefling", "beastkin",
+             "orc", "gnome", "halfling", "genasi", "goliath", "lamia", "arachne"},
         )
 
     def test_character_creation_applies_racial_stats_and_traits(self):
@@ -81,7 +82,7 @@ class TestRacialWorldContent(unittest.TestCase):
 
     def test_companions_mix_races_and_have_more_dialogue(self):
         companions = self.game.companions.all_definitions()
-        self.assertEqual(len(companions), 14)
+        self.assertEqual(len(companions), 21)
         self.assertGreaterEqual(len({companion.race_id for companion in companions}), 7)
         self.assertTrue(all(len(companion.dialogue) >= 6 for companion in companions))
 

@@ -304,6 +304,7 @@ class Game:
         gender: str,
         class_id: str,
         race_id: str | None = None,
+        sub_race_id: str | None = None,
     ) -> tuple[bool, str]:
         """Build a fresh player and place them in the starting area."""
         name = (name or "").strip()
@@ -323,6 +324,10 @@ class Game:
         if race is None:
             return False, "Please choose a race."
 
+        # Validate sub-race if provided
+        if sub_race_id and race.get_sub_race(sub_race_id) is None:
+            return False, "Invalid sub-race selection."
+
         progression = self.config.get("progression", {})
         player = Player(
             name=name,
@@ -334,6 +339,7 @@ class Game:
             progression=progression,
             equipment_config=self.config,
             enchantments=self.enchantments.definitions,
+            sub_race_id=sub_race_id,
         )
         player.mastery = self._new_mastery_book()
 
@@ -1466,6 +1472,7 @@ class Game:
         race = self.races.get(race_id) or self.races.get(default_race_id)
         if race is None:
             return False, f"This save uses race '{race_id}', which no longer exists."
+        sub_race_id = str(player_data.get("sub_race_id", "") or "")
         player = Player(
             name=str(player_data.get("name", "Hero")),
             gender=str(player_data.get("gender", "male")),
@@ -1476,6 +1483,7 @@ class Game:
             progression=progression,
             equipment_config=self.config,
             enchantments=self.enchantments.definitions,
+            sub_race_id=sub_race_id,
         )
 
         player.class_history = [str(c) for c in player_data.get("class_history", [class_id])]
