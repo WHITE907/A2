@@ -1048,7 +1048,16 @@
         "wooden_shield",
         "iron_helm",
         "chain_mail",
-        "steel_sword"
+        "steel_sword",
+        "bronze_sword",
+        "oak_staff",
+        "hunter_bow",
+        "patched_shield",
+        "wool_cap",
+        "scavenger_mail",
+        "apprentice_robe",
+        "leather_bracers",
+        "traveler_sandals"
       ],
       "faction_id": "ashvale_council",
       "race_buy_rates": {

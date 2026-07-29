@@ -199,10 +199,18 @@ class Entity(ABC):
         reflected = 0.0
         if allow_reflect and attacker is not None and remaining > 0:
             reflect_pct = sum(status.reflect_pct for status in self.statuses)
+            reflect_pct += sum(float(s.get("value", 0)) for s in getattr(self, "special_effects", lambda: [])() if s.get("type") == "reflect")
             if reflect_pct > 0:
                 reflected = remaining * reflect_pct
 
         self.current_hp = max(0.0, self.current_hp - remaining)
+        # Counter is a passive data-defined special. It is resolved here so
+        # every incoming damage source (skills, hazards, and direct attacks)
+        # behaves consistently, while the re-entry guard prevents chains.
+        if attacker is not None and remaining > 0 and allow_reflect:
+            for special in getattr(self, "special_effects", lambda: [])():
+                if special.get("type") == "counter" and float(special.get("value", 0)) > 0:
+                    attacker.take_raw_damage(remaining * float(special["value"]), damage_type="true", attacker=None, allow_reflect=False)
         self._cached = None
         return DamageOutcome(
             damage=remaining,

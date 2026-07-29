@@ -1422,6 +1422,7 @@ class Game:
         checks = (
             ("race_ids", self.player.race_id),
             ("class_ids", self.player.class_def.id),
+            ("sub_race_ids", self.player.sub_race_id),
         )
         for key, value in checks:
             allowed = conditions.get(key)

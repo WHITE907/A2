@@ -153,6 +153,33 @@
                 }
               ],
               "next_node_id": "enslaved"
+            },
+            {
+              "id": "succubus_whisper",
+              "text": "Whisper the contract\u2019s true meaning in the language of desire.",
+              "conditions": {
+                "sub_race_ids": [
+                  "succubus",
+                  "incubus"
+                ]
+              },
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "sable_clause",
+                  "value": "whispered"
+                },
+                {
+                  "type": "affinity",
+                  "target_id": "mother_sable",
+                  "amount": 8
+                },
+                {
+                  "type": "choice",
+                  "choice_id": "sable_whispered"
+                }
+              ],
+              "next_node_id": "whispered"
             }
           ]
         },
@@ -174,6 +201,11 @@
         {
           "id": "enslaved",
           "text": "Sable reads the new clause twice. \u201cEfficient,\u201d she says softly. \u201cDo not mistake my admiration for approval.\u201d",
+          "options": []
+        },
+        {
+          "id": "whispered",
+          "text": "Sable\u2019s expression shifts. \u201cThat is a language I understand. We will speak privately.\u201d",
           "options": []
         }
       ]

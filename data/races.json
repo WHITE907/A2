@@ -386,6 +386,12 @@
             "Lightning Reflexes: enhanced speed and reaction"
           ]
         }
+      ],
+      "special_effects": [
+        {
+          "type": "reflect",
+          "value": 0.05
+        }
       ]
     },
     {
@@ -448,6 +454,12 @@
           },
           "bonus_traits": [
             "Enthralling: charm and persuasion enhanced"
+          ],
+          "special_effects": [
+            {
+              "type": "lifesteal",
+              "value": 0.05
+            }
           ]
         },
         {
@@ -488,7 +500,19 @@
           },
           "bonus_traits": [
             "Enthralling: charm and persuasion enhanced"
+          ],
+          "special_effects": [
+            {
+              "type": "lifesteal",
+              "value": 0.05
+            }
           ]
+        }
+      ],
+      "special_effects": [
+        {
+          "type": "lifesteal",
+          "value": 0.03
         }
       ]
     },
