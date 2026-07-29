@@ -74,6 +74,8 @@ class Battle:
         flee_base_chance: float = 0.45,
         mastery_per_action: float = 6.0,
         summon_factory: Any = None,
+        item_manager: Any | None = None,
+        rarity_config: Any | None = None,
     ) -> None:
         self.player = player
         self.enemies: list[Any] = list(enemies)
@@ -84,6 +86,8 @@ class Battle:
         self.flee_base_chance = flee_base_chance
         self.mastery_per_action = mastery_per_action
         self.summon_factory = summon_factory
+        self.item_manager = item_manager
+        self.rarity_config = rarity_config or {}
 
         self.state = CombatState.ONGOING
         self.round = 0
@@ -466,7 +470,11 @@ class Battle:
             exp, gold = enemy.rewards()
             total_exp += exp
             total_gold += gold
-            drops.extend(enemy.roll_loot(self.rng))
+            # Use rarity-aware roll if item_manager available
+            try:
+                drops.extend(enemy.roll_loot(self.rng, self.item_manager, self.rarity_config))
+            except TypeError:
+                drops.extend(enemy.roll_loot(self.rng))
 
         self.rewards.exp = total_exp
         self.rewards.gold = total_gold
@@ -486,12 +494,24 @@ class Battle:
 
         Kept separate from ``_finish_victory`` so the engine core has no hard
         dependency on ItemManager - the caller decides when loot is collected.
+        Logs use rarity as kind so battle log can color by rarity.
         """
         if not self.rewards.items:
             return []
-        lines = item_manager.grant_many(self.player.inventory, self.rewards.items)
-        for line in lines:
-            self._say(f"Obtained {line}.", kind="system")
+        # Grant and capture rarity
+        lines = []
+        for item_id, qty in self.rewards.items:
+            item = item_manager.get(item_id)
+            added = item_manager.grant(self.player.inventory, item_id, qty)
+            if added > 0 and item is not None:
+                label = f"[{item.rarity_label}] {item.name}"
+                text = f"{label} x{added}" if added > 1 else label
+                lines.append(text)
+                # Use rarity as log kind for color
+                self._say(f"Obtained {text}.", kind=item.rarity.lower())
+            elif added > 0:
+                self._say(f"Obtained {item_id} x{added}.", kind="system")
+                lines.append(f"{item_id} x{added}")
         return lines
 
     # ------------------------------------------------------------------
@@ -533,4 +553,25 @@ class Battle:
         ]
         if self.player.statuses:
             lines.append("Status: " + ", ".join(self.player.status_summaries()))
+        # Active perk feedback in combat
+        try:
+            active = self.player.active_perks()
+            actives = [f"{p['perk'].get('name','Perk')}({p['reason']})" for p in active if p["active"]]
+            if actives:
+                lines.append("Perks active: " + ", ".join(actives[:3]))
+            specials = self.player.special_effects()
+            grouped = {}
+            for s in specials:
+                grouped[s.get("type","")] = grouped.get(s.get("type",""), 0.0) + float(s.get("value",0))
+            notes = []
+            if grouped.get("lifesteal"):
+                notes.append(f"Lifesteal {grouped['lifesteal']*100:.0f}%")
+            if grouped.get("reflect"):
+                notes.append(f"Reflect {grouped['reflect']*100:.0f}%")
+            if grouped.get("counter"):
+                notes.append(f"Counter {grouped['counter']*100:.0f}%")
+            if notes:
+                lines.append("Specials: " + ", ".join(notes))
+        except Exception:
+            pass
         return lines

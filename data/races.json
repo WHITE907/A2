@@ -29,7 +29,8 @@
           },
           "bonus_traits": [
             "Trade Tongue: better prices in human settlements"
-          ]
+          ],
+          "special_effects": []
         },
         {
           "id": "highlander",
@@ -49,6 +50,12 @@
           },
           "bonus_traits": [
             "Mountain Blood: resistant to cold and fatigue"
+          ],
+          "special_effects": [
+            {
+              "type": "status_resist_bonus",
+              "value": 0.1
+            }
           ]
         },
         {
@@ -69,9 +76,11 @@
           },
           "bonus_traits": [
             "Sea Legs: improved balance and agility"
-          ]
+          ],
+          "special_effects": []
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "elf",
@@ -113,6 +122,14 @@
           },
           "bonus_traits": [
             "Arcane Heritage: enhanced magical aptitude"
+          ],
+          "special_effects": [
+            {
+              "type": "party_bonus",
+              "race_id": "human",
+              "value": 0.05,
+              "stat": "magic_power"
+            }
           ]
         },
         {
@@ -133,6 +150,13 @@
           },
           "bonus_traits": [
             "Forest Stride: move silently through natural terrain"
+          ],
+          "special_effects": [
+            {
+              "type": "family_damage_bonus",
+              "family": "beast",
+              "value": 0.15
+            }
           ]
         },
         {
@@ -153,9 +177,11 @@
           },
           "bonus_traits": [
             "Shadow Sight: see in darkness, feared by surface dwellers"
-          ]
+          ],
+          "special_effects": []
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "half_elf",
@@ -196,6 +222,12 @@
           },
           "bonus_traits": [
             "Courtly Grace: advantage in social encounters"
+          ],
+          "special_effects": [
+            {
+              "type": "heal_bonus",
+              "value": 0.15
+            }
           ]
         },
         {
@@ -216,9 +248,11 @@
           },
           "bonus_traits": [
             "Road Wisdom: survival instincts and adaptability"
-          ]
+          ],
+          "special_effects": []
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "dwarf",
@@ -260,6 +294,13 @@
           },
           "bonus_traits": [
             "Deep Rooted: nearly impossible to knock down"
+          ],
+          "special_effects": [
+            {
+              "type": "family_damage_bonus",
+              "family": "construct",
+              "value": 0.15
+            }
           ]
         },
         {
@@ -280,6 +321,14 @@
           },
           "bonus_traits": [
             "Clan Bonds: stronger community ties"
+          ],
+          "special_effects": [
+            {
+              "type": "party_bonus",
+              "race_id": "dwarf",
+              "value": 0.1,
+              "stat": "armor"
+            }
           ]
         },
         {
@@ -300,9 +349,16 @@
           },
           "bonus_traits": [
             "Fire-Touched: resistant to heat and flame"
+          ],
+          "special_effects": [
+            {
+              "type": "status_resist_bonus",
+              "value": 0.12
+            }
           ]
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "dragonkin",
@@ -344,6 +400,13 @@
           },
           "bonus_traits": [
             "Fire Breath: innate flame attack, immune to fire"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "fire",
+              "value": 0.3
+            }
           ]
         },
         {
@@ -364,7 +427,8 @@
           },
           "bonus_traits": [
             "Draconic Majesty: inspiring presence, resistant to fear"
-          ]
+          ],
+          "special_effects": []
         },
         {
           "id": "blue_dragonkin",
@@ -384,6 +448,13 @@
           },
           "bonus_traits": [
             "Lightning Reflexes: enhanced speed and reaction"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "lightning",
+              "value": 0.25
+            }
           ]
         }
       ],
@@ -434,6 +505,13 @@
           },
           "bonus_traits": [
             "Infernal Might: devastating melee attacks"
+          ],
+          "special_effects": [
+            {
+              "type": "low_hp_power",
+              "threshold": 0.4,
+              "value": 0.2
+            }
           ]
         },
         {
@@ -480,7 +558,8 @@
           },
           "bonus_traits": [
             "Flame Aura: burns those who strike you"
-          ]
+          ],
+          "special_effects": []
         },
         {
           "id": "incubus",
@@ -556,7 +635,8 @@
           },
           "bonus_traits": [
             "Hellish Resistance: immune to fire and poison"
-          ]
+          ],
+          "special_effects": []
         },
         {
           "id": "abyssal_tiefling",
@@ -576,9 +656,17 @@
           },
           "bonus_traits": [
             "Abyssal Fury: damage increases when wounded"
+          ],
+          "special_effects": [
+            {
+              "type": "low_hp_power",
+              "threshold": 0.3,
+              "value": 0.3
+            }
           ]
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "beastkin",
@@ -620,6 +708,13 @@
           },
           "bonus_traits": [
             "Feline Grace: always land on your feet, see in darkness"
+          ],
+          "special_effects": [
+            {
+              "type": "family_damage_bonus",
+              "family": "beast",
+              "value": 0.1
+            }
           ]
         },
         {
@@ -640,6 +735,19 @@
           },
           "bonus_traits": [
             "Pack Tactics: bonuses when fighting with allies"
+          ],
+          "special_effects": [
+            {
+              "type": "family_damage_bonus",
+              "family": "humanoid",
+              "value": 0.12
+            },
+            {
+              "type": "party_bonus",
+              "race_id": "beastkin",
+              "value": 0.08,
+              "stat": "physical_power"
+            }
           ]
         },
         {
@@ -660,9 +768,11 @@
           },
           "bonus_traits": [
             "Keen Sight: enhanced perception and ranged accuracy"
-          ]
+          ],
+          "special_effects": []
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "orc",
@@ -703,7 +813,8 @@
           },
           "bonus_traits": [
             "Dual Heritage: accepted in more places than full-bloods"
-          ]
+          ],
+          "special_effects": []
         },
         {
           "id": "war_orc",
@@ -723,6 +834,13 @@
           },
           "bonus_traits": [
             "Battle Rage: bonus damage below half health"
+          ],
+          "special_effects": [
+            {
+              "type": "low_hp_power",
+              "threshold": 0.5,
+              "value": 0.25
+            }
           ]
         },
         {
@@ -743,7 +861,15 @@
           },
           "bonus_traits": [
             "Ancestor Bond: enhanced spiritual magic"
-          ]
+          ],
+          "special_effects": []
+        }
+      ],
+      "special_effects": [
+        {
+          "type": "family_damage_bonus",
+          "family": "humanoid",
+          "value": 0.08
         }
       ]
     },
@@ -787,6 +913,13 @@
           },
           "bonus_traits": [
             "Alchemical Mind: resistance to poison and acid"
+          ],
+          "special_effects": [
+            {
+              "type": "low_mp_power",
+              "threshold": 0.3,
+              "value": 0.2
+            }
           ]
         },
         {
@@ -807,9 +940,16 @@
           },
           "bonus_traits": [
             "Natural Illusionist: innate minor illusion magic"
+          ],
+          "special_effects": [
+            {
+              "type": "accuracy_bonus",
+              "value": 0.05
+            }
           ]
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "halfling",
@@ -851,6 +991,18 @@
           },
           "bonus_traits": [
             "Naturally Stealthy: can hide behind creatures one size larger"
+          ],
+          "special_effects": [
+            {
+              "type": "party_bonus",
+              "race_id": "halfling",
+              "value": 0.12,
+              "stat": "evasion"
+            },
+            {
+              "type": "evasion_bonus",
+              "value": 0.08
+            }
           ]
         },
         {
@@ -871,9 +1023,11 @@
           },
           "bonus_traits": [
             "Stout Resilience: resistant to poison"
-          ]
+          ],
+          "special_effects": []
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "genasi",
@@ -914,6 +1068,18 @@
           },
           "bonus_traits": [
             "Fire Resistance: immune to flame damage"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "fire",
+              "value": 0.25
+            },
+            {
+              "type": "low_sp_power",
+              "threshold": 0.3,
+              "value": 0.15
+            }
           ]
         },
         {
@@ -934,6 +1100,13 @@
           },
           "bonus_traits": [
             "Amphibious: breathe water and land equally"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "water",
+              "value": 0.2
+            }
           ]
         },
         {
@@ -954,6 +1127,13 @@
           },
           "bonus_traits": [
             "Stone Skin: natural armour bonus"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "earth",
+              "value": 0.2
+            }
           ]
         },
         {
@@ -974,7 +1154,21 @@
           },
           "bonus_traits": [
             "Unbound: can slow falls and resist wind"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "air",
+              "value": 0.2
+            }
           ]
+        }
+      ],
+      "special_effects": [
+        {
+          "type": "elemental_resist",
+          "element": "all",
+          "value": 0.05
         }
       ]
     },
@@ -1018,6 +1212,13 @@
           },
           "bonus_traits": [
             "Frost Touched: immune to cold damage"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "ice",
+              "value": 0.35
+            }
           ]
         },
         {
@@ -1038,9 +1239,17 @@
           },
           "bonus_traits": [
             "Thunder Clap: innate shockwave ability"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "lightning",
+              "value": 0.25
+            }
           ]
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "lamia",
@@ -1082,6 +1291,12 @@
           },
           "bonus_traits": [
             "Innate Sorcery: natural spellcasting ability"
+          ],
+          "special_effects": [
+            {
+              "type": "heal_bonus",
+              "value": 0.2
+            }
           ]
         },
         {
@@ -1102,9 +1317,17 @@
           },
           "bonus_traits": [
             "Constrict: bonus grappling and restraint"
+          ],
+          "special_effects": [
+            {
+              "type": "family_damage_bonus",
+              "family": "beast",
+              "value": 0.18
+            }
           ]
         }
-      ]
+      ],
+      "special_effects": []
     },
     {
       "id": "arachne",
@@ -1146,7 +1369,8 @@
           },
           "bonus_traits": [
             "Silk Artisan: craft superior silk items"
-          ]
+          ],
+          "special_effects": []
         },
         {
           "id": "predator_arachne",
@@ -1166,9 +1390,17 @@
           },
           "bonus_traits": [
             "Venomous Bite: innate poison attack"
+          ],
+          "special_effects": [
+            {
+              "type": "family_damage_bonus",
+              "family": "insect",
+              "value": 0.2
+            }
           ]
         }
-      ]
+      ],
+      "special_effects": []
     }
   ]
 }

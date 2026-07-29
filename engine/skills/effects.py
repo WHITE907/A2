@@ -220,6 +220,7 @@ class DamageEffect(Effect):
         self.accuracy_bonus: float = float(payload.get("accuracy_bonus", 0.0))
         self.ignores_shield: bool = bool(payload.get("ignores_shield", False))
         self.default_ratio: float = float(payload.get("power_ratio", 1.0))
+        self.element: str = str(payload.get("element", payload.get("element_tag", ""))).lower()
 
     def apply(self, caster: "Entity", target: "Entity", ctx: EffectContext) -> EffectResult | None:
         if not target.is_alive:
@@ -267,6 +268,15 @@ class DamageEffect(Effect):
                 self.penetration_pct,
                 self.penetration_flat,
             )
+            # Elemental resistance from target specials
+            try:
+                for spec in getattr(target, "special_effects", lambda: [])():
+                    if spec.get("type") == "elemental_resist":
+                        elem = str(spec.get("element","")).lower()
+                        if elem in ("", "all") or elem == self.element.lower() or (self.element == "" and elem == self.damage_type):
+                            mitigated *= max(0.0, 1.0 - float(spec.get("value",0)))
+            except Exception:
+                pass
 
             outcome = target.take_raw_damage(
                 mitigated,
@@ -279,6 +289,37 @@ class DamageEffect(Effect):
             total_reflected += outcome.reflected
             if not target.is_alive:
                 break
+
+        # --- race/sub-race passives: family damage bonus, low-resource power, elemental handling ---
+        # Family damage bonus
+        try:
+            target_family = getattr(getattr(target, "template", None), "family", "") or getattr(target, "family", "") or ""
+            if not target_family:
+                # For player/companion, use race_id as family proxy
+                target_family = getattr(target, "race_id", "") or getattr(getattr(target, "race_def", None), "id", "")
+            caster_specials = getattr(caster, "special_effects", lambda: [])()
+            for spec in caster_specials:
+                if spec.get("type") == "family_damage_bonus":
+                    fam = str(spec.get("family","")).lower()
+                    if fam and fam == str(target_family).lower():
+                        raw *= (1.0 + float(spec.get("value",0)))
+            # Low-resource power bonuses
+            for spec in caster_specials:
+                stype = spec.get("type")
+                if stype == "low_hp_power":
+                    thresh = float(spec.get("threshold",0.3))
+                    if hasattr(caster, "hp_fraction") and caster.hp_fraction < thresh:
+                        raw *= (1.0 + float(spec.get("value",0)))
+                elif stype == "low_mp_power":
+                    thresh = float(spec.get("threshold",0.3))
+                    if hasattr(caster, "mp_fraction") and caster.mp_fraction < thresh:
+                        raw *= (1.0 + float(spec.get("value",0)))
+                elif stype == "low_sp_power":
+                    thresh = float(spec.get("threshold",0.3))
+                    if hasattr(caster, "sp_fraction") and caster.sp_fraction < thresh:
+                        raw *= (1.0 + float(spec.get("value",0)))
+        except Exception:
+            pass
 
         # Lifesteal is a passive data-defined special on the caster.
         lifesteal = sum(float(s.get("value", 0)) for s in getattr(caster, "special_effects", lambda: [])() if s.get("type") == "lifesteal")
@@ -356,6 +397,13 @@ class HealEffect(Effect):
         )
         if self.percent_max_hp:
             amount += target.max_hp * self.percent_max_hp
+        # Healing bonus from race passives
+        try:
+            for spec in getattr(caster, "special_effects", lambda: [])():
+                if spec.get("type") == "heal_bonus":
+                    amount *= (1.0 + float(spec.get("value",0)))
+        except Exception:
+            pass
         healed = target.heal(amount)
         if healed <= 0:
             return EffectResult(

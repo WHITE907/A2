@@ -192,6 +192,10 @@ class AscensionApp:
         self.close_toplevel("tactics")
         return self.open_toplevel("tactics", lambda app: TacticsWindow(app, companion_id))
 
+    def open_codex(self) -> tk.Toplevel:
+        from gui.screens.codex import CodexWindow
+        return self.open_toplevel("codex", CodexWindow)
+
     # ------------------------------------------------------------------
     # Shared helpers used by screens
     # ------------------------------------------------------------------

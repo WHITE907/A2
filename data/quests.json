@@ -1217,6 +1217,630 @@
         "exp": 5500,
         "gold": 2200
       }
+    },
+    {
+      "id": "trial_of_void_reaver",
+      "name": "Trial of the Void Reaver",
+      "description": "Prove worth to ascend from Shadow Reaver to Void Reaver by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "shadow_reaver"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_aegis_bastion",
+      "name": "Trial of the Aegis Bastion",
+      "description": "Prove worth to ascend from Iron Bastion to Aegis Bastion by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "iron_bastion"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_tempest_sovereign",
+      "name": "Trial of the Tempest Sovereign",
+      "description": "Prove worth to ascend from Stormblade to Tempest Sovereign by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "stormblade"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_phantasm_lord",
+      "name": "Trial of the Phantasm Lord",
+      "description": "Prove worth to ascend from Illusionist to Phantasm Lord by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "illusionist"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_aeon_weaver",
+      "name": "Trial of the Aeon Weaver",
+      "description": "Prove worth to ascend from Time Weaver to Aeon Weaver by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "time_weaver"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_death_sovereign",
+      "name": "Trial of the Death Sovereign",
+      "description": "Prove worth to ascend from Lich Lord to Death Sovereign by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "lich_lord"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_crimson_sovereign",
+      "name": "Trial of the Crimson Sovereign",
+      "description": "Prove worth to ascend from Bloodlord to Crimson Sovereign by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "bloodlord"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_blood_tyrant",
+      "name": "Trial of the Blood Tyrant",
+      "description": "Prove worth to ascend from Blood Sovereign to Blood Tyrant by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "blood_sovereign"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_horde_sovereign",
+      "name": "Trial of the Horde Sovereign",
+      "description": "Prove worth to ascend from Horde Lord to Horde Sovereign by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "horde_lord"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_grand_marshal",
+      "name": "Trial of the Grand Marshal",
+      "description": "Prove worth to ascend from Supreme Commander to Grand Marshal by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "supreme_commander"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_sovereign_strategist",
+      "name": "Trial of the Sovereign Strategist",
+      "description": "Prove worth to ascend from Grand Strategist to Sovereign Strategist by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "grand_strategist"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_drake_lord",
+      "name": "Trial of the Drake Lord",
+      "description": "Prove worth to ascend from Cavalry Lord to Drake Lord by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "cavalry_lord"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_elder_warden",
+      "name": "Trial of the Elder Warden",
+      "description": "Prove worth to ascend from Trail Warden to Elder Warden by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "trail_warden"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_apex_predator",
+      "name": "Trial of the Apex Predator",
+      "description": "Prove worth to ascend from Alpha Predator to Apex Predator by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "alpha_predator"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_godseye",
+      "name": "Trial of the Godseye",
+      "description": "Prove worth to ascend from Deadeye to Godseye by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "deadeye"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_specter_lord",
+      "name": "Trial of the Specter Lord",
+      "description": "Prove worth to ascend from Wraith Lord to Specter Lord by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "wraith_lord"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_abyss_walker",
+      "name": "Trial of the Abyss Walker",
+      "description": "Prove worth to ascend from Void Walker to Abyss Walker by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "void_walker"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_annihilator",
+      "name": "Trial of the Annihilator",
+      "description": "Prove worth to ascend from Demolitionist to Annihilator by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "demolitionist"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_divine_avatar",
+      "name": "Trial of the Divine Avatar",
+      "description": "Prove worth to ascend from Divine Oracle to Divine Avatar by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "divine_oracle"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_absolute_purifier",
+      "name": "Trial of the Absolute Purifier",
+      "description": "Prove worth to ascend from Purifier to Absolute Purifier by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "purifier"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_loom_master",
+      "name": "Trial of the Loom Master",
+      "description": "Prove worth to ascend from Fate Weaver to Loom Master by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "fate_weaver"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_infernal_sovereign",
+      "name": "Trial of the Infernal Sovereign",
+      "description": "Prove worth to ascend from Archfiend to Infernal Sovereign by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "archfiend"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_oblivion_blade",
+      "name": "Trial of the Oblivion Blade",
+      "description": "Prove worth to ascend from Doom Blade to Oblivion Blade by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "doom_blade"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
+    },
+    {
+      "id": "trial_of_death_reaper",
+      "name": "Trial of the Death Reaper",
+      "description": "Prove worth to ascend from Soul Reaper to Death Reaper by defeating the guardians of ascension.",
+      "giver_id": "chronicler_thon",
+      "start_area_id": "town_ironveil",
+      "turn_in_area_id": "town_ironveil",
+      "min_level": 48,
+      "required_class_ids": [
+        "soul_reaper"
+      ],
+      "objectives": [
+        {
+          "kind": "defeat_enemy",
+          "target_id": "void_sovereign",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 5000,
+        "gold": 2000,
+        "items": {
+          "essence_of_ascension": 1
+        }
+      }
     }
   ]
 }

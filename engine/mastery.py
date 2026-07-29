@@ -163,10 +163,19 @@ class MasteryBook:
         return (track.exp - floor, max(1.0, ceiling - floor), MASTERY_RANKS[current + 1])
 
     def display_lines(self) -> list[str]:
-        """``Sword: B (1420 EXP)`` lines for the Status screen."""
+        """``Sword: B (1420 EXP) -> A 45%`` lines for the Status screen with progress."""
         lines = []
         for track in sorted(self.tracks.values(), key=lambda t: (-t.exp, t.name)):
-            lines.append(f"{track.name}: {track.rank(self.thresholds)} ({track.exp:.0f} EXP)")
+            rank = track.rank(self.thresholds)
+            exp = track.exp
+            cur_into, needed, next_rank = self.progress_to_next(track.id)
+            if next_rank:
+                pct = (cur_into / needed * 100) if needed else 0
+                bar_filled = int(pct // 10)
+                bar = "█" * bar_filled + "░" * (10 - bar_filled)
+                lines.append(f"{track.name}: {rank} ({exp:.0f} EXP) -> {next_rank} {pct:.0f}% [{bar}] {cur_into:.0f}/{needed:.0f}")
+            else:
+                lines.append(f"{track.name}: {rank} ({exp:.0f} EXP) [MAX]")
         return lines
 
     # ------------------------------------------------------------------

@@ -80,6 +80,7 @@ class WorldScreen(tk.Frame):
         self.menus.add("skills", "Skills", self.app.open_skills)
         self.menus.add("quests", "Quests", self.app.open_quests)
         self.menus.add("party", "Party", self.app.open_party)
+        self.menus.add("codex", "Codex", self.app.open_codex)
         self.menus.add("save", "Save Game", lambda: self.app.open_save_browser("save"))
         self.menus.add("menu", "Main Menu", self._main_menu)
         self.menus.pack(fill=tk.X)
@@ -98,9 +99,34 @@ class WorldScreen(tk.Frame):
         self.location_panel.set_lines(game.world_lines())
 
         areas = game.travel_options()
-        self.travel_list.set_items(
-            [(f"{a.name}  (Lv {a.recommended_level})", a) for a in areas], keep_selection=False
-        )
+        player_level = game.player.level if game.player else 1
+        rows = []
+        colors = []
+        for a in areas:
+            diff = a.recommended_level - player_level
+            # Color coding: green easy, yellow equal, orange hard, red very hard
+            if diff <= -5:
+                color = "#7fbf7f"  # green easy
+                tag = "Easy"
+            elif diff <= -1:
+                color = "#a3d977"  # light green
+                tag = "Easy"
+            elif diff <= 2:
+                color = "#e8e8a0"  # yellow ~ even
+                tag = "Even"
+            elif diff <= 5:
+                color = "#e8b860"  # orange hard
+                tag = "Hard"
+            else:
+                color = "#e0736b"  # red very hard
+                tag = "Deadly"
+            label = f"{a.name}  (Lv {a.recommended_level}) [{tag}]"
+            if a.is_town:
+                label = f"{label} [Town]"
+            rows.append((label, a))
+            colors.append(color)
+        self.travel_list.set_items(rows, keep_selection=False)
+        self.travel_list.set_row_colors(colors)
 
         # The engine decides what is possible; the UI only reflects it.
         in_town = game.world.is_in_town()

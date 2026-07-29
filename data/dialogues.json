@@ -2467,6 +2467,155 @@
           "options": []
         }
       ]
+    },
+    {
+      "id": "dragonkin_heritage",
+      "speaker_id": "chronicler_thon",
+      "start_node_id": "start",
+      "nodes": [
+        {
+          "id": "start",
+          "text": "Ah, a dragonkin walks into my archives. Which flame burns within you?",
+          "options": [
+            {
+              "id": "red_response",
+              "text": "I am Red Dragonkin, fire incarnate.",
+              "conditions": {
+                "sub_race_ids": [
+                  "red_dragonkin"
+                ]
+              },
+              "next_node_id": "red_node"
+            },
+            {
+              "id": "gold_response",
+              "text": "I am Gold Dragonkin, keeper of oaths.",
+              "conditions": {
+                "sub_race_ids": [
+                  "gold_dragonkin"
+                ]
+              },
+              "next_node_id": "gold_node"
+            },
+            {
+              "id": "blue_response",
+              "text": "I am Blue Dragonkin, storm-touched.",
+              "conditions": {
+                "sub_race_ids": [
+                  "blue_dragonkin"
+                ]
+              },
+              "next_node_id": "generic_node"
+            },
+            {
+              "id": "generic_dragonkin",
+              "text": "I am Dragonkin.",
+              "conditions": {
+                "race_ids": [
+                  "dragonkin"
+                ]
+              },
+              "next_node_id": "generic_node"
+            },
+            {
+              "id": "other",
+              "text": "I'm not dragonkin, but I listen.",
+              "next_node_id": "other_node"
+            }
+          ]
+        },
+        {
+          "id": "red_node",
+          "text": "Red! The flame that consumes. Your ancestors burned the Ashen Wastes to glass. Do you seek to finish what they started, or atone?",
+          "options": [
+            {
+              "id": "red_atone",
+              "text": "I seek to atone.",
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "red_atonement",
+                  "value": true
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "red_conquer",
+              "text": "I seek to conquer.",
+              "actions": [
+                {
+                  "type": "flag",
+                  "key": "red_conquest",
+                  "value": true
+                }
+              ],
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "gold_node",
+          "text": "Gold - noble and oathbound. Your kind swore to guard the Iron Covenant. That oath still holds, if you will it.",
+          "options": [
+            {
+              "id": "gold_accept",
+              "text": "I accept the oath.",
+              "actions": [
+                {
+                  "type": "reputation",
+                  "faction_id": "iron_covenant",
+                  "amount": 10
+                }
+              ],
+              "next_node_id": "end"
+            },
+            {
+              "id": "gold_question",
+              "text": "What does the oath require?",
+              "next_node_id": "gold_explain"
+            }
+          ]
+        },
+        {
+          "id": "gold_explain",
+          "text": "To stand between the innocent and the void. A simple task, endlessly difficult.",
+          "options": [
+            {
+              "id": "to_end",
+              "text": "I will stand.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "generic_node",
+          "text": "All dragonkin carry the weight of wings they do not possess. What will you do with that weight?",
+          "options": [
+            {
+              "id": "gen_end",
+              "text": "I will soar in my own way.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "other_node",
+          "text": "Then you have come to learn of them. A worthy pursuit. The archives are open.",
+          "options": [
+            {
+              "id": "other_end",
+              "text": "Thank you.",
+              "next_node_id": "end"
+            }
+          ]
+        },
+        {
+          "id": "end",
+          "text": "May your scales never dull, traveler.",
+          "options": []
+        }
+      ]
     }
   ]
 }

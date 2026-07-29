@@ -24,11 +24,19 @@ class ItemManager:
         self._loader = loader
         self._items: dict[str, Item] = {}
         self._loaded = False
+        self._rarity_config: dict[str, Any] = {}
 
     # ------------------------------------------------------------------
     def load(self) -> None:
         if self._loaded:
             return
+        # Load rarity config for enchant slot defaults
+        try:
+            config = self._loader.load_mapping("config.json", required=False) or {}
+            self._rarity_config = config.get("rarities") or {}
+        except Exception:
+            self._rarity_config = {}
+
         for entry in self._loader.load_entries(self.ITEM_FILE, "items", required=False):
             try:
                 item = Item.from_dict(entry)
@@ -36,8 +44,49 @@ class ItemManager:
                 raise ContentError(f"{self.ITEM_FILE}: {exc}") from exc
             if item.id in self._items:
                 raise ContentError(f"duplicate item id {item.id!r} in {self.ITEM_FILE}")
+            # Resolve sentinel enchant_slots via rarity config
+            if item.enchant_slots == -1:
+                rarity_cfg = self._rarity_config.get(item.rarity.lower(), {})
+                slots = int(rarity_cfg.get("enchant_slots", 1)) if rarity_cfg else 1
+                # Need to recreate dataclass with new slots since frozen? Item is not frozen, but we set attr
+                item.enchant_slots = slots
             self._items[item.id] = item
         self._loaded = True
+
+    def rarity_config(self) -> dict[str, Any]:
+        self.load()
+        return self._rarity_config
+
+    def get_or_create_variant(self, base_id: str, target_rarity: str) -> "Item":
+        """Create a rarity variant of an existing item, preserving base id.
+
+        Variant id format: base_id@rarity (e.g. iron_sword@rare).  If variant
+        already exists, return it.  Base modifiers are scaled via rarity config.
+        """
+        target_rarity = target_rarity.lower()
+        if target_rarity in ("", "common") and "@" not in base_id:
+            # Common variant is the base itself if base is common
+            base = self._items.get(base_id)
+            if base and base.rarity.lower() == "common":
+                return base
+        variant_id = f"{base_id.split('@')[0]}@{target_rarity}" if "@" not in base_id else f"{base_id.split('@')[0]}@{target_rarity}"
+        if variant_id in self._items:
+            return self._items[variant_id]
+        base = self._items.get(base_id.split("@")[0])
+        if base is None:
+            raise ValueError(f"unknown base item {base_id!r}")
+        # Compute scaled modifiers
+        rarity_cfg = self._rarity_config.get(target_rarity, {})
+        # Clone base item with new rarity
+        from dataclasses import replace
+        # For simplicity, create new Item via from_dict style clone
+        # Modifiers scaled by rarity handled in Player, but we store base modifiers unchanged;
+        # rarity field drives scaling later.
+        variant = replace(base, id=variant_id, rarity=target_rarity, name=f"{base.name} [{target_rarity.title()}]")
+        self._items[variant_id] = variant
+        return variant
+
+
 
     # ------------------------------------------------------------------
     def get(self, item_id: str) -> Item | None:
@@ -76,14 +125,15 @@ class ItemManager:
         return inventory.add(item, quantity)
 
     def grant_many(self, inventory: Inventory, grants: Mapping[str, int] | Iterable[tuple[str, int]]) -> list[str]:
-        """Bulk-grant; returns human-readable lines for the reward log."""
+        """Bulk-grant; returns human-readable lines for the reward log with rarity."""
         pairs = grants.items() if isinstance(grants, Mapping) else grants
         lines: list[str] = []
         for item_id, quantity in pairs:
             added = self.grant(inventory, item_id, int(quantity))
             if added > 0:
                 item = self.require(item_id)
-                lines.append(f"{item.name} x{added}" if added > 1 else item.name)
+                label = f"[{item.rarity_label}] {item.name}"
+                lines.append(f"{label} x{added}" if added > 1 else label)
         return lines
 
     # ------------------------------------------------------------------

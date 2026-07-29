@@ -965,7 +965,8 @@
       "recommended_level": 55,
       "connections": [
         "abyssal_halls",
-        "molten_sanctum"
+        "molten_sanctum",
+        "celestial_crossing"
       ],
       "encounters": [
         {
@@ -999,6 +1000,207 @@
       ],
       "quiet_chance": 0.1,
       "unlock_level": 52
+    },
+    {
+      "id": "celestial_crossing",
+      "name": "Celestial Crossing",
+      "description": "A bridge of fallen stars spans the void between oblivion and eternity, each step echoing with half-remembered oaths.",
+      "recommended_level": 56,
+      "is_town": false,
+      "connections": [
+        "void_throne",
+        "celestial_archives"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "celestial_guardian"
+          ],
+          "weight": 10,
+          "level_min": 56,
+          "level_max": 58
+        },
+        {
+          "enemy_ids": [
+            "starborn_mage"
+          ],
+          "weight": 8,
+          "level_min": 57,
+          "level_max": 59
+        },
+        {
+          "enemy_ids": [
+            "void_stalker"
+          ],
+          "weight": 6,
+          "level_min": 55,
+          "level_max": 57
+        }
+      ],
+      "flavour": [
+        "Starlight pools like water at your feet.",
+        "The air smells of ozone and old vows."
+      ],
+      "unlock_level": 56
+    },
+    {
+      "id": "celestial_archives",
+      "name": "Celestial Archives",
+      "description": "A library-city suspended in starlight, where chroniclers etch the names of those who dare ascend.",
+      "recommended_level": 58,
+      "is_town": true,
+      "connections": [
+        "celestial_crossing",
+        "astral_rift"
+      ],
+      "npc_ids": [
+        "chronicler_thon",
+        "artificer_zara",
+        "commander_vex"
+      ],
+      "shop_ids": [
+        "celestial_outfitters",
+        "archive_exchange"
+      ],
+      "flavour": [
+        "Scrolls float, turning their own pages.",
+        "You hear whispers of futures that never happened."
+      ],
+      "unlock_level": 58
+    },
+    {
+      "id": "astral_rift",
+      "name": "Astral Rift",
+      "description": "Reality frays here; constellations bleed into one another and the ground forgets to be solid.",
+      "recommended_level": 62,
+      "is_town": false,
+      "connections": [
+        "celestial_archives",
+        "abyssal_maw"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "astral_horror"
+          ],
+          "weight": 12,
+          "level_min": 61,
+          "level_max": 64
+        },
+        {
+          "enemy_ids": [
+            "void_archon",
+            "void_stalker"
+          ],
+          "weight": 8,
+          "level_min": 60,
+          "level_max": 63
+        },
+        {
+          "enemy_ids": [
+            "celestial_guardian",
+            "starborn_mage"
+          ],
+          "weight": 6,
+          "level_min": 60,
+          "level_max": 62
+        }
+      ],
+      "flavour": [
+        "Gravity inverts briefly, then apologizes.",
+        "You see your own back, walking ahead."
+      ],
+      "unlock_level": 62
+    },
+    {
+      "id": "abyssal_maw",
+      "name": "Abyssal Maw",
+      "description": "A chasm that breathes, inhaling light and exhaling things that should not be named.",
+      "recommended_level": 66,
+      "is_town": false,
+      "connections": [
+        "astral_rift",
+        "throne_of_ascension"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "abyssal_titan"
+          ],
+          "weight": 1,
+          "level_min": 66,
+          "level_max": 66,
+          "is_boss": true,
+          "boss_id": "abyssal_titan"
+        },
+        {
+          "enemy_ids": [
+            "astral_horror",
+            "infernal_titan"
+          ],
+          "weight": 8,
+          "level_min": 64,
+          "level_max": 67
+        },
+        {
+          "enemy_ids": [
+            "void_archon",
+            "celestial_guardian"
+          ],
+          "weight": 10,
+          "level_min": 64,
+          "level_max": 67
+        }
+      ],
+      "flavour": [
+        "The maw exhales, and your torch gutters without wind.",
+        "Something vast shifts below, and the whole chasm shudders."
+      ],
+      "unlock_level": 66
+    },
+    {
+      "id": "throne_of_ascension",
+      "name": "Throne of Ascension",
+      "description": "At the apex of all tiers, a single throne awaits. It is empty, and yet it watches.",
+      "recommended_level": 70,
+      "is_town": false,
+      "connections": [
+        "abyssal_maw"
+      ],
+      "encounters": [
+        {
+          "enemy_ids": [
+            "ascendant_avatar"
+          ],
+          "weight": 1,
+          "level_min": 70,
+          "level_max": 70,
+          "is_boss": true,
+          "boss_id": "ascendant_avatar"
+        },
+        {
+          "enemy_ids": [
+            "celestial_guardian",
+            "astral_horror"
+          ],
+          "weight": 8,
+          "level_min": 68,
+          "level_max": 70
+        },
+        {
+          "enemy_ids": [
+            "abyssal_titan"
+          ],
+          "weight": 5,
+          "level_min": 68,
+          "level_max": 70
+        }
+      ],
+      "flavour": [
+        "Every step you ever took led here, whether you knew it or not.",
+        "The throne is warm, as if just vacated."
+      ],
+      "unlock_level": 70
     }
   ],
   "shops": [
@@ -1300,6 +1502,41 @@
           "moonstone_amulet"
         ]
       }
+    },
+    {
+      "id": "celestial_outfitters",
+      "name": "Celestial Outfitters",
+      "description": "Star-forged gear for those nearing godhood.",
+      "item_ids": [
+        "celestial_blade",
+        "aegis_plate",
+        "godseye_bow",
+        "celestial_shard",
+        "greater_potion",
+        "greater_ether"
+      ],
+      "buy_rate": 1.0,
+      "sell_rate": 0.5,
+      "faction_id": "iron_covenant",
+      "race_buy_rates": {},
+      "race_item_ids": {}
+    },
+    {
+      "id": "archive_exchange",
+      "name": "Archive Exchange",
+      "description": "Knowledge and relics traded for ascendant essence.",
+      "item_ids": [
+        "essence_of_ascension",
+        "void_heart",
+        "abyssal_core",
+        "void_shard",
+        "codex_infinite"
+      ],
+      "buy_rate": 1.2,
+      "sell_rate": 0.4,
+      "faction_id": "iron_covenant",
+      "race_buy_rates": {},
+      "race_item_ids": {}
     }
   ],
   "npcs": [

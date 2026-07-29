@@ -43,18 +43,24 @@ class CombatScreen(tk.Frame):
         outer.pack(fill=tk.BOTH, expand=True)
 
         # ---------------- left: player + enemies -----------------------
-        left = tk.Frame(outer, bg=theme.BG, width=240)
+        left = tk.Frame(outer, bg=theme.BG, width=250)
         left.pack(side=tk.LEFT, fill=tk.Y)
         left.pack_propagate(False)
 
-        self.player_panel = StatPanel(left, title="You", wrap=215)
+        self.player_panel = StatPanel(left, title="You", wrap=225)
         self.player_panel.pack(fill=tk.X, anchor="n")
 
-        self.ally_panel = StatPanel(left, title="Allies", wrap=215)
-        self.ally_panel.pack(fill=tk.X, anchor="n", pady=(16, 0))
+        self.ally_panel = StatPanel(left, title="Allies", wrap=225)
+        self.ally_panel.pack(fill=tk.X, anchor="n", pady=(12, 0))
 
-        self.enemy_panel = StatPanel(left, title="Enemies", wrap=215)
-        self.enemy_panel.pack(fill=tk.X, anchor="n", pady=(16, 0))
+        self.enemy_panel = StatPanel(left, title="Enemies", wrap=225)
+        self.enemy_panel.pack(fill=tk.X, anchor="n", pady=(12, 0))
+
+        self.turn_panel = StatPanel(left, title="Turn Order", wrap=225)
+        self.turn_panel.pack(fill=tk.X, anchor="n", pady=(12, 0))
+
+        self.boss_panel = StatPanel(left, title="Boss", wrap=225)
+        # boss panel packed only when needed
 
         # ---------------- middle: log ----------------------------------
         middle = tk.Frame(outer, bg=theme.BG)
@@ -103,6 +109,56 @@ class CombatScreen(tk.Frame):
         self.player_panel.set_lines(battle.player_lines())
         self.ally_panel.set_lines(battle.ally_lines())
         self.enemy_panel.set_lines(battle.enemy_lines())
+
+        # Turn order
+        try:
+            order = getattr(battle, "turn_order", [])
+            current = getattr(battle, "current_actor", None)
+            lines = ["Turn Order:"]
+            for idx, actor in enumerate(order[:8]):  # show first 8
+                marker = ">> " if actor is current else "   "
+                name = getattr(actor, "name", str(actor))
+                # Show speed for clarity
+                try:
+                    spd = actor.derived_stats().speed
+                    lines.append(f"{marker}{name} (Spd {spd:.0f})")
+                except Exception:
+                    lines.append(f"{marker}{name}")
+            # Next round indicator
+            if len(order) > 8:
+                lines.append(f"  ... +{len(order)-8} more this round")
+            self.turn_panel.set_lines(lines)
+        except Exception:
+            self.turn_panel.set_lines(["Turn Order: (unavailable)"])
+
+        # Boss info
+        bosses = [e for e in battle.living_enemies if getattr(e, "is_boss", False)]
+        if bosses:
+            boss = bosses[0]
+            try:
+                phase = getattr(boss, "boss_phase", 0)
+                template = getattr(boss, "template", None)
+                phases = getattr(template, "boss_phases", []) if template else []
+                phase_name = phases[phase].get("name", f"Phase {phase+1}") if phase < len(phases) else f"Phase {phase+1}"
+                lines = [f"{boss.name}", f"Phase {phase+1}: {phase_name}", f"HP: {boss.hp_text()}"]
+                # Enrage?
+                if getattr(boss, "_enraged", False):
+                    lines.append("ENRAGED!")
+                # Telegraph pending?
+                pending = getattr(battle, "_telegraph_pending", {}).get(boss)
+                if pending:
+                    lines.append(f"Telegraph: {pending.get('warning','Incoming!')[:40]}")
+                self.boss_panel.set_lines(lines)
+                if not self.boss_panel.winfo_ismapped():
+                    self.boss_panel.pack(fill=tk.X, anchor="n", pady=(12, 0))
+            except Exception:
+                self.boss_panel.set_lines([f"{bosses[0].name}"])
+                if not self.boss_panel.winfo_ismapped():
+                    self.boss_panel.pack(fill=tk.X, anchor="n", pady=(12, 0))
+        else:
+            if self.boss_panel.winfo_ismapped():
+                self.boss_panel.pack_forget()
+
         self._sync_log()
 
         if battle.is_over:
@@ -112,9 +168,11 @@ class CombatScreen(tk.Frame):
         # Actions: the player's usable skills, plus a free basic attack.
         actions: list[tuple[str, "Skill | str"]] = [("Attack", ATTACK)]
         for skill in self.app.game.player.usable_skills():
-            ok, _ = skill.can_use(self.app.game.player)
-            suffix = "" if ok else "  (unavailable)"
-            actions.append((f"{skill.name} - {skill.cost_text()}{suffix}", skill))
+            ok, reason = skill.can_use(self.app.game.player)
+            suffix = "" if ok else f"  (unavailable: {reason})"
+            # Add tag for racial gift
+            racial_tag = " [racial]" if skill.id.startswith("racial_") else ""
+            actions.append((f"{skill.name}{racial_tag} - {skill.cost_text()}{suffix}", skill))
         self.action_list.set_items(actions)
 
         self._refresh_target_list(keep_selection=True)
@@ -170,7 +228,15 @@ class CombatScreen(tk.Frame):
                 targets = battle.living_enemies
         else:
             targets = battle.living_enemies
-        self.target_list.set_items([(target.name, target) for target in targets], keep_selection=keep_selection)
+        # Add HP% for target selection clarity
+        rows = []
+        for target in targets:
+            try:
+                hp_pct = f"{target.hp_fraction*100:.0f}%"
+                rows.append((f"{target.name} [{hp_pct}] {target.hp_text()}", target))
+            except Exception:
+                rows.append((target.name, target))
+        self.target_list.set_items(rows, keep_selection=keep_selection)
 
     def _on_action_selected(self, value: "Skill | str") -> None:
         """Show what the highlighted skill does and update valid targets."""
@@ -178,7 +244,11 @@ class CombatScreen(tk.Frame):
         if isinstance(value, str):  # the ATTACK sentinel
             self.app.notify("Basic attack with your equipped weapon.")
             return
-        self.app.notify(" | ".join(value.effect_lines()))
+        # Show detailed effect lines including tags
+        lines = value.effect_lines()
+        if getattr(value, "tags", None):
+            lines.append(f"Tags: {', '.join(value.tags)}")
+        self.app.notify(" | ".join(lines))
 
     # ------------------------------------------------------------------
     # Actions
@@ -236,15 +306,20 @@ class CombatScreen(tk.Frame):
 
         window = tk.Toplevel(self.app.root, bg=theme.BG)
         theme.style_window(window, "Use Item")
-        theme.center_window(window, 320, 300)
+        theme.center_window(window, 360, 340)
         window.transient(self.app.root)
 
         frame = tk.Frame(window, bg=theme.BG, padx=16, pady=14)
         frame.pack(fill=tk.BOTH, expand=True)
         theme.heading_label(frame, text="Use Item").pack(anchor="w", pady=(0, 8))
 
-        picker: SelectList[str] = SelectList(frame, height=7)
-        picker.set_items([(entry.label(), entry.item.id) for entry in entries])
+        # Show rarity colors for consumables too
+        picker: SelectList[str] = SelectList(frame, height=8)
+        rarity_cfg = self.app.game.config.get("rarities") or {}
+        rows = [(f"[{e.item.rarity_label}] {e.label()}", e.item.id) for e in entries]
+        colors = [rarity_cfg.get(e.item.rarity.lower(), {}).get("color", theme.FG) for e in entries]
+        picker.set_items(rows)
+        picker.set_row_colors(colors)
         picker.pack(fill=tk.BOTH, expand=True)
 
         def confirm() -> None:
