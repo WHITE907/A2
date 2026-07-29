@@ -126,6 +126,15 @@ class SelectList(tk.Frame, Generic[T]):
         elif self._values:
             self.select_index(0, notify=False)
 
+    def set_row_colors(self, colors: Sequence[str]) -> None:
+        """Apply per-row foreground colors without changing engine data."""
+        for index, color in enumerate(colors):
+            try:
+                self.listbox.itemconfigure(index, foreground=color)
+            except (AttributeError, tk.TclError):
+                # Headless test widgets and older Tk builds may not expose it.
+                pass
+
     def set_labels(self: "SelectList[str]", labels: Sequence[str]) -> None:
         """Convenience for display-only lists where the label *is* the value."""
         self.set_items([(label, label) for label in labels])
