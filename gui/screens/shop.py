@@ -75,12 +75,12 @@ class ShopWindow(tk.Toplevel):
 
         stock = game.shop_stock(self.shop_id)
         self.stock_list.set_items(
-            [(f"{item.name} - {max(1, int(item.value * self.buy_rate))}g", item) for item in stock]
+            [(f"[{item.rarity_label}] {item.name} - {game.shop_price(self.shop_id, item.id)}g", item) for item in stock]
         )
 
         entries = game.inventory_entries()
         self.bag_list.set_items(
-            [(f"{entry.label()} - {entry.item.sell_price(self.sell_rate)}g", entry.item) for entry in entries],
+            [(f"[{entry.item.rarity_label}] {entry.label()} - {int(entry.item.sell_price(self.sell_rate) * float((game.config.get('rarities') or {}).get(entry.item.rarity.lower(), {}).get('value_rate', 1.0)))}g", entry.item) for entry in entries],
             keep_selection=False,
         )
 
