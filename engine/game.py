@@ -1106,7 +1106,8 @@ class Game:
         if not self.player.inventory.has(item_id):
             return False, f"You have no {item.name}."
         rate = shop.sell_rate if shop else 0.4
-        price = item.sell_price(rate)
+        rarity = (self.config.get("rarities") or {}).get(item.rarity.lower(), {})
+        price = max(1, int(item.sell_price(rate) * float(rarity.get("value_rate", 1.0))))
         self.player.inventory.remove(item_id, 1)
         self.player.inventory.add_gold(price)
         return True, f"Sold {item.name} for {price} gold."
@@ -1414,7 +1415,9 @@ class Game:
             reputation = max(0, self.player.faction_reputation.get(faction.id, 0))
             discount = min(faction.max_discount, reputation * faction.shop_discount_per_point)
         race_rate = shop.race_buy_rates.get(self.player.race_id, 1.0) if self.player else 1.0
-        return max(1, int(item.value * shop.buy_rate * race_rate * (1.0 - discount)))
+        rarity = (self.config.get("rarities") or {}).get(item.rarity.lower(), {})
+        rarity_rate = float(rarity.get("value_rate", 1.0))
+        return max(1, int(item.value * rarity_rate * shop.buy_rate * race_rate * (1.0 - discount)))
 
     def _story_conditions_met(self, conditions: Mapping[str, Any]) -> bool:
         if not self.player:
