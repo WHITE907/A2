@@ -1897,6 +1897,14 @@
           "crit_chance": 0.1
         }
       }
+    },
+    {
+      "id": "elven_moonleaf",
+      "name": "Elven Moonleaf",
+      "kind": "material",
+      "description": "A glowing leaf imbued with ancient woodland magic.",
+      "value": 25,
+      "rarity": "uncommon"
     }
   ]
 }

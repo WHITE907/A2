@@ -135,15 +135,52 @@ class Player(Entity):
         self.invalidate_stats()
 
     def special_effects(self) -> list[dict[str, Any]]:
-        """Return data-defined combat specials from class, race and sub-race."""
+        """Return data-defined combat specials from class, race, sub-race, gear, and set bonuses."""
         effects = [dict(effect) for effect in getattr(self.race_def, "special_effects", ())]
         sub = self.race_def.get_sub_race(self.sub_race_id) if self.sub_race_id else None
         if sub:
             effects.extend(dict(effect) for effect in sub.special_effects)
         for perk in self.class_def.perks:
+            trigger = perk.get("trigger", "always")
+            is_active = True
+            if trigger == "low_hp" and hasattr(self, "current_hp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_hp = self.formulas.derive(self.base_stats, self.level).max_hp
+                is_active = (self.current_hp / max_hp < threshold) if max_hp else False
+            elif trigger == "low_mp" and hasattr(self, "current_mp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_mp = self.formulas.derive(self.base_stats, self.level).max_mp
+                is_active = (self.current_mp / max_mp < threshold) if max_mp else False
+            elif trigger == "low_sp" and hasattr(self, "current_sp"):
+                threshold = float(perk.get("threshold", 0.3))
+                max_sp = self.formulas.derive(self.base_stats, self.level).max_sp
+                is_active = (self.current_sp / max_sp < threshold) if max_sp else False
+            
             special = str(perk.get("special", "")).strip()
-            if special:
+            if special and is_active:
                 effects.append({"type": special, "value": float(perk.get("special_value", 0.0)), "perk_id": perk.get("id", ""), "perk_name": perk.get("name", special)})
+
+        equipped = [item for item in self.equipment.values() if item is not None]
+        for item in equipped:
+            if hasattr(item, "special") and item.special:
+                effects.append({"type": item.special, "value": float(getattr(item, "special_value", 0.0))})
+
+        counts: dict[str, int] = {}
+        for item in equipped:
+            if item.set_id:
+                counts[item.set_id] = counts.get(item.set_id, 0) + 1
+        for set_id, count in counts.items():
+            definition = (self.equipment_config.get("equipment_sets") or {}).get(set_id, {})
+            for threshold, bonuses in (definition.get("bonuses") or {}).items():
+                if count >= int(threshold):
+                    if isinstance(bonuses, dict):
+                        if "special" in bonuses:
+                            effects.append({"type": bonuses["special"], "value": float(bonuses.get("special_value", 0.0))})
+                        for k, v in bonuses.items():
+                            if k in ("lifesteal", "counter", "reflect", "elemental_resist", "elemental_vulnerability"):
+                                effects.append({"type": k, "value": float(v)})
+        # Also include status effects
+        effects.extend(super().special_effects())
         return effects
 
     def active_perks(self) -> list[dict[str, Any]]:
@@ -341,6 +378,8 @@ class Player(Entity):
             return False, f"{skill.name} requires mastery: {need}."
         if skill.required_class_ids and self.class_def.id not in skill.required_class_ids:
             return False, f"{skill.name} is not available to {self.class_def.name}."
+        if skill.required_race_ids and self.race_id.lower() not in skill.required_race_ids:
+            return False, f"{skill.name} is restricted to specific races."
         if spend_points and self.unspent_skill_points < skill.skill_point_cost:
             return False, f"Not enough skill points ({skill.skill_point_cost} needed)."
 

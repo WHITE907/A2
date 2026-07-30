@@ -3980,6 +3980,695 @@
           "power_ratio": 0.7
         }
       ]
+    },
+    {
+      "id": "flame_blast",
+      "name": "Flame Blast",
+      "category": "active",
+      "description": "Area fire damage with burn chance.",
+      "targeting": "all_enemies",
+      "mp_cost": 15,
+      "tags": [
+        "magical",
+        "fire"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 18,
+          "power_ratio": 1.2,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.5
+        }
+      ]
+    },
+    {
+      "id": "meteor_swarm",
+      "name": "Meteor Swarm",
+      "category": "ultimate",
+      "description": "Call down meteors for massive fire damage.",
+      "targeting": "all_enemies",
+      "mp_cost": 35,
+      "tags": [
+        "magical",
+        "fire",
+        "ultimate"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 45,
+          "power_ratio": 2.2,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "id": "immolation",
+      "name": "Immolation",
+      "category": "active",
+      "description": "Engulf self in flames, granting fire reflect shield.",
+      "targeting": "self",
+      "mp_cost": 20,
+      "tags": [
+        "magical",
+        "fire"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 30,
+          "reflect_pct": 0.25,
+          "duration": 3,
+          "name": "Immolation Shield"
+        }
+      ]
+    },
+    {
+      "id": "ice_lance",
+      "name": "Ice Lance",
+      "category": "active",
+      "description": "Piercing frost projectile that slows the target.",
+      "targeting": "enemy",
+      "mp_cost": 12,
+      "tags": [
+        "magical",
+        "ice"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 16,
+          "power_ratio": 1.1,
+          "element": "ice"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "chill",
+          "chance": 0.7
+        }
+      ]
+    },
+    {
+      "id": "blizzard",
+      "name": "Blizzard",
+      "category": "active",
+      "description": "Freezing storm affecting all enemies.",
+      "targeting": "all_enemies",
+      "mp_cost": 30,
+      "tags": [
+        "magical",
+        "ice"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 22,
+          "power_ratio": 1.4,
+          "element": "ice"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "chill",
+          "chance": 0.8
+        }
+      ]
+    },
+    {
+      "id": "absolute_zero",
+      "name": "Absolute Zero",
+      "category": "ultimate",
+      "description": "Chance to freeze an enemy solid.",
+      "targeting": "enemy",
+      "mp_cost": 40,
+      "tags": [
+        "magical",
+        "ice",
+        "ultimate"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 35,
+          "power_ratio": 1.8,
+          "element": "ice"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stunned",
+          "duration": 1,
+          "chance": 0.6
+        }
+      ]
+    },
+    {
+      "id": "static_shield",
+      "name": "Static Shield",
+      "category": "active",
+      "description": "Surround with static electricity to counter attackers.",
+      "targeting": "self",
+      "mp_cost": 18,
+      "tags": [
+        "magical",
+        "lightning"
+      ],
+      "effects": [
+        {
+          "type": "counter",
+          "reflect_pct": 0.4,
+          "duration": 3
+        }
+      ]
+    },
+    {
+      "id": "thunder_strike",
+      "name": "Thunder Strike",
+      "category": "active",
+      "description": "Lightning bolt with paralysis chance.",
+      "targeting": "enemy",
+      "mp_cost": 16,
+      "tags": [
+        "magical",
+        "lightning"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 20,
+          "power_ratio": 1.3,
+          "element": "lightning"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stunned",
+          "duration": 1,
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "venom_strike",
+      "name": "Venom Strike",
+      "category": "active",
+      "description": "Acid strike with poison DOT.",
+      "targeting": "enemy",
+      "sp_cost": 12,
+      "tags": [
+        "physical",
+        "earth"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 15,
+          "power_ratio": 1.1,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "poison",
+          "chance": 0.8
+        }
+      ]
+    },
+    {
+      "id": "earthquake",
+      "name": "Earthquake",
+      "category": "active",
+      "description": "Tremor dealing earth damage and breaking armor.",
+      "targeting": "all_enemies",
+      "sp_cost": 25,
+      "tags": [
+        "physical",
+        "earth"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 22,
+          "power_ratio": 1.3,
+          "element": "earth"
+        }
+      ]
+    },
+    {
+      "id": "stone_skin",
+      "name": "Stone Skin",
+      "category": "active",
+      "description": "Harden skin into stone for physical shielding.",
+      "targeting": "self",
+      "sp_cost": 15,
+      "tags": [
+        "physical",
+        "earth"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 35,
+          "duration": 3,
+          "name": "Stone Shield"
+        }
+      ]
+    },
+    {
+      "id": "gale_force",
+      "name": "Gale Force",
+      "category": "active",
+      "description": "Multi-hit wind gust strike.",
+      "targeting": "enemy",
+      "sp_cost": 14,
+      "tags": [
+        "physical",
+        "wind"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 10,
+          "power_ratio": 0.8,
+          "hits": 2,
+          "element": "wind"
+        }
+      ]
+    },
+    {
+      "id": "cyclone",
+      "name": "Cyclone",
+      "category": "active",
+      "description": "Wind aura granting evasion and damage.",
+      "targeting": "self",
+      "sp_cost": 18,
+      "tags": [
+        "physical",
+        "wind"
+      ],
+      "effects": [
+        {
+          "type": "heal",
+          "base": 10
+        }
+      ]
+    },
+    {
+      "id": "wind_blade",
+      "name": "Wind Blade",
+      "category": "active",
+      "description": "High critical wind strike.",
+      "targeting": "enemy",
+      "sp_cost": 16,
+      "tags": [
+        "physical",
+        "wind"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 24,
+          "power_ratio": 1.4,
+          "can_crit": true,
+          "element": "wind"
+        }
+      ]
+    },
+    {
+      "id": "drain_life",
+      "name": "Drain Life",
+      "category": "active",
+      "description": "Steal life force with shadow magic.",
+      "targeting": "enemy",
+      "mp_cost": 20,
+      "tags": [
+        "magical",
+        "shadow"
+      ],
+      "effects": [
+        {
+          "type": "life_drain",
+          "damage_type": "magic",
+          "base": 20,
+          "power_ratio": 1.2,
+          "drain_ratio": 0.7,
+          "element": "shadow"
+        }
+      ]
+    },
+    {
+      "id": "shadow_mend",
+      "name": "Shadow Mend",
+      "category": "active",
+      "description": "Dark restoration trading health/status.",
+      "targeting": "ally",
+      "mp_cost": 15,
+      "tags": [
+        "magical",
+        "shadow"
+      ],
+      "effects": [
+        {
+          "type": "heal",
+          "base": 25,
+          "power_ratio": 1.2
+        },
+        {
+          "type": "cleanse"
+        }
+      ]
+    },
+    {
+      "id": "void_rift",
+      "name": "Void Rift",
+      "category": "ultimate",
+      "description": "Open a rift of void energy.",
+      "targeting": "all_enemies",
+      "mp_cost": 35,
+      "tags": [
+        "magical",
+        "shadow",
+        "ultimate"
+      ],
+      "effects": [
+        {
+          "type": "delayed_attack",
+          "base": 40,
+          "delay": 2,
+          "name": "Void Detonation"
+        }
+      ]
+    },
+    {
+      "id": "divine_shield",
+      "name": "Divine Shield",
+      "category": "active",
+      "description": "Holy barrier with reflect.",
+      "targeting": "self",
+      "mp_cost": 22,
+      "tags": [
+        "magical",
+        "holy"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 30,
+          "reflect_pct": 0.3,
+          "duration": 3,
+          "name": "Divine Barrier"
+        }
+      ]
+    },
+    {
+      "id": "consecration",
+      "name": "Consecration",
+      "category": "active",
+      "description": "Sacred ground dealing holy damage over time.",
+      "targeting": "all_enemies",
+      "mp_cost": 25,
+      "tags": [
+        "magical",
+        "holy"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 18,
+          "power_ratio": 1.1,
+          "element": "holy"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blessed",
+          "chance": 0.6
+        }
+      ]
+    },
+    {
+      "id": "arcane_missile",
+      "name": "Arcane Missile",
+      "category": "active",
+      "description": "Multi-hit arcane projectiles.",
+      "targeting": "enemy",
+      "mp_cost": 18,
+      "tags": [
+        "magical",
+        "arcane"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 8,
+          "power_ratio": 0.6,
+          "hits": 3,
+          "element": "arcane"
+        }
+      ]
+    },
+    {
+      "id": "time_warp",
+      "name": "Time Warp",
+      "category": "active",
+      "description": "Manipulate time to reduce cooldowns.",
+      "targeting": "self",
+      "mp_cost": 30,
+      "tags": [
+        "magical",
+        "arcane"
+      ],
+      "effects": [
+        {
+          "type": "cooldown",
+          "amount": -1
+        }
+      ]
+    },
+    {
+      "id": "mana_burn",
+      "name": "Mana Burn",
+      "category": "active",
+      "description": "Burn target MP and deal arcane damage.",
+      "targeting": "enemy",
+      "mp_cost": 15,
+      "tags": [
+        "magical",
+        "arcane"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 15,
+          "power_ratio": 1.0,
+          "element": "arcane"
+        },
+        {
+          "type": "resource_drain",
+          "resource": "mp",
+          "amount": 20
+        }
+      ]
+    },
+    {
+      "id": "solar_flare",
+      "name": "Solar Flare",
+      "category": "active",
+      "description": "Intense solar burst dealing fire damage and blinding foes.",
+      "targeting": "all_enemies",
+      "mp_cost": 20,
+      "tags": [
+        "magical",
+        "fire"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 20,
+          "power_ratio": 1.3,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blinded",
+          "chance": 0.5
+        }
+      ]
+    },
+    {
+      "id": "glacial_shard",
+      "name": "Glacial Shard",
+      "category": "active",
+      "description": "Sharp frost projectile with high crit.",
+      "targeting": "enemy",
+      "mp_cost": 14,
+      "tags": [
+        "magical",
+        "ice"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 22,
+          "power_ratio": 1.4,
+          "can_crit": true,
+          "element": "ice"
+        }
+      ]
+    },
+    {
+      "id": "plasma_burst",
+      "name": "Plasma Burst",
+      "category": "active",
+      "description": "Supercharged lightning blast piercing defenses.",
+      "targeting": "enemy",
+      "mp_cost": 25,
+      "tags": [
+        "magical",
+        "lightning"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 28,
+          "power_ratio": 1.5,
+          "penetration_pct": 0.2,
+          "element": "lightning"
+        }
+      ]
+    },
+    {
+      "id": "gaia_bastion",
+      "name": "Gaia Bastion",
+      "category": "active",
+      "description": "Earth shield granting armor and regeneration.",
+      "targeting": "self",
+      "sp_cost": 20,
+      "tags": [
+        "physical",
+        "earth"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 40,
+          "duration": 3,
+          "name": "Gaia Shield"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "regeneration",
+          "duration": 3
+        }
+      ]
+    },
+    {
+      "id": "hurricane_strike",
+      "name": "Hurricane Strike",
+      "category": "active",
+      "description": "Swift multi-hit wind strike.",
+      "targeting": "enemy",
+      "sp_cost": 18,
+      "tags": [
+        "physical",
+        "wind"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 12,
+          "power_ratio": 0.9,
+          "hits": 3,
+          "element": "wind"
+        }
+      ]
+    },
+    {
+      "id": "soul_rend",
+      "name": "Soul Rend",
+      "category": "active",
+      "description": "Shadow strike that drains life and silences.",
+      "targeting": "enemy",
+      "mp_cost": 22,
+      "tags": [
+        "magical",
+        "shadow"
+      ],
+      "effects": [
+        {
+          "type": "life_drain",
+          "damage_type": "magic",
+          "base": 24,
+          "power_ratio": 1.3,
+          "drain_ratio": 0.6,
+          "element": "shadow"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "silenced",
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "divine_wrath",
+      "name": "Divine Wrath",
+      "category": "ultimate",
+      "description": "Call down holy radiance upon enemies.",
+      "targeting": "all_enemies",
+      "mp_cost": 45,
+      "tags": [
+        "magical",
+        "holy",
+        "ultimate"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 50,
+          "power_ratio": 2.4,
+          "element": "holy"
+        }
+      ]
+    },
+    {
+      "id": "astral_surge",
+      "name": "Astral Surge",
+      "category": "active",
+      "description": "Unleash pure astral true damage.",
+      "targeting": "enemy",
+      "mp_cost": 28,
+      "tags": [
+        "magical",
+        "arcane"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "true",
+          "base": 32,
+          "power_ratio": 1.6,
+          "element": "arcane"
+        }
+      ]
     }
   ]
 }

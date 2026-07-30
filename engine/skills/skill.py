@@ -113,6 +113,7 @@ class Skill:
     required_weapon_types: list[str] = field(default_factory=list)
     required_mastery: dict[str, str] = field(default_factory=dict)
     prerequisites: list[str] = field(default_factory=list)
+    required_race_ids: list[str] = field(default_factory=list)
     #: Mastery track this skill trains when used (e.g. ``"sword"``).
     mastery_track: str = ""
     icon: str = ""
@@ -315,6 +316,7 @@ class Skill:
             required_weapon_types=[str(v) for v in payload.get("required_weapon_types", [])],
             required_mastery={str(k): str(v) for k, v in (payload.get("required_mastery") or {}).items()},
             prerequisites=[str(v) for v in payload.get("prerequisites", [])],
+            required_race_ids=[str(v).lower() for v in payload.get("required_race_ids", [])],
             mastery_track=str(payload.get("mastery_track", "")),
             icon=str(payload.get("icon", "")),
             tags=[str(t).lower() for t in payload.get("tags", [])],

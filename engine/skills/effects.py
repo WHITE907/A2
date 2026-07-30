@@ -189,8 +189,16 @@ def _scaling_amount(
     return max(0.0, total)
 
 
-# ----------------------------------------------------------------------
-# 1. Damage
+ELEMENT_MAP = {
+    "fire": "fire",
+    "ice": "ice", "frost": "ice",
+    "lightning": "lightning", "storm": "lightning",
+    "earth": "earth", "nature": "earth",
+    "wind": "wind", "air": "wind",
+    "shadow": "shadow", "void": "shadow",
+    "holy": "holy", "divine": "holy",
+    "arcane": "arcane", "astral": "arcane"
+}
 # ----------------------------------------------------------------------
 @register_effect("damage")
 class DamageEffect(Effect):
@@ -221,6 +229,7 @@ class DamageEffect(Effect):
         self.ignores_shield: bool = bool(payload.get("ignores_shield", False))
         self.default_ratio: float = float(payload.get("power_ratio", 1.0))
         self.element: str = str(payload.get("element", payload.get("element_tag", ""))).lower()
+        self.tags: list[str] = [str(t).lower() for t in payload.get("tags", [])]
 
     def apply(self, caster: "Entity", target: "Entity", ctx: EffectContext) -> EffectResult | None:
         if not target.is_alive:
@@ -246,6 +255,16 @@ class DamageEffect(Effect):
         total_absorbed = 0.0
         total_reflected = 0.0
         any_crit = False
+        elemental_msgs = []
+
+        effect_elem = ELEMENT_MAP.get(str(self.element).lower(), "")
+        if not effect_elem and hasattr(self, "tags") and self.tags:
+            for t in self.tags:
+                if t.lower() in ELEMENT_MAP:
+                    effect_elem = ELEMENT_MAP[t.lower()]
+                    break
+        if not effect_elem and self.damage_type.lower() in ELEMENT_MAP:
+            effect_elem = ELEMENT_MAP[self.damage_type.lower()]
 
         for _ in range(self.hits):
             raw = _scaling_amount(
@@ -268,15 +287,35 @@ class DamageEffect(Effect):
                 self.penetration_pct,
                 self.penetration_flat,
             )
-            # Elemental resistance from target specials
-            try:
+            # Elemental resistance & vulnerability
+            if effect_elem:
+                target_resistance = 0.0
+                target_vulnerability = 0.0
+                res_dict = getattr(target, "resistance", {}) or getattr(getattr(target, "template", None), "resistance", {})
+                if effect_elem in res_dict:
+                    target_resistance += float(res_dict[effect_elem])
                 for spec in getattr(target, "special_effects", lambda: [])():
-                    if spec.get("type") == "elemental_resist":
-                        elem = str(spec.get("element","")).lower()
-                        if elem in ("", "all") or elem == self.element.lower() or (self.element == "" and elem == self.damage_type):
-                            mitigated *= max(0.0, 1.0 - float(spec.get("value",0)))
-            except Exception:
-                pass
+                    st = spec.get("type")
+                    se = ELEMENT_MAP.get(str(spec.get("element", "")).lower(), "")
+                    if se in ("", "all") or se == effect_elem:
+                        if st == "elemental_resist":
+                            target_resistance += float(spec.get("value", 0))
+                        elif st == "elemental_vulnerability":
+                            target_vulnerability += float(spec.get("value", 0))
+                
+                elem_mult = max(0.0, min(3.0, 1.0 - target_resistance + target_vulnerability))
+                mitigated *= elem_mult
+
+                if target_resistance > 0:
+                    res_pct = target_resistance * 100
+                    msg = f"{target.name} resists {effect_elem.title()} (-{res_pct:.0f}%)"
+                    if msg not in elemental_msgs:
+                        elemental_msgs.append(msg)
+                elif target_resistance < 0 or target_vulnerability > 0:
+                    vuln_pct = (abs(target_resistance) + target_vulnerability) * 100
+                    msg = f"{target.name} is vulnerable to {effect_elem.title()} (+{vuln_pct:.0f}%)"
+                    if msg not in elemental_msgs:
+                        elemental_msgs.append(msg)
 
             outcome = target.take_raw_damage(
                 mitigated,
@@ -287,43 +326,32 @@ class DamageEffect(Effect):
             total_dealt += outcome.damage
             total_absorbed += outcome.absorbed
             total_reflected += outcome.reflected
+
+            # Elemental status synergy combos (Thermal Shock, Static Discharge, etc.)
+            if effect_elem in ("fire", "ice", "lightning") and outcome.damage > 0 and target.is_alive:
+                if effect_elem == "fire" and (target.has_status("chill") or target.has_status("frozen")):
+                    target.remove_status("chill")
+                    target.remove_status("frozen")
+                    synergy_dmg = outcome.damage * 0.5
+                    target.take_raw_damage(synergy_dmg, damage_type="true", ignore_shield=True)
+                    elemental_msgs.append(f"Thermal Shock! {target.name} suffers {synergy_dmg:.0f} bonus fire-frost damage.")
+                elif effect_elem == "lightning" and target.has_status("paralyzed"):
+                    target.remove_status("paralyzed")
+                    synergy_dmg = outcome.damage * 0.4
+                    target.take_raw_damage(synergy_dmg, damage_type="true", ignore_shield=True)
+                    elemental_msgs.append(f"Static Discharge! {target.name} takes {synergy_dmg:.0f} lightning conduction damage.")
+                elif effect_elem == "ice" and target.has_status("burn"):
+                    target.remove_status("burn")
+                    synergy_dmg = outcome.damage * 0.4
+                    target.take_raw_damage(synergy_dmg, damage_type="true", ignore_shield=True)
+                    elemental_msgs.append(f"Melt! {target.name} suffers {synergy_dmg:.0f} steam burst damage.")
+
             if not target.is_alive:
                 break
 
-        # --- race/sub-race passives: family damage bonus, low-resource power, elemental handling ---
-        # Family damage bonus
-        try:
-            target_family = getattr(getattr(target, "template", None), "family", "") or getattr(target, "family", "") or ""
-            if not target_family:
-                # For player/companion, use race_id as family proxy
-                target_family = getattr(target, "race_id", "") or getattr(getattr(target, "race_def", None), "id", "")
-            caster_specials = getattr(caster, "special_effects", lambda: [])()
-            for spec in caster_specials:
-                if spec.get("type") == "family_damage_bonus":
-                    fam = str(spec.get("family","")).lower()
-                    if fam and fam == str(target_family).lower():
-                        raw *= (1.0 + float(spec.get("value",0)))
-            # Low-resource power bonuses
-            for spec in caster_specials:
-                stype = spec.get("type")
-                if stype == "low_hp_power":
-                    thresh = float(spec.get("threshold",0.3))
-                    if hasattr(caster, "hp_fraction") and caster.hp_fraction < thresh:
-                        raw *= (1.0 + float(spec.get("value",0)))
-                elif stype == "low_mp_power":
-                    thresh = float(spec.get("threshold",0.3))
-                    if hasattr(caster, "mp_fraction") and caster.mp_fraction < thresh:
-                        raw *= (1.0 + float(spec.get("value",0)))
-                elif stype == "low_sp_power":
-                    thresh = float(spec.get("threshold",0.3))
-                    if hasattr(caster, "sp_fraction") and caster.sp_fraction < thresh:
-                        raw *= (1.0 + float(spec.get("value",0)))
-        except Exception:
-            pass
-
         # Lifesteal is a passive data-defined special on the caster.
         lifesteal = sum(float(s.get("value", 0)) for s in getattr(caster, "special_effects", lambda: [])() if s.get("type") == "lifesteal")
-        if lifesteal and total_dealt > 0:
+        if lifesteal > 0 and total_dealt > 0:
             caster.heal(total_dealt * lifesteal)
 
         # Reflect is resolved by the *target*, but the damage lands on the
@@ -339,6 +367,8 @@ class DamageEffect(Effect):
             parts.append(f"({total_absorbed:.0f} absorbed)")
         if total_reflected > 0:
             parts.append(f"({total_reflected:.0f} reflected)")
+        if elemental_msgs:
+            parts.extend(elemental_msgs)
 
         return EffectResult(
             target_name=target.name,

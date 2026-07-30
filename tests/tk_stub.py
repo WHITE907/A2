@@ -495,6 +495,21 @@ class Canvas(Widget):
     def create_text(self, *args: Any, **kwargs: Any) -> int:
         return 1
 
+    def create_window(self, *args: Any, **kwargs: Any) -> int:
+        return 1
+
+    def itemconfig(self, *args: Any, **kwargs: Any) -> None:
+        pass
+
+    def bbox(self, *args: Any) -> tuple[int, int, int, int]:
+        return (0, 0, 100, 100)
+
+    def yview(self, *args: Any) -> None:
+        pass
+
+    def yview_scroll(self, *args: Any) -> None:
+        pass
+
     def delete(self, *args: Any) -> None:
         pass
 

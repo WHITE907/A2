@@ -16,6 +16,7 @@ from typing import Any, Iterable, Sequence
 from engine.classes import MAX_TIER, ClassDefinition, PromotionCheck
 from engine.managers.data_loader import ContentError, DataLoader
 from engine.managers.skill_manager import SkillManager
+from engine.skills.skill import SkillCategory
 
 __all__ = ["ClassManager"]
 
@@ -197,16 +198,27 @@ class ClassManager:
         definition = player.class_def
         candidates = list(definition.skill_tree_ids) + definition.unlocked_ultimates(player.level)
         weapon_type = player.equipped_weapon_type()
-        # Shared/weapon skills are available to everyone with the right weapon
-        # (bible section 11: "Weapon skills are shared").
         for skill in self._skills.weapon_skills(weapon_type):
             if skill.id not in candidates:
                 candidates.append(skill.id)
-        return [
-            skill
-            for skill in self._skills.get_many(candidates)
-            if skill.id not in player.known_skills
-        ]
+        for skill in self._skills.all_skills():
+            if skill.required_race_ids and player.race_id.lower() in [r.lower() for r in skill.required_race_ids]:
+                if skill.id not in candidates:
+                    candidates.append(skill.id)
+            elif not skill.required_race_ids and not skill.required_class_ids:
+                if skill.id not in candidates and skill.category in (SkillCategory.ACTIVE, SkillCategory.PASSIVE, SkillCategory.SHARED):
+                    candidates.append(skill.id)
+
+        results = []
+        for skill in self._skills.get_many(candidates):
+            if skill.id in player.known_skills:
+                continue
+            if skill.required_race_ids and player.race_id.lower() not in [r.lower() for r in skill.required_race_ids]:
+                continue
+            if skill.required_class_ids and player.class_def.id not in skill.required_class_ids:
+                continue
+            results.append(skill)
+        return results
 
     def create_starting_kit(self, definition: ClassDefinition, level: int = 1) -> list[Any]:
         """Skills a brand-new character of this class starts with."""

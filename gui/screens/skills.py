@@ -117,9 +117,15 @@ class SkillsWindow(tk.Toplevel):
         self.known_list.set_items([(f"{s.name}  [{s.category}]" + ("  [racial gift]" if s.id.startswith("racial_") else ""), s) for s in known])
 
         learnable = visible(game.learnable_skills())
-        self.learnable_list.set_items(
-            [(f"{s.name}  ({s.skill_point_cost} pt)", s) for s in learnable], keep_selection=False
-        )
+        learnable_items = []
+        for s in learnable:
+            badge = ""
+            if getattr(s, "required_race_ids", None):
+                badge = f" [Race: {', '.join(s.required_race_ids)}]"
+            elif getattr(s, "required_class_ids", None):
+                badge = f" [Class: {', '.join(s.required_class_ids)}]"
+            learnable_items.append((f"{s.name}  ({s.skill_point_cost} pt){badge}", s))
+        self.learnable_list.set_items(learnable_items, keep_selection=False)
 
         if not learnable and not known:
             self.detail.set_lines(["No skills available."])
@@ -136,6 +142,10 @@ class SkillsWindow(tk.Toplevel):
         lines.append(f"Cost: {skill.skill_point_cost} skill point(s)")
         if skill.required_level > 1:
             lines.append(f"Requires level {skill.required_level}")
+        if getattr(skill, "required_race_ids", None):
+            lines.append(f"Restricted to race: {', '.join(skill.required_race_ids)}")
+        if getattr(skill, "required_class_ids", None):
+            lines.append(f"Restricted to class: {', '.join(skill.required_class_ids)}")
         for track, rank in skill.required_mastery.items():
             lines.append(f"Requires {track.title()} mastery {rank}")
         self.detail.set_lines(lines)
