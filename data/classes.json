@@ -922,6 +922,20 @@
               "max_hp": 0.1
             }
           }
+        },
+        {
+          "id": "divine_conduit",
+          "name": "Divine Conduit",
+          "description": "+15% Holy damage, healing aura",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.15
+            },
+            "flat": {
+              "max_hp": 50
+            }
+          }
         }
       ]
     },
@@ -7713,6 +7727,115 @@
       "promotions": {},
       "starting_items": {},
       "starting_gold": 0
+    },
+    {
+      "id": "pyromancer",
+      "name": "Pyromancer",
+      "tier": 3,
+      "description": "+25% Fire damage, lifesteal on burn",
+      "base_stats": {
+        "STR": 10,
+        "END": 10,
+        "INT": 18,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 3,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [],
+      "skill_tree_ids": [],
+      "perks": [
+        {
+          "id": "master_of_flames",
+          "name": "Master of Flames",
+          "description": "+25% Fire damage, lifesteal on burn",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.25
+            }
+          },
+          "special": "lifesteal",
+          "special_value": 0.1
+        }
+      ],
+      "promotions": {}
+    },
+    {
+      "id": "cryomancer",
+      "name": "Cryomancer",
+      "tier": 3,
+      "description": "+30% Frost resistance and counter freeze",
+      "base_stats": {
+        "STR": 10,
+        "END": 10,
+        "INT": 18,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 3,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [],
+      "skill_tree_ids": [],
+      "perks": [
+        {
+          "id": "glacial_armor",
+          "name": "Glacial Armor",
+          "description": "+30% Frost resistance and counter freeze",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_resist": 0.3
+            }
+          },
+          "special": "counter",
+          "special_value": 0.3
+        }
+      ],
+      "promotions": {}
+    },
+    {
+      "id": "stormbinder",
+      "name": "Stormbinder",
+      "tier": 3,
+      "description": "+20% Lightning damage, accuracy debuff",
+      "base_stats": {
+        "STR": 10,
+        "END": 10,
+        "INT": 18,
+        "AGI": 12
+      },
+      "growth": {
+        "STR": 1,
+        "END": 1,
+        "INT": 3,
+        "AGI": 1
+      },
+      "core_skill_id": "arcane_bolt",
+      "granted_skill_ids": [],
+      "skill_tree_ids": [],
+      "perks": [
+        {
+          "id": "conductive_aura",
+          "name": "Conductive Aura",
+          "description": "+20% Lightning damage, accuracy debuff",
+          "trigger": "always",
+          "modifiers": {
+            "pct": {
+              "magic_power": 0.2
+            }
+          }
+        }
+      ],
+      "promotions": {}
     }
   ]
 }

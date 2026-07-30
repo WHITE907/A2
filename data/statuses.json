@@ -54,7 +54,11 @@
       "name": "Might",
       "category": "buff",
       "duration": 3,
-      "modifiers": { "pct": { "physical_power": 0.3 } },
+      "modifiers": {
+        "pct": {
+          "physical_power": 0.3
+        }
+      },
       "description": "Strength surges through the body."
     },
     {
@@ -62,7 +66,11 @@
       "name": "Focus",
       "category": "buff",
       "duration": 3,
-      "modifiers": { "pct": { "magic_power": 0.3 } },
+      "modifiers": {
+        "pct": {
+          "magic_power": 0.3
+        }
+      },
       "description": "The mind sharpens to a point."
     },
     {
@@ -70,7 +78,14 @@
       "name": "Haste",
       "category": "buff",
       "duration": 3,
-      "modifiers": { "pct": { "speed": 0.4 }, "flat": { "evasion": 0.05 } },
+      "modifiers": {
+        "pct": {
+          "speed": 0.4
+        },
+        "flat": {
+          "evasion": 0.05
+        }
+      },
       "description": "Movements blur with speed."
     },
     {
@@ -78,7 +93,12 @@
       "name": "Iron Skin",
       "category": "buff",
       "duration": 3,
-      "modifiers": { "pct": { "armor": 0.5, "magic_resist": 0.25 } },
+      "modifiers": {
+        "pct": {
+          "armor": 0.5,
+          "magic_resist": 0.25
+        }
+      },
       "description": "Flesh hardens against harm."
     },
     {
@@ -86,7 +106,11 @@
       "name": "Weakened",
       "category": "debuff",
       "duration": 3,
-      "modifiers": { "pct": { "physical_power": -0.25 } },
+      "modifiers": {
+        "pct": {
+          "physical_power": -0.25
+        }
+      },
       "description": "Muscles fail to answer."
     },
     {
@@ -94,7 +118,11 @@
       "name": "Sundered",
       "category": "debuff",
       "duration": 3,
-      "modifiers": { "pct": { "armor": -0.35 } },
+      "modifiers": {
+        "pct": {
+          "armor": -0.35
+        }
+      },
       "description": "Armour hangs broken and useless."
     },
     {
@@ -102,7 +130,14 @@
       "name": "Slowed",
       "category": "debuff",
       "duration": 2,
-      "modifiers": { "pct": { "speed": -0.3 }, "flat": { "evasion": -0.05 } },
+      "modifiers": {
+        "pct": {
+          "speed": -0.3
+        },
+        "flat": {
+          "evasion": -0.05
+        }
+      },
       "description": "Limbs drag as if through water."
     },
     {
@@ -110,7 +145,11 @@
       "name": "Blinded",
       "category": "debuff",
       "duration": 2,
-      "modifiers": { "flat": { "accuracy": -0.25 } },
+      "modifiers": {
+        "flat": {
+          "accuracy": -0.25
+        }
+      },
       "description": "Sight swims and blurs."
     },
     {
@@ -119,7 +158,11 @@
       "category": "debuff",
       "duration": 3,
       "per_turn_hp": -4,
-      "modifiers": { "pct": { "magic_resist": -0.3 } },
+      "modifiers": {
+        "pct": {
+          "magic_resist": -0.3
+        }
+      },
       "description": "Dark power gnaws at body and spirit."
     },
     {
@@ -202,6 +245,90 @@
         }
       },
       "description": "The wind turns hostile magic aside."
+    },
+    {
+      "id": "chill",
+      "name": "Chill",
+      "category": "debuff",
+      "duration": 2,
+      "modifiers": {
+        "pct": {
+          "speed": -0.15
+        }
+      },
+      "description": "Piercing cold slows movement."
+    },
+    {
+      "id": "paralyzed",
+      "name": "Paralyzed",
+      "category": "debuff",
+      "duration": 1,
+      "modifiers": {
+        "flat": {
+          "accuracy": -0.2
+        }
+      },
+      "description": "Lightning shocks nerves."
+    },
+    {
+      "id": "corrode",
+      "name": "Corroded",
+      "category": "debuff",
+      "duration": 3,
+      "modifiers": {
+        "pct": {
+          "armor": -0.2
+        }
+      },
+      "description": "Acid dissolves armor."
+    },
+    {
+      "id": "wind_fury",
+      "name": "Wind Fury",
+      "category": "buff",
+      "duration": 2,
+      "modifiers": {
+        "flat": {
+          "speed": 10,
+          "evasion": 0.1
+        }
+      },
+      "description": "Buffed by swift winds."
+    },
+    {
+      "id": "silenced",
+      "name": "Silenced",
+      "category": "debuff",
+      "duration": 2,
+      "description": "Unable to cast magic."
+    },
+    {
+      "id": "blessed",
+      "name": "Blessed",
+      "category": "hot",
+      "duration": 3,
+      "per_turn_hp": 10,
+      "modifiers": {
+        "pct": {
+          "magic_resist": 0.1
+        }
+      },
+      "description": "Holy light heals and protects."
+    },
+    {
+      "id": "temporal_warp",
+      "name": "Temporal Warp",
+      "category": "buff",
+      "duration": 2,
+      "modifiers": {
+        "flat": {
+          "speed": 15
+        },
+        "pct": {
+          "evasion": 0.1
+        }
+      },
+      "description": "Warping through time."
     }
   ]
 }

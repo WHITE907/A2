@@ -1,9 +1,4 @@
-"""Reusable composite widgets built from the theme primitives.
-
-These exist to keep the screens declarative.  None of them contain gameplay
-logic - they take already-computed strings from the engine and display them
-(bible section 5).
-"""
+"""Reusable UI widgets including Tooltips and Styled Progress Bars."""
 
 from __future__ import annotations
 
@@ -12,25 +7,81 @@ from typing import Callable, Generic, Iterable, Sequence, TypeVar
 
 from gui import theme
 
-__all__ = ["StatPanel", "ButtonStack", "SelectList", "LogPanel", "StatusBar"]
+__all__ = ["StatPanel", "ButtonStack", "SelectList", "LogPanel", "StatusBar", "ToolTip", "ProgressBar"]
 
-#: Type of the engine object a SelectList row maps back to.
 T = TypeVar("T")
 
 
+class ToolTip:
+    """Hover tooltip helper for widgets."""
+
+    def __init__(self, widget: tk.Widget, text_func: Callable[[], str] | str) -> None:
+        self.widget = widget
+        self.text_func = text_func
+        self.tip_window: tk.Toplevel | None = None
+        self.widget.bind("<Enter>", self.show_tip)
+        self.widget.bind("<Leave>", self.hide_tip)
+
+    def show_tip(self, _event: object = None) -> None:
+        if self.tip_window or not self.widget.winfo_exists():
+            return
+        text = self.text_func() if callable(self.text_func) else self.text_func
+        if not text:
+            return
+        x = self.widget.winfo_rootx() + 20
+        y = self.widget.winfo_rooty() + self.widget.winfo_height() + 5
+        self.tip_window = tw = tk.Toplevel(self.widget)
+        tw.wm_overrideredirect(True)
+        tw.wm_geometry(f"+{x}+{y}")
+        label = tk.Label(
+            tw,
+            text=text,
+            background="#252b3b",
+            foreground=theme.FG,
+            relief=tk.SOLID,
+            borderwidth=1,
+            font=theme.FONT_SMALL,
+            padx=6,
+            pady=4,
+            justify=tk.LEFT,
+        )
+        label.pack(ipadx=1)
+
+    def hide_tip(self, _event: object = None) -> None:
+        tw = self.tip_window
+        self.tip_window = None
+        if tw:
+            tw.destroy()
+
+
+class ProgressBar(tk.Canvas):
+    """Clean, styled progress bar for EXP and Mastery."""
+
+    def __init__(self, parent: tk.Misc, width: int = 180, height: int = 14, fg: str = "#5da9e9", bg: str = "#20242f", **kwargs) -> None:
+        super().__init__(parent, width=width, height=height, bg=bg, highlightthickness=1, highlightbackground="#2c3242", **kwargs)
+        self.fg_color = fg
+        self.bg_color = bg
+        self._fraction = 0.0
+        self._text = ""
+
+    def set_progress(self, current: float, maximum: float, text: str = "") -> None:
+        self._fraction = 0.0 if maximum <= 0 else max(0.0, min(1.0, current / maximum))
+        self._text = text
+        self.redraw()
+
+    def redraw(self) -> None:
+        self.delete("all")
+        w = self.winfo_reqwidth()
+        h = self.winfo_reqheight()
+        fill_w = int(w * self._fraction)
+        if fill_w > 0:
+            self.create_rectangle(0, 0, fill_w, h, fill=self.fg_color, outline="")
+        if self._text:
+            self.create_text(w / 2, h / 2, text=self._text, fill=theme.FG, font=("Segoe UI", 8, "bold"))
+
+
 class StatPanel(tk.Frame):
-    """Stacked ``key: value`` text - the style reference's stat display.
-
-    Uses a single Label with embedded newlines rather than one Label per line;
-    with a dozen+ rows updated every action, repacking child widgets flickers
-    visibly while re-rendering one string does not.
-
-    ``wrap`` sets a wrap width in pixels.  Panels that show authored prose
-    (area descriptions, item flavour) need it so a long sentence wraps inside
-    its column instead of running past the panel edge; pure ``key: value``
-    panels leave it at 0 because their lines are naturally short and wrapping
-    them would only make the alignment harder to read.
-    """
+    """Stacked key:value text display."""
 
     def __init__(self, parent: tk.Misc, title: str = "", wrap: int = 0, **kwargs) -> None:
         super().__init__(parent, bg=theme.BG, **kwargs)
@@ -77,11 +128,7 @@ class ButtonStack(tk.Frame):
 
 
 class SelectList(tk.Frame, Generic[T]):
-    """A labelled Listbox that maps rows back to engine objects.
-
-    The caller supplies ``(label, value)`` pairs and reads ``selected_value``,
-    so no screen ever has to translate a row index into a game object itself.
-    """
+    """A labelled Listbox that maps rows back to engine objects."""
 
     def __init__(
         self,
@@ -94,7 +141,7 @@ class SelectList(tk.Frame, Generic[T]):
     ) -> None:
         super().__init__(parent, bg=theme.BG, **kwargs)
         if title:
-            theme.heading_label(self, text=title).pack(anchor="w", pady=(0, 4))
+            theme.heading_label(self, title).pack(anchor="w", pady=(0, 4))
 
         holder = tk.Frame(self, bg=theme.BG)
         holder.pack(fill=tk.BOTH, expand=True)
@@ -112,9 +159,7 @@ class SelectList(tk.Frame, Generic[T]):
         self.listbox.bind("<<ListboxSelect>>", self._handle_select)
         self.listbox.bind("<Double-Button-1>", self._handle_activate)
 
-    # ------------------------------------------------------------------
     def set_items(self, items: Sequence[tuple[str, T]], keep_selection: bool = True) -> None:
-        """Replace the contents, optionally preserving the selected index."""
         previous = self.selected_index if keep_selection else None
         self.listbox.delete(0, tk.END)
         self._values = []
@@ -127,19 +172,15 @@ class SelectList(tk.Frame, Generic[T]):
             self.select_index(0, notify=False)
 
     def set_row_colors(self, colors: Sequence[str]) -> None:
-        """Apply per-row foreground colors without changing engine data."""
         for index, color in enumerate(colors):
             try:
                 self.listbox.itemconfigure(index, foreground=color)
             except (AttributeError, tk.TclError):
-                # Headless test widgets and older Tk builds may not expose it.
                 pass
 
     def set_labels(self: "SelectList[str]", labels: Sequence[str]) -> None:
-        """Convenience for display-only lists where the label *is* the value."""
         self.set_items([(label, label) for label in labels])
 
-    # ------------------------------------------------------------------
     @property
     def selected_index(self) -> int | None:
         selection = self.listbox.curselection()
@@ -170,7 +211,6 @@ class SelectList(tk.Frame, Generic[T]):
     def count(self) -> int:
         return len(self._values)
 
-    # ------------------------------------------------------------------
     def _handle_select(self, _event: object = None) -> None:
         if self._on_select is not None:
             value = self.selected_value
@@ -190,7 +230,7 @@ class LogPanel(tk.Frame):
     def __init__(self, parent: tk.Misc, title: str = "", height: int = 12, **kwargs) -> None:
         super().__init__(parent, bg=theme.BG, **kwargs)
         if title:
-            theme.heading_label(self, text=title).pack(anchor="w", pady=(0, 4))
+            theme.heading_label(self, title).pack(anchor="w", pady=(0, 4))
 
         holder = tk.Frame(self, bg=theme.BG)
         holder.pack(fill=tk.BOTH, expand=True)
@@ -206,8 +246,6 @@ class LogPanel(tk.Frame):
             self.text.tag_configure(kind, foreground=colour)
 
     def append(self, message: str, kind: str = "info") -> None:
-        # The widget is disabled so the player cannot type into it; writing
-        # requires flipping it back to NORMAL around the insert.
         self.text.configure(state=tk.NORMAL)
         self.text.insert(tk.END, message + "\n", kind)
         self.text.see(tk.END)

@@ -1841,6 +1841,58 @@
           "essence_of_ascension": 1
         }
       }
+    },
+    {
+      "id": "rook_mercenary_contract",
+      "name": "Rook's Mercenary Contract",
+      "description": "Rook seeks to settle an old score with a bandit syndicate operating near Ashvale.",
+      "giver_id": "rook",
+      "min_level": 10,
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_companion_id": "rook",
+      "objectives": [
+        {
+          "id": "defeat_bandits",
+          "kind": "defeat_enemy",
+          "target_id": "bandit",
+          "target_name": "Brigand",
+          "required": 5
+        }
+      ],
+      "rewards": {
+        "exp": 300,
+        "gold": 150,
+        "items": {
+          "minor_potion": 2
+        }
+      }
+    },
+    {
+      "id": "kess_elven_heritage",
+      "name": "Kess's Elven Heritage",
+      "description": "Help Kess recover an ancient elven heirloom lost in the Whispering Woods.",
+      "giver_id": "kess",
+      "min_level": 12,
+      "start_area_id": "old_road",
+      "turn_in_area_id": "town_ashvale",
+      "required_companion_id": "kess",
+      "objectives": [
+        {
+          "id": "find_heirloom",
+          "kind": "collect_item",
+          "target_id": "elven_moonleaf",
+          "target_name": "Elven Moonleaf",
+          "required": 3
+        }
+      ],
+      "rewards": {
+        "exp": 400,
+        "gold": 200,
+        "items": {
+          "elven_bow": 1
+        }
+      }
     }
   ]
 }

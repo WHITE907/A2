@@ -74,6 +74,7 @@ class EnemyTemplate:
     boss_phases: list[dict[str, Any]] = field(default_factory=list)
     boss_rules: dict[str, Any] = field(default_factory=dict)
     guaranteed_rarity_min: str = ""
+    resistance: dict[str, float] = field(default_factory=dict)
 
     def stats_at_level(self, level: int) -> StatBlock:
         result = self.base_stats.copy()
@@ -112,6 +113,7 @@ class EnemyTemplate:
             boss_phases=[dict(value) for value in payload.get("boss_phases", [])],
             boss_rules=dict(payload.get("boss_rules") or {}),
             guaranteed_rarity_min=str(payload.get("guaranteed_rarity_min", "")).lower(),
+            resistance={str(k).lower(): float(v) for k, v in (payload.get("resistance") or {}).items()},
         )
 
 
@@ -141,6 +143,10 @@ class Enemy(Entity):
             base_stats=template.stats_at_level(level),
             formulas=formulas,
         )
+
+    @property
+    def resistance(self) -> dict[str, float]:
+        return self.template.resistance
 
     def _equipment_modifiers(self) -> ModifierSet:
         combined = ModifierSet()

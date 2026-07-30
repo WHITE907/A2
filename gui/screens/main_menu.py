@@ -40,6 +40,7 @@ class MainMenuScreen(tk.Frame):
         self.stack.add("new", "New Game", self.app.open_character_creation)
         self.stack.add("load", "Load Game", lambda: self.app.open_save_browser("load"))
         self.stack.add("delete", "Delete Save", lambda: self.app.open_save_browser("delete"))
+        self.stack.add("codex", "Codex & Achievements", self.app.open_codex)
         self.stack.add("settings", "Settings", self.app.open_settings)
         self.stack.add("exit", "Exit", self.app.quit)
         self.stack.pack(pady=(46, 0))

@@ -78,6 +78,23 @@
             "Sea Legs: improved balance and agility"
           ],
           "special_effects": []
+        },
+        {
+          "id": "imperial_human",
+          "name": "Imperial Human",
+          "description": "Trained in imperial discipline.",
+          "bonus_stats": {
+            "STR": 1,
+            "END": 1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "accuracy": 0.05
+            }
+          },
+          "bonus_traits": [
+            "Imperial Discipline"
+          ]
         }
       ],
       "special_effects": []
@@ -179,6 +196,29 @@
             "Shadow Sight: see in darkness, feared by surface dwellers"
           ],
           "special_effects": []
+        },
+        {
+          "id": "undine",
+          "name": "Undine / Glacial Elf",
+          "bonus_stats": {
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.15
+            }
+          },
+          "bonus_traits": [
+            "Glacial Grace",
+            "+25% Frost resistance"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "ice",
+              "value": 0.25
+            }
+          ]
         }
       ],
       "special_effects": []
@@ -250,6 +290,22 @@
             "Road Wisdom: survival instincts and adaptability"
           ],
           "special_effects": []
+        },
+        {
+          "id": "silver_half_elf",
+          "name": "Silver Half-Elf",
+          "description": "Blessed with magical intuition.",
+          "bonus_stats": {
+            "INT": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_mp": 15
+            }
+          },
+          "bonus_traits": [
+            "Magical Intuition"
+          ]
         }
       ],
       "special_effects": []
@@ -356,6 +412,22 @@
               "value": 0.12
             }
           ]
+        },
+        {
+          "id": "shield_dwarf",
+          "name": "Shield Dwarf",
+          "description": "Unwavering defensive fortitude.",
+          "bonus_stats": {
+            "END": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "armor": 8
+            }
+          },
+          "bonus_traits": [
+            "Shield Mastery"
+          ]
         }
       ],
       "special_effects": []
@@ -455,6 +527,22 @@
               "element": "lightning",
               "value": 0.25
             }
+          ]
+        },
+        {
+          "id": "obsidian_dragonkin",
+          "name": "Obsidian Dragonkin",
+          "description": "Scales hard as black glass.",
+          "bonus_stats": {
+            "STR": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_resist": 10
+            }
+          },
+          "bonus_traits": [
+            "Obsidian Scales"
           ]
         }
       ],
@@ -586,6 +674,22 @@
               "value": 0.05
             }
           ]
+        },
+        {
+          "id": "abyssal_demon",
+          "name": "Abyssal Lord Demon",
+          "description": "Channeling deep abyss power.",
+          "bonus_stats": {
+            "INT": 2
+          },
+          "bonus_modifiers": {
+            "pct": {
+              "magic_power": 0.08
+            }
+          },
+          "bonus_traits": [
+            "Abyssal Presence"
+          ]
         }
       ],
       "special_effects": [
@@ -663,6 +767,23 @@
               "threshold": 0.3,
               "value": 0.3
             }
+          ]
+        },
+        {
+          "id": "blood_tiefling",
+          "name": "Blood Tiefling",
+          "description": "Tied to blood and fire.",
+          "bonus_stats": {
+            "STR": 1,
+            "INT": 1
+          },
+          "bonus_modifiers": {
+            "pct": {
+              "crit_chance": 0.03
+            }
+          },
+          "bonus_traits": [
+            "Bloodfire Affinity"
           ]
         }
       ],
@@ -770,6 +891,22 @@
             "Keen Sight: enhanced perception and ranged accuracy"
           ],
           "special_effects": []
+        },
+        {
+          "id": "lupine_beastkin",
+          "name": "Lupine Beastkin",
+          "description": "Relentless pack hunter.",
+          "bonus_stats": {
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "speed": 4
+            }
+          },
+          "bonus_traits": [
+            "Pack Tactics"
+          ]
         }
       ],
       "special_effects": []
@@ -863,6 +1000,22 @@
             "Ancestor Bond: enhanced spiritual magic"
           ],
           "special_effects": []
+        },
+        {
+          "id": "blood_orc",
+          "name": "Blood Orc",
+          "description": "Fierce bloodthirsty warrior.",
+          "bonus_stats": {
+            "STR": 2
+          },
+          "bonus_modifiers": {
+            "pct": {
+              "physical_power": 0.08
+            }
+          },
+          "bonus_traits": [
+            "Bloodrage"
+          ]
         }
       ],
       "special_effects": [
@@ -947,6 +1100,22 @@
               "value": 0.05
             }
           ]
+        },
+        {
+          "id": "tinker_gnome",
+          "name": "Tinker Gnome",
+          "description": "Master of intricate devices.",
+          "bonus_stats": {
+            "INT": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "accuracy": 0.06
+            }
+          },
+          "bonus_traits": [
+            "Inventive Genius"
+          ]
         }
       ],
       "special_effects": []
@@ -1025,6 +1194,22 @@
             "Stout Resilience: resistant to poison"
           ],
           "special_effects": []
+        },
+        {
+          "id": "swift_halfling",
+          "name": "Swift Halfling",
+          "description": "Uncannily agile stride.",
+          "bonus_stats": {
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.06
+            }
+          },
+          "bonus_traits": [
+            "Nimble Footwork"
+          ]
         }
       ],
       "special_effects": []
@@ -1162,6 +1347,52 @@
               "value": 0.2
             }
           ]
+        },
+        {
+          "id": "salamander",
+          "name": "Salamander / Firekin",
+          "bonus_stats": {
+            "INT": 2
+          },
+          "bonus_modifiers": {
+            "pct": {
+              "magic_power": 0.1
+            }
+          },
+          "bonus_traits": [
+            "Flame Blood",
+            "+25% Fire resistance"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "fire",
+              "value": 0.25
+            }
+          ]
+        },
+        {
+          "id": "sylph",
+          "name": "Sylph / Zephyrkin",
+          "bonus_stats": {
+            "AGI": 3
+          },
+          "bonus_modifiers": {
+            "pct": {
+              "speed": 0.1
+            }
+          },
+          "bonus_traits": [
+            "Airborne",
+            "+20% Wind damage"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "wind",
+              "value": 0.2
+            }
+          ]
         }
       ],
       "special_effects": [
@@ -1247,6 +1478,45 @@
               "value": 0.25
             }
           ]
+        },
+        {
+          "id": "lithid",
+          "name": "Lithid / Gargoyle",
+          "bonus_stats": {
+            "END": 3
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "armor": 15
+            }
+          },
+          "bonus_traits": [
+            "Stone Body",
+            "+30% Earth/Physical resistance"
+          ],
+          "special_effects": [
+            {
+              "type": "elemental_resist",
+              "element": "earth",
+              "value": 0.3
+            }
+          ]
+        },
+        {
+          "id": "stone_goliath",
+          "name": "Stone Goliath",
+          "description": "Carved from living mountain.",
+          "bonus_stats": {
+            "END": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "max_hp": 30
+            }
+          },
+          "bonus_traits": [
+            "Living Mountain"
+          ]
         }
       ],
       "special_effects": []
@@ -1325,6 +1595,23 @@
               "value": 0.18
             }
           ]
+        },
+        {
+          "id": "golden_lamia",
+          "name": "Golden Lamia",
+          "description": "Radiant serpent nobility.",
+          "bonus_stats": {
+            "INT": 1,
+            "AGI": 1
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "magic_resist": 8
+            }
+          },
+          "bonus_traits": [
+            "Serpent Royalty"
+          ]
         }
       ],
       "special_effects": []
@@ -1397,6 +1684,22 @@
               "family": "insect",
               "value": 0.2
             }
+          ]
+        },
+        {
+          "id": "silk_arachne",
+          "name": "Silk Arachne",
+          "description": "Weaver of unbreakable webs.",
+          "bonus_stats": {
+            "AGI": 2
+          },
+          "bonus_modifiers": {
+            "flat": {
+              "evasion": 0.05
+            }
+          },
+          "bonus_traits": [
+            "Master Weaver"
           ]
         }
       ],

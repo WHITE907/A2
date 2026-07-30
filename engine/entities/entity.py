@@ -92,6 +92,10 @@ class Entity(ABC):
         combined.merge(self._status_modifiers())
         return combined
 
+    def special_effects(self) -> list[dict[str, Any]]:
+        """Return data-defined combat specials."""
+        return []
+
     # ------------------------------------------------------------------
     # Derived stats + caching
     # ------------------------------------------------------------------

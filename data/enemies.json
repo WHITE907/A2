@@ -2362,6 +2362,168 @@
         "survive_rounds": 0
       },
       "guaranteed_rarity_min": "legendary"
+    },
+    {
+      "id": "magma_sovereign",
+      "name": "Magma Sovereign",
+      "base_level": 45,
+      "base_stats": {
+        "STR": 30,
+        "END": 30,
+        "INT": 30,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 3,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "flame_blast"
+      ],
+      "is_boss": true,
+      "resistance": {
+        "fire": 0.8,
+        "ice": -0.5
+      },
+      "description": "A powerful elemental lord wielding fire power.",
+      "boss_phases": [
+        {
+          "hp_fraction": 1.0,
+          "name": "Phase 1",
+          "modifiers": {
+            "flat": {
+              "armor": 10
+            }
+          }
+        },
+        {
+          "hp_fraction": 0.5,
+          "name": "Phase 2 (Enraged)",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2,
+              "magic_power": 0.2
+            }
+          }
+        }
+      ],
+      "loot": [
+        {
+          "item_id": "minor_potion",
+          "chance": 1.0,
+          "guaranteed": true
+        }
+      ]
+    },
+    {
+      "id": "frost_wyrm",
+      "name": "Frost Wyrm",
+      "base_level": 45,
+      "base_stats": {
+        "STR": 30,
+        "END": 30,
+        "INT": 30,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 3,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "blizzard"
+      ],
+      "is_boss": true,
+      "resistance": {
+        "ice": 0.8,
+        "fire": -0.5
+      },
+      "description": "A powerful elemental lord wielding ice power.",
+      "boss_phases": [
+        {
+          "hp_fraction": 1.0,
+          "name": "Phase 1",
+          "modifiers": {
+            "flat": {
+              "armor": 10
+            }
+          }
+        },
+        {
+          "hp_fraction": 0.5,
+          "name": "Phase 2 (Enraged)",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2,
+              "magic_power": 0.2
+            }
+          }
+        }
+      ],
+      "loot": [
+        {
+          "item_id": "minor_potion",
+          "chance": 1.0,
+          "guaranteed": true
+        }
+      ]
+    },
+    {
+      "id": "storm_lord",
+      "name": "Storm Lord",
+      "base_level": 45,
+      "base_stats": {
+        "STR": 30,
+        "END": 30,
+        "INT": 30,
+        "AGI": 20
+      },
+      "growth": {
+        "STR": 3,
+        "END": 3,
+        "INT": 3,
+        "AGI": 2
+      },
+      "skill_ids": [
+        "thunder_strike"
+      ],
+      "is_boss": true,
+      "resistance": {
+        "lightning": 0.8,
+        "earth": -0.5
+      },
+      "description": "A powerful elemental lord wielding lightning power.",
+      "boss_phases": [
+        {
+          "hp_fraction": 1.0,
+          "name": "Phase 1",
+          "modifiers": {
+            "flat": {
+              "armor": 10
+            }
+          }
+        },
+        {
+          "hp_fraction": 0.5,
+          "name": "Phase 2 (Enraged)",
+          "modifiers": {
+            "pct": {
+              "physical_power": 0.2,
+              "magic_power": 0.2
+            }
+          }
+        }
+      ],
+      "loot": [
+        {
+          "item_id": "minor_potion",
+          "chance": 1.0,
+          "guaranteed": true
+        }
+      ]
     }
   ]
 }
