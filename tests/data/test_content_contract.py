@@ -133,3 +133,33 @@ class TestAncestryPresentationContract(unittest.TestCase):
         self.assertEqual(len(names), expected_total)
         self.assertEqual(len(descriptions), expected_total)
         self.assertEqual(len(mechanics), expected_total)
+
+    def test_every_race_has_a_three_chapter_heritage_chain_and_upgrade_path(self):
+        world = self.game.world_manager.create_world()
+        actions = [action for area in world.areas.values() for action in area.ancestry_actions]
+        for race in self.game.race_options():
+            awakening_id = f"heritage_{race.id}_awakening"
+            choice_id = f"heritage_{race.id}_choice"
+            ascension_id = f"heritage_{race.id}_ascension"
+            awakening = self.game.quests.require(awakening_id)
+            choice = self.game.quests.require(choice_id)
+            ascension = self.game.quests.require(ascension_id)
+            with self.subTest(race=race.id, contract="quest chain"):
+                self.assertIn(race.id, awakening.required_race_ids)
+                self.assertIn(awakening.giver_id, world.areas[awakening.start_area_id].npc_ids)
+                self.assertEqual(choice.prerequisite_quest_ids, (awakening_id,))
+                self.assertEqual(ascension.prerequisite_quest_ids, (choice_id,))
+                self.assertTrue(any(action.required_active_quest_id == choice_id for action in actions))
+                self.assertTrue(any(action.required_active_quest_id == ascension_id for action in actions))
+
+            for skill_id in (race.racial_skill_id, *(lineage.racial_skill_id for lineage in race.sub_races)):
+                technique = self.game.skills.require(skill_id)
+                with self.subTest(race=race.id, skill=skill_id):
+                    self.assertEqual(len(technique.ancestry_upgrade_tiers), 3)
+                    self.assertEqual(
+                        [tier["required_quest_id"] for tier in technique.ancestry_upgrade_tiers],
+                        [awakening_id, choice_id, ascension_id],
+                    )
+                    middle_tier = technique.ancestry_upgrade_tiers[1]
+                    self.assertEqual(middle_tier["path_flag"], f"heritage_{race.id}_path")
+                    self.assertEqual(len(middle_tier["path_add_effects"]), 2)

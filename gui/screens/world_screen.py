@@ -72,6 +72,7 @@ class WorldScreen(tk.Frame):
         self.actions.add("rest", "Rest at Inn", self._rest)
         self.actions.add("shop", "Shops", self._shops)
         self.actions.add("talk", "People", self._people)
+        self.actions.add("heritage", "Heritage", self._heritage)
         self.actions.pack(fill=tk.X)
 
         theme.body_label(right, text="").pack(pady=4)
@@ -137,6 +138,7 @@ class WorldScreen(tk.Frame):
         self.actions.set_enabled("rest", in_town)
         self.actions.set_enabled("shop", bool(game.world.shops_here()))
         self.actions.set_enabled("talk", bool(game.npcs_here()))
+        self.actions.set_enabled("heritage", bool(game.ancestry_actions()))
 
     # ------------------------------------------------------------------
     def _travel(self) -> None:
@@ -163,6 +165,26 @@ class WorldScreen(tk.Frame):
         for line in lines:
             self.log.append(line, "system" if ok else "info")
         self.app.notify(lines[0] if lines else "")
+        self.refresh()
+
+    def _heritage(self) -> None:
+        actions = self.app.game.ancestry_actions()
+        if not actions:
+            self.app.notify("No heritage interaction is available here.")
+            return
+        if len(actions) == 1:
+            self._perform_heritage(actions[0].id)
+            return
+        self._choose(
+            "Heritage Choice",
+            [(f"{action.name} — {action.description}", action.id) for action in actions],
+            self._perform_heritage,
+        )
+
+    def _perform_heritage(self, action_id: str) -> None:
+        ok, message = self.app.game.perform_ancestry_action(action_id)
+        self.log.append(message, "quest" if ok else "info")
+        self.app.notify(message.split("\n", 1)[0])
         self.refresh()
 
     def _shops(self) -> None:

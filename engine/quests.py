@@ -72,6 +72,9 @@ class QuestDefinition:
     turn_in_area_id: str = ""
     required_companion_id: str = ""
     required_class_ids: tuple[str, ...] = ()
+    #: Heritage quests can be offered only to a race or a specific lineage.
+    required_race_ids: tuple[str, ...] = ()
+    required_sub_race_ids: tuple[str, ...] = ()
     prerequisite_quest_ids: tuple[str, ...] = ()
     objectives: tuple[QuestObjective, ...] = ()
     rewards: QuestReward = field(default_factory=QuestReward)
@@ -101,6 +104,8 @@ class QuestDefinition:
             turn_in_area_id=str(payload.get("turn_in_area_id", payload.get("start_area_id", ""))),
             required_companion_id=str(payload.get("required_companion_id", "")),
             required_class_ids=tuple(str(value) for value in payload.get("required_class_ids", [])),
+            required_race_ids=tuple(str(value).lower() for value in payload.get("required_race_ids", [])),
+            required_sub_race_ids=tuple(str(value).lower() for value in payload.get("required_sub_race_ids", [])),
             prerequisite_quest_ids=tuple(str(value) for value in payload.get("prerequisite_quest_ids", [])),
             objectives=objectives,
             rewards=QuestReward.from_dict(payload.get("rewards")),

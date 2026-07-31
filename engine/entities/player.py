@@ -411,7 +411,7 @@ class Player(Entity):
                 continue
             if skill.required_weapon_types and weapon_type not in skill.required_weapon_types:
                 continue
-            usable.append(skill)
+            usable.append(skill.effective_for(self.level, self.completed_quests, self.flags))
         return sorted(usable, key=lambda s: (SkillCategory.ALL.index(s.category), s.name))
 
     def passive_skills(self) -> list[Skill]:

@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Mapping, Sequence
 
-__all__ = ["Area", "EncounterEntry", "NPC", "Shop", "WorldState", "ExploreResult"]
+__all__ = ["AncestryAction", "Area", "EncounterEntry", "NPC", "Shop", "WorldState", "ExploreResult"]
 
 
 @dataclass
@@ -103,6 +103,69 @@ class Shop:
         )
 
 
+@dataclass(frozen=True)
+class AncestryAction:
+    """An optional race/lineage interaction available in one world area.
+
+    Definitions live beside their area in ``world.json``.  The engine only
+    checks eligibility, persists one-time use, awards data-defined rewards, and
+    records an optional quest event; it never knows a particular race id.
+    """
+
+    id: str
+    name: str
+    description: str = ""
+    outcome: str = ""
+    required_race_ids: tuple[str, ...] = ()
+    required_sub_race_ids: tuple[str, ...] = ()
+    min_level: int = 1
+    required_active_quest_id: str = ""
+    required_completed_quest_ids: tuple[str, ...] = ()
+    required_companion_id: str = ""
+    quest_event_kind: str = ""
+    quest_event_target_id: str = ""
+    choice_group: str = ""
+    choice_value: str = ""
+    flags: dict[str, Any] = field(default_factory=dict)
+    gold: int = 0
+    items: dict[str, int] = field(default_factory=dict)
+    once: bool = True
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> "AncestryAction":
+        action_id = str(payload.get("id", "")).strip()
+        if not action_id:
+            raise ValueError("ancestry action is missing an 'id'")
+        event = payload.get("quest_event") or {}
+        rewards = payload.get("rewards") or {}
+        gold = int(rewards.get("gold", 0))
+        items = {str(item_id): int(quantity) for item_id, quantity in (rewards.get("items") or {}).items()}
+        if int(payload.get("min_level", 1)) < 1:
+            raise ValueError(f"ancestry action {action_id!r} min_level must be at least 1")
+        if gold < 0 or any(quantity < 1 for quantity in items.values()):
+            raise ValueError(f"ancestry action {action_id!r} has invalid rewards")
+        return cls(
+            id=action_id,
+            name=str(payload.get("name", action_id.replace("_", " ").title())),
+            description=str(payload.get("description", "")),
+            outcome=str(payload.get("outcome", "")),
+            required_race_ids=tuple(str(value).lower() for value in payload.get("required_race_ids", [])),
+            required_sub_race_ids=tuple(str(value).lower() for value in payload.get("required_sub_race_ids", [])),
+            min_level=int(payload.get("min_level", 1)),
+            required_active_quest_id=str(payload.get("required_active_quest_id", "")),
+            required_completed_quest_ids=tuple(str(value) for value in payload.get("required_completed_quest_ids", [])),
+            required_companion_id=str(payload.get("required_companion_id", "")),
+            quest_event_kind=str(event.get("kind", "")),
+            quest_event_target_id=str(event.get("target_id", "")),
+            choice_group=str(payload.get("choice_group", "")),
+            choice_value=str(payload.get("choice_value", "")),
+            flags=dict(payload.get("flags") or {}),
+            gold=gold,
+            items=items,
+            once=bool(payload.get("once", True)),
+        )
+
+
 @dataclass
 class Area:
     """One place on the map."""
@@ -117,6 +180,8 @@ class Area:
     connections: list[str] = field(default_factory=list)
     shop_ids: list[str] = field(default_factory=list)
     npc_ids: list[str] = field(default_factory=list)
+    #: Optional race/lineage interactions for this location.
+    ancestry_actions: tuple[AncestryAction, ...] = ()
     #: Chance an exploration step finds nothing but flavour.
     quiet_chance: float = 0.25
     unlock_level: int = 1
@@ -137,6 +202,7 @@ class Area:
             connections=[str(c) for c in payload.get("connections", [])],
             shop_ids=[str(s) for s in payload.get("shop_ids", [])],
             npc_ids=[str(n) for n in payload.get("npc_ids", [])],
+            ancestry_actions=tuple(AncestryAction.from_dict(action) for action in payload.get("ancestry_actions", [])),
             quiet_chance=float(payload.get("quiet_chance", 0.25)),
             unlock_level=int(payload.get("unlock_level", 1)),
         )

@@ -549,6 +549,23 @@ class TestWorldScreen(unittest.TestCase):
             self.assertEqual(app.game.world.day, 2)
             self.assertIn("autosave", screen.log.text.content.lower())
 
+    def test_heritage_action_appears_when_a_matching_quest_reaches_its_rite(self):
+        self.assertIn("heritage", self.screen.actions.buttons)
+        self.assertEqual(self.screen.actions.buttons["heritage"].options["state"], tk.DISABLED)
+
+        player = self.app.game.player
+        player.level = 25
+        player.completed_quests.append("heritage_human_awakening")
+        player.inventory.add_gold(1_000)
+        self.assertTrue(self.app.game.recruit("rook")[0])
+        self.assertTrue(self.app.game.accept_quest("heritage_human_choice")[0])
+        self.assertTrue(self.app.game.travel_to("old_road")[0])
+        self.screen.refresh()
+
+        self.assertEqual(self.screen.actions.buttons["heritage"].options["state"], tk.NORMAL)
+        self.screen._perform_heritage("heritage_human_path_1")
+        self.assertIn("supplies and maps", self.screen.log.text.content)
+
     def test_action_buttons_open_the_right_windows(self):
         for label, key in (
             ("Status", "status"),

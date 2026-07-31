@@ -118,6 +118,11 @@ class Game:
     def _validate_cross_references(self) -> None:
         """Check ids that span two content files."""
         problems: list[str] = []
+        known_sub_race_ids = {
+            sub_race.id
+            for race in self.races.all_definitions()
+            for sub_race in race.sub_races
+        }
 
         for template in self.enemies.all_templates():
             for skill_id in template.skill_ids:
@@ -135,6 +140,10 @@ class Game:
             for class_id in skill.required_class_ids:
                 if self.classes.get(class_id) is None:
                     problems.append(f"skill {skill.id!r} requires unknown class {class_id!r}")
+            for tier in skill.ancestry_upgrade_tiers:
+                quest_id = str(tier.get("required_quest_id", ""))
+                if quest_id and self.quests.get(quest_id) is None:
+                    problems.append(f"skill {skill.id!r} upgrade requires unknown quest {quest_id!r}")
 
         for race in self.races.all_definitions():
             if not race.racial_skill_id:
@@ -228,6 +237,12 @@ class Game:
             for class_id in quest.required_class_ids:
                 if self.classes.get(class_id) is None:
                     problems.append(f"quest {quest.id!r} requires unknown class {class_id!r}")
+            for race_id in quest.required_race_ids:
+                if self.races.get(race_id) is None:
+                    problems.append(f"quest {quest.id!r} requires unknown race {race_id!r}")
+            for sub_race_id in quest.required_sub_race_ids:
+                if sub_race_id not in known_sub_race_ids:
+                    problems.append(f"quest {quest.id!r} requires unknown lineage {sub_race_id!r}")
             for objective in quest.objectives:
                 if (
                     objective.kind == self.quests.DEFEAT_OBJECTIVE
@@ -239,6 +254,36 @@ class Game:
                     problems.append(f"quest {quest.id!r} rewards unknown item {item_id!r}")
 
         for area in self.world_manager.all_areas():
+            for action in area.ancestry_actions:
+                for race_id in action.required_race_ids:
+                    if self.races.get(race_id) is None:
+                        problems.append(f"ancestry action {action.id!r} requires unknown race {race_id!r}")
+                for sub_race_id in action.required_sub_race_ids:
+                    if sub_race_id not in known_sub_race_ids:
+                        problems.append(f"ancestry action {action.id!r} requires unknown lineage {sub_race_id!r}")
+                if action.required_active_quest_id and self.quests.get(action.required_active_quest_id) is None:
+                    problems.append(f"ancestry action {action.id!r} requires unknown active quest {action.required_active_quest_id!r}")
+                for quest_id in action.required_completed_quest_ids:
+                    if self.quests.get(quest_id) is None:
+                        problems.append(f"ancestry action {action.id!r} requires unknown completed quest {quest_id!r}")
+                if action.required_companion_id and self.companions.get(action.required_companion_id) is None:
+                    problems.append(f"ancestry action {action.id!r} requires unknown companion {action.required_companion_id!r}")
+                if action.quest_event_kind and action.quest_event_kind not in self.quests.SUPPORTED_OBJECTIVES:
+                    problems.append(f"ancestry action {action.id!r} uses unsupported quest event {action.quest_event_kind!r}")
+                if action.quest_event_kind and not action.quest_event_target_id:
+                    problems.append(f"ancestry action {action.id!r} has a quest event without a target")
+                if action.required_active_quest_id and action.quest_event_kind:
+                    quest = self.quests.get(action.required_active_quest_id)
+                    if quest is not None and not any(
+                        objective.kind == action.quest_event_kind and objective.target_id == action.quest_event_target_id
+                        for objective in quest.objectives
+                    ):
+                        problems.append(
+                            f"ancestry action {action.id!r} event does not advance its required quest"
+                        )
+                for item_id in action.items:
+                    if self.items.get(item_id) is None:
+                        problems.append(f"ancestry action {action.id!r} rewards unknown item {item_id!r}")
             for encounter in area.encounters:
                 for enemy_id in encounter.enemy_ids:
                     if self.enemies.get_template(enemy_id) is None:
@@ -808,6 +853,13 @@ class Game:
         lines.append(f"Minimum level: {definition.min_level}")
         if definition.giver_id:
             lines.append(f"Quest giver: {self._quest_giver_name(definition)}")
+        if definition.required_race_ids:
+            lines.append(f"Heritage: {', '.join(race_id.replace('_', ' ').title() for race_id in definition.required_race_ids)}")
+        if definition.required_sub_race_ids:
+            lines.append(f"Lineage: {', '.join(lineage_id.replace('_', ' ').title() for lineage_id in definition.required_sub_race_ids)}")
+        if definition.required_companion_id:
+            companion = self.companions.get(definition.required_companion_id)
+            lines.append(f"Travelling companion: {companion.name if companion else definition.required_companion_id}")
         if definition.start_area_id:
             area = self.world_manager.get_area(definition.start_area_id)
             lines.append(f"Accept in: {area.name if area else definition.start_area_id}")
@@ -883,10 +935,21 @@ class Game:
             if trial_inventory.add(item, quantity) != quantity:
                 return False, ["Make room in your inventory before completing this quest."]
 
+        previous_ancestry_ranks = {
+            skill.id: skill.effective_for(self.player.level, self.player.completed_quests, self.player.flags).upgrade_label
+            for skill in self.player.known_skills.values()
+            if skill.id.startswith("racial_")
+        }
         if not self.player.complete_quest(quest_id):
             return False, ["Quest already completed."]
 
         lines = [f"Quest completed: {definition.name}."]
+        for skill in self.player.known_skills.values():
+            if not skill.id.startswith("racial_"):
+                continue
+            upgraded = skill.effective_for(self.player.level, self.player.completed_quests, self.player.flags)
+            if upgraded.upgrade_label and upgraded.upgrade_label != previous_ancestry_ranks.get(skill.id, ""):
+                lines.append(f"Ancestry technique awakened: {upgraded.name}.")
         if definition.rewards.gold:
             self.player.inventory.add_gold(definition.rewards.gold)
             lines.append(f"Received {definition.rewards.gold} gold.")
@@ -915,12 +978,85 @@ class Game:
         ]
         if area and area.description:
             lines.append(area.description)
+        actions = self.ancestry_actions()
+        if actions:
+            lines.append(f"Heritage opportunity: {len(actions)} available")
         return lines
 
     def travel_options(self) -> list[Any]:
         if not self.world or not self.player:
             return []
         return self.world.connected_areas(self.player.level)
+
+    def ancestry_actions(self) -> list[Any]:
+        """Eligible optional heritage interactions in the current location."""
+        if not self.world or not self.player or not self.world.current_area:
+            return []
+        return [
+            action
+            for action in self.world.current_area.ancestry_actions
+            if self._ancestry_action_reason(action) is None
+        ]
+
+    def _ancestry_action_reason(self, action: Any) -> str | None:
+        """Return why an ancestry action is unavailable, or ``None`` when ready."""
+        if not self.player:
+            return "No character loaded."
+        player = self.player
+        if action.required_race_ids and player.race_id.lower() not in action.required_race_ids:
+            return "Your ancestry cannot use this interaction."
+        if action.required_sub_race_ids and player.sub_race_id.lower() not in action.required_sub_race_ids:
+            return "Your lineage cannot use this interaction."
+        if player.level < action.min_level:
+            return f"Requires level {action.min_level}."
+        if action.required_active_quest_id and action.required_active_quest_id not in player.active_quests:
+            return "This rite is not part of an active heritage quest."
+        if any(quest_id not in player.completed_quests for quest_id in action.required_completed_quest_ids):
+            return "Complete the preceding heritage chapter first."
+        if action.required_companion_id and not self.party.has(action.required_companion_id):
+            companion = self.companions.get(action.required_companion_id)
+            return f"Travel with {companion.name if companion else action.required_companion_id} to attempt this."
+        if action.once and player.flags.get(f"ancestry_action:{action.id}"):
+            return "You have already completed this interaction."
+        if action.choice_group and player.flags.get(f"ancestry_choice:{action.choice_group}"):
+            return "Your heritage choice here has already been made."
+        return None
+
+    def perform_ancestry_action(self, action_id: str) -> tuple[bool, str]:
+        """Resolve one data-defined race/lineage interaction atomically."""
+        if not self.world or not self.player or not self.world.current_area:
+            return False, "No character loaded."
+        action = next(
+            (entry for entry in self.world.current_area.ancestry_actions if entry.id == action_id),
+            None,
+        )
+        if action is None:
+            return False, "That ancestry interaction is not available here."
+        reason = self._ancestry_action_reason(action)
+        if reason:
+            return False, reason
+
+        trial_inventory = deepcopy(self.player.inventory)
+        for item_id, quantity in action.items.items():
+            item = self.items.get(item_id)
+            if item is None or trial_inventory.add(item, quantity) != quantity:
+                return False, "Make room in your inventory before claiming this discovery."
+
+        if action.once:
+            self.player.flags[f"ancestry_action:{action.id}"] = True
+        if action.choice_group:
+            self.player.flags[f"ancestry_choice:{action.choice_group}"] = action.choice_value or action.id
+        self.player.flags.update(action.flags)
+        if action.quest_event_kind:
+            self.quests.record_event(self.player, action.quest_event_kind, action.quest_event_target_id)
+
+        lines = [action.outcome or f"You complete {action.name}."]
+        if action.gold:
+            self.player.inventory.add_gold(action.gold)
+            lines.append(f"Received {action.gold} gold.")
+        for item_line in self.items.grant_many(self.player.inventory, action.items):
+            lines.append(f"Received {item_line}.")
+        return True, "\n".join(lines)
 
     def travel_to(self, area_id: str) -> tuple[bool, str]:
         if not self.world or not self.player:

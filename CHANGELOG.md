@@ -11,6 +11,9 @@ Bible §18: update the changelog after versions.
 - Added rarity-aware shop buy/sell pricing and rarity labels/colors in shops.
 - Added 9 low-level equipment pieces to Ashvale Smith stock.
 - Replaced generic racial gifts with 72 named, described ancestry techniques: one for every race and every sub-race, all with lineage-specific mechanics (224 total skills).
+- Added 15 linked three-chapter heritage questlines (45 new quests), with named NPC guides, selected companion requirements, and permanent mid-quest path choices.
+- Added 45 data-defined race-specific exploration interactions, including mutually exclusive heritage rites and high-level capstone awakenings.
+- Added quest-gated ancestry technique upgrades at heritage milestones, including branch-specific effects from the mid-chain choice; older saves gain the base techniques safely on load.
 - Split Demon sub-races into gender-gated Succubus and Incubus options.
 - Added sub-race dialogue conditions and Succubus/Incubus dialogue.
 - Added data-defined lifesteal, counter, and reflect processing for class, race,
@@ -42,15 +45,16 @@ Bible §18: update the changelog after versions.
   controls and a skill priority list.
 
 ### Tests
-- Full suite now at 478 passing tests.
+- Full suite now at 483 passing tests.
 - New coverage: rarity enchant slots, multi-enchant and variant creation,
   boss guaranteed loot and rarity weights, race passives stacking,
   family damage and heal bonuses, party bonus modifiers, perk active reasons,
   tactics persistence and expanded fields, AI boss focus and skill toggles.
 - Added ancestry contracts for named/described race and lineage techniques,
   lineage gating, legacy-save restoration, and Character Creation preview text.
+- Added heritage-chain, ancestry-action, companion-gate, and technique-upgrade coverage.
 - Content validation passes with 100 classes, 224 skills, 136 items, 15 races / 57 sub-races,
-  51 enemies, 70 quests, 16 dialogues, 9 factions, 21 companions, and 30 areas.
+  51 enemies, 115 quests, 16 dialogues, 9 factions, 21 companions, and 30 areas.
 
 ### Tier 4→5 promotion chains (new in this continuation)
 - All 24 tier-4 classes now have tier-5 promotion targets (24 new tier-5 classes, 97 total)

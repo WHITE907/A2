@@ -14,7 +14,7 @@ tests/
 └── support/       test-only helpers (not test modules)
 ```
 
-Current coverage: **478 tests**.
+Current coverage: **483 tests**.
 
 | Area | Owns | Start here when… |
 |---|---|---|

@@ -3172,7 +3172,74 @@
           "resistible": false
         }
       ],
-      "sp_cost": 3
+      "sp_cost": 3,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_human_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_human_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_human_path",
+          "path_add_effects": {
+            "community": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_reliance": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_human_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_lowlander",
@@ -3214,6 +3281,73 @@
       "sp_cost": 3,
       "required_sub_race_ids": [
         "lowlander"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_human_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_human_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_human_path",
+          "path_add_effects": {
+            "community": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_reliance": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_human_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3251,6 +3385,73 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "highlander"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_human_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_human_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_human_path",
+          "path_add_effects": {
+            "community": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_reliance": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_human_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3288,6 +3489,73 @@
       "sp_cost": 3,
       "required_sub_race_ids": [
         "seafarer"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_human_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_human_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_human_path",
+          "path_add_effects": {
+            "community": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_reliance": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_human_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3326,6 +3594,73 @@
       "sp_cost": 3,
       "required_sub_race_ids": [
         "imperial_human"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_human_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_human_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_human_path",
+          "path_add_effects": {
+            "community": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_reliance": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_human_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3354,7 +3689,74 @@
           "element": "arcane"
         }
       ],
-      "mp_cost": 4
+      "mp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_elf_path",
+          "path_add_effects": {
+            "preservation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "renewal": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_high_elf",
@@ -3385,6 +3787,73 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "high_elf"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_elf_path",
+          "path_add_effects": {
+            "preservation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "renewal": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -3422,6 +3891,73 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "wood_elf"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_elf_path",
+          "path_add_effects": {
+            "preservation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "renewal": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -3459,6 +3995,73 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "drow"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_elf_path",
+          "path_add_effects": {
+            "preservation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "renewal": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -3496,6 +4099,73 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "undine"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_elf_path",
+          "path_add_effects": {
+            "preservation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "renewal": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -3530,7 +4200,73 @@
           "target": "self"
         }
       ],
-      "mp_cost": 3
+      "mp_cost": 3,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_half_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 5,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_half_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_half_elf_path",
+          "path_add_effects": {
+            "dual_heritage": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_named": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_half_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_half_elf_noble",
@@ -3567,6 +4303,72 @@
       "mp_cost": 4,
       "required_sub_race_ids": [
         "half_elf_noble"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_half_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 5,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_half_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_half_elf_path",
+          "path_add_effects": {
+            "dual_heritage": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_named": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_half_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -3603,6 +4405,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "half_elf_wanderer"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_half_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 5,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_half_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_half_elf_path",
+          "path_add_effects": {
+            "dual_heritage": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_named": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_half_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -3641,6 +4509,72 @@
       "mp_cost": 4,
       "required_sub_race_ids": [
         "silver_half_elf"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_half_elf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 5,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_half_elf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_half_elf_path",
+          "path_add_effects": {
+            "dual_heritage": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_named": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_half_elf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -3670,7 +4604,73 @@
           "power_ratio": 0.25
         }
       ],
-      "sp_cost": 4
+      "sp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dwarf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 8,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dwarf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_dwarf_path",
+          "path_add_effects": {
+            "tradition": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "innovation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dwarf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_mountain_dwarf",
@@ -3707,6 +4707,72 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "mountain_dwarf"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dwarf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 8,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dwarf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_dwarf_path",
+          "path_add_effects": {
+            "tradition": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "innovation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dwarf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3744,6 +4810,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "hill_dwarf"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dwarf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 8,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dwarf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_dwarf_path",
+          "path_add_effects": {
+            "tradition": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "innovation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dwarf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3781,6 +4913,72 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "forge_dwarf"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dwarf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 8,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dwarf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_dwarf_path",
+          "path_add_effects": {
+            "tradition": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "innovation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dwarf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3816,6 +5014,72 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "shield_dwarf"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dwarf_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 8,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dwarf_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_dwarf_path",
+          "path_add_effects": {
+            "tradition": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "innovation": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dwarf_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3848,7 +5112,73 @@
           "duration": 1
         }
       ],
-      "mp_cost": 4
+      "mp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dragonkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dragonkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_dragonkin_path",
+          "path_add_effects": {
+            "brood": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_mastery": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dragonkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.2,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_red_dragonkin",
@@ -3885,6 +5215,72 @@
       "mp_cost": 6,
       "required_sub_race_ids": [
         "red_dragonkin"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dragonkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dragonkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_dragonkin_path",
+          "path_add_effects": {
+            "brood": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_mastery": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dragonkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.2,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3922,6 +5318,72 @@
       "mp_cost": 6,
       "required_sub_race_ids": [
         "gold_dragonkin"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dragonkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dragonkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_dragonkin_path",
+          "path_add_effects": {
+            "brood": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_mastery": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dragonkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.2,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3959,6 +5421,72 @@
       "mp_cost": 6,
       "required_sub_race_ids": [
         "blue_dragonkin"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dragonkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dragonkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_dragonkin_path",
+          "path_add_effects": {
+            "brood": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_mastery": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dragonkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.2,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -3996,6 +5524,72 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "obsidian_dragonkin"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_dragonkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_dragonkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_dragonkin_path",
+          "path_add_effects": {
+            "brood": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "self_mastery": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_dragonkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.2,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4030,7 +5624,73 @@
           "duration": 2
         }
       ],
-      "mp_cost": 4
+      "mp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_demon_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_demon_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.15,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_demon_path",
+          "path_add_effects": {
+            "claim": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "break": [
+              {
+                "type": "apply_status",
+                "status_id": "stormguard",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_demon_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 7,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_pit_fiend",
@@ -4067,6 +5727,72 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "pit_fiend"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_demon_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_demon_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.15,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_demon_path",
+          "path_add_effects": {
+            "claim": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "break": [
+              {
+                "type": "apply_status",
+                "status_id": "stormguard",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_demon_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 7,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4099,6 +5825,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "succubus"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_demon_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_demon_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.15,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_demon_path",
+          "path_add_effects": {
+            "claim": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "break": [
+              {
+                "type": "apply_status",
+                "status_id": "stormguard",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_demon_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 7,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4136,6 +5928,72 @@
       "mp_cost": 6,
       "required_sub_race_ids": [
         "balor"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_demon_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_demon_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.15,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_demon_path",
+          "path_add_effects": {
+            "claim": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "break": [
+              {
+                "type": "apply_status",
+                "status_id": "stormguard",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_demon_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 7,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4173,6 +6031,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "incubus"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_demon_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_demon_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.15,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_demon_path",
+          "path_add_effects": {
+            "claim": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "break": [
+              {
+                "type": "apply_status",
+                "status_id": "stormguard",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_demon_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 7,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4209,6 +6133,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "abyssal_demon"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_demon_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_demon_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.15,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_demon_path",
+          "path_add_effects": {
+            "claim": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "break": [
+              {
+                "type": "apply_status",
+                "status_id": "stormguard",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_demon_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 7,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4243,7 +6233,73 @@
           "duration": 1
         }
       ],
-      "mp_cost": 4
+      "mp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_tiefling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_tiefling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_tiefling_path",
+          "path_add_effects": {
+            "rewrite": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "unbound": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_tiefling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_infernal_tiefling",
@@ -4280,6 +6336,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "infernal_tiefling"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_tiefling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_tiefling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_tiefling_path",
+          "path_add_effects": {
+            "rewrite": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "unbound": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_tiefling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4317,6 +6439,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "abyssal_tiefling"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_tiefling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_tiefling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_tiefling_path",
+          "path_add_effects": {
+            "rewrite": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "unbound": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_tiefling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4354,6 +6542,72 @@
       "mp_cost": 4,
       "required_sub_race_ids": [
         "blood_tiefling"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_tiefling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_tiefling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_tiefling_path",
+          "path_add_effects": {
+            "rewrite": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "unbound": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_tiefling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4386,7 +6640,73 @@
           "duration": 2
         }
       ],
-      "sp_cost": 4
+      "sp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_beastkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_beastkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_beastkin_path",
+          "path_add_effects": {
+            "pack": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "lone_trail": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_beastkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 8,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_feline",
@@ -4421,6 +6741,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "feline"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_beastkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_beastkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_beastkin_path",
+          "path_add_effects": {
+            "pack": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "lone_trail": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_beastkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 8,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4451,6 +6837,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "canine"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_beastkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_beastkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_beastkin_path",
+          "path_add_effects": {
+            "pack": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "lone_trail": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_beastkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 8,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4488,6 +6940,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "avian"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_beastkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_beastkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_beastkin_path",
+          "path_add_effects": {
+            "pack": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "lone_trail": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_beastkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 8,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4530,6 +7048,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "lupine_beastkin"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_beastkin_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_beastkin_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ],
+          "path_flag": "heritage_beastkin_path",
+          "path_add_effects": {
+            "pack": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "lone_trail": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_beastkin_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 8,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4564,7 +7148,73 @@
           "target": "self"
         }
       ],
-      "sp_cost": 4
+      "sp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_orc_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_orc_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_orc_path",
+          "path_add_effects": {
+            "conquest": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "protection": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_orc_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_half_orc",
@@ -4599,6 +7249,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "half_orc"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_orc_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_orc_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_orc_path",
+          "path_add_effects": {
+            "conquest": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "protection": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_orc_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4634,6 +7350,72 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "war_orc"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_orc_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_orc_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_orc_path",
+          "path_add_effects": {
+            "conquest": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "protection": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_orc_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4671,6 +7453,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "shaman_orc"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_orc_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_orc_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_orc_path",
+          "path_add_effects": {
+            "conquest": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "protection": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_orc_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4708,6 +7556,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "blood_orc"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_orc_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "might",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_orc_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.18,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_orc_path",
+          "path_add_effects": {
+            "conquest": [
+              {
+                "type": "apply_status",
+                "status_id": "might",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "protection": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_orc_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4742,7 +7656,72 @@
           "duration": 1
         }
       ],
-      "mp_cost": 4
+      "mp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_gnome_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_gnome_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_gnome_path",
+          "path_add_effects": {
+            "open_design": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "guarded_design": [
+              {
+                "type": "shield",
+                "base": 7,
+                "duration": 1,
+                "target": "self"
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_gnome_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_rock_gnome",
@@ -4777,6 +7756,71 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "rock_gnome"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_gnome_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_gnome_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_gnome_path",
+          "path_add_effects": {
+            "open_design": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "guarded_design": [
+              {
+                "type": "shield",
+                "base": 7,
+                "duration": 1,
+                "target": "self"
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_gnome_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4814,6 +7858,71 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "forest_gnome"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_gnome_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_gnome_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_gnome_path",
+          "path_add_effects": {
+            "open_design": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "guarded_design": [
+              {
+                "type": "shield",
+                "base": 7,
+                "duration": 1,
+                "target": "self"
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_gnome_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4849,6 +7958,71 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "tinker_gnome"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_gnome_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_gnome_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_gnome_path",
+          "path_add_effects": {
+            "open_design": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "guarded_design": [
+              {
+                "type": "shield",
+                "base": 7,
+                "duration": 1,
+                "target": "self"
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_gnome_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -4883,7 +8057,74 @@
           "target": "self"
         }
       ],
-      "sp_cost": 3
+      "sp_cost": 3,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_halfling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_halfling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_halfling_path",
+          "path_add_effects": {
+            "keep_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "share_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_halfling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_lightfoot_halfling",
@@ -4921,6 +8162,73 @@
       "sp_cost": 3,
       "required_sub_race_ids": [
         "lightfoot_halfling"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_halfling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_halfling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_halfling_path",
+          "path_add_effects": {
+            "keep_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "share_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_halfling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -4955,6 +8263,73 @@
       "sp_cost": 3,
       "required_sub_race_ids": [
         "stout_halfling"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_halfling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_halfling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_halfling_path",
+          "path_add_effects": {
+            "keep_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "share_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_halfling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -4992,6 +8367,73 @@
       "sp_cost": 3,
       "required_sub_race_ids": [
         "swift_halfling"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_halfling_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_halfling_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "sp",
+              "amount": 5,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_halfling_path",
+          "path_add_effects": {
+            "keep_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "share_luck": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_halfling_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5026,7 +8468,73 @@
           "duration": 1
         }
       ],
-      "mp_cost": 4
+      "mp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_genasi_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_genasi_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 6,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_genasi_path",
+          "path_add_effects": {
+            "command": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "ride": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_genasi_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_fire_genasi",
@@ -5063,6 +8571,72 @@
       "mp_cost": 6,
       "required_sub_race_ids": [
         "fire_genasi"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_genasi_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_genasi_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 6,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_genasi_path",
+          "path_add_effects": {
+            "command": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "ride": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_genasi_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5100,6 +8674,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "water_genasi"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_genasi_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_genasi_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 6,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_genasi_path",
+          "path_add_effects": {
+            "command": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "ride": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_genasi_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5137,6 +8777,72 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "earth_genasi"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_genasi_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_genasi_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 6,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_genasi_path",
+          "path_add_effects": {
+            "command": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "ride": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_genasi_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5174,6 +8880,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "air_genasi"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_genasi_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_genasi_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 6,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_genasi_path",
+          "path_add_effects": {
+            "command": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "ride": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_genasi_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5206,6 +8978,72 @@
       "mp_cost": 6,
       "required_sub_race_ids": [
         "salamander"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_genasi_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_genasi_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 6,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_genasi_path",
+          "path_add_effects": {
+            "command": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "ride": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_genasi_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5243,6 +9081,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "sylph"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_genasi_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "stormguard",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_genasi_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "resource",
+              "resource": "mp",
+              "amount": 6,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_genasi_path",
+          "path_add_effects": {
+            "command": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "ride": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_genasi_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 10,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5278,7 +9182,74 @@
           "resistible": false
         }
       ],
-      "sp_cost": 4
+      "sp_cost": 4,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_goliath_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_goliath_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_goliath_path",
+          "path_add_effects": {
+            "solitary": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "shared": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_goliath_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 2,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_frost_goliath",
@@ -5315,6 +9286,73 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "frost_goliath"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_goliath_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_goliath_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_goliath_path",
+          "path_add_effects": {
+            "solitary": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "shared": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_goliath_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 2,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5352,6 +9390,73 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "storm_goliath"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_goliath_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_goliath_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_goliath_path",
+          "path_add_effects": {
+            "solitary": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "shared": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_goliath_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 2,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5390,6 +9495,73 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "lithid"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_goliath_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_goliath_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_goliath_path",
+          "path_add_effects": {
+            "solitary": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "shared": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_goliath_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 2,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5427,6 +9599,73 @@
       "sp_cost": 5,
       "required_sub_race_ids": [
         "stone_goliath"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_goliath_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "iron_skin",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_goliath_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 12,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_goliath_path",
+          "path_add_effects": {
+            "solitary": [
+              {
+                "type": "apply_status",
+                "status_id": "iron_skin",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "shared": [
+              {
+                "type": "apply_status",
+                "status_id": "valor",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_goliath_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "valor",
+              "duration": 2,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5461,7 +9700,73 @@
           "target": "self"
         }
       ],
-      "mp_cost": 3
+      "mp_cost": 3,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_lamia_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_lamia_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 7,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_lamia_path",
+          "path_add_effects": {
+            "judgment": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "mercy": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_lamia_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_naga_lamia",
@@ -5498,6 +9803,72 @@
       "mp_cost": 6,
       "required_sub_race_ids": [
         "naga_lamia"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_lamia_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_lamia_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 7,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_lamia_path",
+          "path_add_effects": {
+            "judgment": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "mercy": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_lamia_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5533,6 +9904,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "hunter_lamia"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_lamia_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_lamia_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 7,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_lamia_path",
+          "path_add_effects": {
+            "judgment": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "mercy": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_lamia_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5572,6 +10009,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "golden_lamia"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_lamia_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "focus",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_lamia_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "heal",
+              "base": 7,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_lamia_path",
+          "path_add_effects": {
+            "judgment": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "mercy": [
+              {
+                "type": "apply_status",
+                "status_id": "blessed",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_lamia_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "blessed",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        }
       ]
     },
     {
@@ -5606,7 +10109,73 @@
           "duration": 1
         }
       ],
-      "mp_cost": 3
+      "mp_cost": 3,
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_arachne_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_arachne_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_arachne_path",
+          "path_add_effects": {
+            "pattern": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "new_thread": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_arachne_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.16,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "racial_weaver_arachne",
@@ -5643,6 +10212,72 @@
       "mp_cost": 5,
       "required_sub_race_ids": [
         "weaver_arachne"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_arachne_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_arachne_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_arachne_path",
+          "path_add_effects": {
+            "pattern": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "new_thread": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_arachne_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.16,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5678,6 +10313,72 @@
       "sp_cost": 4,
       "required_sub_race_ids": [
         "predator_arachne"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_arachne_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_arachne_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_arachne_path",
+          "path_add_effects": {
+            "pattern": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "new_thread": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_arachne_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.16,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5715,6 +10416,72 @@
       "mp_cost": 4,
       "required_sub_race_ids": [
         "silk_arachne"
+      ],
+      "ancestry_upgrade_tiers": [
+        {
+          "min_level": 10,
+          "required_quest_id": "heritage_arachne_awakening",
+          "name": "Awakened",
+          "description": "Your first heritage chapter awakens a deeper expression of this technique.",
+          "add_effects": [
+            {
+              "type": "apply_status",
+              "status_id": "haste",
+              "duration": 1,
+              "target": "self",
+              "resistible": false
+            }
+          ]
+        },
+        {
+          "min_level": 25,
+          "required_quest_id": "heritage_arachne_choice",
+          "name": "Resonant",
+          "description": "The path you chose gives this technique a more confident resonance.",
+          "add_effects": [
+            {
+              "type": "shield",
+              "base": 9,
+              "duration": 1,
+              "target": "self"
+            }
+          ],
+          "path_flag": "heritage_arachne_path",
+          "path_add_effects": {
+            "pattern": [
+              {
+                "type": "apply_status",
+                "status_id": "focus",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ],
+            "new_thread": [
+              {
+                "type": "apply_status",
+                "status_id": "haste",
+                "duration": 1,
+                "target": "self",
+                "resistible": false
+              }
+            ]
+          }
+        },
+        {
+          "min_level": 40,
+          "required_quest_id": "heritage_arachne_ascension",
+          "name": "Exalted",
+          "description": "Your completed heritage journey exalts this technique beyond inherited instinct.",
+          "add_effects": [
+            {
+              "type": "counter",
+              "reflect_pct": 0.16,
+              "duration": 1,
+              "target": "self"
+            }
+          ]
+        }
       ]
     },
     {
