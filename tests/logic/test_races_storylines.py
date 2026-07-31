@@ -47,6 +47,45 @@ class TestRaceEngine(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("race", message.lower())
 
+    def test_character_receives_ancestral_and_lineage_techniques(self):
+        game = new_game()
+        race = game.races.require("human")
+        lineage = race.get_sub_race("lowlander")
+
+        ok, message = game.create_character("Lowlander", "male", "squire", race.id, lineage.id)
+
+        self.assertTrue(ok, message)
+        self.assertEqual(
+            set(race.racial_skill_ids(lineage.id)),
+            {race.racial_skill_id, lineage.racial_skill_id},
+        )
+        self.assertTrue(set(race.racial_skill_ids(lineage.id)) <= set(game.player.known_skills))
+
+    def test_lineage_technique_rejects_the_wrong_lineage(self):
+        game = new_game()
+        ok, message = game.create_character("Highlander", "male", "squire", "human", "highlander")
+        self.assertTrue(ok, message)
+        game.player.unspent_skill_points = 1
+
+        ok, message = game.player.learn_skill(game.skills.require("racial_lowlander"))
+
+        self.assertFalse(ok)
+        self.assertIn("lineage", message.lower())
+
+    def test_loading_a_legacy_skill_list_restores_ancestry_techniques(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            game = new_game(tmp)
+            ok, message = game.create_character("Legacy", "male", "squire", "human", "lowlander")
+            self.assertTrue(ok, message)
+            gift_ids = game.player.race_def.racial_skill_ids(game.player.sub_race_id)
+            for skill_id in gift_ids:
+                self.assertTrue(game.player.forget_skill(skill_id))
+            self.assertTrue(game.save_game("legacy")[0])
+
+            restored = new_game(tmp)
+            self.assertTrue(restored.load_game("legacy")[0])
+            self.assertTrue(set(gift_ids) <= set(restored.player.known_skills))
+
     def test_every_race_works_with_every_eligible_starting_class(self):
         game = new_game()
         for race in game.race_options():

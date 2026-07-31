@@ -10,13 +10,13 @@ Bible §18: update the changelog after versions.
 - Added Common through Legendary item rarities and rarity-based equipment scaling.
 - Added rarity-aware shop buy/sell pricing and rarity labels/colors in shops.
 - Added 9 low-level equipment pieces to Ashvale Smith stock.
-- Added distinct starting racial gifts for all 39 sub-races (162 total skills).
+- Replaced generic racial gifts with 72 named, described ancestry techniques: one for every race and every sub-race, all with lineage-specific mechanics (224 total skills).
 - Split Demon sub-races into gender-gated Succubus and Incubus options.
 - Added sub-race dialogue conditions and Succubus/Incubus dialogue.
 - Added data-defined lifesteal, counter, and reflect processing for class, race,
   and sub-race sources.
 - Added guaranteed boss loot behavior.
-- Added Skills-screen search, category filtering, sorting, and racial-gift labels.
+- Added Skills-screen search, category filtering, sorting, and ancestry-technique labels.
 - Added rarity-aware loot variants with weighted rarity rolls and dynamic variant
   generation (`base@rarity`), explicit boss guaranteed flags and minimum rarity
   enforcement (rare+ for bosses), and loot_weight per rarity in config.
@@ -42,13 +42,15 @@ Bible §18: update the changelog after versions.
   controls and a skill priority list.
 
 ### Tests
-- Full suite now at 460 passing tests (443 + 17 new).
+- Full suite now at 478 passing tests.
 - New coverage: rarity enchant slots, multi-enchant and variant creation,
   boss guaranteed loot and rarity weights, race passives stacking,
   family damage and heal bonuses, party bonus modifiers, perk active reasons,
   tactics persistence and expanded fields, AI boss focus and skill toggles.
-- Content validation passes with 97 classes, 162 skills, 135 items, 15 races,
-  48 enemies, 68 quests, 16 dialogues, 9 factions, 21 companions, and 30 areas.
+- Added ancestry contracts for named/described race and lineage techniques,
+  lineage gating, legacy-save restoration, and Character Creation preview text.
+- Content validation passes with 100 classes, 224 skills, 136 items, 15 races / 57 sub-races,
+  51 enemies, 70 quests, 16 dialogues, 9 factions, 21 companions, and 30 areas.
 
 ### Tier 4→5 promotion chains (new in this continuation)
 - All 24 tier-4 classes now have tier-5 promotion targets (24 new tier-5 classes, 97 total)

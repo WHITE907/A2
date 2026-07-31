@@ -380,6 +380,8 @@ class Player(Entity):
             return False, f"{skill.name} is not available to {self.class_def.name}."
         if skill.required_race_ids and self.race_id.lower() not in skill.required_race_ids:
             return False, f"{skill.name} is restricted to specific races."
+        if skill.required_sub_race_ids and self.sub_race_id.lower() not in skill.required_sub_race_ids:
+            return False, f"{skill.name} is restricted to a specific lineage."
         if spend_points and self.unspent_skill_points < skill.skill_point_cost:
             return False, f"Not enough skill points ({skill.skill_point_cost} needed)."
 

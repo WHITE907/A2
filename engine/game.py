@@ -136,6 +136,28 @@ class Game:
                 if self.classes.get(class_id) is None:
                     problems.append(f"skill {skill.id!r} requires unknown class {class_id!r}")
 
+        for race in self.races.all_definitions():
+            if not race.racial_skill_id:
+                problems.append(f"race {race.id!r} is missing an ancestral technique")
+            else:
+                skill = self.skills.get(race.racial_skill_id)
+                if skill is None:
+                    problems.append(f"race {race.id!r} references unknown ancestral skill {race.racial_skill_id!r}")
+                elif race.id not in skill.required_race_ids or skill.required_sub_race_ids:
+                    problems.append(f"race {race.id!r} ancestral skill {skill.id!r} has incorrect ancestry gates")
+
+            for sub_race in race.sub_races:
+                if not sub_race.racial_skill_id:
+                    problems.append(f"sub-race {sub_race.id!r} is missing a lineage technique")
+                    continue
+                skill = self.skills.get(sub_race.racial_skill_id)
+                if skill is None:
+                    problems.append(
+                        f"sub-race {sub_race.id!r} references unknown lineage skill {sub_race.racial_skill_id!r}"
+                    )
+                elif race.id not in skill.required_race_ids or sub_race.id not in skill.required_sub_race_ids:
+                    problems.append(f"sub-race {sub_race.id!r} lineage skill {skill.id!r} has incorrect ancestry gates")
+
         for item in self.items.all_items():
             for race_id in item.race_modifiers:
                 if self.races.get(race_id) is None:
@@ -293,7 +315,42 @@ class Game:
 
     def race_detail_lines(self, race_id: str) -> list[str]:
         race = self.races.get(race_id)
-        return race.detail_lines() if race else ["Unknown race."]
+        if race is None:
+            return ["Unknown race."]
+        return [*race.detail_lines(), *self.racial_technique_lines(race_id)]
+
+    def sub_race_detail_lines(self, race_id: str, sub_race_id: str) -> list[str]:
+        """Lineage details plus its named, data-defined starting technique."""
+        race = self.races.get(race_id)
+        sub_race = race.get_sub_race(sub_race_id) if race else None
+        if sub_race is None:
+            return ["Unknown lineage."]
+        return [*sub_race.detail_lines(), *self.racial_technique_lines(race_id, sub_race_id, include_race=False)]
+
+    def racial_technique_lines(
+        self,
+        race_id: str,
+        sub_race_id: str = "",
+        *,
+        include_race: bool = True,
+    ) -> list[str]:
+        """Presentation lines for ancestry skills without leaking SkillManager to UI."""
+        race = self.races.get(race_id)
+        if race is None:
+            return []
+        skill_ids = race.racial_skill_ids(sub_race_id)
+        if not include_race and sub_race_id:
+            skill_ids = skill_ids[1:]
+        lines: list[str] = []
+        for skill_id in skill_ids:
+            skill = self.skills.get(skill_id)
+            if skill is None:
+                continue
+            heading = "Ancestral Technique" if skill_id == race.racial_skill_id else "Lineage Technique"
+            lines.append(f"{heading}: {skill.name}")
+            lines.append(f"  {skill.description}")
+            lines.extend(f"  • {effect}" for effect in skill.effect_lines())
+        return lines
 
     def race_name(self, race_id: str) -> str:
         race = self.races.get(race_id)
@@ -353,12 +410,11 @@ class Game:
         for skill in self.classes.create_starting_kit(definition, player.level):
             player.learn_skill(skill, spend_points=False)
 
-        # Every sub-race begins with its own racial gift; it is free and does
-        # not consume the character's level-one skill point.
-        if sub_race_id:
-            racial_skill = self.skills.get(f"racial_{sub_race_id}")
-            if racial_skill is not None:
-                player.learn_skill(racial_skill, spend_points=False)
+        # Every character receives one ancestral technique plus their selected
+        # lineage technique.  Both ids come from race content, rather than an
+        # implicit ``racial_<sub_race>`` convention, so content can name them
+        # freely and validation can catch a broken reference at startup.
+        self._grant_racial_skills(player)
 
         player.inventory.add_gold(definition.starting_gold or int(self.config.get("starting_gold", 0)))
         for item_id, quantity in definition.starting_items.items():
@@ -373,6 +429,18 @@ class Game:
         self.battle = None
         self.current_slot = None
         return True, f"{name}, {race.name} {definition.name}, begins their ascension."
+
+    def _grant_racial_skills(self, player: Player) -> None:
+        """Grant content-defined ancestral and lineage techniques for ``player``.
+
+        The helper is also called after loading a save so older saves gain the
+        techniques introduced after they were written, without charging skill
+        points or duplicating an already known ability.
+        """
+        for skill_id in player.race_def.racial_skill_ids(player.sub_race_id):
+            skill = self.skills.get(skill_id)
+            if skill is not None and skill.id not in player.known_skills:
+                player.learn_skill(skill, spend_points=False)
 
     def _new_mastery_book(self) -> MasteryBook:
         mastery_config = self.config.get("mastery", {})
@@ -1783,6 +1851,9 @@ class Game:
             # load - backwards compatibility over strictness (bible section 5).
             if skill is not None:
                 player.known_skills[skill.id] = skill
+        # Migration-safe grant for ancestral/lineage techniques added after an
+        # existing save was written.
+        self._grant_racial_skills(player)
         player.cooldowns = {str(k): int(v) for k, v in (player_data.get("cooldowns") or {}).items()}
 
         inventory_data = player_data.get("inventory") or {}

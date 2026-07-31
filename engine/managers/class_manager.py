@@ -202,7 +202,11 @@ class ClassManager:
             if skill.id not in candidates:
                 candidates.append(skill.id)
         for skill in self._skills.all_skills():
-            if skill.required_race_ids and player.race_id.lower() in [r.lower() for r in skill.required_race_ids]:
+            race_matches = not skill.required_race_ids or player.race_id.lower() in [r.lower() for r in skill.required_race_ids]
+            lineage_matches = not skill.required_sub_race_ids or player.sub_race_id.lower() in [
+                sub_race.lower() for sub_race in skill.required_sub_race_ids
+            ]
+            if skill.required_race_ids and race_matches and lineage_matches:
                 if skill.id not in candidates:
                     candidates.append(skill.id)
             elif not skill.required_race_ids and not skill.required_class_ids:
@@ -214,6 +218,10 @@ class ClassManager:
             if skill.id in player.known_skills:
                 continue
             if skill.required_race_ids and player.race_id.lower() not in [r.lower() for r in skill.required_race_ids]:
+                continue
+            if skill.required_sub_race_ids and player.sub_race_id.lower() not in [
+                sub_race.lower() for sub_race in skill.required_sub_race_ids
+            ]:
                 continue
             if skill.required_class_ids and player.class_def.id not in skill.required_class_ids:
                 continue

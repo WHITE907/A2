@@ -25,6 +25,8 @@ class SubRace:
     bonus_stats: StatBlock = field(default_factory=StatBlock)
     bonus_modifiers: ModifierSet = field(default_factory=ModifierSet)
     bonus_traits: tuple[str, ...] = ()
+    #: Data-defined lineage technique granted at character creation.
+    racial_skill_id: str = ""
     special_effects: tuple[dict[str, Any], ...] = ()
 
     @classmethod
@@ -39,6 +41,7 @@ class SubRace:
             bonus_stats=StatBlock.from_dict(payload.get("bonus_stats")),
             bonus_modifiers=ModifierSet.from_dict(payload.get("bonus_modifiers")),
             bonus_traits=tuple(str(trait) for trait in payload.get("bonus_traits", [])),
+            racial_skill_id=str(payload.get("racial_skill_id", "")).strip(),
             special_effects=tuple(dict(effect) for effect in payload.get("special_effects", [])),
         )
 
@@ -64,6 +67,8 @@ class RaceDefinition:
     base_stats: StatBlock = field(default_factory=StatBlock)
     modifiers: ModifierSet = field(default_factory=ModifierSet)
     traits: tuple[str, ...] = ()
+    #: Data-defined ancestral technique granted to every member of this race.
+    racial_skill_id: str = ""
     sub_races: tuple[SubRace, ...] = ()
     special_effects: tuple[dict[str, Any], ...] = ()
 
@@ -80,6 +85,7 @@ class RaceDefinition:
             base_stats=StatBlock.from_dict(payload.get("base_stats")),
             modifiers=ModifierSet.from_dict(payload.get("modifiers")),
             traits=tuple(str(trait) for trait in payload.get("traits", [])),
+            racial_skill_id=str(payload.get("racial_skill_id", "")).strip(),
             sub_races=sub_races,
             special_effects=tuple(dict(effect) for effect in payload.get("special_effects", [])),
         )
@@ -118,6 +124,20 @@ class RaceDefinition:
             if sub:
                 traits.extend(sub.bonus_traits)
         return tuple(traits)
+
+    def racial_skill_ids(self, sub_race_id: str = "") -> tuple[str, ...]:
+        """Ancestral and lineage techniques awarded at character creation.
+
+        These ids belong to content rather than following an implicit naming
+        convention.  That keeps a renamed skill or a newly added lineage from
+        silently losing its starting technique.
+        """
+        skill_ids = [self.racial_skill_id] if self.racial_skill_id else []
+        if sub_race_id:
+            sub = self.get_sub_race(sub_race_id)
+            if sub and sub.racial_skill_id:
+                skill_ids.append(sub.racial_skill_id)
+        return tuple(skill_ids)
 
     def detail_lines(self) -> list[str]:
         lines = [self.name]

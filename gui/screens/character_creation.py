@@ -149,7 +149,7 @@ class CharacterCreationWindow(tk.Toplevel):
             lines.extend(self.app.game.race_detail_lines(race.id))
         if race is not None and sub_race is not None:
             lines.append("")
-            lines.extend(sub_race.detail_lines())
+            lines.extend(self.app.game.sub_race_detail_lines(race.id, sub_race.id))
         if (race is not None or sub_race is not None) and definition is not None:
             lines.append("")
         if definition is not None:

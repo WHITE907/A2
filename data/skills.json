@@ -1,5 +1,5 @@
 {
-  "_comment": "Every skill is a JSON entry composed of effects. Adding the 200th skill is a diff here, not a new Python file. Categories: core, active, passive, weapon, shared, ultimate.",
+  "_comment": "Every skill is a JSON entry composed of effects. Adding the 200th skill is a diff here, not a new Python file. Categories: core, active, passive, weapon, shared, ultimate. Ancestry techniques use required_race_ids and required_sub_race_ids for data-defined gating.",
   "skills": [
     {
       "id": "strike",
@@ -3142,843 +3142,2579 @@
       ]
     },
     {
-      "id": "racial_lowlander",
-      "name": "Lowlander Gift",
+      "id": "racial_human",
+      "name": "Adaptive Opening",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Read the first movement of a foe and answer with a quick, practical strike.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 2,
       "tags": [
-        "magical",
+        "physical",
         "racial"
+      ],
+      "required_race_ids": [
+        "human"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 7,
+          "power_ratio": 0.35
+        },
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
         }
+      ],
+      "sp_cost": 3
+    },
+    {
+      "id": "racial_lowlander",
+      "name": "Market-Smart Feint",
+      "category": "shared",
+      "description": "A trader\u2019s misdirection creates a clean, accurate cut and buys back a breath of stamina.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 2,
+      "tags": [
+        "physical",
+        "racial"
+      ],
+      "required_race_ids": [
+        "human"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 7,
+          "power_ratio": 0.35
+        },
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "resource",
+          "resource": "sp",
+          "amount": 2,
+          "target": "self"
+        }
+      ],
+      "sp_cost": 3,
+      "required_sub_race_ids": [
+        "lowlander"
       ]
     },
     {
       "id": "racial_highlander",
-      "name": "Highlander Gift",
+      "name": "Cragbreaker",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Drive a heavy strike through a guard with the relentless force of a mountain descent.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "earth",
         "racial"
+      ],
+      "required_race_ids": [
+        "human"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "sundered",
+          "chance": 0.3,
+          "duration": 1
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "highlander"
       ]
     },
     {
       "id": "racial_seafarer",
-      "name": "Seafarer Gift",
+      "name": "Tide Step",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Shift with the rhythm of a wave, slipping clear and recovering your balance.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "support",
         "racial"
+      ],
+      "required_race_ids": [
+        "human"
       ],
       "effects": [
         {
-          "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "type": "apply_status",
+          "status_id": "haste",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "resource",
+          "resource": "sp",
+          "amount": 3,
+          "target": "self"
         }
+      ],
+      "sp_cost": 3,
+      "required_sub_race_ids": [
+        "seafarer"
       ]
     },
     {
-      "id": "racial_high_elf",
-      "name": "High Elf Gift",
+      "id": "racial_imperial_human",
+      "name": "Legion Drill",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A remembered cadence aligns breath, stance, and steel for a disciplined advance.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "human"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "might",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "sp_cost": 3,
+      "required_sub_race_ids": [
+        "imperial_human"
+      ]
+    },
+    {
+      "id": "racial_elf",
+      "name": "Starlit Arrow",
+      "category": "shared",
+      "description": "Condense a thread of moonlit arcana into a precise bolt that finds exposed weaknesses.",
+      "required_level": 1,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 2,
       "tags": [
         "magical",
+        "arcane",
         "racial"
+      ],
+      "required_race_ids": [
+        "elf"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 7,
+          "power_ratio": 0.45,
+          "element": "arcane"
         }
+      ],
+      "mp_cost": 4
+    },
+    {
+      "id": "racial_high_elf",
+      "name": "Silver Sigil",
+      "category": "shared",
+      "description": "Trace a silver rune in the air and send its arcane edge through a single target.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "arcane",
+        "racial"
+      ],
+      "required_race_ids": [
+        "elf"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 9,
+          "power_ratio": 0.5,
+          "element": "arcane"
+        }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "high_elf"
       ]
     },
     {
       "id": "racial_wood_elf",
-      "name": "Wood Elf Gift",
+      "name": "Briar Volley",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Loose a thorn-laced shot that catches a foe in grasping roots.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "earth",
         "racial"
+      ],
+      "required_race_ids": [
+        "elf"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 7,
+          "power_ratio": 0.4,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "rooted",
+          "chance": 0.4,
+          "duration": 1
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "wood_elf"
       ]
     },
     {
       "id": "racial_drow",
-      "name": "Drow Gift",
+      "name": "Umbral Needle",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A shard of condensed shadow pierces sight and leaves the target blinking in darkness.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "shadow",
         "racial"
+      ],
+      "required_race_ids": [
+        "elf"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.45,
+          "element": "shadow"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blinded",
+          "chance": 0.35,
+          "duration": 1
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "drow"
       ]
     },
     {
-      "id": "racial_half_elf_noble",
-      "name": "Noble-Born Gift",
+      "id": "racial_undine",
+      "name": "Frostwake",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Call a glacial wake beneath a foe, chilling their limbs and slowing their pursuit.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "ice",
         "racial"
+      ],
+      "required_race_ids": [
+        "elf"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "ice"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "chill",
+          "chance": 0.45,
+          "duration": 2
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "undine"
+      ]
+    },
+    {
+      "id": "racial_half_elf",
+      "name": "Diplomat's Poise",
+      "category": "shared",
+      "description": "Steady breath and practiced etiquette turn pressure into a moment of perfect composure.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "half_elf"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "resource",
+          "resource": "mp",
+          "amount": 3,
+          "target": "self"
+        }
+      ],
+      "mp_cost": 3
+    },
+    {
+      "id": "racial_half_elf_noble",
+      "name": "Courtly Reprieve",
+      "category": "shared",
+      "description": "A poised gesture gathers calm into a small restorative ward.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "half_elf"
+      ],
+      "effects": [
+        {
+          "type": "heal",
+          "base": 8,
+          "target": "self",
+          "power_ratio": 0.25
+        },
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "mp_cost": 4,
+      "required_sub_race_ids": [
+        "half_elf_noble"
       ]
     },
     {
       "id": "racial_half_elf_wanderer",
-      "name": "Wanderer Gift",
+      "name": "Wayfarer's Strike",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Years on the road teach you to hit hard, move on, and leave no opening behind.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
         "racial"
+      ],
+      "required_race_ids": [
+        "half_elf"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.4
+        },
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "half_elf_wanderer"
       ]
     },
     {
-      "id": "racial_mountain_dwarf",
-      "name": "Mountain Dwarf Gift",
+      "id": "racial_silver_half_elf",
+      "name": "Moonlit Insight",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A wash of silver intuition replenishes your focus before the next exchange.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "arcane",
+        "support",
         "racial"
+      ],
+      "required_race_ids": [
+        "half_elf"
+      ],
+      "effects": [
+        {
+          "type": "resource",
+          "resource": "mp",
+          "amount": 6,
+          "target": "self"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "mp_cost": 4,
+      "required_sub_race_ids": [
+        "silver_half_elf"
+      ]
+    },
+    {
+      "id": "racial_dwarf",
+      "name": "Stoneward",
+      "category": "shared",
+      "description": "Set your feet like bedrock and call up a slab of protective force.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "earth",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "dwarf"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 12,
+          "duration": 2,
+          "target": "self",
+          "power_ratio": 0.25
+        }
+      ],
+      "sp_cost": 4
+    },
+    {
+      "id": "racial_mountain_dwarf",
+      "name": "Quarry Breaker",
+      "category": "shared",
+      "description": "Hammer the weak point in stone, plate, or construct with a practiced miner\u2019s blow.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "earth",
+        "racial"
+      ],
+      "required_race_ids": [
+        "dwarf"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 10,
+          "power_ratio": 0.45,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "sundered",
+          "chance": 0.4,
+          "duration": 1
         }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "mountain_dwarf"
       ]
     },
     {
       "id": "racial_hill_dwarf",
-      "name": "Hill Dwarf Gift",
+      "name": "Hearthguard",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Remember the shield wall around a clan hearth and raise a ward for yourself.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "support",
         "racial"
+      ],
+      "required_race_ids": [
+        "dwarf"
       ],
       "effects": [
         {
-          "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "type": "shield",
+          "base": 14,
+          "duration": 2,
+          "target": "self"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "valor",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "hill_dwarf"
       ]
     },
     {
       "id": "racial_forge_dwarf",
-      "name": "Forge Dwarf Gift",
+      "name": "Cinder Hammer",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Heat blooms along your weapon as you strike, leaving a stubborn ember in the wound.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "fire",
         "racial"
+      ],
+      "required_race_ids": [
+        "dwarf"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.35,
+          "duration": 2
         }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "forge_dwarf"
       ]
     },
     {
-      "id": "racial_red_dragonkin",
-      "name": "Red Dragonkin Gift",
+      "id": "racial_shield_dwarf",
+      "name": "Bulwark Bash",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Crash forward behind an unyielding guard and stagger a careless opponent.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
+      "tags": [
+        "physical",
+        "racial"
+      ],
+      "required_race_ids": [
+        "dwarf"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 8,
+          "power_ratio": 0.4
+        },
+        {
+          "type": "apply_status",
+          "status_id": "stunned",
+          "chance": 0.2,
+          "duration": 1
+        }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "shield_dwarf"
+      ]
+    },
+    {
+      "id": "racial_dragonkin",
+      "name": "Drakeblood Roar",
+      "category": "shared",
+      "description": "A resonant draconic roar shakes the courage of every enemy and draws their attention.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "all_enemies",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "racial",
         "racial"
+      ],
+      "required_race_ids": [
+        "dragonkin"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 4,
+          "power_ratio": 0.2,
+          "element": "arcane"
+        },
+        {
+          "type": "taunt",
+          "duration": 1
         }
+      ],
+      "mp_cost": 4
+    },
+    {
+      "id": "racial_red_dragonkin",
+      "name": "Cinder Breath",
+      "category": "shared",
+      "description": "Exhale a fan of red-gold flame that scorches every enemy in reach.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "all_enemies",
+      "cooldown": 4,
+      "tags": [
+        "magical",
+        "fire",
+        "racial"
+      ],
+      "required_race_ids": [
+        "dragonkin"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 7,
+          "power_ratio": 0.35,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.3,
+          "duration": 2
+        }
+      ],
+      "mp_cost": 6,
+      "required_sub_race_ids": [
+        "red_dragonkin"
       ]
     },
     {
       "id": "racial_gold_dragonkin",
-      "name": "Gold Dragonkin Gift",
+      "name": "Radiant Verdict",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Pronounce a draconic judgment in searing gold light that weakens a foe\u2019s resolve.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "holy",
         "racial"
+      ],
+      "required_race_ids": [
+        "dragonkin"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "holy"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "weakened",
+          "chance": 0.4,
+          "duration": 2
         }
+      ],
+      "mp_cost": 6,
+      "required_sub_race_ids": [
+        "gold_dragonkin"
       ]
     },
     {
       "id": "racial_blue_dragonkin",
-      "name": "Blue Dragonkin Gift",
+      "name": "Static Talon",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A snap of blue lightning races through a target and threatens to seize their nerves.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "lightning",
         "racial"
+      ],
+      "required_race_ids": [
+        "dragonkin"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "lightning"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "paralyzed",
+          "chance": 0.25,
+          "duration": 1
         }
+      ],
+      "mp_cost": 6,
+      "required_sub_race_ids": [
+        "blue_dragonkin"
       ]
     },
     {
-      "id": "racial_pit_fiend",
-      "name": "Pit Fiend Gift",
+      "id": "racial_obsidian_dragonkin",
+      "name": "Obsidian Shard",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Launch a razor shard of volcanic glass that leaves armor brittle around the impact.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "earth",
+        "racial"
+      ],
+      "required_race_ids": [
+        "dragonkin"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "brittle",
+          "chance": 0.4,
+          "duration": 1
+        }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "obsidian_dragonkin"
+      ]
+    },
+    {
+      "id": "racial_demon",
+      "name": "Cinder Malice",
+      "category": "shared",
+      "description": "Kindle the infernal ember in your blood and leave a burning mark on a foe.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "fire",
         "racial"
+      ],
+      "required_race_ids": [
+        "demon"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 7,
+          "power_ratio": 0.4,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.35,
+          "duration": 2
         }
+      ],
+      "mp_cost": 4
+    },
+    {
+      "id": "racial_pit_fiend",
+      "name": "Infernal Cleave",
+      "category": "shared",
+      "description": "Channel pit-born brutality into a cleave wreathed in punishing heat.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "fire",
+        "racial"
+      ],
+      "required_race_ids": [
+        "demon"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 10,
+          "power_ratio": 0.5,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.25,
+          "duration": 2
+        }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "pit_fiend"
       ]
     },
     {
       "id": "racial_succubus",
-      "name": "Succubus Gift",
+      "name": "Siphoning Kiss",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Steal a flicker of vitality through an entrancing touch and return it to yourself.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "shadow",
         "racial"
+      ],
+      "required_race_ids": [
+        "demon"
       ],
       "effects": [
         {
-          "type": "damage",
+          "type": "life_drain",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 7,
+          "power_ratio": 0.4,
+          "element": "shadow",
+          "drain_ratio": 0.45
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "succubus"
       ]
     },
     {
       "id": "racial_balor",
-      "name": "Balor Gift",
+      "name": "Ashen Whirl",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Sweep a burning arc around you, showering every foe with hungry ash.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "all_enemies",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "fire",
         "racial"
+      ],
+      "required_race_ids": [
+        "demon"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 7,
+          "power_ratio": 0.35,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.25,
+          "duration": 2
         }
+      ],
+      "mp_cost": 6,
+      "required_sub_race_ids": [
+        "balor"
       ]
     },
     {
       "id": "racial_incubus",
-      "name": "Incubus Gift",
+      "name": "Mesmeric Rend",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A velvet word distracts a foe just long enough for shadowed force to tear through.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "shadow",
         "racial"
+      ],
+      "required_race_ids": [
+        "demon"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "shadow"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "weakened",
+          "chance": 0.35,
+          "duration": 1
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "incubus"
       ]
     },
     {
-      "id": "racial_infernal_tiefling",
-      "name": "Infernal Tiefling Gift",
+      "id": "racial_abyssal_demon",
+      "name": "Void Maw",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Open a brief abyss beneath a foe and drain the magical strength pulled toward it.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "shadow",
         "racial"
+      ],
+      "required_race_ids": [
+        "demon"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "shadow"
+        },
+        {
+          "type": "resource_drain",
+          "resource": "mp",
+          "amount": 5
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "abyssal_demon"
+      ]
+    },
+    {
+      "id": "racial_tiefling",
+      "name": "Planar Rebuke",
+      "category": "shared",
+      "description": "A flash of inherited otherworldly power lashes back at an attacker\u2019s spirit.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "shadow",
+        "racial"
+      ],
+      "required_race_ids": [
+        "tiefling"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 7,
+          "power_ratio": 0.4,
+          "element": "shadow"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "weakened",
+          "chance": 0.3,
+          "duration": 1
+        }
+      ],
+      "mp_cost": 4
+    },
+    {
+      "id": "racial_infernal_tiefling",
+      "name": "Hellish Rebuke",
+      "category": "shared",
+      "description": "Answer harm with a sharp burst of inherited hellfire.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "fire",
+        "racial"
+      ],
+      "required_race_ids": [
+        "tiefling"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "fire"
+        },
+        {
+          "type": "counter",
+          "reflect_pct": 0.15,
+          "duration": 1,
+          "target": "self"
+        }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "infernal_tiefling"
       ]
     },
     {
       "id": "racial_abyssal_tiefling",
-      "name": "Abyssal Tiefling Gift",
+      "name": "Abyssal Lash",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Snap a barbed cord of shadow across a foe and sap their confidence.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "shadow",
         "racial"
+      ],
+      "required_race_ids": [
+        "tiefling"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45,
+          "element": "shadow"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "weakened",
+          "chance": 0.35,
+          "duration": 1
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "abyssal_tiefling"
       ]
     },
     {
-      "id": "racial_feline",
-      "name": "Feline Gift",
+      "id": "racial_blood_tiefling",
+      "name": "Crimson Spark",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Spend a drop of blood to kindle a volatile crimson bolt.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "fire",
         "racial"
+      ],
+      "required_race_ids": [
+        "tiefling"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 10,
+          "power_ratio": 0.45,
+          "element": "fire"
+        },
+        {
+          "type": "damage",
+          "damage_type": "true",
+          "base": 2,
+          "target": "self"
         }
+      ],
+      "mp_cost": 4,
+      "required_sub_race_ids": [
+        "blood_tiefling"
+      ]
+    },
+    {
+      "id": "racial_beastkin",
+      "name": "Predator's Rush",
+      "category": "shared",
+      "description": "Instinct takes over for a sudden lunge that opens a bleeding wound.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "racial"
+      ],
+      "required_race_ids": [
+        "beastkin"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 8,
+          "power_ratio": 0.4
+        },
+        {
+          "type": "apply_status",
+          "status_id": "bleed",
+          "chance": 0.35,
+          "duration": 2
+        }
+      ],
+      "sp_cost": 4
+    },
+    {
+      "id": "racial_feline",
+      "name": "Pouncing Rake",
+      "category": "shared",
+      "description": "Spring in with claws first and leave a deep, bleeding rake across the target.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "racial"
+      ],
+      "required_race_ids": [
+        "beastkin"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45
+        },
+        {
+          "type": "apply_status",
+          "status_id": "bleed",
+          "chance": 0.45,
+          "duration": 2
+        }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "feline"
       ]
     },
     {
       "id": "racial_canine",
-      "name": "Canine Gift",
+      "name": "Pack Howl",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A rallying howl shares the certainty of the hunt with every living ally.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "all_allies",
+      "cooldown": 4,
       "tags": [
-        "magical",
+        "physical",
+        "support",
         "racial"
+      ],
+      "required_race_ids": [
+        "beastkin"
       ],
       "effects": [
         {
-          "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "type": "apply_status",
+          "status_id": "valor",
+          "duration": 2,
+          "resistible": false
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "canine"
       ]
     },
     {
       "id": "racial_avian",
-      "name": "Avian Gift",
+      "name": "Gale Dive",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Ride a cutting gust into a fast aerial strike that leaves the target slowed.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "wind",
         "racial"
+      ],
+      "required_race_ids": [
+        "beastkin"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "wind"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "slowed",
+          "chance": 0.35,
+          "duration": 1
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "avian"
       ]
     },
     {
-      "id": "racial_half_orc",
-      "name": "Half-Orc Gift",
+      "id": "racial_lupine_beastkin",
+      "name": "Moonhunt",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Follow scent and moon-shadow to tear at a fleeing foe before they can recover.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
         "racial"
+      ],
+      "required_race_ids": [
+        "beastkin"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45
+        },
+        {
+          "type": "apply_status",
+          "status_id": "bleed",
+          "chance": 0.3,
+          "duration": 2
+        },
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "lupine_beastkin"
+      ]
+    },
+    {
+      "id": "racial_orc",
+      "name": "Warborn Cry",
+      "category": "shared",
+      "description": "A battle cry hardens your resolve and dares nearby foes to break it.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "orc"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "might",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "counter",
+          "reflect_pct": 0.15,
+          "duration": 1,
+          "target": "self"
+        }
+      ],
+      "sp_cost": 4
+    },
+    {
+      "id": "racial_half_orc",
+      "name": "Crossblood Charge",
+      "category": "shared",
+      "description": "Put both halves of your heritage behind a direct, uncompromising charge.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "racial"
+      ],
+      "required_race_ids": [
+        "orc"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45
+        },
+        {
+          "type": "apply_status",
+          "status_id": "weakened",
+          "chance": 0.25,
+          "duration": 1
+        }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "half_orc"
       ]
     },
     {
       "id": "racial_war_orc",
-      "name": "War Orc Gift",
+      "name": "Bloodied Onslaught",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Turn battle hunger into a crushing follow-through that leaves defenses split.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
         "racial"
+      ],
+      "required_race_ids": [
+        "orc"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 11,
+          "power_ratio": 0.5
+        },
+        {
+          "type": "apply_status",
+          "status_id": "sundered",
+          "chance": 0.35,
+          "duration": 1
         }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "war_orc"
       ]
     },
     {
       "id": "racial_shaman_orc",
-      "name": "Shaman Orc Gift",
+      "name": "Ancestor's Spark",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Call a brief ancestral flame to restore yourself and sear the nearest foe.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "arcane",
         "racial"
+      ],
+      "required_race_ids": [
+        "orc"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 7,
+          "power_ratio": 0.35,
+          "element": "arcane"
+        },
+        {
+          "type": "heal",
+          "base": 5,
+          "target": "self",
+          "power_ratio": 0.15
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "shaman_orc"
       ]
     },
     {
-      "id": "racial_rock_gnome",
-      "name": "Rock Gnome Gift",
+      "id": "racial_blood_orc",
+      "name": "Red Mist",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Let the blood-song drown out pain and drive a short burst of overwhelming force.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 4,
+      "tags": [
+        "physical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "orc"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "might",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "damage",
+          "damage_type": "true",
+          "base": 2,
+          "target": "self"
+        }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "blood_orc"
+      ]
+    },
+    {
+      "id": "racial_gnome",
+      "name": "Clockwork Concussion",
+      "category": "shared",
+      "description": "Snap a palm-sized mechanism open to release a disruptive burst of force.",
+      "required_level": 1,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "arcane",
         "racial"
+      ],
+      "required_race_ids": [
+        "gnome"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
           "base": 6,
-          "power_ratio": 0.7
+          "power_ratio": 0.35,
+          "element": "arcane"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blinded",
+          "chance": 0.25,
+          "duration": 1
         }
+      ],
+      "mp_cost": 4
+    },
+    {
+      "id": "racial_rock_gnome",
+      "name": "Volatile Flask",
+      "category": "shared",
+      "description": "Hurl a prepared vial that bursts into corrosive, armor-eating foam.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "racial"
+      ],
+      "required_race_ids": [
+        "gnome"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 7,
+          "power_ratio": 0.35
+        },
+        {
+          "type": "apply_status",
+          "status_id": "corrode",
+          "chance": 0.4,
+          "duration": 2
+        }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "rock_gnome"
       ]
     },
     {
       "id": "racial_forest_gnome",
-      "name": "Forest Gnome Gift",
+      "name": "Glimmerglamour",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Scatter a pocket illusion that dazzles a foe and makes their aim uncertain.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "arcane",
         "racial"
+      ],
+      "required_race_ids": [
+        "gnome"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
           "base": 6,
-          "power_ratio": 0.7
+          "power_ratio": 0.3,
+          "element": "arcane"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blinded",
+          "chance": 0.4,
+          "duration": 1
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "forest_gnome"
       ]
     },
     {
-      "id": "racial_lightfoot_halfling",
-      "name": "Lightfoot Gift",
+      "id": "racial_tinker_gnome",
+      "name": "Clockwork Jab",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A spring-loaded tool finds seams in armor with surprising mechanical precision.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
         "racial"
+      ],
+      "required_race_ids": [
+        "gnome"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 8,
+          "power_ratio": 0.4
+        },
+        {
+          "type": "apply_status",
+          "status_id": "sundered",
+          "chance": 0.3,
+          "duration": 1
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "tinker_gnome"
+      ]
+    },
+    {
+      "id": "racial_halfling",
+      "name": "Fortune's Footwork",
+      "category": "shared",
+      "description": "A lucky stumble becomes a sudden sidestep, restoring momentum before danger closes in.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "halfling"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "resource",
+          "resource": "sp",
+          "amount": 4,
+          "target": "self"
+        }
+      ],
+      "sp_cost": 3
+    },
+    {
+      "id": "racial_lightfoot_halfling",
+      "name": "Vanishing Step",
+      "category": "shared",
+      "description": "Slip behind larger bodies with a lucky burst of speed and leave pursuit behind.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "halfling"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "sp_cost": 3,
+      "required_sub_race_ids": [
+        "lightfoot_halfling"
       ]
     },
     {
       "id": "racial_stout_halfling",
-      "name": "Stout Gift",
+      "name": "Ironbelly",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A stubborn constitution shrugs off current afflictions and restores your footing.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 4,
       "tags": [
-        "magical",
+        "physical",
+        "support",
         "racial"
+      ],
+      "required_race_ids": [
+        "halfling"
       ],
       "effects": [
         {
-          "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "type": "cleanse",
+          "target": "self"
+        },
+        {
+          "type": "shield",
+          "base": 8,
+          "duration": 1,
+          "target": "self"
         }
+      ],
+      "sp_cost": 3,
+      "required_sub_race_ids": [
+        "stout_halfling"
       ]
     },
     {
-      "id": "racial_fire_genasi",
-      "name": "Fire Genasi Gift",
+      "id": "racial_swift_halfling",
+      "name": "Lucky Dash",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Make the one impossible step, recovering stamina as danger arrives a heartbeat late.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "halfling"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "resource",
+          "resource": "sp",
+          "amount": 6,
+          "target": "self"
+        }
+      ],
+      "sp_cost": 3,
+      "required_sub_race_ids": [
+        "swift_halfling"
+      ]
+    },
+    {
+      "id": "racial_genasi",
+      "name": "Elemental Pulse",
+      "category": "shared",
+      "description": "Release a controlled pulse of planar energy that rattles an enemy\u2019s defenses.",
+      "required_level": 1,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "arcane",
         "racial"
+      ],
+      "required_race_ids": [
+        "genasi"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 7,
+          "power_ratio": 0.4,
+          "element": "arcane"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "brittle",
+          "chance": 0.25,
+          "duration": 1
         }
+      ],
+      "mp_cost": 4
+    },
+    {
+      "id": "racial_fire_genasi",
+      "name": "Ember Lance",
+      "category": "shared",
+      "description": "Drive a narrow lance of living flame through a target and leave it burning.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "fire",
+        "racial"
+      ],
+      "required_race_ids": [
+        "genasi"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 9,
+          "power_ratio": 0.45,
+          "element": "fire"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "burn",
+          "chance": 0.4,
+          "duration": 2
+        }
+      ],
+      "mp_cost": 6,
+      "required_sub_race_ids": [
+        "fire_genasi"
       ]
     },
     {
       "id": "racial_water_genasi",
-      "name": "Water Genasi Gift",
+      "name": "Undertow",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "A surge of freezing water pulls at a foe\u2019s legs and steals their momentum.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "ice",
         "racial"
+      ],
+      "required_race_ids": [
+        "genasi"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "ice"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "slowed",
+          "chance": 0.45,
+          "duration": 1
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "water_genasi"
       ]
     },
     {
       "id": "racial_earth_genasi",
-      "name": "Earth Genasi Gift",
+      "name": "Faultline",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Split the ground beneath a foe with a compact pulse of earth.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
+        "earth",
         "racial"
+      ],
+      "required_race_ids": [
+        "genasi"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 10,
+          "power_ratio": 0.45,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "sundered",
+          "chance": 0.35,
+          "duration": 1
         }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "earth_genasi"
       ]
     },
     {
       "id": "racial_air_genasi",
-      "name": "Air Genasi Gift",
+      "name": "Zephyr Slash",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Shape a razor gust that cuts past armor and leaves the target stumbling.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "wind",
         "racial"
+      ],
+      "required_race_ids": [
+        "genasi"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "wind"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "slowed",
+          "chance": 0.35,
+          "duration": 1
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "air_genasi"
       ]
     },
     {
-      "id": "racial_frost_goliath",
-      "name": "Frost Goliath Gift",
+      "id": "racial_salamander",
+      "name": "Molten Coil",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Wrap a foe in a coil of molten planar heat and siphon back the released vitality.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "fire",
         "racial"
+      ],
+      "required_race_ids": [
+        "genasi"
+      ],
+      "effects": [
+        {
+          "type": "life_drain",
+          "damage_type": "magic",
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "fire",
+          "drain_ratio": 0.35
+        }
+      ],
+      "mp_cost": 6,
+      "required_sub_race_ids": [
+        "salamander"
+      ]
+    },
+    {
+      "id": "racial_sylph",
+      "name": "Skyneedle",
+      "category": "shared",
+      "description": "Send a needle-fine current of wind through a foe before they can brace.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "wind",
+        "racial"
+      ],
+      "required_race_ids": [
+        "genasi"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "wind"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blinded",
+          "chance": 0.25,
+          "duration": 1
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "sylph"
+      ]
+    },
+    {
+      "id": "racial_goliath",
+      "name": "Mountain's Stand",
+      "category": "shared",
+      "description": "Brace with ancestral resolve and turn a dangerous blow into a test of endurance.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "earth",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "goliath"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 14,
+          "duration": 2,
+          "target": "self"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "iron_skin",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "sp_cost": 4
+    },
+    {
+      "id": "racial_frost_goliath",
+      "name": "Glacier Slam",
+      "category": "shared",
+      "description": "Bring a frost-heavy blow down hard enough to numb the target\u2019s limbs.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "ice",
+        "racial"
+      ],
+      "required_race_ids": [
+        "goliath"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 10,
+          "power_ratio": 0.45,
+          "element": "ice"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "chill",
+          "chance": 0.45,
+          "duration": 2
+        }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "frost_goliath"
       ]
     },
     {
       "id": "racial_storm_goliath",
-      "name": "Storm Goliath Gift",
+      "name": "Thunderclap",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Release a booming shockwave that rattles every enemy close enough to hear it.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "all_enemies",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "lightning",
         "racial"
+      ],
+      "required_race_ids": [
+        "goliath"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 7,
+          "power_ratio": 0.35,
+          "element": "lightning"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "paralyzed",
+          "chance": 0.2,
+          "duration": 1
         }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "storm_goliath"
       ]
     },
     {
-      "id": "racial_naga_lamia",
-      "name": "Naga Lamia Gift",
+      "id": "racial_lithid",
+      "name": "Granite Hide",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Call the weight of living stone over your skin and stand firm beneath the next assault.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 4,
+      "tags": [
+        "physical",
+        "earth",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "goliath"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 16,
+          "duration": 2,
+          "target": "self"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "iron_skin",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "lithid"
+      ]
+    },
+    {
+      "id": "racial_stone_goliath",
+      "name": "Avalanche Step",
+      "category": "shared",
+      "description": "Stamp with the certainty of a landslide and leave the target struggling to move.",
+      "required_level": 1,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "physical",
+        "earth",
+        "racial"
+      ],
+      "required_race_ids": [
+        "goliath"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "physical",
+          "base": 10,
+          "power_ratio": 0.45,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "rooted",
+          "chance": 0.35,
+          "duration": 1
+        }
+      ],
+      "sp_cost": 5,
+      "required_sub_race_ids": [
+        "stone_goliath"
+      ]
+    },
+    {
+      "id": "racial_lamia",
+      "name": "Serpent's Wisdom",
+      "category": "shared",
+      "description": "Ancient instincts sharpen your mind, restoring a little power while revealing the cleanest opening.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 3,
       "tags": [
         "magical",
+        "support",
         "racial"
+      ],
+      "required_race_ids": [
+        "lamia"
+      ],
+      "effects": [
+        {
+          "type": "apply_status",
+          "status_id": "focus",
+          "duration": 2,
+          "target": "self",
+          "resistible": false
+        },
+        {
+          "type": "resource",
+          "resource": "mp",
+          "amount": 4,
+          "target": "self"
+        }
+      ],
+      "mp_cost": 3
+    },
+    {
+      "id": "racial_naga_lamia",
+      "name": "Coiling Hex",
+      "category": "shared",
+      "description": "Thread ancient serpent magic around a foe until doubt and curse-tight coils slow them.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "shadow",
+        "racial"
+      ],
+      "required_race_ids": [
+        "lamia"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 8,
+          "power_ratio": 0.4,
+          "element": "shadow"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "cursed",
+          "chance": 0.35,
+          "duration": 2
         }
+      ],
+      "mp_cost": 6,
+      "required_sub_race_ids": [
+        "naga_lamia"
       ]
     },
     {
       "id": "racial_hunter_lamia",
-      "name": "Hunter Lamia Gift",
+      "name": "Venom Fang",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Strike with a swift poisoned bite that continues to punish a wounded target.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
         "racial"
+      ],
+      "required_race_ids": [
+        "lamia"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45
+        },
+        {
+          "type": "apply_status",
+          "status_id": "poison",
+          "chance": 0.5,
+          "duration": 2
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "hunter_lamia"
       ]
     },
     {
-      "id": "racial_weaver_arachne",
-      "name": "Weaver Arachne Gift",
+      "id": "racial_golden_lamia",
+      "name": "Sunscale Ward",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Raise a gleaming scale-pattern ward that reflects the dignity of old serpent courts.",
       "required_level": 1,
-      "mp_cost": 4,
-      "targeting": "enemy",
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 4,
       "tags": [
         "magical",
+        "holy",
+        "support",
         "racial"
+      ],
+      "required_race_ids": [
+        "lamia"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 14,
+          "duration": 2,
+          "target": "self",
+          "power_ratio": 0.2
+        },
+        {
+          "type": "apply_status",
+          "status_id": "blessed",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "golden_lamia"
+      ]
+    },
+    {
+      "id": "racial_arachne",
+      "name": "Webline Snare",
+      "category": "shared",
+      "description": "Cast a barbed line of silk that bites into a foe and locks their footing.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "earth",
+        "racial"
+      ],
+      "required_race_ids": [
+        "arachne"
       ],
       "effects": [
         {
           "type": "damage",
           "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "base": 5,
+          "power_ratio": 0.3,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "rooted",
+          "chance": 0.45,
+          "duration": 1
         }
+      ],
+      "mp_cost": 3
+    },
+    {
+      "id": "racial_weaver_arachne",
+      "name": "Binding Thread",
+      "category": "shared",
+      "description": "Spin a calculated strand around a foe and tighten it with a pulse of arcane silk.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "enemy",
+      "cooldown": 3,
+      "tags": [
+        "magical",
+        "earth",
+        "racial"
+      ],
+      "required_race_ids": [
+        "arachne"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "damage_type": "magic",
+          "base": 7,
+          "power_ratio": 0.35,
+          "element": "earth"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "rooted",
+          "chance": 0.5,
+          "duration": 1
+        }
+      ],
+      "mp_cost": 5,
+      "required_sub_race_ids": [
+        "weaver_arachne"
       ]
     },
     {
       "id": "racial_predator_arachne",
-      "name": "Predator Arachne Gift",
+      "name": "Widow's Bite",
       "category": "shared",
-      "description": "A starting gift unique to this sub-race.",
+      "description": "Deliver a venomous strike designed to soften prey for the next pass.",
       "required_level": 1,
-      "mp_cost": 4,
+      "skill_point_cost": 0,
       "targeting": "enemy",
+      "cooldown": 3,
       "tags": [
-        "magical",
+        "physical",
         "racial"
+      ],
+      "required_race_ids": [
+        "arachne"
       ],
       "effects": [
         {
           "type": "damage",
-          "damage_type": "magic",
-          "base": 6,
-          "power_ratio": 0.7
+          "damage_type": "physical",
+          "base": 9,
+          "power_ratio": 0.45
+        },
+        {
+          "type": "apply_status",
+          "status_id": "poison",
+          "chance": 0.45,
+          "duration": 2
         }
+      ],
+      "sp_cost": 4,
+      "required_sub_race_ids": [
+        "predator_arachne"
+      ]
+    },
+    {
+      "id": "racial_silk_arachne",
+      "name": "Silken Veil",
+      "category": "shared",
+      "description": "Draw a shimmering silk veil around yourself to blur hostile strikes and preserve momentum.",
+      "required_level": 1,
+      "skill_point_cost": 0,
+      "targeting": "self",
+      "cooldown": 4,
+      "tags": [
+        "magical",
+        "support",
+        "racial"
+      ],
+      "required_race_ids": [
+        "arachne"
+      ],
+      "effects": [
+        {
+          "type": "shield",
+          "base": 10,
+          "duration": 2,
+          "target": "self"
+        },
+        {
+          "type": "apply_status",
+          "status_id": "haste",
+          "duration": 1,
+          "target": "self",
+          "resistible": false
+        }
+      ],
+      "mp_cost": 4,
+      "required_sub_race_ids": [
+        "silk_arachne"
       ]
     },
     {

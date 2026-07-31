@@ -450,6 +450,22 @@ class TestCharacterCreation(unittest.TestCase):
         self.window.race_list.select_index(elf_index)
         self.assertIn("Keen Senses", self.window.preview._label.options["text"])
 
+    def test_preview_explains_named_ancestral_and_lineage_techniques(self):
+        human_index = next(
+            index for index, race in enumerate(self.window.race_list._values) if race.id == "human"
+        )
+        self.window.race_list.select_index(human_index)
+        lowlander_index = next(
+            index for index, lineage in enumerate(self.window.sub_race_list._values) if lineage.id == "lowlander"
+        )
+        self.window.sub_race_list.select_index(lowlander_index)
+
+        preview = self.window.preview._label.options["text"]
+        self.assertIn("Adaptive Opening", preview)
+        self.assertIn("Market-Smart Feint", preview)
+        self.assertIn("Ancestral Technique", preview)
+        self.assertIn("Lineage Technique", preview)
+
     def test_gender_switch_requeries_classes(self):
         """Bible section 10: starting classes are gender-restricted."""
         male = {label for label, _ in zip(self.window.class_list.listbox.items, range(99))}

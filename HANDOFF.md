@@ -12,7 +12,7 @@ adds 50 new skills (122 total) including race-specific, class-specific, and
 general utility skills, plus a class perks system giving 66 classes unique
 passive abilities. The promotion framework is complete through tier 4 with
 73 classes, and levels 1–55 content is playable. The full suite contains
-472 tests, organised by boundary under `tests/` (data, logic, integration, UI,
+478 tests, organised by boundary under `tests/` (data, logic, integration, UI,
 and test support).
 
 The next milestone should push into **levels 56–70 content** and **tier 4→5
@@ -44,7 +44,7 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 472 tests
+python3 -m unittest discover -s tests    # 478 tests
 ```
 
 **Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.11.1 are implemented
@@ -175,18 +175,18 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient, now includes `sp` formula and 9 equipment sets) · `skills.json`
-(122 skills with `tags`, `sp_cost`, `required_race_ids`, and `required_class_ids`) · `statuses.json` ·
-`classes.json` (73 classes: 3 starters → 9 tier-2 → 27 tier-3 → 27 tier-4, all with lateral paths and perks) · `items.json`
-(118 items including race-themed gear, set pieces, and promotion keys) · `races.json` (15 races with 35
-sub-races) · `enemies.json` (43 enemies, 6 bosses with phases) · `quests.json` (44 quests including 20 race-specific and 5 level 41-55) · `companions.json` (21 companions
-with genders) · `world.json` (28 NPCs with genders, 10 race-reactive shops, 25 areas including Ironveil faction capital) · `banter.json` (92 entries) · `dialogues.json` (15 branching trees) · `factions.json` (9 factions including Iron Covenant)
+(224 skills with `tags`, `sp_cost`, `required_race_ids`, and `required_sub_race_ids`) · `statuses.json` ·
+`classes.json` (100 classes) · `items.json` (136 items including race-themed gear, set pieces, and promotion keys) ·
+`races.json` (15 races with 57 sub-races; every race and lineage links to a named technique) ·
+`enemies.json` (51 enemies) · `quests.json` (70 quests) · `companions.json` (21 companions
+with genders) · `world.json` (28 NPCs with genders, 12 shops, 30 areas including Ironveil faction capital) · `banter.json` (92 entries) · `dialogues.json` (16 branching trees) · `factions.json` (9 factions including Iron Covenant)
 
 All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 
 ### Tests
 
-The suite has **472 tests** and is organised by the boundary it protects. Read
+The suite has **478 tests** and is organised by the boundary it protects. Read
 [`tests/README.md`](tests/README.md) before adding or moving tests.
 
 | Area | Location | What it protects |
@@ -484,8 +484,9 @@ regions. The following are implemented on the active branch:
 - Five item rarities with data-driven modifier/value scaling.
 - Rarity-aware shop pricing and shop row colors.
 - Nine additional level-1 equipment items in Ashvale Smith stock.
-- Distinct starting racial gifts for all 39 sub-races; the current skill count is
-  162.
+- Named, described ancestry techniques for every race and sub-race. Each
+  character receives their race technique plus their selected lineage technique;
+  the current skill count is 224.
 - Gender-specific Demon sub-races: Succubus is female-only and Incubus is
   male-only, enforced in both GUI and engine validation.
 - Sub-race dialogue conditions and a Succubus/Incubus-specific dialogue branch.
@@ -592,7 +593,7 @@ that existing tests may reference them by id.
 **Content count assertions are fragile.** Several tests check exact counts of
 races, companions, items, classes, skills, quests, and enemies. When adding content, search for
 `assertEqual.*count()` in the test files and update the expected values.
-Currently: 73 classes, 15 races, 21 companions, 118 items, 122 skills, 44 quests, 43 enemies.
+Currently: 100 classes, 15 races / 57 sub-races, 21 companions, 136 items, 224 skills, 70 quests, 51 enemies.
 
 **Verify claims before making them.** The tier-4 error in section 8 came from
 asserting something plausible without running it. If you state a limitation,

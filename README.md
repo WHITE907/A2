@@ -50,7 +50,7 @@ ProjectAscension/
 │   └── screens/         one module per screen
 ├── data/                all gameplay content
 ├── docs/                design notes
-├── tests/               472 tests, grouped by data / logic / integration / UI
+├── tests/               478 tests, grouped by data / logic / integration / UI
 ├── tools/               dev utilities
 └── saves/               JSON save slots (created on first save)
 ```
@@ -230,7 +230,7 @@ testing anything.
 
 ## Testing
 
-472 tests, no third-party dependencies. The suite is grouped by the boundary it
+478 tests, no third-party dependencies. The suite is grouped by the boundary it
 protects; see [`tests/README.md`](tests/README.md) for the layout and the test
 writing guide.
 

@@ -173,8 +173,9 @@ class CombatScreen(tk.Frame):
         for skill in self.app.game.player.usable_skills():
             ok, reason = skill.can_use(self.app.game.player)
             suffix = "" if ok else f"  (unavailable: {reason})"
-            # Add tag for racial gift
-            racial_tag = " [racial]" if skill.id.startswith("racial_") else ""
+            # Clearly mark ancestry techniques without reducing their names to
+            # generic "Race Gift" labels.
+            racial_tag = " [ancestry]" if skill.id.startswith("racial_") else ""
             actions.append((f"{skill.name}{racial_tag} - {skill.cost_text()}{suffix}", skill))
         self.action_list.set_items(actions)
 

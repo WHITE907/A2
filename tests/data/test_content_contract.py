@@ -59,3 +59,77 @@ class TestContentFileContract(unittest.TestCase):
         self.assertGreater(game.classes.count(), 0)
         self.assertGreater(game.skills.count(), 0)
         self.assertGreater(len(game.world_manager.create_world().areas), 0)
+
+
+class TestAncestryPresentationContract(unittest.TestCase):
+    """Every selectable ancestry must have named mechanics and readable lore."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.game = Game(data_dir=DATA_DIR, seed=3031)
+        cls.game.load_content()
+
+    def test_races_and_lineages_have_descriptive_traits(self):
+        for race in self.game.race_options():
+            with self.subTest(race=race.id):
+                self.assertTrue(race.description)
+                self.assertTrue(race.traits)
+                self.assertTrue(all(":" in trait for trait in race.traits))
+            for lineage in race.sub_races:
+                with self.subTest(race=race.id, lineage=lineage.id):
+                    self.assertTrue(lineage.description)
+                    self.assertTrue(lineage.bonus_traits)
+                    self.assertTrue(all(":" in trait for trait in lineage.bonus_traits))
+
+    def test_every_race_and_lineage_has_a_named_gated_technique(self):
+        names: set[str] = set()
+        descriptions: set[str] = set()
+        mechanics: set[str] = set()
+        for race in self.game.race_options():
+            ancestry = self.game.skills.require(race.racial_skill_id)
+            with self.subTest(race=race.id, scope="ancestry"):
+                self.assertFalse(ancestry.required_sub_race_ids)
+                self.assertIn(race.id, ancestry.required_race_ids)
+                self.assertTrue(ancestry.description)
+                self.assertFalse(ancestry.name.endswith(" Gift"))
+            names.add(ancestry.name)
+            descriptions.add(ancestry.description)
+            mechanics.add(
+                json.dumps(
+                    {
+                        "targeting": ancestry.targeting,
+                        "mp_cost": ancestry.mp_cost,
+                        "sp_cost": ancestry.sp_cost,
+                        "cooldown": ancestry.cooldown,
+                        "effects": [effect.describe() for effect in ancestry.effects],
+                    },
+                    sort_keys=True,
+                )
+            )
+
+            for lineage in race.sub_races:
+                technique = self.game.skills.require(lineage.racial_skill_id)
+                with self.subTest(race=race.id, lineage=lineage.id):
+                    self.assertIn(race.id, technique.required_race_ids)
+                    self.assertIn(lineage.id, technique.required_sub_race_ids)
+                    self.assertTrue(technique.description)
+                    self.assertFalse(technique.name.endswith(" Gift"))
+                names.add(technique.name)
+                descriptions.add(technique.description)
+                mechanics.add(
+                    json.dumps(
+                        {
+                            "targeting": technique.targeting,
+                            "mp_cost": technique.mp_cost,
+                            "sp_cost": technique.sp_cost,
+                            "cooldown": technique.cooldown,
+                            "effects": [effect.describe() for effect in technique.effects],
+                        },
+                        sort_keys=True,
+                    )
+                )
+
+        expected_total = sum(1 + len(race.sub_races) for race in self.game.race_options())
+        self.assertEqual(len(names), expected_total)
+        self.assertEqual(len(descriptions), expected_total)
+        self.assertEqual(len(mechanics), expected_total)

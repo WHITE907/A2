@@ -115,7 +115,12 @@ class SkillsWindow(tk.Toplevel):
             return sorted(result, key=lambda s: (s.category, s.name) if mode == "category" else (s.skill_point_cost, s.name) if mode == "cost" else s.name.lower())
 
         known = visible(list(player.usable_skills()) + list(player.passive_skills()))
-        self.known_list.set_items([(f"{s.name}  [{s.category}]" + ("  [racial gift]" if s.id.startswith("racial_") else ""), s) for s in known])
+        self.known_list.set_items(
+            [
+                (f"{skill.name}  [{skill.category}]" + ("  [ancestry]" if skill.id.startswith("racial_") else ""), skill)
+                for skill in known
+            ]
+        )
 
         learnable = visible(game.learnable_skills())
         learnable_items = []
@@ -145,6 +150,8 @@ class SkillsWindow(tk.Toplevel):
             lines.append(f"Requires level {skill.required_level}")
         if getattr(skill, "required_race_ids", None):
             lines.append(f"Restricted to race: {', '.join(skill.required_race_ids)}")
+        if getattr(skill, "required_sub_race_ids", None):
+            lines.append(f"Restricted to lineage: {', '.join(skill.required_sub_race_ids)}")
         if getattr(skill, "required_class_ids", None):
             lines.append(f"Restricted to class: {', '.join(skill.required_class_ids)}")
         for track, rank in skill.required_mastery.items():

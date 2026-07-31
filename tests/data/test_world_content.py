@@ -112,7 +112,7 @@ class TestExpandedContent(unittest.TestCase):
 
     def test_new_content_volume(self):
         self.assertGreaterEqual(self.game.enemies.count(), 43)
-        self.assertGreaterEqual(self.game.skills.count(), 162)
+        self.assertGreaterEqual(self.game.skills.count(), 224)
         self.assertGreaterEqual(self.game.items.count(), 127)
         self.assertGreaterEqual(self.game.companions.count(), 21)
 
