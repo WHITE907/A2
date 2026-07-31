@@ -670,6 +670,19 @@ class TestInventoryEquipmentSkillsStatus(unittest.TestCase):
         for expected in ("Name:", "Level:", "HP:", "STR:"):
             self.assertIn(expected, text)
 
+    def test_status_window_displays_mastery_track_objects_after_refresh(self):
+        """Mastery tracks are objects, so opening and refreshing Status must not unpack them."""
+        player = self.app.game.player
+        player.mastery.gain("sword", 100)
+        player.unspent_stat_points = 1
+
+        window = self.app.open_status()
+        self.assertIn("Sword: E (100 EXP)", window.mastery_label.options["text"])
+
+        window.allocate_buttons["STR"].invoke()
+        self.assertEqual(player.unspent_stat_points, 0)
+        self.assertIn("Sword: E (100 EXP)", window.mastery_label.options["text"])
+
     def test_stat_allocation_buttons_follow_available_points(self):
         window = self.app.open_status()
         self.assertEqual(window.allocate_buttons["STR"].options["state"], tk.DISABLED)

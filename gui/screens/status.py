@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import tkinter as tk
 
-from engine.stats import PRIMARY_STATS, PRIMARY_STAT_NAMES, DERIVED_STATS
+from engine.stats import PRIMARY_STATS, PRIMARY_STAT_NAMES
 from gui import theme
 
 __all__ = ["StatusWindow"]
@@ -216,10 +216,9 @@ class StatusWindow(tk.Toplevel):
         ]
         self.combat_label.configure(text="\n".join(combat_lines))
 
-        # 4. Mastery tracks
-        mastery_lines = []
-        for track_id, (rank, exp) in sorted(player.mastery.tracks.items()):
-            mastery_lines.append(f"  • {track_id.replace('_', ' ').title()}: Rank {rank} ({exp:.0f} EXP)")
+        # 4. Mastery tracks.  Tracks are MasteryTrack objects, not
+        # ``(rank, exp)`` tuples; the engine owns rank/progress formatting.
+        mastery_lines = [f"  • {line}" for line in player.mastery.display_lines()]
         if not mastery_lines:
             mastery_lines.append("  No mastery progression yet.")
         self.mastery_label.configure(text="\n".join(mastery_lines))
