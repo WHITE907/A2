@@ -2,10 +2,14 @@
 from __future__ import annotations
 import unittest
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from engine.game import Game
 from engine.skills.effects import build_effect
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 class TestElementalAndPerksIntegration(unittest.TestCase):
     def setUp(self):

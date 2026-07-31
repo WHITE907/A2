@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import tkinter as tk
 
-from engine.stats import PRIMARY_STATS, PRIMARY_STAT_NAMES, DERIVED_STATS
+from engine.stats import PRIMARY_STATS, PRIMARY_STAT_NAMES
 from gui import theme
+from gui.widgets import ScrollableFrame
 
 __all__ = ["StatusWindow"]
 
@@ -21,43 +22,15 @@ class StatusWindow(tk.Toplevel):
         theme.center_window(self, 720, 720)
         self.transient(app.root)
 
-        # Main container with canvas + scrollbar
-        container = tk.Frame(self, bg=theme.BG)
-        container.pack(fill=tk.BOTH, expand=True)
-
-        self.canvas = tk.Canvas(container, bg=theme.BG, highlightthickness=0)
-        scrollbar = tk.Scrollbar(container, orient="vertical", command=self.canvas.yview, relief=tk.FLAT, borderwidth=0)
-        
-        self.scrollable_frame = tk.Frame(self.canvas, bg=theme.BG, padx=20, pady=16)
-
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        )
-
-        self.canvas_window = self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-
-        def _on_canvas_configure(event):
-            self.canvas.itemconfig(self.canvas_window, width=event.width)
-        self.canvas.bind("<Configure>", _on_canvas_configure)
-
-        self.canvas.configure(yscrollcommand=scrollbar.set)
-
-        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-        # Mousewheel support
-        def _on_mousewheel(event):
-            if event.delta:
-                self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-            else:
-                if event.num == 4:
-                    self.canvas.yview_scroll(-1, "units")
-                elif event.num == 5:
-                    self.canvas.yview_scroll(1, "units")
-        
-        self.canvas.bind("<MouseWheel>", _on_mousewheel)
-        self.scrollable_frame.bind("<MouseWheel>", _on_mousewheel)
+        # The character sheet can grow substantially with perks, traits, and
+        # set bonuses, so it uses the same reusable scrollable page shell as
+        # every other long-form window.
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=20, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        # Keep these aliases for integrations that previously reached the
+        # Status canvas/content directly.
+        self.canvas = self.viewport.canvas
+        self.scrollable_frame = self.viewport.content
 
         self._build_ui()
         self.refresh()
@@ -72,38 +45,38 @@ class StatusWindow(tk.Toplevel):
 
         # 1. Overview Card
         self.overview_card = self._create_card(frame, "Overview")
-        self.overview_label = tk.Label(self.overview_card, bg=theme.BG_ALT, fg=theme.FG, font=theme.FONT_BODY, justify=tk.LEFT, anchor="w")
+        self.overview_label = tk.Label(self.overview_card, bg=theme.PANEL_BG, fg=theme.FG, font=theme.FONT_BODY, justify=tk.LEFT, anchor="w")
         self.overview_label.pack(fill=tk.BOTH, padx=14, pady=10)
 
         # 2. Primary Stats Card (Grid with colored bonuses)
         self.primary_card = self._create_card(frame, "Primary Attributes (Breakdown)")
-        self.primary_container = tk.Frame(self.primary_card, bg=theme.BG_ALT, padx=14, pady=10)
+        self.primary_container = tk.Frame(self.primary_card, bg=theme.PANEL_BG, padx=14, pady=10)
         self.primary_container.pack(fill=tk.BOTH, expand=True)
 
         # 3. Combat / Derived Stats Card
         self.combat_card = self._create_card(frame, "Combat Performance")
-        self.combat_label = tk.Label(self.combat_card, bg=theme.BG_ALT, fg=theme.FG, font=theme.FONT_MONO, justify=tk.LEFT, anchor="w")
+        self.combat_label = tk.Label(self.combat_card, bg=theme.PANEL_BG, fg=theme.FG, font=theme.FONT_MONO, justify=tk.LEFT, anchor="w")
         self.combat_label.pack(fill=tk.BOTH, padx=14, pady=10)
 
         # 4. Mastery Card
         self.mastery_card = self._create_card(frame, "Mastery Tracks")
-        self.mastery_label = tk.Label(self.mastery_card, bg=theme.BG_ALT, fg=theme.FG, font=theme.FONT_BODY, justify=tk.LEFT, anchor="w")
+        self.mastery_label = tk.Label(self.mastery_card, bg=theme.PANEL_BG, fg=theme.FG, font=theme.FONT_BODY, justify=tk.LEFT, anchor="w")
         self.mastery_label.pack(fill=tk.BOTH, padx=14, pady=10)
 
         # 5. Perks & Traits Card
         self.perks_card = self._create_card(frame, "Perks, Traits & Set Bonuses")
-        self.perks_label = tk.Label(self.perks_card, bg=theme.BG_ALT, fg=theme.FG, font=theme.FONT_SMALL, justify=tk.LEFT, anchor="w")
+        self.perks_label = tk.Label(self.perks_card, bg=theme.PANEL_BG, fg=theme.FG, font=theme.FONT_SMALL, justify=tk.LEFT, anchor="w")
         self.perks_label.pack(fill=tk.BOTH, padx=14, pady=10)
 
         # 6. Stat Point Allocation Card
         alloc_card = self._create_card(frame, "Stat Point Allocation")
-        alloc_inner = tk.Frame(alloc_card, bg=theme.BG_ALT, padx=14, pady=12)
+        alloc_inner = tk.Frame(alloc_card, bg=theme.PANEL_BG, padx=14, pady=12)
         alloc_inner.pack(fill=tk.BOTH, expand=True)
 
-        self.points_label = theme.body_label(alloc_inner, text="", fg=theme.FG_DIM, bg=theme.BG_ALT)
+        self.points_label = theme.body_label(alloc_inner, text="", fg=theme.FG_DIM, bg=theme.PANEL_BG)
         self.points_label.pack(anchor="w", pady=(0, 8))
 
-        btn_row = tk.Frame(alloc_inner, bg=theme.BG_ALT)
+        btn_row = tk.Frame(alloc_inner, bg=theme.PANEL_BG)
         btn_row.pack(fill=tk.X)
         self.allocate_buttons: dict[str, tk.Button] = {}
         for stat in PRIMARY_STATS:
@@ -122,14 +95,14 @@ class StatusWindow(tk.Toplevel):
         theme.flat_button(close_frame, "Close", self._close, width=12).pack(side=tk.RIGHT)
 
     def _create_card(self, parent: tk.Widget, title: str) -> tk.Frame:
-        card = tk.Frame(parent, bg=theme.BG_ALT, highlightthickness=1, highlightbackground="#2c3242")
+        card = tk.Frame(parent, bg=theme.PANEL_BG, highlightthickness=1, highlightbackground=theme.BORDER)
         card.pack(fill=tk.X, pady=(0, 14))
         
-        header = tk.Frame(card, bg=theme.BG_ALT, padx=14, pady=8)
+        header = tk.Frame(card, bg=theme.PANEL_BG, padx=14, pady=8)
         header.pack(fill=tk.X)
-        theme.heading_label(header, text=title, fg="#f0d060", font=(theme._SANS, 11, "bold"), bg=theme.BG_ALT).pack(anchor="w")
+        theme.heading_label(header, text=title, fg=theme.ACCENT_TEXT, font=(theme._SANS, 11, "bold"), bg=theme.PANEL_BG).pack(anchor="w")
         
-        div = tk.Frame(card, bg="#2c3242", height=1)
+        div = tk.Frame(card, bg=theme.BORDER, height=1)
         div.pack(fill=tk.X)
         return card
 
@@ -168,10 +141,10 @@ class StatusWindow(tk.Toplevel):
 
         # Header row for primary attributes grid
         headers = ["Attribute", "Base", "Gear", "Traits", "Perks", "Total"]
-        header_row = tk.Frame(self.primary_container, bg=theme.BG_ALT)
+        header_row = tk.Frame(self.primary_container, bg=theme.PANEL_BG)
         header_row.pack(fill=tk.X, pady=(0, 4))
         for h in headers:
-            tk.Label(header_row, text=h, bg=theme.BG_ALT, fg=theme.FG_DIM, font=(theme._SANS, 9, "bold"), width=10, anchor="w").pack(side=tk.LEFT)
+            tk.Label(header_row, text=h, bg=theme.PANEL_BG, fg=theme.FG_DIM, font=(theme._SANS, 9, "bold"), width=10, anchor="w").pack(side=tk.LEFT)
 
         effective_pri = player.effective_primaries()
         base_pri = player.base_stats
@@ -181,7 +154,7 @@ class StatusWindow(tk.Toplevel):
         trait_mods = player.race_def.combined_modifiers(player.sub_race_id)
 
         for stat in PRIMARY_STATS:
-            row = tk.Frame(self.primary_container, bg=theme.BG_ALT)
+            row = tk.Frame(self.primary_container, bg=theme.PANEL_BG)
             row.pack(fill=tk.X, pady=2)
 
             name = PRIMARY_STAT_NAMES.get(stat, stat)
@@ -195,12 +168,12 @@ class StatusWindow(tk.Toplevel):
             if perk_val < 0:
                 perk_val = 0.0
 
-            tk.Label(row, text=f"{stat} ({name})", bg=theme.BG_ALT, fg=theme.FG, font=theme.FONT_BODY, width=12, anchor="w").pack(side=tk.LEFT)
-            tk.Label(row, text=f"{base_val:.0f}", bg=theme.BG_ALT, fg=theme.FG, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
-            tk.Label(row, text=f"{gear_val:+g}" if gear_val else "-", bg=theme.BG_ALT, fg="#5da9e9" if gear_val else theme.FG_DIM, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
-            tk.Label(row, text=f"{trait_val:+g}" if trait_val else "-", bg=theme.BG_ALT, fg="#b678e5" if trait_val else theme.FG_DIM, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
-            tk.Label(row, text=f"{perk_val:+g}" if perk_val else "-", bg=theme.BG_ALT, fg="#f0d060" if perk_val else theme.FG_DIM, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
-            tk.Label(row, text=f"{total_val:.0f}", bg=theme.BG_ALT, fg="#7fc98a", font=(theme._SANS, 10, "bold"), width=8, anchor="w").pack(side=tk.LEFT)
+            tk.Label(row, text=f"{stat} ({name})", bg=theme.PANEL_BG, fg=theme.FG, font=theme.FONT_BODY, width=12, anchor="w").pack(side=tk.LEFT)
+            tk.Label(row, text=f"{base_val:.0f}", bg=theme.PANEL_BG, fg=theme.FG, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
+            tk.Label(row, text=f"{gear_val:+g}" if gear_val else "-", bg=theme.PANEL_BG, fg="#5da9e9" if gear_val else theme.FG_DIM, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
+            tk.Label(row, text=f"{trait_val:+g}" if trait_val else "-", bg=theme.PANEL_BG, fg="#b678e5" if trait_val else theme.FG_DIM, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
+            tk.Label(row, text=f"{perk_val:+g}" if perk_val else "-", bg=theme.PANEL_BG, fg=theme.ACCENT_TEXT if perk_val else theme.FG_DIM, font=theme.FONT_BODY, width=8, anchor="w").pack(side=tk.LEFT)
+            tk.Label(row, text=f"{total_val:.0f}", bg=theme.PANEL_BG, fg="#7fc98a", font=(theme._SANS, 10, "bold"), width=8, anchor="w").pack(side=tk.LEFT)
 
         # 3. Combat derived stats
         derived = player.derived_stats()
@@ -216,10 +189,9 @@ class StatusWindow(tk.Toplevel):
         ]
         self.combat_label.configure(text="\n".join(combat_lines))
 
-        # 4. Mastery tracks
-        mastery_lines = []
-        for track_id, (rank, exp) in sorted(player.mastery.tracks.items()):
-            mastery_lines.append(f"  • {track_id.replace('_', ' ').title()}: Rank {rank} ({exp:.0f} EXP)")
+        # 4. Mastery tracks.  Tracks are MasteryTrack objects, not
+        # ``(rank, exp)`` tuples; the engine owns rank/progress formatting.
+        mastery_lines = [f"  • {line}" for line in player.mastery.display_lines()]
         if not mastery_lines:
             mastery_lines.append("  No mastery progression yet.")
         self.mastery_label.configure(text="\n".join(mastery_lines))

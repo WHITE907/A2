@@ -31,7 +31,10 @@ class WorldManager:
         payload = self._loader.load_mapping(self.WORLD_FILE, required=True)
 
         for entry in payload.get("areas", []):
-            area = Area.from_dict(entry)
+            try:
+                area = Area.from_dict(entry)
+            except ValueError as exc:
+                raise ContentError(f"{self.WORLD_FILE}: {exc}") from exc
             if area.id in self._areas:
                 raise ContentError(f"duplicate area id {area.id!r} in {self.WORLD_FILE}")
             self._areas[area.id] = area
@@ -60,7 +63,12 @@ class WorldManager:
         from the travel list, which reads as a bug in the GUI rather than a
         typo in content.
         """
+        action_ids: set[str] = set()
         for area in self._areas.values():
+            for action in area.ancestry_actions:
+                if action.id in action_ids:
+                    raise ContentError(f"duplicate ancestry action id {action.id!r} in {self.WORLD_FILE}")
+                action_ids.add(action.id)
             for target in area.connections:
                 if target not in self._areas:
                     raise ContentError(f"area {area.id!r} connects to unknown area {target!r}")

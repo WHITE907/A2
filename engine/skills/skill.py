@@ -10,7 +10,7 @@ shared, ultimate.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Iterable, Mapping, Sequence
 
 from engine.skills.effects import Effect, EffectContext, EffectResult, build_effects
@@ -114,11 +114,18 @@ class Skill:
     required_mastery: dict[str, str] = field(default_factory=dict)
     prerequisites: list[str] = field(default_factory=list)
     required_race_ids: list[str] = field(default_factory=list)
+    #: Optional lineage gate, used by sub-race techniques.
+    required_sub_race_ids: list[str] = field(default_factory=list)
     #: Mastery track this skill trains when used (e.g. ``"sword"``).
     mastery_track: str = ""
     icon: str = ""
     #: Skill tags for categorization and resource determination (e.g. "physical", "magical", "fire")
     tags: list[str] = field(default_factory=list)
+    #: Ordered, data-defined ancestry milestones. Regular skills leave this empty.
+    ancestry_upgrade_tiers: tuple[dict[str, Any], ...] = ()
+    #: Presentation-only state set on an effective upgraded copy.
+    upgrade_label: str = ""
+    upgrade_description: str = ""
 
     # ------------------------------------------------------------------
     # Classification
@@ -153,6 +160,51 @@ class Skill:
     def is_hybrid(self) -> bool:
         """True if tagged as both physical and magical."""
         return self.is_physical and self.is_magical
+
+    def effective_for(
+        self,
+        level: int,
+        completed_quests: Iterable[str] = (),
+        flags: Mapping[str, Any] | None = None,
+    ) -> "Skill":
+        """Return this ancestry technique at its earned heritage milestones.
+
+        Skill definitions remain shared immutable content.  Instead of mutating
+        the learned base instance, this creates a lightweight copy with every
+        eligible tier's additional effects.  A chapter-two path can add a
+        branch-specific effect through ``path_flag``/``path_add_effects``.
+        Cooldowns still use the same skill id, so upgrading cannot reset one.
+        """
+        completed = set(completed_quests)
+        flags = flags or {}
+        eligible: list[Mapping[str, Any]] = []
+        for tier in self.ancestry_upgrade_tiers:
+            min_level = int(tier.get("min_level", 1))
+            quest_id = str(tier.get("required_quest_id", ""))
+            if level >= min_level and (not quest_id or quest_id in completed):
+                eligible.append(tier)
+        if not eligible:
+            return self
+
+        added_effects = []
+        for tier in eligible:
+            added_effects.extend(build_effects(tier.get("add_effects")))
+            path_flag = str(tier.get("path_flag", ""))
+            path_value = flags.get(path_flag) if path_flag else None
+            if path_value:
+                path_effects = (tier.get("path_add_effects") or {}).get(str(path_value), [])
+                added_effects.extend(build_effects(path_effects))
+
+        chosen = eligible[-1]
+        label = str(chosen.get("name", "Awakened"))
+        description = str(chosen.get("description", ""))
+        return replace(
+            self,
+            name=f"{self.name} — {label}",
+            effects=[*self.effects, *added_effects],
+            upgrade_label=label,
+            upgrade_description=description,
+        )
 
     # ------------------------------------------------------------------
     # Targeting
@@ -275,6 +327,10 @@ class Skill:
             lines.append(f"Tags: {', '.join(t.title() for t in self.tags)}")
         if self.description:
             lines.append(self.description)
+        if self.upgrade_label:
+            lines.append(f"Ancestry Rank: {self.upgrade_label}")
+        if self.upgrade_description:
+            lines.append(self.upgrade_description)
         lines.append(self.cost_text())
         lines.extend(f"- {line}" for line in self.effect_lines())
         if self.required_weapon_types:
@@ -298,6 +354,31 @@ class Skill:
         if targeting not in SkillTargeting.ALL:
             raise ValueError(f"skill {skill_id!r} has unknown targeting {targeting!r}")
 
+        raw_ancestry_tiers = payload.get("ancestry_upgrade_tiers", [])
+        if not isinstance(raw_ancestry_tiers, list) or any(not isinstance(tier, Mapping) for tier in raw_ancestry_tiers):
+            raise ValueError(f"skill {skill_id!r} ancestry_upgrade_tiers must be a list of mappings")
+        previous_level = 0
+        for tier in raw_ancestry_tiers:
+            min_level = int(tier.get("min_level", 1))
+            if min_level < 1 or min_level <= previous_level:
+                raise ValueError(f"skill {skill_id!r} ancestry upgrade tiers must have rising positive min_level values")
+            previous_level = min_level
+            if not str(tier.get("name", "")).strip():
+                raise ValueError(f"skill {skill_id!r} ancestry upgrade tier is missing a name")
+            add_effects = tier.get("add_effects", [])
+            if not isinstance(add_effects, list):
+                raise ValueError(f"skill {skill_id!r} ancestry upgrade add_effects must be a list")
+            # Build once during loading so malformed milestone effects fail at
+            # startup instead of the first time somebody reaches the tier.
+            build_effects(add_effects)
+            path_effects = tier.get("path_add_effects", {})
+            if not isinstance(path_effects, Mapping):
+                raise ValueError(f"skill {skill_id!r} ancestry path_add_effects must be a mapping")
+            for effects in path_effects.values():
+                if not isinstance(effects, list):
+                    raise ValueError(f"skill {skill_id!r} ancestry path effects must be lists")
+                build_effects(effects)
+
         return cls(
             id=skill_id,
             name=str(payload.get("name", skill_id)),
@@ -317,7 +398,9 @@ class Skill:
             required_mastery={str(k): str(v) for k, v in (payload.get("required_mastery") or {}).items()},
             prerequisites=[str(v) for v in payload.get("prerequisites", [])],
             required_race_ids=[str(v).lower() for v in payload.get("required_race_ids", [])],
+            required_sub_race_ids=[str(v).lower() for v in payload.get("required_sub_race_ids", [])],
             mastery_track=str(payload.get("mastery_track", "")),
             icon=str(payload.get("icon", "")),
             tags=[str(t).lower() for t in payload.get("tags", [])],
+            ancestry_upgrade_tiers=tuple(dict(tier) for tier in raw_ancestry_tiers),
         )

@@ -5,7 +5,7 @@ from __future__ import annotations
 import tkinter as tk
 
 from gui import theme
-from gui.widgets import ButtonStack, StatPanel
+from gui.widgets import ButtonStack, ScrollableFrame, StatPanel
 
 
 class DialogueWindow(tk.Toplevel):
@@ -13,11 +13,13 @@ class DialogueWindow(tk.Toplevel):
         super().__init__(app.root, bg=theme.BG)
         self.app = app
         self.tree_id = tree_id
-        theme.style_window(self, "Story")
+        theme.style_window(self, "Project Ascension - Story")
         theme.center_window(self, 620, 480)
+        self.transient(app.root)
 
-        self.body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        self.body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        self.body = self.viewport.content
         self.text = StatPanel(self.body, title="Conversation", wrap=560)
         self.text.pack(fill=tk.BOTH, expand=True)
         self.options = ButtonStack(self.body, spacing=6)
@@ -38,4 +40,4 @@ class DialogueWindow(tk.Toplevel):
                 ),
             )
         if not view.get("options"):
-            self.options.add("close", "Close", self.destroy)
+            self.options.add("close", "Close", lambda: self.app.close_toplevel("dialogue"))

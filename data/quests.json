@@ -659,12 +659,11 @@
       "name": "The Blood Debt",
       "description": "Gruk Ironjaw tells you of a blood debt owed to his clan. You must defeat the bandits who wronged them.",
       "min_level": 8,
-      "giver_id": "gruk_ironjaw",
+      "giver_id": "thrakk_warbringer",
       "start_area_id": "old_road",
       "turn_in_area_id": "old_road",
       "required_race_ids": [
-        "orc",
-        "half_orc"
+        "orc"
       ],
       "objectives": [
         {
@@ -688,12 +687,11 @@
       "name": "The War Song",
       "description": "An orc elder asks you to prove your strength in the arena, earning the right to sing the war song.",
       "min_level": 15,
-      "giver_id": "gruk_ironjaw",
+      "giver_id": "thrakk_warbringer",
       "start_area_id": "old_road",
       "turn_in_area_id": "old_road",
       "required_race_ids": [
-        "orc",
-        "half_orc"
+        "orc"
       ],
       "objectives": [
         {
@@ -717,7 +715,7 @@
       "name": "The Grand Invention",
       "description": "Pip Sprocket needs rare components for a device that will revolutionise travel. Gather the parts!",
       "min_level": 12,
-      "giver_id": "pip_sprocket",
+      "giver_id": "cogsworth_tinkerton",
       "start_area_id": "town_emberwatch",
       "turn_in_area_id": "town_emberwatch",
       "required_race_ids": [
@@ -750,7 +748,7 @@
       "name": "Controlled Demolition",
       "description": "Pip's latest invention has gone haywire in the mines. Shut it down before it brings the ceiling down!",
       "min_level": 18,
-      "giver_id": "pip_sprocket",
+      "giver_id": "cogsworth_tinkerton",
       "start_area_id": "town_emberwatch",
       "turn_in_area_id": "town_emberwatch",
       "required_race_ids": [
@@ -778,7 +776,7 @@
       "name": "The Great Pie Contest",
       "description": "Rose Underhill challenges you to gather the finest ingredients for the annual halfling pie contest.",
       "min_level": 5,
-      "giver_id": "rose_underhill",
+      "giver_id": "butterbur_goodbody",
       "start_area_id": "town_ashvale",
       "turn_in_area_id": "town_ashvale",
       "required_race_ids": [
@@ -811,7 +809,7 @@
       "name": "The Uninvited Guest",
       "description": "A halfling thief has stolen from the community. Track them down and recover the goods.",
       "min_level": 10,
-      "giver_id": "rose_underhill",
+      "giver_id": "butterbur_goodbody",
       "start_area_id": "town_ashvale",
       "turn_in_area_id": "town_ashvale",
       "required_race_ids": [
@@ -839,9 +837,9 @@
       "name": "Elemental Heritage",
       "description": "Ember Skysong asks you to commune with the elemental planes at four sacred sites.",
       "min_level": 22,
-      "giver_id": "ember_skysong",
-      "start_area_id": "town_emberwatch",
-      "turn_in_area_id": "town_emberwatch",
+      "giver_id": "zephyr_stormcaller",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
       "required_race_ids": [
         "genasi"
       ],
@@ -872,9 +870,9 @@
       "name": "The Storm Calling",
       "description": "A genasi elder asks you to calm a raging elemental storm threatening Skyreach.",
       "min_level": 30,
-      "giver_id": "ember_skysong",
-      "start_area_id": "town_emberwatch",
-      "turn_in_area_id": "town_emberwatch",
+      "giver_id": "zephyr_stormcaller",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
       "required_race_ids": [
         "genasi"
       ],
@@ -900,7 +898,7 @@
       "name": "The Mountain's Test",
       "description": "Korrath Peaks challenges you to survive the mountain's trials \u2014 a test of endurance and will.",
       "min_level": 25,
-      "giver_id": "korrath_peaks",
+      "giver_id": "granite_heart",
       "start_area_id": "town_stonehaven",
       "turn_in_area_id": "town_stonehaven",
       "required_race_ids": [
@@ -933,7 +931,7 @@
       "name": "The Reckoning",
       "description": "Among goliaths, every deed is scored. Prove your worth by defeating the strongest foes in the land.",
       "min_level": 35,
-      "giver_id": "korrath_peaks",
+      "giver_id": "granite_heart",
       "start_area_id": "town_stonehaven",
       "turn_in_area_id": "town_stonehaven",
       "required_race_ids": [
@@ -961,7 +959,7 @@
       "name": "The Lost Library",
       "description": "Sythia Coils asks you to recover three ancient tomes from the Drowned Archive.",
       "min_level": 20,
-      "giver_id": "sythia_coils",
+      "giver_id": "ophidia_scalesinger",
       "start_area_id": "hollow_cave",
       "turn_in_area_id": "hollow_cave",
       "required_race_ids": [
@@ -994,7 +992,7 @@
       "name": "The Serpent's Memory",
       "description": "An ancient lamia asks you to visit the places where her kind once ruled, recovering lost history.",
       "min_level": 30,
-      "giver_id": "sythia_coils",
+      "giver_id": "ophidia_scalesinger",
       "start_area_id": "hollow_cave",
       "turn_in_area_id": "hollow_cave",
       "required_race_ids": [
@@ -1027,7 +1025,7 @@
       "name": "Threads of Fate",
       "description": "Nethys Websong asks you to gather silk from three ancient spider nests to weave a tapestry of prophecy.",
       "min_level": 18,
-      "giver_id": "nethys_websong",
+      "giver_id": "spinner_fateweaver",
       "start_area_id": "mosswood",
       "turn_in_area_id": "mosswood",
       "required_race_ids": [
@@ -1055,7 +1053,7 @@
       "name": "The Great Hunt",
       "description": "An arachne elder challenges you to prove your hunting prowess by defeating the most dangerous prey.",
       "min_level": 28,
-      "giver_id": "nethys_websong",
+      "giver_id": "spinner_fateweaver",
       "start_area_id": "mosswood",
       "turn_in_area_id": "mosswood",
       "required_race_ids": [
@@ -1892,6 +1890,1441 @@
         "items": {
           "elven_bow": 1
         }
+      }
+    },
+    {
+      "id": "heritage_human_awakening",
+      "name": "The Open Road",
+      "description": "Mara asks you to learn what ordinary people on the road need before deciding what being human means to you.",
+      "min_level": 5,
+      "giver_id": "innkeeper_mara",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "human"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "greenfields",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "grey_wolf",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_human_choice",
+      "name": "The Common Accord",
+      "description": "At the old milestones, choose whether your heritage is defined by community or self-reliance.",
+      "min_level": 25,
+      "giver_id": "innkeeper_mara",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "human"
+      ],
+      "required_companion_id": "rook",
+      "prerequisite_quest_ids": [
+        "heritage_human_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "old_road",
+          "quantity": 1
+        },
+        {
+          "kind": "travel_with_companion",
+          "target_id": "rook",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_human_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_human_ascension",
+      "name": "A Thousand Voices",
+      "description": "Return to an ancient shrine and bind the many lessons of humanity into a single deliberate path.",
+      "min_level": 40,
+      "giver_id": "innkeeper_mara",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "human"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_human_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "sunken_shrine",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_human_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_elf_awakening",
+      "name": "The First Star",
+      "description": "Elder Amariel sends you to recover a fragment of the song that once guided elven travellers through living woods.",
+      "min_level": 18,
+      "giver_id": "elder_amariel",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "elf"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "mosswood",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "thorn_stalker",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_elf_choice",
+      "name": "The Memory Grove",
+      "description": "In the drowned archive, decide whether memory must be preserved exactly or allowed to change with the living.",
+      "min_level": 25,
+      "giver_id": "elder_amariel",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "elf"
+      ],
+      "required_companion_id": "lethira_vale",
+      "prerequisite_quest_ids": [
+        "heritage_elf_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "drowned_archive",
+          "quantity": 1
+        },
+        {
+          "kind": "travel_with_companion",
+          "target_id": "lethira_vale",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_elf_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_elf_ascension",
+      "name": "The Song Beyond",
+      "description": "Sing the recovered fragment beneath the cloud ruins and let it become more than an echo of the past.",
+      "min_level": 40,
+      "giver_id": "elder_amariel",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "elf"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_elf_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "cloud_ruins",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_elf_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_half_elf_awakening",
+      "name": "Two Lanterns",
+      "description": "Scholar Iven asks you to collect stories from the road where both sides of a divided family once travelled.",
+      "min_level": 5,
+      "giver_id": "scholar_iven",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "half_elf"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "old_road",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "bandit",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_half_elf_choice",
+      "name": "The Bridge Unchosen",
+      "description": "At Emberwatch\u2019s old bridge, choose whether you honour inheritance or build a third path between it.",
+      "min_level": 25,
+      "giver_id": "scholar_iven",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "half_elf"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_half_elf_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "town_emberwatch",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_half_elf_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_half_elf_ascension",
+      "name": "A Name of Your Own",
+      "description": "At the cloud ruins, speak the name you have chosen for yourself into the open sky.",
+      "min_level": 40,
+      "giver_id": "scholar_iven",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "half_elf"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_half_elf_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "cloud_ruins",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_half_elf_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_dwarf_awakening",
+      "name": "The Sleeping Vein",
+      "description": "Thane Dorrim hears a buried vein singing beneath the mines and asks you to prove it is not a warning.",
+      "min_level": 18,
+      "giver_id": "thane_dorrim",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
+      "required_race_ids": [
+        "dwarf"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "crystal_mines",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "crystal_beetle",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_dwarf_choice",
+      "name": "The Hammer's Measure",
+      "description": "At the Red Pass forge-stones, choose whether tradition or invention should shape the next generation of craft.",
+      "min_level": 25,
+      "giver_id": "thane_dorrim",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
+      "required_race_ids": [
+        "dwarf"
+      ],
+      "required_companion_id": "brokk_embervein",
+      "prerequisite_quest_ids": [
+        "heritage_dwarf_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "red_pass",
+          "quantity": 1
+        },
+        {
+          "kind": "travel_with_companion",
+          "target_id": "brokk_embervein",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_dwarf_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_dwarf_ascension",
+      "name": "Hall of the First Forge",
+      "description": "At the Obsidian Gate, awaken the memory of the first forge without repeating its oldest mistakes.",
+      "min_level": 40,
+      "giver_id": "thane_dorrim",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
+      "required_race_ids": [
+        "dwarf"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_dwarf_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_dwarf_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_dragonkin_awakening",
+      "name": "Ember of the First Scale",
+      "description": "Keth sends you to the storm plateau to recover proof that dragonkin blood is more than a claim of old power.",
+      "min_level": 18,
+      "giver_id": "keth_cloudscar",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "dragonkin"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "storm_plateau",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "storm_harpy",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_dragonkin_choice",
+      "name": "The Oath Reforged",
+      "description": "Among the cloud ruins, choose whether your draconic oath is service to a brood or mastery of yourself.",
+      "min_level": 25,
+      "giver_id": "keth_cloudscar",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "dragonkin"
+      ],
+      "required_companion_id": "rhazek_dawnscale",
+      "prerequisite_quest_ids": [
+        "heritage_dragonkin_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "cloud_ruins",
+          "quantity": 1
+        },
+        {
+          "kind": "travel_with_companion",
+          "target_id": "rhazek_dawnscale",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_dragonkin_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_dragonkin_ascension",
+      "name": "The Skybound Crown",
+      "description": "Face the Obsidian Gate and turn inherited pride into an oath you can actually uphold.",
+      "min_level": 40,
+      "giver_id": "keth_cloudscar",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "dragonkin"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_dragonkin_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_dragonkin_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_demon_awakening",
+      "name": "Ashes of the Blood Court",
+      "description": "Mother Sable asks you to recover a sealed ash-token before the marsh consumes its last witness.",
+      "min_level": 18,
+      "giver_id": "mother_sable",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "demon"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "glassmarsh",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "marsh_serpent",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_demon_choice",
+      "name": "The Price of Fire",
+      "description": "At the drowned archive, choose whether infernal power is a debt to collect or a burden to carry.",
+      "min_level": 25,
+      "giver_id": "mother_sable",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "demon"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_demon_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "drowned_archive",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_demon_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_demon_ascension",
+      "name": "The Unburning Name",
+      "description": "At the Obsidian Gate, strip an inherited title of its power and decide what remains beneath it.",
+      "min_level": 40,
+      "giver_id": "mother_sable",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "demon"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_demon_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_demon_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_tiefling_awakening",
+      "name": "The Inherited Spark",
+      "description": "Pell needs a fragment from the Sunken Shrine to prove your planar blood can be studied without being exploited.",
+      "min_level": 18,
+      "giver_id": "alchemist_pell",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "tiefling"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "sunken_shrine",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "dark_acolyte",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_tiefling_choice",
+      "name": "A Pact Rewritten",
+      "description": "At the glassmarsh mirrors, choose whether to amend your inherited pact or leave every promise unanswered.",
+      "min_level": 25,
+      "giver_id": "alchemist_pell",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "tiefling"
+      ],
+      "required_companion_id": "veyra_ashhorn",
+      "prerequisite_quest_ids": [
+        "heritage_tiefling_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "glassmarsh",
+          "quantity": 1
+        },
+        {
+          "kind": "travel_with_companion",
+          "target_id": "veyra_ashhorn",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_tiefling_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_tiefling_ascension",
+      "name": "The Door Between",
+      "description": "At the Obsidian Gate, close the door others opened in your name\u2014or walk through it on your own terms.",
+      "min_level": 40,
+      "giver_id": "alchemist_pell",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "tiefling"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_tiefling_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_tiefling_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_beastkin_awakening",
+      "name": "The Scent of Home",
+      "description": "Siv asks you to follow an old migration scent through Mosswood before it is lost beneath new roads.",
+      "min_level": 10,
+      "giver_id": "siv_quickpaw",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "beastkin"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "mosswood",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "mossback_boar",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_beastkin_choice",
+      "name": "The Pack's Promise",
+      "description": "In the Glassmarsh, choose whether your instincts are strongest in a pack or in the freedom to roam alone.",
+      "min_level": 25,
+      "giver_id": "siv_quickpaw",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "beastkin"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_beastkin_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "glassmarsh",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_beastkin_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_beastkin_ascension",
+      "name": "The Unfenced Wild",
+      "description": "At the Obsidian Gate, claim a wild path that no fence, banner, or hunter can close.",
+      "min_level": 40,
+      "giver_id": "siv_quickpaw",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "beastkin"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_beastkin_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_beastkin_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_orc_awakening",
+      "name": "The Old Debt",
+      "description": "Thrakk asks you to settle a road debt without letting outsiders decide what honour means for an orc.",
+      "min_level": 8,
+      "giver_id": "thrakk_warbringer",
+      "start_area_id": "old_road",
+      "turn_in_area_id": "old_road",
+      "required_race_ids": [
+        "orc"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "old_road",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "bandit",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_orc_choice",
+      "name": "The War Song Choice",
+      "description": "At the Red Pass, choose whether your war song belongs to conquest or protection.",
+      "min_level": 25,
+      "giver_id": "thrakk_warbringer",
+      "start_area_id": "old_road",
+      "turn_in_area_id": "old_road",
+      "required_race_ids": [
+        "orc"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_orc_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "red_pass",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_orc_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_orc_ascension",
+      "name": "The Banner Without Chains",
+      "description": "Raise a banner at the Obsidian Gate that carries strength without repeating old chains.",
+      "min_level": 40,
+      "giver_id": "thrakk_warbringer",
+      "start_area_id": "old_road",
+      "turn_in_area_id": "old_road",
+      "required_race_ids": [
+        "orc"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_orc_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_orc_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_gnome_awakening",
+      "name": "The Broken Wonder",
+      "description": "Cogsworth needs a live crystal resonance from the mines to rebuild an invention that once saved a village.",
+      "min_level": 18,
+      "giver_id": "cogsworth_tinkerton",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "gnome"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "crystal_mines",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "crystal_beetle",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_gnome_choice",
+      "name": "The Responsible Spark",
+      "description": "On the storm plateau, choose whether a dangerous invention should be shared freely or safeguarded.",
+      "min_level": 25,
+      "giver_id": "cogsworth_tinkerton",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "gnome"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_gnome_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "storm_plateau",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_gnome_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_gnome_ascension",
+      "name": "The Impossible Device",
+      "description": "At the Obsidian Gate, assemble a device everyone calls impossible and prove them delightfully wrong.",
+      "min_level": 40,
+      "giver_id": "cogsworth_tinkerton",
+      "start_area_id": "town_emberwatch",
+      "turn_in_area_id": "town_emberwatch",
+      "required_race_ids": [
+        "gnome"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_gnome_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_gnome_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_halfling_awakening",
+      "name": "The Long Table",
+      "description": "Butterbur asks you to make a difficult road safe enough that travellers can share a meal without fear.",
+      "min_level": 5,
+      "giver_id": "butterbur_goodbody",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "halfling"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "greenfields",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "grey_wolf",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_halfling_choice",
+      "name": "A Lucky Turn",
+      "description": "At Emberwatch, choose whether luck is something to hoard or something made by helping others.",
+      "min_level": 25,
+      "giver_id": "butterbur_goodbody",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "halfling"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_halfling_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "town_emberwatch",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_halfling_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_halfling_ascension",
+      "name": "The Road Home",
+      "description": "At the cloud ruins, set a table for strangers and prove that home can travel with you.",
+      "min_level": 40,
+      "giver_id": "butterbur_goodbody",
+      "start_area_id": "town_ashvale",
+      "turn_in_area_id": "town_ashvale",
+      "required_race_ids": [
+        "halfling"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_halfling_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "cloud_ruins",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_halfling_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_genasi_awakening",
+      "name": "The Element Remembers",
+      "description": "Zephyr asks you to read the elemental scars left across the storm plateau before rival powers exploit them.",
+      "min_level": 18,
+      "giver_id": "zephyr_stormcaller",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "genasi"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "storm_plateau",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "storm_harpy",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_genasi_choice",
+      "name": "The Shape of the Storm",
+      "description": "At the cloud ruins, choose whether an element is mastered through control or through surrender to its nature.",
+      "min_level": 25,
+      "giver_id": "zephyr_stormcaller",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "genasi"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_genasi_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "cloud_ruins",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_genasi_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_genasi_ascension",
+      "name": "The Confluence",
+      "description": "At the Obsidian Gate, let every element in your blood meet without one consuming the others.",
+      "min_level": 40,
+      "giver_id": "zephyr_stormcaller",
+      "start_area_id": "town_skyreach",
+      "turn_in_area_id": "town_skyreach",
+      "required_race_ids": [
+        "genasi"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_genasi_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_genasi_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_goliath_awakening",
+      "name": "A Stone's Witness",
+      "description": "Granite Heart asks you to carry a witness-stone through the Red Pass and return with its story intact.",
+      "min_level": 18,
+      "giver_id": "granite_heart",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
+      "required_race_ids": [
+        "goliath"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "red_pass",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "hill_troll",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_goliath_choice",
+      "name": "The Weight You Carry",
+      "description": "In the Singing Mines, choose whether your strength is measured by burdens carried alone or shared with others.",
+      "min_level": 25,
+      "giver_id": "granite_heart",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
+      "required_race_ids": [
+        "goliath"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_goliath_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "crystal_mines",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_goliath_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_goliath_ascension",
+      "name": "The Peak Within",
+      "description": "At the Obsidian Gate, stand beneath a weight no one else can lift and discover the peak inside yourself.",
+      "min_level": 40,
+      "giver_id": "granite_heart",
+      "start_area_id": "town_stonehaven",
+      "turn_in_area_id": "town_stonehaven",
+      "required_race_ids": [
+        "goliath"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_goliath_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_goliath_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_lamia_awakening",
+      "name": "The First Coil",
+      "description": "Ophidia asks you to recover a scale-inscription from the Sunken Shrine before grave-robbers turn it into a weapon.",
+      "min_level": 7,
+      "giver_id": "ophidia_scalesinger",
+      "start_area_id": "hollow_cave",
+      "turn_in_area_id": "hollow_cave",
+      "required_race_ids": [
+        "lamia"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "sunken_shrine",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "skeleton",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_lamia_choice",
+      "name": "Memory or Mercy",
+      "description": "At the Drowned Archive, choose whether ancient memory should judge the living or teach them mercy.",
+      "min_level": 25,
+      "giver_id": "ophidia_scalesinger",
+      "start_area_id": "hollow_cave",
+      "turn_in_area_id": "hollow_cave",
+      "required_race_ids": [
+        "lamia"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_lamia_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "drowned_archive",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_lamia_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_lamia_ascension",
+      "name": "The Serpent's Crown",
+      "description": "At the Obsidian Gate, claim a crown of memory without allowing it to close around your throat.",
+      "min_level": 40,
+      "giver_id": "ophidia_scalesinger",
+      "start_area_id": "hollow_cave",
+      "turn_in_area_id": "hollow_cave",
+      "required_race_ids": [
+        "lamia"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_lamia_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_lamia_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
+      }
+    },
+    {
+      "id": "heritage_arachne_awakening",
+      "name": "The Uncut Thread",
+      "description": "Spinner asks you to recover a lost thread from the Mosswood before another weaver turns it into a snare.",
+      "min_level": 18,
+      "giver_id": "spinner_fateweaver",
+      "start_area_id": "mosswood",
+      "turn_in_area_id": "mosswood",
+      "required_race_ids": [
+        "arachne"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "mosswood",
+          "quantity": 1
+        },
+        {
+          "kind": "defeat_enemy",
+          "target_id": "cave_spider",
+          "quantity": 2
+        }
+      ],
+      "rewards": {
+        "exp": 350,
+        "gold": 150
+      }
+    },
+    {
+      "id": "heritage_arachne_choice",
+      "name": "The Pattern Chosen",
+      "description": "At the Glassmarsh reflections, choose whether fate is a pattern to preserve or a thread to cut.",
+      "min_level": 25,
+      "giver_id": "spinner_fateweaver",
+      "start_area_id": "mosswood",
+      "turn_in_area_id": "mosswood",
+      "required_race_ids": [
+        "arachne"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_arachne_awakening"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "glassmarsh",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_arachne_path",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 900,
+        "gold": 400
+      }
+    },
+    {
+      "id": "heritage_arachne_ascension",
+      "name": "The Loom of Tomorrow",
+      "description": "At the Obsidian Gate, weave one final thread into a future that remains yours to change.",
+      "min_level": 40,
+      "giver_id": "spinner_fateweaver",
+      "start_area_id": "mosswood",
+      "turn_in_area_id": "mosswood",
+      "required_race_ids": [
+        "arachne"
+      ],
+      "required_companion_id": "",
+      "prerequisite_quest_ids": [
+        "heritage_arachne_choice"
+      ],
+      "objectives": [
+        {
+          "kind": "visit_area",
+          "target_id": "obsidian_gate",
+          "quantity": 1
+        },
+        {
+          "kind": "choice",
+          "target_id": "heritage_arachne_ascension",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "exp": 2500,
+        "gold": 1200
       }
     }
   ]

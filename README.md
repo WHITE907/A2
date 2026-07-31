@@ -50,7 +50,7 @@ ProjectAscension/
 │   └── screens/         one module per screen
 ├── data/                all gameplay content
 ├── docs/                design notes
-├── tests/               442 tests
+├── tests/               483 tests, grouped by data / logic / integration / UI
 ├── tools/               dev utilities
 └── saves/               JSON save slots (created on first save)
 ```
@@ -230,26 +230,28 @@ testing anything.
 
 ## Testing
 
-442 tests, no third-party dependencies:
+483 tests, no third-party dependencies. The suite is grouped by the boundary it
+protects; see [`tests/README.md`](tests/README.md) for the layout and the test
+writing guide.
 
 ```
-python3 -m unittest discover -s tests        # everything
-python3 -m unittest tests.test_engine        # core engine tests
-python3 -m unittest tests.test_quests        # quest/progression tests
-python3 -m unittest tests.test_races_storylines # races + companion stories
-python3 -m unittest tests.test_systems_expansion # dialogue, factions, loyalty, gear, bosses
-python3 -m unittest tests.test_world_expansion # level-40 content tests
-python3 -m unittest tests.test_gui           # headless GUI tests
+python3 -m unittest discover -s tests              # all tests
+python3 -m unittest discover -s tests/data          # JSON/content contracts
+python3 -m unittest discover -s tests/logic         # deterministic engine rules
+python3 -m unittest discover -s tests/integration   # multi-system flows + persistence
+python3 -m unittest discover -s tests/ui            # headless Tkinter screens
+python3 main.py --check                              # startup content validation
 ```
 
-`tests/test_engine.py` exercises the real chain — JSON on disk → managers →
-entities → `Skill.use()` → effects → combat log — including full DOT lifecycles
-(apply → tick → tick → expire), save/load round-trips, forward migration, and
-guards on the architectural rules above.
+`tests/logic/test_core.py` exercises the real chain — JSON on disk → managers
+→ entities → `Skill.use()` → effects → combat log — including full DOT
+lifecycles (apply → tick → tick → expire), save/load round-trips, forward
+migration, and guards on the architectural rules above.
 
-`tests/test_gui.py` builds the real screens and invokes the same handlers a
-click would trigger. It runs headlessly on `tests/tk_stub.py`, a recording
-stand-in for Tkinter, so the GUI is covered on machines without a display.
+`tests/ui/test_screens.py` builds the real screens and invokes the same handlers
+a click would trigger. It runs headlessly on `tests/support/tk_stub.py`, a
+recording stand-in for Tkinter, so the GUI is covered on machines without a
+display.
 
 [`docs/BALANCE_REPORT_LEVEL_40.md`](docs/BALANCE_REPORT_LEVEL_40.md) records the
 executed EXP, economy, normal-enemy, and three-class boss baselines used for the

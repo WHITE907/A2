@@ -6,7 +6,7 @@ import tkinter as tk
 
 from engine.game import QuestDefinition
 from gui import theme
-from gui.widgets import SelectList, StatPanel
+from gui.widgets import ScrollableFrame, SelectList, StatPanel
 
 __all__ = ["QuestWindow"]
 
@@ -22,15 +22,16 @@ class QuestWindow(tk.Toplevel):
         theme.center_window(self, 820, 620)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
         header = tk.Frame(body, bg=theme.BG)
         header.pack(fill=tk.X)
         theme.heading_label(header, text="Quest Log").pack(side=tk.LEFT)
         # Search
         theme.body_label(header, text="Search:", font=theme.FONT_SMALL).pack(side=tk.LEFT, padx=(12, 4))
         self.search_var = tk.StringVar(value="")
-        search_entry = tk.Entry(header, textvariable=self.search_var, width=20, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG, font=theme.FONT_SMALL)
+        search_entry = theme.field_entry(header, textvariable=self.search_var, width=20, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG, font=theme.FONT_SMALL)
         search_entry.pack(side=tk.LEFT)
         search_entry.bind("<KeyRelease>", lambda _e: self.refresh())
 

@@ -12,7 +12,8 @@ adds 50 new skills (122 total) including race-specific, class-specific, and
 general utility skills, plus a class perks system giving 66 classes unique
 passive abilities. The promotion framework is complete through tier 4 with
 73 classes, and levels 1–55 content is playable. The full suite contains
-443 tests.
+483 tests, organised by boundary under `tests/` (data, logic, integration, UI,
+and test support).
 
 The next milestone should push into **levels 56–70 content** and **tier 4→5
 promotion chains**:
@@ -43,7 +44,7 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 443 tests
+python3 -m unittest discover -s tests    # 483 tests
 ```
 
 **Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.11.1 are implemented
@@ -174,27 +175,80 @@ Inheritance is used where it is genuinely right: `Player`, `Enemy` and
 
 ### Content — `data/`
 `config.json` (every coefficient, now includes `sp` formula and 9 equipment sets) · `skills.json`
-(122 skills with `tags`, `sp_cost`, `required_race_ids`, and `required_class_ids`) · `statuses.json` ·
-`classes.json` (73 classes: 3 starters → 9 tier-2 → 27 tier-3 → 27 tier-4, all with lateral paths and perks) · `items.json`
-(118 items including race-themed gear, set pieces, and promotion keys) · `races.json` (15 races with 35
-sub-races) · `enemies.json` (43 enemies, 6 bosses with phases) · `quests.json` (44 quests including 20 race-specific and 5 level 41-55) · `companions.json` (21 companions
-with genders) · `world.json` (28 NPCs with genders, 10 race-reactive shops, 25 areas including Ironveil faction capital) · `banter.json` (92 entries) · `dialogues.json` (15 branching trees) · `factions.json` (9 factions including Iron Covenant)
+(224 skills with `tags`, `sp_cost`, `required_race_ids`, and `required_sub_race_ids`) · `statuses.json` ·
+`classes.json` (100 classes) · `items.json` (136 items including race-themed gear, set pieces, and promotion keys) ·
+`races.json` (15 races with 57 sub-races; every race and lineage links to a named technique) ·
+`enemies.json` (51 enemies) · `quests.json` (115 quests, including 15 three-chapter heritage chains) · `companions.json` (21 companions
+with genders) · `world.json` (28 NPCs with genders, 12 shops, 30 areas including Ironveil faction capital) · `banter.json` (92 entries) · `dialogues.json` (16 branching trees) · `factions.json` (9 factions including Iron Covenant)
 
 All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 
 ### Tests
-| File | Coverage |
-|---|---|
-| `tests/test_engine.py` | 179 tests. Real chain: JSON → managers → entities → `Skill.use()` → effects → log. Includes SP insufficient-resource test. |
-| `tests/test_gui.py` | 116 tests. Builds real screens, invokes real handlers. |
-| `tests/test_companions.py` | *(v0.2.0)* 76 tests. |
-| `tests/test_quests.py` | *(v0.3.0)* Quest progression, persistence, and loot. |
-| `tests/test_races_storylines.py` | *(v0.6.0, updated v0.8.0)* Races (now 15), heirlooms, and companion stories (now 21). |
-| `tests/test_systems_expansion.py` | *(v0.7.0)* Objectives, story, loyalty, gear, effects, bosses. |
-| `tests/test_world_expansion.py` | *(v0.4.0, updated v0.8.0)* Level-40 density, reachability, and content counts. |
-| `tests/tk_stub.py` | Recording Tkinter stand-in for headless GUI testing. |
-| `tools/render_mockups.py` | Renders screen layouts via Pillow. |
+
+The suite has **483 tests** and is organised by the boundary it protects. Read
+[`tests/README.md`](tests/README.md) before adding or moving tests.
+
+| Area | Location | What it protects |
+|---|---|---|
+| Data | `tests/data/` | JSON syntax, required documents, cross-reference loading, and world/content contracts. |
+| Logic | `tests/logic/` | Deterministic engine rules: combat primitives, saves, progression, companions, quests, races, and architecture guards. |
+| Integration | `tests/integration/` | Multi-system gameplay and persistence: effects, perks, factions, tactics, equipment, bosses, and regressions. |
+| UI | `tests/ui/` | Real screen construction, visible state, navigation, and handler wiring on the headless Tk harness. |
+| Support | `tests/support/` | Test-only helpers, including `tk_stub.py`; this is never production code. |
+
+```bash
+python3 -m unittest discover -s tests              # all categories — required before commit
+python3 -m unittest discover -s tests/data          # JSON/content contracts
+python3 -m unittest discover -s tests/logic         # deterministic rules
+python3 -m unittest discover -s tests/integration   # cross-system flows
+python3 -m unittest discover -s tests/ui            # headless UI
+python3 main.py --check                              # startup content validation without Tk
+```
+
+### Adding tests correctly
+
+1. **Choose the lowest useful boundary.** Data tests cover JSON/content
+   contracts; logic tests cover one deterministic rule; integration tests cover
+   a player-visible flow across subsystems; UI tests cover presentation or
+   handler wiring. Do not add an expensive UI test for a pure engine rule.
+2. **Make setup isolated.** Use a fixed RNG seed and `TemporaryDirectory()` for
+   save files. Never write to the real `saves/` folder from a test.
+3. **Assert observable outcomes.** Name tests `test_<behaviour>`, use the
+   smallest public API that expresses the rule, and avoid asserting incidental
+   implementation details. Use `subTest()` for one contract across many data
+   records.
+4. **Use the UI harness correctly.** Import and install
+   `tests.support.tk_stub` before importing `gui`/`tkinter`; invoke the same
+   handler a button invokes, then assert engine state and widget options.
+5. **Turn bugs into regressions.** Recreate the former precondition, trigger
+   the failing action, and assert the fixed visible/state result. Run the
+   relevant category, then the complete suite and `main.py --check`.
+
+`tools/render_mockups.py` remains an optional Pillow layout renderer. It is not
+a replacement for the UI suite or a real desktop smoke test.
+
+### Heritage progression and ancestry actions
+
+Every race now has a data-driven three-chapter chain:
+`heritage_<race>_awakening` → `heritage_<race>_choice` →
+`heritage_<race>_ascension`. The middle chapter exposes two mutually exclusive
+race-specific actions in `world.json`; the selected path is persisted in
+`player.flags`. Several middle chapters deliberately require a compatible
+companion, while all chapters have named heritage NPC guides.
+
+`Area.ancestry_actions` is the reusable exploration hook. An action can require
+race/lineage, level, active/completed quests, and a companion; it can emit any
+supported quest event, persist flags, and grant gold/items atomically. Keep new
+interactions in JSON—do not add race-id conditionals to the engine.
+
+All 72 ancestry techniques have three `ancestry_upgrade_tiers`, tied to the
+three quest chapters. The middle tier reads the persisted path flag and adds a
+branch-specific combat effect, so the choice is mechanical as well as narrative.
+`Skill.effective_for()` creates the upgraded runtime copy without mutating the
+learned base skill; completing a heritage chapter reports newly awakened
+techniques in the quest reward log. Use this same tier shape for future ancestry
+expansion rather than creating duplicate skill ids.
 
 ---
 
@@ -452,8 +506,9 @@ regions. The following are implemented on the active branch:
 - Five item rarities with data-driven modifier/value scaling.
 - Rarity-aware shop pricing and shop row colors.
 - Nine additional level-1 equipment items in Ashvale Smith stock.
-- Distinct starting racial gifts for all 39 sub-races; the current skill count is
-  162.
+- Named, described ancestry techniques for every race and sub-race. Each
+  character receives their race technique plus their selected lineage technique;
+  the current skill count is 224.
 - Gender-specific Demon sub-races: Succubus is female-only and Incubus is
   male-only, enforced in both GUI and engine validation.
 - Sub-race dialogue conditions and a Succubus/Incubus-specific dialogue branch.
@@ -533,7 +588,7 @@ bug* — so the regression test cannot quietly stop testing anything.
 
 **No tkinter in the sandbox.** Likely no `python3-tk`, `xvfb`, or root. So:
 - `python3 main.py --check` validates content with no GUI.
-- `tests/tk_stub.py` runs the GUI suite headlessly.
+- `tests/support/tk_stub.py` runs the UI suite headlessly; install it before importing `gui` in a UI test.
 - `tools/render_mockups.py` (needs `pip install Pillow`) renders layouts to
   `assets/mockups/`. **This renders layout, not Tk** — font metrics and native
   chrome differ. It caught a panel pushed off-screen and a text-overflow bug,
@@ -560,7 +615,7 @@ that existing tests may reference them by id.
 **Content count assertions are fragile.** Several tests check exact counts of
 races, companions, items, classes, skills, quests, and enemies. When adding content, search for
 `assertEqual.*count()` in the test files and update the expected values.
-Currently: 73 classes, 15 races, 21 companions, 118 items, 122 skills, 44 quests, 43 enemies.
+Currently: 100 classes, 15 races / 57 sub-races, 21 companions, 136 items, 224 skills, 115 quests, 51 enemies.
 
 **Verify claims before making them.** The tier-4 error in section 8 came from
 asserting something plausible without running it. If you state a limitation,
@@ -698,7 +753,7 @@ Copy the relevant section into your working notes and tick items off as you go.
 **Balance and integration:**
 - [ ] Sub-race stats don't make one sub-race objectively superior — each should suit different builds
 - [ ] Race modifiers are reasonable compared to existing races (check `data/races.json` for reference)
-- [ ] Update test counts in `tests/test_world_expansion.py` and `tests/test_races_storylines.py`
+- [ ] Update intentional content contracts in `tests/data/test_world_content.py` and `tests/logic/test_races_storylines.py`
 
 ### Adding a new area
 
@@ -735,7 +790,7 @@ Copy the relevant section into your working notes and tick items off as you go.
 
 **Integration:**
 - [ ] NPC entry in `data/world.json` at the companion's `location_id` (so they can be talked to before recruitment)
-- [ ] Update test counts in `tests/test_races_storylines.py`
+- [ ] Update the relevant race/companion contract in `tests/logic/test_races_storylines.py`
 
 ### Adding a new NPC
 

@@ -13,7 +13,7 @@ from gui import theme
 from engine.classes import ClassDefinition
 from engine.game import RaceDefinition
 from engine.races import SubRace
-from gui.widgets import SelectList, StatPanel
+from gui.widgets import ScrollableFrame, SelectList, StatPanel
 
 __all__ = ["CharacterCreationWindow"]
 
@@ -29,8 +29,9 @@ class CharacterCreationWindow(tk.Toplevel):
         theme.center_window(self, 820, 640)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         theme.heading_label(body, text="Create Character").pack(anchor="w", pady=(0, 12))
 
@@ -39,7 +40,7 @@ class CharacterCreationWindow(tk.Toplevel):
         name_row.pack(fill=tk.X)
         theme.body_label(name_row, text="Name:", width=8).pack(side=tk.LEFT)
         self.name_var = tk.StringVar(value="")
-        entry = tk.Entry(
+        entry = theme.field_entry(
             name_row,
             textvariable=self.name_var,
             bg=theme.LISTBOX_BG,
@@ -59,7 +60,7 @@ class CharacterCreationWindow(tk.Toplevel):
         genders = self.app.game.genders()
         self.gender_var = tk.StringVar(value=genders[0] if genders else "male")
         for gender in genders:
-            tk.Radiobutton(
+            theme.choice_button(
                 gender_row,
                 text=gender.title(),
                 value=gender,
@@ -148,7 +149,7 @@ class CharacterCreationWindow(tk.Toplevel):
             lines.extend(self.app.game.race_detail_lines(race.id))
         if race is not None and sub_race is not None:
             lines.append("")
-            lines.extend(sub_race.detail_lines())
+            lines.extend(self.app.game.sub_race_detail_lines(race.id, sub_race.id))
         if (race is not None or sub_race is not None) and definition is not None:
             lines.append("")
         if definition is not None:

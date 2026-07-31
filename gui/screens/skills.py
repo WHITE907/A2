@@ -12,7 +12,7 @@ import tkinter as tk
 from gui import theme
 from engine.classes import PromotionCheck
 from engine.skills.skill import Skill
-from gui.widgets import SelectList, StatPanel
+from gui.widgets import ScrollableFrame, SelectList, StatPanel
 
 __all__ = ["SkillsWindow"]
 
@@ -28,8 +28,9 @@ class SkillsWindow(tk.Toplevel):
         theme.center_window(self, 760, 560)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         header = tk.Frame(body, bg=theme.BG)
         header.pack(fill=tk.X)
@@ -41,7 +42,7 @@ class SkillsWindow(tk.Toplevel):
         filters.pack(fill=tk.X, pady=(10, 0))
         theme.body_label(filters, text="Filter:").pack(side=tk.LEFT)
         self.search_var = tk.StringVar(value="")
-        search = tk.Entry(filters, textvariable=self.search_var, width=18, bg=theme.BG_ALT, fg=theme.FG, insertbackground=theme.FG)
+        search = theme.field_entry(filters, textvariable=self.search_var, width=18, bg=theme.BG_ALT, fg=theme.FG, insertbackground=theme.FG)
         search.pack(side=tk.LEFT, padx=(6, 10))
         search.bind("<KeyRelease>", lambda _event: self.refresh())
         self.category_var = tk.StringVar(value="all")
@@ -114,7 +115,12 @@ class SkillsWindow(tk.Toplevel):
             return sorted(result, key=lambda s: (s.category, s.name) if mode == "category" else (s.skill_point_cost, s.name) if mode == "cost" else s.name.lower())
 
         known = visible(list(player.usable_skills()) + list(player.passive_skills()))
-        self.known_list.set_items([(f"{s.name}  [{s.category}]" + ("  [racial gift]" if s.id.startswith("racial_") else ""), s) for s in known])
+        self.known_list.set_items(
+            [
+                (f"{skill.name}  [{skill.category}]" + ("  [ancestry]" if skill.id.startswith("racial_") else ""), skill)
+                for skill in known
+            ]
+        )
 
         learnable = visible(game.learnable_skills())
         learnable_items = []
@@ -144,6 +150,8 @@ class SkillsWindow(tk.Toplevel):
             lines.append(f"Requires level {skill.required_level}")
         if getattr(skill, "required_race_ids", None):
             lines.append(f"Restricted to race: {', '.join(skill.required_race_ids)}")
+        if getattr(skill, "required_sub_race_ids", None):
+            lines.append(f"Restricted to lineage: {', '.join(skill.required_sub_race_ids)}")
         if getattr(skill, "required_class_ids", None):
             lines.append(f"Restricted to class: {', '.join(skill.required_class_ids)}")
         for track, rank in skill.required_mastery.items():
@@ -168,8 +176,9 @@ class SkillsWindow(tk.Toplevel):
         theme.center_window(window, 460, 420)
         window.transient(self.app.root)
 
-        frame = tk.Frame(window, bg=theme.BG, padx=18, pady=16)
-        frame.pack(fill=tk.BOTH, expand=True)
+        viewport = ScrollableFrame(window, bg=theme.BG, padx=18, pady=16)
+        viewport.pack(fill=tk.BOTH, expand=True)
+        frame = viewport.content
 
         player = self.app.game.player
         theme.heading_label(frame, text=f"Promotion - {player.class_def.name}").pack(anchor="w")

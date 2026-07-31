@@ -100,6 +100,10 @@ class QuestManager:
                 continue
             if definition.required_class_ids and player.class_def.id not in definition.required_class_ids:
                 continue
+            if definition.required_race_ids and player.race_id.lower() not in definition.required_race_ids:
+                continue
+            if definition.required_sub_race_ids and player.sub_race_id.lower() not in definition.required_sub_race_ids:
+                continue
             if definition.start_area_id and definition.start_area_id != area_id:
                 continue
             if giver_id is not None and definition.giver_id != giver_id:

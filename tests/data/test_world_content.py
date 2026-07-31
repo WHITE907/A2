@@ -7,10 +7,14 @@ import unittest
 from collections import deque
 from pathlib import Path
 
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from engine.game import Game
 from engine.skills.skill import SkillCategory
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def loaded_game() -> Game:
@@ -108,7 +112,7 @@ class TestExpandedContent(unittest.TestCase):
 
     def test_new_content_volume(self):
         self.assertGreaterEqual(self.game.enemies.count(), 43)
-        self.assertGreaterEqual(self.game.skills.count(), 162)
+        self.assertGreaterEqual(self.game.skills.count(), 224)
         self.assertGreaterEqual(self.game.items.count(), 127)
         self.assertGreaterEqual(self.game.companions.count(), 21)
 

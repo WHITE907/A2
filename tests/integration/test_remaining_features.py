@@ -1,9 +1,19 @@
-"""Tests for post-v0.11.1 remaining features: rarity, enchant slots, loot, perks, tactics, race passives."""
+"""Regression coverage for rarity, perks, tactics, loot, and race passives."""
+
+from __future__ import annotations
+
+import tempfile
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from engine.game import Game
+
+ROOT = Path(__file__).resolve().parents[2]
+
 
 def make_game(seed=1234, save_dir=None):
     g = Game(data_dir=ROOT / "data", save_dir=save_dir, seed=seed)
@@ -129,32 +139,36 @@ class TestRacePassives(unittest.TestCase):
         self.assertTrue(heal_bonuses)
 
     def test_party_bonus_in_modifiers(self):
-        g = make_game()
-        g.player.level = 20
-        g.player.party_races = ["beastkin"]
-        g2 = Game(data_dir=ROOT/"data", seed=3)
-        g2.load_content()
-        g2.create_character("Canine", "male", "squire", "beastkin", "canine")
-        g2.player.party_races = ["beastkin"]
-        mods = g2.player._equipment_modifiers()
-        self.assertIsNotNone(mods)
+        game = Game(data_dir=ROOT / "data", seed=3)
+        game.load_content()
+        ok, message = game.create_character("Canine", "male", "squire", "beastkin", "canine")
+        self.assertTrue(ok, message)
+
+        without_matching_ally = game.player._equipment_modifiers()
+        game.player.party_races = ["beastkin"]
+        with_matching_ally = game.player._equipment_modifiers()
+
+        self.assertEqual(without_matching_ally.pct.get("physical_power", 0.0), 0.0)
+        self.assertAlmostEqual(with_matching_ally.pct["physical_power"], 0.08)
 
 class TestClassPerksFeedback(unittest.TestCase):
     def test_active_perks_with_reason(self):
-        g = make_game()
-        g.player.level = 20
-        # Give player a class with low_hp perk: Berserker
-        # Create character as squire -> berserker path if possible? Let's directly set class
-        berserker = g.classes.get("berserker")
-        if berserker:
-            g.player.class_def = berserker
-            g.player._recalculate_base_stats()
-            g.player.current_hp = g.player.max_hp * 0.2
-            active = g.player.active_perks()
-            self.assertTrue(len(active) > 0)
-            # At least one should be active with low HP reason
-            low_hp_active = [a for a in active if "low_hp" in a["perk"].get("trigger","") and a["active"]]
-            self.assertTrue(low_hp_active or any(a["active"] for a in active))
+        game = make_game()
+        game.player.level = 20
+        game.player.class_def = game.classes.require("berserker")
+        game.player._recalculate_base_stats()
+        game.player.current_hp = game.player.max_hp * 0.2
+
+        active = game.player.active_perks()
+        low_hp_active = [
+            entry
+            for entry in active
+            if entry["perk"].get("trigger") == "low_hp" and entry["active"]
+        ]
+
+        self.assertTrue(active)
+        self.assertTrue(low_hp_active)
+        self.assertIn("HP", low_hp_active[0]["reason"])
 
     def test_status_lines_include_perks_and_specials(self):
         g = make_game()
@@ -173,7 +187,6 @@ class TestCompanionTacticsExpanded(unittest.TestCase):
         self.assertIn("allow_cleanse", c.tactics)
 
     def test_tactics_persist(self):
-        import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             g = make_game(save_dir=tmp)
             c = g.companions.create("rook", 10)
@@ -190,42 +203,44 @@ class TestCompanionTacticsExpanded(unittest.TestCase):
             self.assertEqual(mem.tactics["skill_priorities"]["power_strike"], 2.5)
 
     def test_tactical_ai_respects_boss_focus(self):
-        g = make_game(seed=99)
-        g.player.level = 20
-        # Create companion with boss_focus
-        c = g.companions.create("rook", 20)
-        c.set_tactics({"boss_focus": True, "stance": "tactical"})
-        g.party.recruit(c)
-        # Start battle with boss + normal
-        battle = g.start_battle([("bandit_chief", 9), ("bandit", 4)])
-        # Force companion turn
-        # Set companion as current actor by manipulating turn_order
-        # Instead test AI decide directly
         from engine.combat.ai import default_registry
-        reg = default_registry()
-        behavior = reg.get("tactical")
-        foes = battle.living_enemies
-        allies = battle.living_allies
-        decision = behavior.decide(c, allies, foes, g.rng)
-        # If boss_focus, should target boss if possible
-        if decision.targets:
-            target = decision.targets[0]
-            # If boss in foes, check if target is boss when boss_focus True
-            bosses = [f for f in foes if f.is_boss]
-            if bosses:
-                # Could be boss
-                self.assertTrue(True)  # at least decision made
+
+        game = make_game(seed=99)
+        game.player.level = 20
+        companion = game.companions.create("rook", 20)
+        # Remove support options so this test reaches Tactical AI's offensive
+        # targeting branch instead of testing an unrelated random buff roll.
+        companion.skills = [
+            skill
+            for skill in companion.skills
+            if any(effect.type_id == "damage" for effect in skill.effects)
+        ]
+        companion.set_tactics({"boss_focus": True, "stance": "tactical"})
+        game.party.recruit(companion)
+        battle = game.start_battle([("bandit_chief", 9), ("bandit", 4)])
+
+        decision = default_registry().get("tactical").decide(
+            companion,
+            battle.living_allies,
+            battle.living_enemies,
+            game.rng,
+        )
+
+        self.assertFalse(decision.pass_turn)
+        self.assertEqual(decision.note, "tactical boss focus")
+        self.assertEqual(len(decision.targets), 1)
+        self.assertTrue(decision.targets[0].is_boss)
 
     def test_companion_usable_skills_respects_toggles(self):
-        g = make_game()
-        c = g.companions.create("rook", 10)
-        # Give a racial skill? Rook may not have racial, but we can test filtering
-        c.skills = g.skills.all_skills()[:5]
-        c.set_tactics({"allow_racial_skills": False})
-        usable = c.usable_skills()
-        # Should not contain racial skills
-        for s in usable:
-            self.assertFalse(s.id.startswith("racial_"))
+        game = make_game()
+        companion = game.companions.create("rook", 10)
+        racial_skill = game.skills.require("racial_canine")
+        companion.skills = [game.skills.require("strike"), racial_skill]
+
+        self.assertIn(racial_skill.id, {skill.id for skill in companion.usable_skills()})
+        companion.set_tactics({"allow_racial_skills": False})
+
+        self.assertNotIn(racial_skill.id, {skill.id for skill in companion.usable_skills()})
 
 if __name__ == "__main__":
     unittest.main()

@@ -72,7 +72,7 @@ Inheritance is still used exactly where it's the right tool: `Player` and
 ## Running the proof
 
 ```
-python3 tests/test_engine_smoke.py
+python3 -m unittest tests.logic.test_core
 ```
 
 This isn't a placeholder test file — it exercises the real chain: JSON on

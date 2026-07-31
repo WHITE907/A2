@@ -1,4 +1,4 @@
-"""GUI test-suite, run headlessly via :mod:`tests.tk_stub`.
+"""GUI test-suite, run headlessly via :mod:`tests.support.tk_stub`.
 
 These import and construct the *real* screen classes against the *real*
 engine, then invoke the same handler methods a click would trigger - which is
@@ -18,9 +18,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tests import tk_stub
+from tests.support import tk_stub
 
 # The stub must be installed before `gui` (or anything importing tkinter) loads.
 tk_stub.install()
@@ -30,9 +30,9 @@ import tkinter as tk  # noqa: E402  - resolves to the stub
 from engine.game import Game  # noqa: E402
 from gui import theme  # noqa: E402
 from gui.app import AscensionApp  # noqa: E402
-from gui.widgets import ButtonStack, LogPanel, SelectList, StatPanel  # noqa: E402
+from gui.widgets import ButtonStack, LogPanel, ScrollableFrame, SelectList, StatPanel  # noqa: E402
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def make_app(save_dir: Path | str | None = None, seed: int = 4242) -> AscensionApp:
@@ -262,6 +262,57 @@ class TestWidgets(unittest.TestCase):
 
 
 # ======================================================================
+class TestScrollableLayout(unittest.TestCase):
+    """Long pages remain usable on compact displays instead of clipping controls."""
+
+    def setUp(self):
+        self.root = tk.Tk()
+
+    def test_scrollable_frame_owns_a_canvas_content_area_and_scrollbar(self):
+        page = ScrollableFrame(self.root)
+        page.pack(fill=tk.BOTH, expand=True)
+        self.assertIsInstance(page.canvas, tk.Canvas)
+        self.assertIsInstance(page.content, tk.Frame)
+        self.assertIsInstance(page.scrollbar, tk.Scrollbar)
+
+        page.content.event_generate("<MouseWheel>", delta=-120, num=None)
+        self.assertEqual(page.canvas.yview_scroll_calls[-1], (1, "units"))
+
+    def test_main_and_toplevel_screens_use_scrollable_viewports(self):
+        app = make_app_with_character()
+        self.assertIsInstance(app.show_world().viewport, ScrollableFrame)
+
+        app.game.start_battle([("green_slime", 1)])
+        self.assertIsInstance(app.show_combat().viewport, ScrollableFrame)
+
+        windows = [
+            app.open_inventory(),
+            app.open_equipment(),
+            app.open_skills(),
+            app.open_quests(),
+            app.open_party(),
+            app.open_status(),
+            app.open_settings(),
+            app.open_save_browser("load"),
+            app.open_character_creation(),
+            app.open_shop("ashvale_general"),
+            app.open_talk("innkeeper_mara"),
+            app.open_codex(),
+        ]
+        self.assertTrue(all(isinstance(window.viewport, ScrollableFrame) for window in windows))
+
+    def test_dialogue_and_tactics_popups_use_scrollable_viewports(self):
+        app = make_app_with_party()
+        tactics = app.open_tactics("rook")
+        self.assertIsInstance(tactics.viewport, ScrollableFrame)
+
+        stories = app.game.dialogues_for_speaker("mother_sable")
+        self.assertTrue(stories)
+        dialogue = app.open_dialogue(stories[0]["id"])
+        self.assertIsInstance(dialogue.viewport, ScrollableFrame)
+
+
+# ======================================================================
 class TestAppShell(unittest.TestCase):
     """Screen swapping and Toplevel lifecycle."""
 
@@ -399,6 +450,22 @@ class TestCharacterCreation(unittest.TestCase):
         self.window.race_list.select_index(elf_index)
         self.assertIn("Keen Senses", self.window.preview._label.options["text"])
 
+    def test_preview_explains_named_ancestral_and_lineage_techniques(self):
+        human_index = next(
+            index for index, race in enumerate(self.window.race_list._values) if race.id == "human"
+        )
+        self.window.race_list.select_index(human_index)
+        lowlander_index = next(
+            index for index, lineage in enumerate(self.window.sub_race_list._values) if lineage.id == "lowlander"
+        )
+        self.window.sub_race_list.select_index(lowlander_index)
+
+        preview = self.window.preview._label.options["text"]
+        self.assertIn("Adaptive Opening", preview)
+        self.assertIn("Market-Smart Feint", preview)
+        self.assertIn("Ancestral Technique", preview)
+        self.assertIn("Lineage Technique", preview)
+
     def test_gender_switch_requeries_classes(self):
         """Bible section 10: starting classes are gender-restricted."""
         male = {label for label, _ in zip(self.window.class_list.listbox.items, range(99))}
@@ -481,6 +548,23 @@ class TestWorldScreen(unittest.TestCase):
             screen._rest()
             self.assertEqual(app.game.world.day, 2)
             self.assertIn("autosave", screen.log.text.content.lower())
+
+    def test_heritage_action_appears_when_a_matching_quest_reaches_its_rite(self):
+        self.assertIn("heritage", self.screen.actions.buttons)
+        self.assertEqual(self.screen.actions.buttons["heritage"].options["state"], tk.DISABLED)
+
+        player = self.app.game.player
+        player.level = 25
+        player.completed_quests.append("heritage_human_awakening")
+        player.inventory.add_gold(1_000)
+        self.assertTrue(self.app.game.recruit("rook")[0])
+        self.assertTrue(self.app.game.accept_quest("heritage_human_choice")[0])
+        self.assertTrue(self.app.game.travel_to("old_road")[0])
+        self.screen.refresh()
+
+        self.assertEqual(self.screen.actions.buttons["heritage"].options["state"], tk.NORMAL)
+        self.screen._perform_heritage("heritage_human_path_1")
+        self.assertIn("supplies and maps", self.screen.log.text.content)
 
     def test_action_buttons_open_the_right_windows(self):
         for label, key in (
@@ -669,6 +753,19 @@ class TestInventoryEquipmentSkillsStatus(unittest.TestCase):
         text = window.sheet._label.options["text"]
         for expected in ("Name:", "Level:", "HP:", "STR:"):
             self.assertIn(expected, text)
+
+    def test_status_window_displays_mastery_track_objects_after_refresh(self):
+        """Mastery tracks are objects, so opening and refreshing Status must not unpack them."""
+        player = self.app.game.player
+        player.mastery.gain("sword", 100)
+        player.unspent_stat_points = 1
+
+        window = self.app.open_status()
+        self.assertIn("Sword: E (100 EXP)", window.mastery_label.options["text"])
+
+        window.allocate_buttons["STR"].invoke()
+        self.assertEqual(player.unspent_stat_points, 0)
+        self.assertIn("Sword: E (100 EXP)", window.mastery_label.options["text"])
 
     def test_stat_allocation_buttons_follow_available_points(self):
         window = self.app.open_status()

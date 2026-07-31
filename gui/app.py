@@ -41,7 +41,9 @@ class AscensionApp:
 
         theme.style_window(root, "Project Ascension")
         theme.center_window(root, WINDOW_WIDTH, WINDOW_HEIGHT)
-        root.minsize(900, 620)
+        # Keep the shell usable on compact laptops; World and Combat provide
+        # their own vertical page viewports when the available height is tight.
+        root.minsize(720, 500)
         root.protocol("WM_DELETE_WINDOW", self.quit)
 
         # Layout: content area, then status bar, then the accent line last so

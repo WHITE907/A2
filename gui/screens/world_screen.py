@@ -17,7 +17,7 @@ import tkinter as tk
 
 from gui import theme
 from engine.world.world import Area
-from gui.widgets import ButtonStack, LogPanel, SelectList, StatPanel
+from gui.widgets import ScrollableFrame, ButtonStack, LogPanel, SelectList, StatPanel
 
 __all__ = ["WorldScreen"]
 
@@ -29,8 +29,11 @@ class WorldScreen(tk.Frame):
         super().__init__(parent, bg=theme.BG)
         self.app = app
 
-        outer = tk.Frame(self, bg=theme.BG, padx=16, pady=14)
-        outer.pack(fill=tk.BOTH, expand=True)
+        # The hub can be taller than a small laptop viewport once every action
+        # is available, so the full page has a vertical fallback scrollbar.
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=16, pady=14)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        outer = self.viewport.content
 
         # ---------------- left: character + location -------------------
         left = tk.Frame(outer, bg=theme.BG, width=230)
@@ -69,6 +72,7 @@ class WorldScreen(tk.Frame):
         self.actions.add("rest", "Rest at Inn", self._rest)
         self.actions.add("shop", "Shops", self._shops)
         self.actions.add("talk", "People", self._people)
+        self.actions.add("heritage", "Heritage", self._heritage)
         self.actions.pack(fill=tk.X)
 
         theme.body_label(right, text="").pack(pady=4)
@@ -134,6 +138,7 @@ class WorldScreen(tk.Frame):
         self.actions.set_enabled("rest", in_town)
         self.actions.set_enabled("shop", bool(game.world.shops_here()))
         self.actions.set_enabled("talk", bool(game.npcs_here()))
+        self.actions.set_enabled("heritage", bool(game.ancestry_actions()))
 
     # ------------------------------------------------------------------
     def _travel(self) -> None:
@@ -160,6 +165,26 @@ class WorldScreen(tk.Frame):
         for line in lines:
             self.log.append(line, "system" if ok else "info")
         self.app.notify(lines[0] if lines else "")
+        self.refresh()
+
+    def _heritage(self) -> None:
+        actions = self.app.game.ancestry_actions()
+        if not actions:
+            self.app.notify("No heritage interaction is available here.")
+            return
+        if len(actions) == 1:
+            self._perform_heritage(actions[0].id)
+            return
+        self._choose(
+            "Heritage Choice",
+            [(f"{action.name} — {action.description}", action.id) for action in actions],
+            self._perform_heritage,
+        )
+
+    def _perform_heritage(self, action_id: str) -> None:
+        ok, message = self.app.game.perform_ancestry_action(action_id)
+        self.log.append(message, "quest" if ok else "info")
+        self.app.notify(message.split("\n", 1)[0])
         self.refresh()
 
     def _shops(self) -> None:
@@ -192,8 +217,9 @@ class WorldScreen(tk.Frame):
         theme.center_window(window, 300, 260)
         window.transient(self.app.root)
 
-        frame = tk.Frame(window, bg=theme.BG, padx=16, pady=14)
-        frame.pack(fill=tk.BOTH, expand=True)
+        viewport = ScrollableFrame(window, bg=theme.BG, padx=16, pady=14)
+        viewport.pack(fill=tk.BOTH, expand=True)
+        frame = viewport.content
         theme.heading_label(frame, text=title).pack(anchor="w", pady=(0, 8))
 
         picker: SelectList[str] = SelectList(frame, height=6)

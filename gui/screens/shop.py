@@ -10,7 +10,7 @@ import tkinter as tk
 
 from gui import theme
 from engine.items.item import Item
-from gui.widgets import SelectList, StatPanel
+from gui.widgets import ScrollableFrame, SelectList, StatPanel
 
 __all__ = ["ShopWindow"]
 
@@ -31,8 +31,9 @@ class ShopWindow(tk.Toplevel):
         theme.center_window(self, 820, 560)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         header = tk.Frame(body, bg=theme.BG)
         header.pack(fill=tk.X)

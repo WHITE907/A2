@@ -10,7 +10,7 @@ from __future__ import annotations
 import tkinter as tk
 
 from gui import theme
-from gui.widgets import LogPanel, SelectList, StatPanel
+from gui.widgets import ScrollableFrame, LogPanel, SelectList, StatPanel
 
 __all__ = ["TalkWindow"]
 
@@ -29,8 +29,9 @@ class TalkWindow(tk.Toplevel):
         theme.center_window(self, 720, 600)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         theme.heading_label(body, text=self.npc_name).pack(anchor="w")
         if npc and npc.description:
@@ -122,8 +123,9 @@ class TalkWindow(tk.Toplevel):
         theme.center_window(window, 320, 320)
         window.transient(self.app.root)
 
-        frame = tk.Frame(window, bg=theme.BG, padx=16, pady=14)
-        frame.pack(fill=tk.BOTH, expand=True)
+        viewport = ScrollableFrame(window, bg=theme.BG, padx=16, pady=14)
+        viewport.pack(fill=tk.BOTH, expand=True)
+        frame = viewport.content
         theme.heading_label(frame, text="Give Gift").pack(anchor="w", pady=(0, 8))
 
         picker: SelectList[str] = SelectList(frame, height=8)

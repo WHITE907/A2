@@ -6,9 +6,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from engine.game import Game
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def new_game(save_dir=None) -> Game:
@@ -42,6 +46,100 @@ class TestRaceEngine(unittest.TestCase):
         ok, message = game.create_character("Unknown", "male", "squire", "not_a_race")
         self.assertFalse(ok)
         self.assertIn("race", message.lower())
+
+    def test_character_receives_ancestral_and_lineage_techniques(self):
+        game = new_game()
+        race = game.races.require("human")
+        lineage = race.get_sub_race("lowlander")
+
+        ok, message = game.create_character("Lowlander", "male", "squire", race.id, lineage.id)
+
+        self.assertTrue(ok, message)
+        self.assertEqual(
+            set(race.racial_skill_ids(lineage.id)),
+            {race.racial_skill_id, lineage.racial_skill_id},
+        )
+        self.assertTrue(set(race.racial_skill_ids(lineage.id)) <= set(game.player.known_skills))
+
+    def test_lineage_technique_rejects_the_wrong_lineage(self):
+        game = new_game()
+        ok, message = game.create_character("Highlander", "male", "squire", "human", "highlander")
+        self.assertTrue(ok, message)
+        game.player.unspent_skill_points = 1
+
+        ok, message = game.player.learn_skill(game.skills.require("racial_lowlander"))
+
+        self.assertFalse(ok)
+        self.assertIn("lineage", message.lower())
+
+    def test_loading_a_legacy_skill_list_restores_ancestry_techniques(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            game = new_game(tmp)
+            ok, message = game.create_character("Legacy", "male", "squire", "human", "lowlander")
+            self.assertTrue(ok, message)
+            gift_ids = game.player.race_def.racial_skill_ids(game.player.sub_race_id)
+            for skill_id in gift_ids:
+                self.assertTrue(game.player.forget_skill(skill_id))
+            self.assertTrue(game.save_game("legacy")[0])
+
+            restored = new_game(tmp)
+            self.assertTrue(restored.load_game("legacy")[0])
+            self.assertTrue(set(gift_ids) <= set(restored.player.known_skills))
+
+    def test_heritage_choices_require_the_matching_race_and_companion(self):
+        game = new_game()
+        ok, message = game.create_character("Herald", "male", "squire", "human", "lowlander")
+        self.assertTrue(ok, message)
+        player = game.player
+        player.level = 25
+        player.completed_quests.append("heritage_human_awakening")
+        player.inventory.add_gold(1_000)
+        self.assertTrue(game.recruit("rook")[0])
+        self.assertTrue(game.accept_quest("heritage_human_choice")[0])
+        self.assertTrue(game.travel_to("old_road")[0])
+
+        actions = game.ancestry_actions()
+        self.assertEqual({action.id for action in actions}, {"heritage_human_path_1", "heritage_human_path_2"})
+        self.assertTrue(game.perform_ancestry_action("heritage_human_path_1")[0])
+        self.assertEqual(player.flags["heritage_human_path"], "community")
+        self.assertEqual(game.ancestry_actions(), [])
+
+        self.assertTrue(game.travel_to("town_ashvale")[0])
+        completed, lines = game.complete_quest("heritage_human_choice")
+        self.assertTrue(completed, lines)
+        self.assertTrue(any("Ancestry technique awakened" in line for line in lines))
+        upgraded = next(skill for skill in player.usable_skills() if skill.id == "racial_human")
+        self.assertEqual(upgraded.upgrade_label, "Resonant")
+        self.assertIn("Resonant", upgraded.name)
+        self.assertTrue(any("Valor" in effect.describe() for effect in upgraded.effects))
+
+    def test_heritage_choice_persists_and_cannot_be_repeated_after_loading(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            game = new_game(tmp)
+            ok, message = game.create_character("Keeper", "male", "squire", "human", "lowlander")
+            self.assertTrue(ok, message)
+            game.player.level = 25
+            game.player.completed_quests.append("heritage_human_awakening")
+            game.player.inventory.add_gold(1_000)
+            self.assertTrue(game.recruit("rook")[0])
+            self.assertTrue(game.accept_quest("heritage_human_choice")[0])
+            self.assertTrue(game.travel_to("old_road")[0])
+            self.assertTrue(game.perform_ancestry_action("heritage_human_path_2")[0])
+            self.assertTrue(game.save_game("heritage")[0])
+
+            restored = new_game(tmp)
+            self.assertTrue(restored.load_game("heritage")[0])
+            self.assertEqual(restored.player.flags["heritage_human_path"], "self_reliance")
+            self.assertEqual(restored.ancestry_actions(), [])
+
+    def test_heritage_quest_is_hidden_from_other_races(self):
+        game = new_game()
+        ok, message = game.create_character("Outsider", "female", "maiden", "elf", "high_elf")
+        self.assertTrue(ok, message)
+        game.player.level = 10
+        game.world.current_area_id = "town_ashvale"
+
+        self.assertNotIn("heritage_human_awakening", {quest.id for quest in game.available_quests()})
 
     def test_every_race_works_with_every_eligible_starting_class(self):
         game = new_game()

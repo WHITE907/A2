@@ -36,8 +36,10 @@
         "innkeeper_mara",
         "smith_dorn",
         "scholar_iven",
-        "nima_crossroads"
-      ]
+        "nima_crossroads",
+        "butterbur_goodbody"
+      ],
+      "ancestry_actions": []
     },
     {
       "id": "greenfields",
@@ -84,7 +86,8 @@
           "level_max": 4
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": []
     },
     {
       "id": "old_road",
@@ -137,7 +140,61 @@
           "boss_id": "bandit_chief"
         }
       ],
-      "npc_ids": []
+      "npc_ids": [
+        "thrakk_warbringer"
+      ],
+      "ancestry_actions": [
+        {
+          "id": "heritage_human_path_1",
+          "name": "Share the road",
+          "description": "At the old milestones, choose whether your heritage is defined by community or self-reliance. This decision cannot be undone.",
+          "outcome": "You leave supplies and maps for those who will travel after you.",
+          "required_race_ids": [
+            "human"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_human_choice",
+          "required_companion_id": "rook",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_human_path"
+          },
+          "choice_group": "heritage_human_path",
+          "choice_value": "community",
+          "flags": {
+            "heritage_human_path": "community"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_human_path_2",
+          "name": "Walk your own trail",
+          "description": "At the old milestones, choose whether your heritage is defined by community or self-reliance. This decision cannot be undone.",
+          "outcome": "You mark a private route and trust your own judgment to carry it forward.",
+          "required_race_ids": [
+            "human"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_human_choice",
+          "required_companion_id": "rook",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_human_path"
+          },
+          "choice_group": "heritage_human_path",
+          "choice_value": "self_reliance",
+          "flags": {
+            "heritage_human_path": "self_reliance"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "hollow_cave",
@@ -186,7 +243,10 @@
           "level_max": 11
         }
       ],
-      "npc_ids": []
+      "npc_ids": [
+        "ophidia_scalesinger"
+      ],
+      "ancestry_actions": []
     },
     {
       "id": "sunken_shrine",
@@ -245,7 +305,28 @@
           "boss_id": "shadow_warden"
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_human_ascension_action",
+          "name": "Gather the voices at the well",
+          "description": "Return to an ancient shrine and bind the many lessons of humanity into a single deliberate path.",
+          "outcome": "The old well reflects a hundred human lives. Their contradictions become your strength.",
+          "required_race_ids": [
+            "human"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_human_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_human_ascension"
+          },
+          "flags": {
+            "heritage_human_ascended": true
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "emberwatch_road",
@@ -286,7 +367,8 @@
           "level_max": 20
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": []
     },
     {
       "id": "town_emberwatch",
@@ -309,7 +391,110 @@
         "alchemist_pell",
         "cartographer_senn",
         "elder_amariel",
-        "mother_sable"
+        "mother_sable",
+        "cogsworth_tinkerton"
+      ],
+      "ancestry_actions": [
+        {
+          "id": "heritage_half_elf_path_1",
+          "name": "Honor both houses",
+          "description": "At Emberwatch\u2019s old bridge, choose whether you honour inheritance or build a third path between it. This decision cannot be undone.",
+          "outcome": "You carry two histories without allowing either to erase the other.",
+          "required_race_ids": [
+            "half_elf"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_half_elf_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_half_elf_path"
+          },
+          "choice_group": "heritage_half_elf_path",
+          "choice_value": "dual_heritage",
+          "flags": {
+            "heritage_half_elf_path": "dual_heritage"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_half_elf_path_2",
+          "name": "Choose a third path",
+          "description": "At Emberwatch\u2019s old bridge, choose whether you honour inheritance or build a third path between it. This decision cannot be undone.",
+          "outcome": "You refuse inherited expectations and define belonging for yourself.",
+          "required_race_ids": [
+            "half_elf"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_half_elf_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_half_elf_path"
+          },
+          "choice_group": "heritage_half_elf_path",
+          "choice_value": "self_named",
+          "flags": {
+            "heritage_half_elf_path": "self_named"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_halfling_path_1",
+          "name": "Save the luck",
+          "description": "At Emberwatch, choose whether luck is something to hoard or something made by helping others. This decision cannot be undone.",
+          "outcome": "You keep the fortunate token for the moment only you can survive.",
+          "required_race_ids": [
+            "halfling"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_halfling_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_halfling_path"
+          },
+          "choice_group": "heritage_halfling_path",
+          "choice_value": "keep_luck",
+          "flags": {
+            "heritage_halfling_path": "keep_luck"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_halfling_path_2",
+          "name": "Share the luck",
+          "description": "At Emberwatch, choose whether luck is something to hoard or something made by helping others. This decision cannot be undone.",
+          "outcome": "You pass the token on and trust good fortune to return another way.",
+          "required_race_ids": [
+            "halfling"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_halfling_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_halfling_path"
+          },
+          "choice_group": "heritage_halfling_path",
+          "choice_value": "share_luck",
+          "flags": {
+            "heritage_halfling_path": "share_luck"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
       ]
     },
     {
@@ -351,7 +536,10 @@
           "level_max": 23
         }
       ],
-      "npc_ids": []
+      "npc_ids": [
+        "spinner_fateweaver"
+      ],
+      "ancestry_actions": []
     },
     {
       "id": "glassmarsh",
@@ -392,7 +580,159 @@
           "level_max": 24
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_tiefling_path_1",
+          "name": "Rewrite the pact",
+          "description": "At the glassmarsh mirrors, choose whether to amend your inherited pact or leave every promise unanswered. This decision cannot be undone.",
+          "outcome": "You shape the terms of your inheritance instead of denying its existence.",
+          "required_race_ids": [
+            "tiefling"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_tiefling_choice",
+          "required_companion_id": "veyra_ashhorn",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_tiefling_path"
+          },
+          "choice_group": "heritage_tiefling_path",
+          "choice_value": "rewrite",
+          "flags": {
+            "heritage_tiefling_path": "rewrite"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_tiefling_path_2",
+          "name": "Walk unbound",
+          "description": "At the glassmarsh mirrors, choose whether to amend your inherited pact or leave every promise unanswered. This decision cannot be undone.",
+          "outcome": "You leave every inherited promise behind and claim a harder freedom.",
+          "required_race_ids": [
+            "tiefling"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_tiefling_choice",
+          "required_companion_id": "veyra_ashhorn",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_tiefling_path"
+          },
+          "choice_group": "heritage_tiefling_path",
+          "choice_value": "unbound",
+          "flags": {
+            "heritage_tiefling_path": "unbound"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_beastkin_path_1",
+          "name": "Keep the pack",
+          "description": "In the Glassmarsh, choose whether your instincts are strongest in a pack or in the freedom to roam alone. This decision cannot be undone.",
+          "outcome": "You promise to lend your strength to those who run beside you.",
+          "required_race_ids": [
+            "beastkin"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_beastkin_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_beastkin_path"
+          },
+          "choice_group": "heritage_beastkin_path",
+          "choice_value": "pack",
+          "flags": {
+            "heritage_beastkin_path": "pack"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_beastkin_path_2",
+          "name": "Follow the lone trail",
+          "description": "In the Glassmarsh, choose whether your instincts are strongest in a pack or in the freedom to roam alone. This decision cannot be undone.",
+          "outcome": "You trust the solitary instinct that keeps you alive between territories.",
+          "required_race_ids": [
+            "beastkin"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_beastkin_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_beastkin_path"
+          },
+          "choice_group": "heritage_beastkin_path",
+          "choice_value": "lone_trail",
+          "flags": {
+            "heritage_beastkin_path": "lone_trail"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_arachne_path_1",
+          "name": "Preserve the pattern",
+          "description": "At the Glassmarsh reflections, choose whether fate is a pattern to preserve or a thread to cut. This decision cannot be undone.",
+          "outcome": "You honour the pattern that carried your people through countless storms.",
+          "required_race_ids": [
+            "arachne"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_arachne_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_arachne_path"
+          },
+          "choice_group": "heritage_arachne_path",
+          "choice_value": "pattern",
+          "flags": {
+            "heritage_arachne_path": "pattern"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_arachne_path_2",
+          "name": "Cut a new thread",
+          "description": "At the Glassmarsh reflections, choose whether fate is a pattern to preserve or a thread to cut. This decision cannot be undone.",
+          "outcome": "You accept the risk of a future no elder has already woven.",
+          "required_race_ids": [
+            "arachne"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_arachne_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_arachne_path"
+          },
+          "choice_group": "heritage_arachne_path",
+          "choice_value": "new_thread",
+          "flags": {
+            "heritage_arachne_path": "new_thread"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "drowned_archive",
@@ -434,7 +774,159 @@
           "boss_id": "mire_oracle"
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_elf_path_1",
+          "name": "Keep the old verse",
+          "description": "In the drowned archive, decide whether memory must be preserved exactly or allowed to change with the living. This decision cannot be undone.",
+          "outcome": "You preserve the original cadence exactly as the elders taught it.",
+          "required_race_ids": [
+            "elf"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_elf_choice",
+          "required_companion_id": "lethira_vale",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_elf_path"
+          },
+          "choice_group": "heritage_elf_path",
+          "choice_value": "preservation",
+          "flags": {
+            "heritage_elf_path": "preservation"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_elf_path_2",
+          "name": "Compose a new verse",
+          "description": "In the drowned archive, decide whether memory must be preserved exactly or allowed to change with the living. This decision cannot be undone.",
+          "outcome": "You answer the old song with a living verse of your own.",
+          "required_race_ids": [
+            "elf"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_elf_choice",
+          "required_companion_id": "lethira_vale",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_elf_path"
+          },
+          "choice_group": "heritage_elf_path",
+          "choice_value": "renewal",
+          "flags": {
+            "heritage_elf_path": "renewal"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_demon_path_1",
+          "name": "Claim the debt",
+          "description": "At the drowned archive, choose whether infernal power is a debt to collect or a burden to carry. This decision cannot be undone.",
+          "outcome": "You accept the sharp certainty of the old court\u2019s bargain.",
+          "required_race_ids": [
+            "demon"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_demon_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_demon_path"
+          },
+          "choice_group": "heritage_demon_path",
+          "choice_value": "claim",
+          "flags": {
+            "heritage_demon_path": "claim"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_demon_path_2",
+          "name": "Break the debt",
+          "description": "At the drowned archive, choose whether infernal power is a debt to collect or a burden to carry. This decision cannot be undone.",
+          "outcome": "You refuse to let an ancestor\u2019s bargain define your hunger.",
+          "required_race_ids": [
+            "demon"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_demon_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_demon_path"
+          },
+          "choice_group": "heritage_demon_path",
+          "choice_value": "break",
+          "flags": {
+            "heritage_demon_path": "break"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_lamia_path_1",
+          "name": "Preserve the judgment",
+          "description": "At the Drowned Archive, choose whether ancient memory should judge the living or teach them mercy. This decision cannot be undone.",
+          "outcome": "You keep the old verdicts intact, trusting memory over sentiment.",
+          "required_race_ids": [
+            "lamia"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_lamia_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_lamia_path"
+          },
+          "choice_group": "heritage_lamia_path",
+          "choice_value": "judgment",
+          "flags": {
+            "heritage_lamia_path": "judgment"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_lamia_path_2",
+          "name": "Choose mercy",
+          "description": "At the Drowned Archive, choose whether ancient memory should judge the living or teach them mercy. This decision cannot be undone.",
+          "outcome": "You let the past instruct the present without ruling it.",
+          "required_race_ids": [
+            "lamia"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_lamia_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_lamia_path"
+          },
+          "choice_group": "heritage_lamia_path",
+          "choice_value": "mercy",
+          "flags": {
+            "heritage_lamia_path": "mercy"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "town_stonehaven",
@@ -456,8 +948,10 @@
         "reeve_marta",
         "miner_joss",
         "runekeeper_ada",
-        "thane_dorrim"
-      ]
+        "thane_dorrim",
+        "granite_heart"
+      ],
+      "ancestry_actions": []
     },
     {
       "id": "red_pass",
@@ -498,7 +992,109 @@
           "level_max": 31
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_dwarf_path_1",
+          "name": "Temper by tradition",
+          "description": "At the Red Pass forge-stones, choose whether tradition or invention should shape the next generation of craft. This decision cannot be undone.",
+          "outcome": "You use the old measurements, accepting the discipline they demand.",
+          "required_race_ids": [
+            "dwarf"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_dwarf_choice",
+          "required_companion_id": "brokk_embervein",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_dwarf_path"
+          },
+          "choice_group": "heritage_dwarf_path",
+          "choice_value": "tradition",
+          "flags": {
+            "heritage_dwarf_path": "tradition"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_dwarf_path_2",
+          "name": "Temper by innovation",
+          "description": "At the Red Pass forge-stones, choose whether tradition or invention should shape the next generation of craft. This decision cannot be undone.",
+          "outcome": "You alter the pattern and accept responsibility for what follows.",
+          "required_race_ids": [
+            "dwarf"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_dwarf_choice",
+          "required_companion_id": "brokk_embervein",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_dwarf_path"
+          },
+          "choice_group": "heritage_dwarf_path",
+          "choice_value": "innovation",
+          "flags": {
+            "heritage_dwarf_path": "innovation"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_orc_path_1",
+          "name": "Sing for conquest",
+          "description": "At the Red Pass, choose whether your war song belongs to conquest or protection. This decision cannot be undone.",
+          "outcome": "You accept that strength must sometimes take the ground it needs.",
+          "required_race_ids": [
+            "orc"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_orc_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_orc_path"
+          },
+          "choice_group": "heritage_orc_path",
+          "choice_value": "conquest",
+          "flags": {
+            "heritage_orc_path": "conquest"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_orc_path_2",
+          "name": "Sing for protection",
+          "description": "At the Red Pass, choose whether your war song belongs to conquest or protection. This decision cannot be undone.",
+          "outcome": "You make strength a shelter for those who cannot yet stand alone.",
+          "required_race_ids": [
+            "orc"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_orc_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_orc_path"
+          },
+          "choice_group": "heritage_orc_path",
+          "choice_value": "protection",
+          "flags": {
+            "heritage_orc_path": "protection"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "crystal_mines",
@@ -541,7 +1137,59 @@
           "boss_id": "iron_colossus"
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_goliath_path_1",
+          "name": "Carry it alone",
+          "description": "In the Singing Mines, choose whether your strength is measured by burdens carried alone or shared with others. This decision cannot be undone.",
+          "outcome": "You prove the solitary endurance your ancestors prized.",
+          "required_race_ids": [
+            "goliath"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_goliath_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_goliath_path"
+          },
+          "choice_group": "heritage_goliath_path",
+          "choice_value": "solitary",
+          "flags": {
+            "heritage_goliath_path": "solitary"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_goliath_path_2",
+          "name": "Share the burden",
+          "description": "In the Singing Mines, choose whether your strength is measured by burdens carried alone or shared with others. This decision cannot be undone.",
+          "outcome": "You prove that strength can include asking another to stand beside you.",
+          "required_race_ids": [
+            "goliath"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_goliath_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_goliath_path"
+          },
+          "choice_group": "heritage_goliath_path",
+          "choice_value": "shared",
+          "flags": {
+            "heritage_goliath_path": "shared"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "storm_plateau",
@@ -582,7 +1230,59 @@
           "level_max": 37
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_gnome_path_1",
+          "name": "Publish the design",
+          "description": "On the storm plateau, choose whether a dangerous invention should be shared freely or safeguarded. This decision cannot be undone.",
+          "outcome": "You trust many hands and many minds to improve the invention.",
+          "required_race_ids": [
+            "gnome"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_gnome_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_gnome_path"
+          },
+          "choice_group": "heritage_gnome_path",
+          "choice_value": "open_design",
+          "flags": {
+            "heritage_gnome_path": "open_design"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_gnome_path_2",
+          "name": "Guard the design",
+          "description": "On the storm plateau, choose whether a dangerous invention should be shared freely or safeguarded. This decision cannot be undone.",
+          "outcome": "You keep the dangerous details from those who would use them carelessly.",
+          "required_race_ids": [
+            "gnome"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_gnome_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_gnome_path"
+          },
+          "choice_group": "heritage_gnome_path",
+          "choice_value": "guarded_design",
+          "flags": {
+            "heritage_gnome_path": "guarded_design"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "town_skyreach",
@@ -604,8 +1304,10 @@
         "ropewright_fenn",
         "abbess_sol",
         "keth_cloudscar",
-        "siv_quickpaw"
-      ]
+        "siv_quickpaw",
+        "zephyr_stormcaller"
+      ],
+      "ancestry_actions": []
     },
     {
       "id": "cloud_ruins",
@@ -645,7 +1347,166 @@
           "level_max": 40
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_elf_ascension_action",
+          "name": "Answer the sky-song",
+          "description": "Sing the recovered fragment beneath the cloud ruins and let it become more than an echo of the past.",
+          "outcome": "The ruins answer in harmonics older than any tower, and your ancestry technique resonates with them.",
+          "required_race_ids": [
+            "elf"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_elf_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_elf_ascension"
+          },
+          "flags": {
+            "heritage_elf_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_half_elf_ascension_action",
+          "name": "Name your horizon",
+          "description": "At the cloud ruins, speak the name you have chosen for yourself into the open sky.",
+          "outcome": "Wind carries your chosen name through the ruins. No lineage can speak over it again.",
+          "required_race_ids": [
+            "half_elf"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_half_elf_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_half_elf_ascension"
+          },
+          "flags": {
+            "heritage_half_elf_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_dragonkin_path_1",
+          "name": "Serve the brood",
+          "description": "Among the cloud ruins, choose whether your draconic oath is service to a brood or mastery of yourself. This decision cannot be undone.",
+          "outcome": "You bind your strength to the safety and honour of your people.",
+          "required_race_ids": [
+            "dragonkin"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_dragonkin_choice",
+          "required_companion_id": "rhazek_dawnscale",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_dragonkin_path"
+          },
+          "choice_group": "heritage_dragonkin_path",
+          "choice_value": "brood",
+          "flags": {
+            "heritage_dragonkin_path": "brood"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_dragonkin_path_2",
+          "name": "Master the self",
+          "description": "Among the cloud ruins, choose whether your draconic oath is service to a brood or mastery of yourself. This decision cannot be undone.",
+          "outcome": "You swear that blood is a beginning, not a command.",
+          "required_race_ids": [
+            "dragonkin"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_dragonkin_choice",
+          "required_companion_id": "rhazek_dawnscale",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_dragonkin_path"
+          },
+          "choice_group": "heritage_dragonkin_path",
+          "choice_value": "self_mastery",
+          "flags": {
+            "heritage_dragonkin_path": "self_mastery"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_halfling_ascension_action",
+          "name": "Lay the road table",
+          "description": "At the cloud ruins, set a table for strangers and prove that home can travel with you.",
+          "outcome": "A meal shared above the clouds makes even ancient ruins feel briefly like home.",
+          "required_race_ids": [
+            "halfling"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_halfling_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_halfling_ascension"
+          },
+          "flags": {
+            "heritage_halfling_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_genasi_path_1",
+          "name": "Command the storm",
+          "description": "At the cloud ruins, choose whether an element is mastered through control or through surrender to its nature. This decision cannot be undone.",
+          "outcome": "You impose shape and discipline on the elemental force within.",
+          "required_race_ids": [
+            "genasi"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_genasi_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_genasi_path"
+          },
+          "choice_group": "heritage_genasi_path",
+          "choice_value": "command",
+          "flags": {
+            "heritage_genasi_path": "command"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_genasi_path_2",
+          "name": "Ride the storm",
+          "description": "At the cloud ruins, choose whether an element is mastered through control or through surrender to its nature. This decision cannot be undone.",
+          "outcome": "You learn to move with elemental change rather than resisting it.",
+          "required_race_ids": [
+            "genasi"
+          ],
+          "min_level": 25,
+          "required_active_quest_id": "heritage_genasi_choice",
+          "required_companion_id": "",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_genasi_path"
+          },
+          "choice_group": "heritage_genasi_path",
+          "choice_value": "ride",
+          "flags": {
+            "heritage_genasi_path": "ride"
+          },
+          "rewards": {
+            "gold": 40
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "obsidian_gate",
@@ -688,7 +1549,218 @@
           "boss_id": "dawn_tyrant"
         }
       ],
-      "npc_ids": []
+      "npc_ids": [],
+      "ancestry_actions": [
+        {
+          "id": "heritage_dwarf_ascension_action",
+          "name": "Strike the first anvil",
+          "description": "At the Obsidian Gate, awaken the memory of the first forge without repeating its oldest mistakes.",
+          "outcome": "A single strike rings through the gate like a forge bell, hardening your resolve and technique.",
+          "required_race_ids": [
+            "dwarf"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_dwarf_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_dwarf_ascension"
+          },
+          "flags": {
+            "heritage_dwarf_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_dragonkin_ascension_action",
+          "name": "Crown the scale",
+          "description": "Face the Obsidian Gate and turn inherited pride into an oath you can actually uphold.",
+          "outcome": "The gate drinks the echo of your roar and returns it as a disciplined, skybound power.",
+          "required_race_ids": [
+            "dragonkin"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_dragonkin_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_dragonkin_ascension"
+          },
+          "flags": {
+            "heritage_dragonkin_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_demon_ascension_action",
+          "name": "Speak the unburning name",
+          "description": "At the Obsidian Gate, strip an inherited title of its power and decide what remains beneath it.",
+          "outcome": "Ash rises but does not consume you. Your technique answers a name no court can own.",
+          "required_race_ids": [
+            "demon"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_demon_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_demon_ascension"
+          },
+          "flags": {
+            "heritage_demon_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_tiefling_ascension_action",
+          "name": "Open the door between",
+          "description": "At the Obsidian Gate, close the door others opened in your name\u2014or walk through it on your own terms.",
+          "outcome": "The gate reveals a threshold within your own blood. You cross it without surrendering yourself.",
+          "required_race_ids": [
+            "tiefling"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_tiefling_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_tiefling_ascension"
+          },
+          "flags": {
+            "heritage_tiefling_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_beastkin_ascension_action",
+          "name": "Mark the unfenced trail",
+          "description": "At the Obsidian Gate, claim a wild path that no fence, banner, or hunter can close.",
+          "outcome": "Your scent carries across the black stone. The wild recognizes you as neither prey nor captive.",
+          "required_race_ids": [
+            "beastkin"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_beastkin_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_beastkin_ascension"
+          },
+          "flags": {
+            "heritage_beastkin_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_orc_ascension_action",
+          "name": "Raise the free banner",
+          "description": "Raise a banner at the Obsidian Gate that carries strength without repeating old chains.",
+          "outcome": "Your banner catches a hard wind above the gate. Its weight becomes purpose instead of burden.",
+          "required_race_ids": [
+            "orc"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_orc_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_orc_ascension"
+          },
+          "flags": {
+            "heritage_orc_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_gnome_ascension_action",
+          "name": "Turn the impossible key",
+          "description": "At the Obsidian Gate, assemble a device everyone calls impossible and prove them delightfully wrong.",
+          "outcome": "The device hums once, then opens a pattern in the gate that only a gnomish mind would notice.",
+          "required_race_ids": [
+            "gnome"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_gnome_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_gnome_ascension"
+          },
+          "flags": {
+            "heritage_gnome_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_genasi_ascension_action",
+          "name": "Join the confluence",
+          "description": "At the Obsidian Gate, let every element in your blood meet without one consuming the others.",
+          "outcome": "Fire, wind, stone, and tide answer together. Your technique finds the rhythm between them.",
+          "required_race_ids": [
+            "genasi"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_genasi_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_genasi_ascension"
+          },
+          "flags": {
+            "heritage_genasi_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_goliath_ascension_action",
+          "name": "Set the peak within",
+          "description": "At the Obsidian Gate, stand beneath a weight no one else can lift and discover the peak inside yourself.",
+          "outcome": "The gate\u2019s weight presses down, then becomes part of your stance instead of breaking it.",
+          "required_race_ids": [
+            "goliath"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_goliath_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_goliath_ascension"
+          },
+          "flags": {
+            "heritage_goliath_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_lamia_ascension_action",
+          "name": "Wear the serpent crown",
+          "description": "At the Obsidian Gate, claim a crown of memory without allowing it to close around your throat.",
+          "outcome": "The old crown coils around your thoughts, then loosens when it finds you are not its prisoner.",
+          "required_race_ids": [
+            "lamia"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_lamia_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_lamia_ascension"
+          },
+          "flags": {
+            "heritage_lamia_ascended": true
+          },
+          "once": true
+        },
+        {
+          "id": "heritage_arachne_ascension_action",
+          "name": "Weave tomorrow",
+          "description": "At the Obsidian Gate, weave one final thread into a future that remains yours to change.",
+          "outcome": "Silk catches on black stone, forming a path that did not exist until you chose to make it.",
+          "required_race_ids": [
+            "arachne"
+          ],
+          "min_level": 40,
+          "required_active_quest_id": "heritage_arachne_ascension",
+          "quest_event": {
+            "kind": "choice",
+            "target_id": "heritage_arachne_ascension"
+          },
+          "flags": {
+            "heritage_arachne_ascended": true
+          },
+          "once": true
+        }
+      ]
     },
     {
       "id": "ironveil_approach",
@@ -728,7 +1800,8 @@
         }
       ],
       "quiet_chance": 0.2,
-      "unlock_level": 40
+      "unlock_level": 40,
+      "ancestry_actions": []
     },
     {
       "id": "town_ironveil",
@@ -751,7 +1824,8 @@
         "ironveil_arcanist"
       ],
       "quiet_chance": 0.8,
-      "unlock_level": 40
+      "unlock_level": 40,
+      "ancestry_actions": []
     },
     {
       "id": "ashen_wastes",
@@ -791,7 +1865,8 @@
         }
       ],
       "quiet_chance": 0.15,
-      "unlock_level": 42
+      "unlock_level": 42,
+      "ancestry_actions": []
     },
     {
       "id": "cinder_depths",
@@ -832,7 +1907,8 @@
         }
       ],
       "quiet_chance": 0.15,
-      "unlock_level": 45
+      "unlock_level": 45,
+      "ancestry_actions": []
     },
     {
       "id": "sunken_citadel",
@@ -872,7 +1948,8 @@
         }
       ],
       "quiet_chance": 0.15,
-      "unlock_level": 44
+      "unlock_level": 44,
+      "ancestry_actions": []
     },
     {
       "id": "abyssal_halls",
@@ -914,7 +1991,8 @@
         }
       ],
       "quiet_chance": 0.1,
-      "unlock_level": 48
+      "unlock_level": 48,
+      "ancestry_actions": []
     },
     {
       "id": "molten_sanctum",
@@ -955,7 +2033,8 @@
         }
       ],
       "quiet_chance": 0.1,
-      "unlock_level": 50
+      "unlock_level": 50,
+      "ancestry_actions": []
     },
     {
       "id": "void_throne",
@@ -999,7 +2078,8 @@
         }
       ],
       "quiet_chance": 0.1,
-      "unlock_level": 52
+      "unlock_level": 52,
+      "ancestry_actions": []
     },
     {
       "id": "celestial_crossing",
@@ -1041,7 +2121,8 @@
         "Starlight pools like water at your feet.",
         "The air smells of ozone and old vows."
       ],
-      "unlock_level": 56
+      "unlock_level": 56,
+      "ancestry_actions": []
     },
     {
       "id": "celestial_archives",
@@ -1066,7 +2147,8 @@
         "Scrolls float, turning their own pages.",
         "You hear whispers of futures that never happened."
       ],
-      "unlock_level": 58
+      "unlock_level": 58,
+      "ancestry_actions": []
     },
     {
       "id": "astral_rift",
@@ -1110,7 +2192,8 @@
         "Gravity inverts briefly, then apologizes.",
         "You see your own back, walking ahead."
       ],
-      "unlock_level": 62
+      "unlock_level": 62,
+      "ancestry_actions": []
     },
     {
       "id": "abyssal_maw",
@@ -1156,7 +2239,8 @@
         "The maw exhales, and your torch gutters without wind.",
         "Something vast shifts below, and the whole chasm shudders."
       ],
-      "unlock_level": 66
+      "unlock_level": 66,
+      "ancestry_actions": []
     },
     {
       "id": "throne_of_ascension",
@@ -1200,7 +2284,8 @@
         "Every step you ever took led here, whether you knew it or not.",
         "The throne is warm, as if just vacated."
       ],
-      "unlock_level": 70
+      "unlock_level": 70,
+      "ancestry_actions": []
     }
   ],
   "shops": [
