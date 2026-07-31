@@ -5,7 +5,7 @@ from __future__ import annotations
 import tkinter as tk
 
 from gui import theme
-from gui.widgets import ButtonStack, StatPanel, SelectList
+from gui.widgets import ScrollableFrame, ButtonStack, StatPanel, SelectList
 
 
 class TacticsWindow(tk.Toplevel):
@@ -13,11 +13,13 @@ class TacticsWindow(tk.Toplevel):
         super().__init__(app.root, bg=theme.BG)
         self.app = app
         self.companion_id = companion_id
-        theme.style_window(self, "Companion Tactics")
+        theme.style_window(self, "Project Ascension - Companion Tactics")
         theme.center_window(self, 560, 680)
+        self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
         self.info = StatPanel(body, title="Policy")
         self.info.pack(fill=tk.X)
 
@@ -47,14 +49,17 @@ class TacticsWindow(tk.Toplevel):
         target_frame.pack(fill=tk.X, pady=(8, 0))
         theme.body_label(target_frame, text="Preferred Target (enemy id or empty):").pack(anchor="w")
         self.target_var = tk.StringVar(value="")
-        tk.Entry(target_frame, textvariable=self.target_var, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG).pack(fill=tk.X, pady=(4, 0))
+        theme.field_entry(target_frame, textvariable=self.target_var, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG).pack(fill=tk.X, pady=(4, 0))
         theme.body_label(target_frame, text="Protect Target (ally id or name):").pack(anchor="w", pady=(6, 0))
         self.protect_var = tk.StringVar(value="")
-        tk.Entry(target_frame, textvariable=self.protect_var, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG).pack(fill=tk.X, pady=(4, 0))
+        theme.field_entry(target_frame, textvariable=self.protect_var, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG).pack(fill=tk.X, pady=(4, 0))
         theme.flat_button(target_frame, "Apply Targets", self.apply_targets).pack(anchor="e", pady=(6, 0))
 
-        theme.flat_button(body, "Close", self.destroy).pack(anchor="e", pady=(16, 0))
+        theme.flat_button(body, "Close", self._close).pack(anchor="e", pady=(16, 0))
         self.refresh()
+
+    def _close(self) -> None:
+        self.app.close_toplevel("tactics")
 
     def member(self):
         return self.app.game.party.get(self.companion_id)

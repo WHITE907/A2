@@ -13,7 +13,7 @@ import tkinter as tk
 
 from gui import theme
 from engine.game import SaveSlotInfo
-from gui.widgets import SelectList, StatPanel
+from gui.widgets import ScrollableFrame, SelectList, StatPanel
 
 __all__ = ["SaveBrowserWindow"]
 
@@ -33,8 +33,9 @@ class SaveBrowserWindow(tk.Toplevel):
         theme.center_window(self, 480, 560)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         theme.heading_label(body, text=_TITLES[self.mode]).pack(anchor="w", pady=(0, 10))
 
@@ -53,7 +54,7 @@ class SaveBrowserWindow(tk.Toplevel):
             row = tk.Frame(body, bg=theme.BG)
             row.pack(fill=tk.X, pady=(14, 0))
             theme.body_label(row, text="Slot name:").pack(side=tk.LEFT)
-            entry = tk.Entry(
+            entry = theme.field_entry(
                 row,
                 textvariable=self.name_var,
                 bg=theme.LISTBOX_BG,

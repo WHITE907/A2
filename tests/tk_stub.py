@@ -225,14 +225,29 @@ class Widget:
         self.bindings[sequence] = func
         return "bind0"
 
+    def bind_all(self, sequence: str, func: Callable[..., Any], add: str | None = None) -> str:
+        """Small model of Tk's root-scoped bindings for scroll tests."""
+        root = self.winfo_toplevel()
+        if not hasattr(root, "_global_bindings"):
+            root._global_bindings = {}
+        if add in ("+", True):
+            root._global_bindings.setdefault(sequence, []).append(func)
+        else:
+            root._global_bindings[sequence] = [func]
+        return "bindall0"
+
     def unbind(self, sequence: str, funcid: str | None = None) -> None:
         self.bindings.pop(sequence, None)
 
     def event_generate(self, sequence: str, **kwargs: Any) -> None:
-        """Fire a bound handler directly - the stub has no event loop."""
+        """Fire local and global handlers directly - the stub has no event loop."""
+        event = types.SimpleNamespace(widget=self, **kwargs)
         handler = self.bindings.get(sequence)
         if handler is not None:
-            handler(types.SimpleNamespace(widget=self, **kwargs))
+            handler(event)
+        root = self.winfo_toplevel()
+        for global_handler in list(getattr(root, "_global_bindings", {}).get(sequence, [])):
+            global_handler(event)
 
     def focus_set(self) -> None:
         pass
@@ -486,6 +501,10 @@ class Scrollbar(Widget):
 
 
 class Canvas(Widget):
+    def __init__(self, master: Any = None, **options: Any) -> None:
+        super().__init__(master, **options)
+        self.yview_scroll_calls: list[tuple[Any, ...]] = []
+
     def create_line(self, *args: Any, **kwargs: Any) -> int:
         return 1
 
@@ -508,7 +527,7 @@ class Canvas(Widget):
         pass
 
     def yview_scroll(self, *args: Any) -> None:
-        pass
+        self.yview_scroll_calls.append(args)
 
     def delete(self, *args: Any) -> None:
         pass

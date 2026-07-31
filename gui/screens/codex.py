@@ -5,7 +5,7 @@ from __future__ import annotations
 import tkinter as tk
 
 from gui import theme
-from gui.widgets import StatPanel
+from gui.widgets import ScrollableFrame, StatPanel
 
 __all__ = ["CodexWindow"]
 
@@ -21,8 +21,9 @@ class CodexWindow(tk.Toplevel):
         theme.center_window(self, 640, 580)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         theme.heading_label(body, text="Codex & Achievements").pack(anchor="w", pady=(0, 10))
 

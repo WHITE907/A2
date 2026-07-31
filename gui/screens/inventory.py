@@ -6,7 +6,7 @@ import tkinter as tk
 
 from gui import theme
 from engine.items.item import Item
-from gui.widgets import SelectList, StatPanel
+from gui.widgets import ScrollableFrame, SelectList, StatPanel
 
 __all__ = ["InventoryWindow"]
 
@@ -41,8 +41,9 @@ class InventoryWindow(tk.Toplevel):
         theme.center_window(self, 820, 600)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         header = tk.Frame(body, bg=theme.BG)
         header.pack(fill=tk.X)
@@ -55,7 +56,7 @@ class InventoryWindow(tk.Toplevel):
         search_row.pack(fill=tk.X, pady=(10, 0))
         theme.body_label(search_row, text="Search:", font=theme.FONT_SMALL).pack(side=tk.LEFT)
         self.search_var = tk.StringVar(value="")
-        search_entry = tk.Entry(search_row, textvariable=self.search_var, width=22, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG, font=theme.FONT_SMALL)
+        search_entry = theme.field_entry(search_row, textvariable=self.search_var, width=22, bg=theme.LISTBOX_BG, fg=theme.FG, insertbackground=theme.FG, font=theme.FONT_SMALL)
         search_entry.pack(side=tk.LEFT, padx=(6, 10))
         search_entry.bind("<KeyRelease>", lambda _e: self.refresh())
         theme.body_label(search_row, text="Total value:").pack(side=tk.LEFT, padx=(10, 4))
@@ -66,7 +67,7 @@ class InventoryWindow(tk.Toplevel):
         filters.pack(fill=tk.X, pady=(8, 0))
         self.filter_var = tk.StringVar(value="All")
         for label, _kind in _FILTERS:
-            tk.Radiobutton(
+            theme.choice_button(
                 filters,
                 text=label,
                 value=label,
@@ -88,7 +89,7 @@ class InventoryWindow(tk.Toplevel):
         theme.body_label(rarity_row, text="Rarity:", font=theme.FONT_SMALL).pack(side=tk.LEFT)
         self.rarity_var = tk.StringVar(value="All Rarities")
         for label, _rar in _RARITY_FILTERS:
-            tk.Radiobutton(
+            theme.choice_button(
                 rarity_row,
                 text=label,
                 value=label,
@@ -109,7 +110,7 @@ class InventoryWindow(tk.Toplevel):
         theme.body_label(sort_row, text="Sort:", font=theme.FONT_SMALL).pack(side=tk.LEFT)
         self.sort_var = tk.StringVar(value="name")
         for s in _SORTS:
-            tk.Radiobutton(
+            theme.choice_button(
                 sort_row,
                 text=s.title(),
                 value=s,

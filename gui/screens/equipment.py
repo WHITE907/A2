@@ -11,7 +11,7 @@ import tkinter as tk
 
 from engine.items.item import EQUIPMENT_SLOTS, SLOT_LABELS, Item
 from gui import theme
-from gui.widgets import SelectList, StatPanel
+from gui.widgets import ScrollableFrame, SelectList, StatPanel
 
 __all__ = ["EquipmentWindow"]
 
@@ -27,8 +27,9 @@ class EquipmentWindow(tk.Toplevel):
         theme.center_window(self, 820, 560)
         self.transient(app.root)
 
-        body = tk.Frame(self, bg=theme.BG, padx=18, pady=16)
-        body.pack(fill=tk.BOTH, expand=True)
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        body = self.viewport.content
 
         theme.heading_label(body, text="Equipment").pack(anchor="w", pady=(0, 10))
 
@@ -281,8 +282,9 @@ class EquipmentWindow(tk.Toplevel):
         theme.style_window(window, f"Enchant {item.name}")
         theme.center_window(window, 420, 400)
         window.transient(self.app.root)
-        frame = tk.Frame(window, bg=theme.BG, padx=16, pady=14)
-        frame.pack(fill=tk.BOTH, expand=True)
+        viewport = ScrollableFrame(window, bg=theme.BG, padx=16, pady=14)
+        viewport.pack(fill=tk.BOTH, expand=True)
+        frame = viewport.content
         theme.heading_label(frame, text=f"Enchant {item.name}").pack(anchor="w")
         rarity_cfg = game.config.get("rarities") or {}
         slots = item.effective_enchant_slots(rarity_cfg)

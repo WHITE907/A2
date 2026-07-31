@@ -1,15 +1,137 @@
-"""Reusable UI widgets including Tooltips and Styled Progress Bars."""
+"""Reusable, consistently styled Tk widgets.
+
+These components centralise the presentation layer's repeated patterns: cards,
+selection lists, logs, action stacks, and vertically scrollable pages.  They
+contain no game rules; screens provide display text and callbacks only.
+"""
 
 from __future__ import annotations
 
 import tkinter as tk
+import weakref
 from typing import Callable, Generic, Iterable, Sequence, TypeVar
 
 from gui import theme
 
-__all__ = ["StatPanel", "ButtonStack", "SelectList", "LogPanel", "StatusBar", "ToolTip", "ProgressBar"]
+__all__ = [
+    "ScrollableFrame",
+    "StatPanel",
+    "ButtonStack",
+    "SelectList",
+    "LogPanel",
+    "StatusBar",
+    "ToolTip",
+    "ProgressBar",
+]
 
 T = TypeVar("T")
+
+
+class ScrollableFrame(tk.Frame):
+    """A reusable vertical viewport for long dialog content.
+
+    The visible ``canvas`` is deliberately kept private to the component's
+    layout, while screens populate :attr:`content` like an ordinary ``Frame``.
+    A scrollbar is always available, so a screen remains usable when dynamic
+    content (perks, quests, dialogue, small displays, etc.) grows beyond the
+    available desktop height.
+
+    Nested Listboxes and Text widgets retain their own wheel behaviour; wheel
+    events over the rest of a page scroll this outer viewport.
+    """
+
+    #: One app-wide wheel dispatcher per Tk root avoids leaving a callback
+    #: bound to every Toplevel that has since been closed.
+    _viewports: weakref.WeakSet = weakref.WeakSet()
+    _wheel_roots: weakref.WeakSet = weakref.WeakSet()
+
+    def __init__(
+        self,
+        parent: tk.Misc,
+        *,
+        bg: str = theme.BG,
+        padx: int = 18,
+        pady: int = 16,
+        **kwargs,
+    ) -> None:
+        super().__init__(parent, bg=bg, **kwargs)
+        self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, borderwidth=0)
+        self.scrollbar = tk.Scrollbar(
+            self,
+            orient="vertical",
+            command=self.canvas.yview,
+            relief=tk.FLAT,
+            borderwidth=0,
+        )
+        self.content = tk.Frame(self.canvas, bg=bg, padx=padx, pady=pady)
+        self._content_window = self.canvas.create_window((0, 0), window=self.content, anchor="nw")
+
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.content.bind("<Configure>", self._on_content_configure)
+        self.canvas.bind("<Configure>", self._on_canvas_configure)
+
+        # Descendant widgets do not bubble wheel events to a Frame in Tk.  A
+        # single scoped app binding keeps page scrolling natural over
+        # labels/cards while avoiding stale callbacks for closed Toplevels.
+        type(self)._viewports.add(self)
+        root = self.winfo_toplevel()
+        if root not in type(self)._wheel_roots:
+            type(self)._wheel_roots.add(root)
+            root.bind_all("<MouseWheel>", type(self)._dispatch_mousewheel, add="+")
+            root.bind_all("<Button-4>", type(self)._dispatch_mousewheel, add="+")
+            root.bind_all("<Button-5>", type(self)._dispatch_mousewheel, add="+")
+
+    @classmethod
+    def _dispatch_mousewheel(cls, event: object) -> None:
+        """Route the shared wheel event to the viewport under the cursor."""
+        widget = getattr(event, "widget", None)
+        for viewport in list(cls._viewports):
+            try:
+                alive = bool(viewport.winfo_exists())
+            except tk.TclError:
+                alive = False
+            if alive and widget is not None and viewport._contains(widget) and not viewport._has_own_scroll(widget):
+                viewport._on_mousewheel(event)
+                return
+
+    def _on_content_configure(self, _event: object = None) -> None:
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def _on_canvas_configure(self, event: object) -> None:
+        width = getattr(event, "width", None)
+        if width:
+            self.canvas.itemconfig(self._content_window, width=width)
+
+    def _contains(self, widget: object) -> bool:
+        node = widget
+        while node is not None:
+            if node is self.content or node is self.canvas:
+                return True
+            node = getattr(node, "master", None)
+        return False
+
+    @staticmethod
+    def _has_own_scroll(widget: object) -> bool:
+        return isinstance(widget, (tk.Listbox, tk.Text, tk.Scrollbar))
+
+    def _on_mousewheel(self, event: object) -> str | None:
+        num = getattr(event, "num", None)
+        if num == 4:
+            direction = -1
+        elif num == 5:
+            direction = 1
+        else:
+            delta = getattr(event, "delta", 0)
+            if not delta:
+                return None
+            # Windows emits 120-step deltas; macOS commonly emits smaller
+            # deltas.  At least one unit keeps a trackpad responsive.
+            direction = -max(1, abs(int(delta)) // 120) if delta > 0 else max(1, abs(int(delta)) // 120)
+        self.canvas.yview_scroll(direction, "units")
+        return "break"
 
 
 class ToolTip:
@@ -36,7 +158,7 @@ class ToolTip:
         label = tk.Label(
             tw,
             text=text,
-            background="#252b3b",
+            background=theme.PANEL_BG,
             foreground=theme.FG,
             relief=tk.SOLID,
             borderwidth=1,
@@ -57,8 +179,24 @@ class ToolTip:
 class ProgressBar(tk.Canvas):
     """Clean, styled progress bar for EXP and Mastery."""
 
-    def __init__(self, parent: tk.Misc, width: int = 180, height: int = 14, fg: str = "#5da9e9", bg: str = "#20242f", **kwargs) -> None:
-        super().__init__(parent, width=width, height=height, bg=bg, highlightthickness=1, highlightbackground="#2c3242", **kwargs)
+    def __init__(
+        self,
+        parent: tk.Misc,
+        width: int = 180,
+        height: int = 14,
+        fg: str = "#5da9e9",
+        bg: str = theme.BG_ALT,
+        **kwargs,
+    ) -> None:
+        super().__init__(
+            parent,
+            width=width,
+            height=height,
+            bg=bg,
+            highlightthickness=1,
+            highlightbackground=theme.BORDER,
+            **kwargs,
+        )
         self.fg_color = fg
         self.bg_color = bg
         self._fraction = 0.0
@@ -81,14 +219,24 @@ class ProgressBar(tk.Canvas):
 
 
 class StatPanel(tk.Frame):
-    """Stacked key:value text display."""
+    """A quiet bordered card containing stacked ``key: value`` text."""
 
     def __init__(self, parent: tk.Misc, title: str = "", wrap: int = 0, **kwargs) -> None:
-        super().__init__(parent, bg=theme.BG, **kwargs)
+        options = {
+            "bg": theme.PANEL_BG,
+            "padx": 12,
+            "pady": 10,
+            "highlightthickness": 1,
+            "highlightbackground": theme.BORDER,
+        }
+        options.update(kwargs)
+        super().__init__(parent, **options)
         self._title = title
+        bg = options["bg"]
         if title:
-            theme.heading_label(self, text=title).pack(anchor="w", pady=(0, 4))
-        self._label = theme.body_label(self, text="", font=theme.FONT_SMALL)
+            theme.heading_label(self, text=title, bg=bg, fg=theme.ACCENT_TEXT).pack(anchor="w")
+            tk.Frame(self, bg=theme.BORDER, height=1).pack(fill=tk.X, pady=(6, 8))
+        self._label = theme.body_label(self, text="", bg=bg, font=theme.FONT_SMALL)
         if wrap:
             self._label.configure(wraplength=wrap)
         self._label.pack(anchor="w", fill=tk.X)
@@ -101,10 +249,12 @@ class StatPanel(tk.Frame):
 
 
 class ButtonStack(tk.Frame):
-    """A vertical stack of full-width flat buttons, generously spaced."""
+    """A vertical stack of generously spaced flat action buttons."""
 
     def __init__(self, parent: tk.Misc, spacing: int = 6, width: int | None = None, **kwargs) -> None:
-        super().__init__(parent, bg=theme.BG, **kwargs)
+        options = {"bg": theme.PANEL_BG, "padx": 8, "pady": 6, "highlightthickness": 1, "highlightbackground": theme.BORDER}
+        options.update(kwargs)
+        super().__init__(parent, **options)
         self._spacing = spacing
         self._width = width
         self.buttons: dict[str, tk.Button] = {}
@@ -128,7 +278,7 @@ class ButtonStack(tk.Frame):
 
 
 class SelectList(tk.Frame, Generic[T]):
-    """A labelled Listbox that maps rows back to engine objects."""
+    """A labelled, independently scrolling Listbox rendered as a card."""
 
     def __init__(
         self,
@@ -139,11 +289,14 @@ class SelectList(tk.Frame, Generic[T]):
         on_activate: Callable[[T], None] | None = None,
         **kwargs,
     ) -> None:
-        super().__init__(parent, bg=theme.BG, **kwargs)
+        options = {"bg": theme.PANEL_BG, "padx": 10, "pady": 8, "highlightthickness": 1, "highlightbackground": theme.BORDER}
+        options.update(kwargs)
+        super().__init__(parent, **options)
+        bg = options["bg"]
         if title:
-            theme.heading_label(self, title).pack(anchor="w", pady=(0, 4))
+            theme.heading_label(self, title, bg=bg, fg=theme.ACCENT_TEXT).pack(anchor="w", pady=(0, 6))
 
-        holder = tk.Frame(self, bg=theme.BG)
+        holder = tk.Frame(self, bg=bg)
         holder.pack(fill=tk.BOTH, expand=True)
 
         self.listbox = theme.stat_listbox(holder, height=height)
@@ -225,14 +378,17 @@ class SelectList(tk.Frame, Generic[T]):
 
 
 class LogPanel(tk.Frame):
-    """Scrolling, colour-tagged message log."""
+    """A bordered, independently scrolling, colour-tagged message log."""
 
     def __init__(self, parent: tk.Misc, title: str = "", height: int = 12, **kwargs) -> None:
-        super().__init__(parent, bg=theme.BG, **kwargs)
+        options = {"bg": theme.PANEL_BG, "padx": 10, "pady": 8, "highlightthickness": 1, "highlightbackground": theme.BORDER}
+        options.update(kwargs)
+        super().__init__(parent, **options)
+        bg = options["bg"]
         if title:
-            theme.heading_label(self, title).pack(anchor="w", pady=(0, 4))
+            theme.heading_label(self, title, bg=bg, fg=theme.ACCENT_TEXT).pack(anchor="w", pady=(0, 6))
 
-        holder = tk.Frame(self, bg=theme.BG)
+        holder = tk.Frame(self, bg=bg)
         holder.pack(fill=tk.BOTH, expand=True)
 
         self.text = theme.text_panel(holder, height=height)
@@ -266,7 +422,7 @@ class LogPanel(tk.Frame):
 
 
 class StatusBar(tk.Frame):
-    """One-line notice strip above the accent line."""
+    """One-line notice strip above the root window's accent line."""
 
     def __init__(self, parent: tk.Misc, **kwargs) -> None:
         super().__init__(parent, bg=theme.BG_ALT, **kwargs)

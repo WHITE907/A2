@@ -19,7 +19,7 @@ import tkinter as tk
 from engine.entities.enemy import Enemy
 from engine.skills.skill import Skill, SkillTargeting
 from gui import theme
-from gui.widgets import ButtonStack, LogPanel, SelectList, StatPanel
+from gui.widgets import ScrollableFrame, ButtonStack, LogPanel, SelectList, StatPanel
 
 __all__ = ["CombatScreen"]
 
@@ -39,8 +39,11 @@ class CombatScreen(tk.Frame):
         self.battle = app.game.battle
         self._logged_entries = 0
 
-        outer = tk.Frame(self, bg=theme.BG, padx=16, pady=14)
-        outer.pack(fill=tk.BOTH, expand=True)
+        # Long party/enemy rosters can exceed a compact display, so combat
+        # keeps its complete control layout reachable through the page scroll.
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=16, pady=14)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        outer = self.viewport.content
 
         # ---------------- left: player + enemies -----------------------
         left = tk.Frame(outer, bg=theme.BG, width=250)
@@ -309,8 +312,9 @@ class CombatScreen(tk.Frame):
         theme.center_window(window, 360, 340)
         window.transient(self.app.root)
 
-        frame = tk.Frame(window, bg=theme.BG, padx=16, pady=14)
-        frame.pack(fill=tk.BOTH, expand=True)
+        viewport = ScrollableFrame(window, bg=theme.BG, padx=16, pady=14)
+        viewport.pack(fill=tk.BOTH, expand=True)
+        frame = viewport.content
         theme.heading_label(frame, text="Use Item").pack(anchor="w", pady=(0, 8))
 
         # Show rarity colors for consumables too

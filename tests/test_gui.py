@@ -30,7 +30,7 @@ import tkinter as tk  # noqa: E402  - resolves to the stub
 from engine.game import Game  # noqa: E402
 from gui import theme  # noqa: E402
 from gui.app import AscensionApp  # noqa: E402
-from gui.widgets import ButtonStack, LogPanel, SelectList, StatPanel  # noqa: E402
+from gui.widgets import ButtonStack, LogPanel, ScrollableFrame, SelectList, StatPanel  # noqa: E402
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -259,6 +259,57 @@ class TestWidgets(unittest.TestCase):
         log = LogPanel(self.root)
         log.append("x")
         self.assertEqual(log.text.options["state"], tk.DISABLED)
+
+
+# ======================================================================
+class TestScrollableLayout(unittest.TestCase):
+    """Long pages remain usable on compact displays instead of clipping controls."""
+
+    def setUp(self):
+        self.root = tk.Tk()
+
+    def test_scrollable_frame_owns_a_canvas_content_area_and_scrollbar(self):
+        page = ScrollableFrame(self.root)
+        page.pack(fill=tk.BOTH, expand=True)
+        self.assertIsInstance(page.canvas, tk.Canvas)
+        self.assertIsInstance(page.content, tk.Frame)
+        self.assertIsInstance(page.scrollbar, tk.Scrollbar)
+
+        page.content.event_generate("<MouseWheel>", delta=-120, num=None)
+        self.assertEqual(page.canvas.yview_scroll_calls[-1], (1, "units"))
+
+    def test_main_and_toplevel_screens_use_scrollable_viewports(self):
+        app = make_app_with_character()
+        self.assertIsInstance(app.show_world().viewport, ScrollableFrame)
+
+        app.game.start_battle([("green_slime", 1)])
+        self.assertIsInstance(app.show_combat().viewport, ScrollableFrame)
+
+        windows = [
+            app.open_inventory(),
+            app.open_equipment(),
+            app.open_skills(),
+            app.open_quests(),
+            app.open_party(),
+            app.open_status(),
+            app.open_settings(),
+            app.open_save_browser("load"),
+            app.open_character_creation(),
+            app.open_shop("ashvale_general"),
+            app.open_talk("innkeeper_mara"),
+            app.open_codex(),
+        ]
+        self.assertTrue(all(isinstance(window.viewport, ScrollableFrame) for window in windows))
+
+    def test_dialogue_and_tactics_popups_use_scrollable_viewports(self):
+        app = make_app_with_party()
+        tactics = app.open_tactics("rook")
+        self.assertIsInstance(tactics.viewport, ScrollableFrame)
+
+        stories = app.game.dialogues_for_speaker("mother_sable")
+        self.assertTrue(stories)
+        dialogue = app.open_dialogue(stories[0]["id"])
+        self.assertIsInstance(dialogue.viewport, ScrollableFrame)
 
 
 # ======================================================================

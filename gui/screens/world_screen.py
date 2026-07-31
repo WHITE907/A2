@@ -17,7 +17,7 @@ import tkinter as tk
 
 from gui import theme
 from engine.world.world import Area
-from gui.widgets import ButtonStack, LogPanel, SelectList, StatPanel
+from gui.widgets import ScrollableFrame, ButtonStack, LogPanel, SelectList, StatPanel
 
 __all__ = ["WorldScreen"]
 
@@ -29,8 +29,11 @@ class WorldScreen(tk.Frame):
         super().__init__(parent, bg=theme.BG)
         self.app = app
 
-        outer = tk.Frame(self, bg=theme.BG, padx=16, pady=14)
-        outer.pack(fill=tk.BOTH, expand=True)
+        # The hub can be taller than a small laptop viewport once every action
+        # is available, so the full page has a vertical fallback scrollbar.
+        self.viewport = ScrollableFrame(self, bg=theme.BG, padx=16, pady=14)
+        self.viewport.pack(fill=tk.BOTH, expand=True)
+        outer = self.viewport.content
 
         # ---------------- left: character + location -------------------
         left = tk.Frame(outer, bg=theme.BG, width=230)
@@ -192,8 +195,9 @@ class WorldScreen(tk.Frame):
         theme.center_window(window, 300, 260)
         window.transient(self.app.root)
 
-        frame = tk.Frame(window, bg=theme.BG, padx=16, pady=14)
-        frame.pack(fill=tk.BOTH, expand=True)
+        viewport = ScrollableFrame(window, bg=theme.BG, padx=16, pady=14)
+        viewport.pack(fill=tk.BOTH, expand=True)
+        frame = viewport.content
         theme.heading_label(frame, text=title).pack(anchor="w", pady=(0, 8))
 
         picker: SelectList[str] = SelectList(frame, height=6)
