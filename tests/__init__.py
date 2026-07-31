@@ -1,1 +1,1 @@
-"""Engine and GUI test-suite."""
+"""Project Ascension test package; see ``tests/README.md`` for the layout."""

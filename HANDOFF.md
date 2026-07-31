@@ -12,7 +12,8 @@ adds 50 new skills (122 total) including race-specific, class-specific, and
 general utility skills, plus a class perks system giving 66 classes unique
 passive abilities. The promotion framework is complete through tier 4 with
 73 classes, and levels 1–55 content is playable. The full suite contains
-443 tests.
+472 tests, organised by boundary under `tests/` (data, logic, integration, UI,
+and test support).
 
 The next milestone should push into **levels 56–70 content** and **tier 4→5
 promotion chains**:
@@ -43,7 +44,7 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 443 tests
+python3 -m unittest discover -s tests    # 472 tests
 ```
 
 **Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.11.1 are implemented
@@ -184,17 +185,48 @@ All cross-validated at startup. A skill referencing a missing status, or an
 area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 
 ### Tests
-| File | Coverage |
-|---|---|
-| `tests/test_engine.py` | 179 tests. Real chain: JSON → managers → entities → `Skill.use()` → effects → log. Includes SP insufficient-resource test. |
-| `tests/test_gui.py` | 116 tests. Builds real screens, invokes real handlers. |
-| `tests/test_companions.py` | *(v0.2.0)* 76 tests. |
-| `tests/test_quests.py` | *(v0.3.0)* Quest progression, persistence, and loot. |
-| `tests/test_races_storylines.py` | *(v0.6.0, updated v0.8.0)* Races (now 15), heirlooms, and companion stories (now 21). |
-| `tests/test_systems_expansion.py` | *(v0.7.0)* Objectives, story, loyalty, gear, effects, bosses. |
-| `tests/test_world_expansion.py` | *(v0.4.0, updated v0.8.0)* Level-40 density, reachability, and content counts. |
-| `tests/tk_stub.py` | Recording Tkinter stand-in for headless GUI testing. |
-| `tools/render_mockups.py` | Renders screen layouts via Pillow. |
+
+The suite has **472 tests** and is organised by the boundary it protects. Read
+[`tests/README.md`](tests/README.md) before adding or moving tests.
+
+| Area | Location | What it protects |
+|---|---|---|
+| Data | `tests/data/` | JSON syntax, required documents, cross-reference loading, and world/content contracts. |
+| Logic | `tests/logic/` | Deterministic engine rules: combat primitives, saves, progression, companions, quests, races, and architecture guards. |
+| Integration | `tests/integration/` | Multi-system gameplay and persistence: effects, perks, factions, tactics, equipment, bosses, and regressions. |
+| UI | `tests/ui/` | Real screen construction, visible state, navigation, and handler wiring on the headless Tk harness. |
+| Support | `tests/support/` | Test-only helpers, including `tk_stub.py`; this is never production code. |
+
+```bash
+python3 -m unittest discover -s tests              # all categories — required before commit
+python3 -m unittest discover -s tests/data          # JSON/content contracts
+python3 -m unittest discover -s tests/logic         # deterministic rules
+python3 -m unittest discover -s tests/integration   # cross-system flows
+python3 -m unittest discover -s tests/ui            # headless UI
+python3 main.py --check                              # startup content validation without Tk
+```
+
+### Adding tests correctly
+
+1. **Choose the lowest useful boundary.** Data tests cover JSON/content
+   contracts; logic tests cover one deterministic rule; integration tests cover
+   a player-visible flow across subsystems; UI tests cover presentation or
+   handler wiring. Do not add an expensive UI test for a pure engine rule.
+2. **Make setup isolated.** Use a fixed RNG seed and `TemporaryDirectory()` for
+   save files. Never write to the real `saves/` folder from a test.
+3. **Assert observable outcomes.** Name tests `test_<behaviour>`, use the
+   smallest public API that expresses the rule, and avoid asserting incidental
+   implementation details. Use `subTest()` for one contract across many data
+   records.
+4. **Use the UI harness correctly.** Import and install
+   `tests.support.tk_stub` before importing `gui`/`tkinter`; invoke the same
+   handler a button invokes, then assert engine state and widget options.
+5. **Turn bugs into regressions.** Recreate the former precondition, trigger
+   the failing action, and assert the fixed visible/state result. Run the
+   relevant category, then the complete suite and `main.py --check`.
+
+`tools/render_mockups.py` remains an optional Pillow layout renderer. It is not
+a replacement for the UI suite or a real desktop smoke test.
 
 ---
 
@@ -533,7 +565,7 @@ bug* — so the regression test cannot quietly stop testing anything.
 
 **No tkinter in the sandbox.** Likely no `python3-tk`, `xvfb`, or root. So:
 - `python3 main.py --check` validates content with no GUI.
-- `tests/tk_stub.py` runs the GUI suite headlessly.
+- `tests/support/tk_stub.py` runs the UI suite headlessly; install it before importing `gui` in a UI test.
 - `tools/render_mockups.py` (needs `pip install Pillow`) renders layouts to
   `assets/mockups/`. **This renders layout, not Tk** — font metrics and native
   chrome differ. It caught a panel pushed off-screen and a text-overflow bug,
@@ -698,7 +730,7 @@ Copy the relevant section into your working notes and tick items off as you go.
 **Balance and integration:**
 - [ ] Sub-race stats don't make one sub-race objectively superior — each should suit different builds
 - [ ] Race modifiers are reasonable compared to existing races (check `data/races.json` for reference)
-- [ ] Update test counts in `tests/test_world_expansion.py` and `tests/test_races_storylines.py`
+- [ ] Update intentional content contracts in `tests/data/test_world_content.py` and `tests/logic/test_races_storylines.py`
 
 ### Adding a new area
 
@@ -735,7 +767,7 @@ Copy the relevant section into your working notes and tick items off as you go.
 
 **Integration:**
 - [ ] NPC entry in `data/world.json` at the companion's `location_id` (so they can be talked to before recruitment)
-- [ ] Update test counts in `tests/test_races_storylines.py`
+- [ ] Update the relevant race/companion contract in `tests/logic/test_races_storylines.py`
 
 ### Adding a new NPC
 

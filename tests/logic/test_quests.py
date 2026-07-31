@@ -7,11 +7,15 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from engine.game import Game
 from engine.managers.data_loader import ContentError, DataLoader
 from engine.managers.quest_manager import QuestManager
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def new_game(save_dir: str | Path | None = None) -> Game:

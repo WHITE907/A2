@@ -12,7 +12,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from engine.combat.combat import CombatState
 from engine.entities.companion import Companion, CompanionDefinition, RecruitRequirement
@@ -20,7 +20,7 @@ from engine.game import Game
 from engine.party import Party
 from engine.relationships import AFFINITY_MAX, AFFINITY_MIN, RelationshipRules
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def new_game(seed: int = 4242, save_dir=None) -> Game:

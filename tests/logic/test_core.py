@@ -8,7 +8,7 @@ Run with::
 
     python3 -m unittest discover -s tests -v
 
-or just ``python3 tests/test_engine.py``.
+or just ``python3 -m unittest tests.logic.test_core``.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from engine.classes import ClassDefinition, PromotionRequirement
 from engine.combat.ai import default_registry
@@ -35,7 +35,7 @@ from engine.skills.skill import Skill, SkillCategory
 from engine.skills.status import StatusEffect, StatusStacking
 from engine.stats import Formulas, ModifierSet, StatBlock
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def new_game(seed: int = 1234, save_dir: Path | str | None = None) -> Game:

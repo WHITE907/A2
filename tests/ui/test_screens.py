@@ -1,4 +1,4 @@
-"""GUI test-suite, run headlessly via :mod:`tests.tk_stub`.
+"""GUI test-suite, run headlessly via :mod:`tests.support.tk_stub`.
 
 These import and construct the *real* screen classes against the *real*
 engine, then invoke the same handler methods a click would trigger - which is
@@ -18,9 +18,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tests import tk_stub
+from tests.support import tk_stub
 
 # The stub must be installed before `gui` (or anything importing tkinter) loads.
 tk_stub.install()
@@ -32,7 +32,7 @@ from gui import theme  # noqa: E402
 from gui.app import AscensionApp  # noqa: E402
 from gui.widgets import ButtonStack, LogPanel, ScrollableFrame, SelectList, StatPanel  # noqa: E402
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def make_app(save_dir: Path | str | None = None, seed: int = 4242) -> AscensionApp:

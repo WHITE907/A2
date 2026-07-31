@@ -5,7 +5,7 @@ docs/GUI_VERIFICATION.md's pipeline (Xvfb + openbox + ``import``) needs
 ``python3-tk``, ``xvfb`` and ``openbox``.  Where those cannot be installed,
 this script gets as close as possible from pure Python:
 
-1. build the real screens on the headless toolkit in :mod:`tests.tk_stub`
+1. build the real screens on the headless toolkit in :mod:`tests.support.tk_stub`
 2. walk the resulting widget tree
 3. run a simplified ``pack`` geometry manager over it
 4. draw the result with Pillow
@@ -30,7 +30,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from tests import tk_stub  # noqa: E402
+from tests.support import tk_stub  # noqa: E402
 
 tk_stub.install()
 
