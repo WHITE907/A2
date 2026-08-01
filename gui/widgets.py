@@ -55,20 +55,36 @@ class ScrollableFrame(tk.Frame):
         **kwargs,
     ) -> None:
         super().__init__(parent, bg=bg, **kwargs)
-        self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, borderwidth=0)
+        row = tk.Frame(self, bg=bg)
+        row.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        self.canvas = tk.Canvas(row, bg=bg, highlightthickness=0, borderwidth=0)
         self.scrollbar = tk.Scrollbar(
-            self,
+            row,
             orient="vertical",
             command=self.canvas.yview,
+            relief=tk.FLAT,
+            borderwidth=0,
+        )
+        # Wide pages used to disappear off the right edge on compact displays:
+        # Tk happily clips a side-packed row that is wider than its canvas, and
+        # our original viewport only exposed vertical scrolling.  Keep a quiet
+        # horizontal scrollbar available and size the embedded page to at least
+        # its requested width so every panel remains reachable.
+        self.xscrollbar = tk.Scrollbar(
+            self,
+            orient="horizontal",
+            command=self.canvas.xview,
             relief=tk.FLAT,
             borderwidth=0,
         )
         self.content = tk.Frame(self.canvas, bg=bg, padx=padx, pady=pady)
         self._content_window = self.canvas.create_window((0, 0), window=self.content, anchor="nw")
 
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.canvas.configure(yscrollcommand=self.scrollbar.set, xscrollcommand=self.xscrollbar.set)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.xscrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
         self.content.bind("<Configure>", self._on_content_configure)
         self.canvas.bind("<Configure>", self._on_canvas_configure)
@@ -98,10 +114,33 @@ class ScrollableFrame(tk.Frame):
                 return
 
     def _on_content_configure(self, _event: object = None) -> None:
+        self._sync_content_window_width()
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     def _on_canvas_configure(self, event: object) -> None:
-        width = getattr(event, "width", None)
+        self._sync_content_window_width(getattr(event, "width", None))
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def _sync_content_window_width(self, canvas_width: int | None = None) -> None:
+        """Stretch narrow pages, but preserve wide requested layouts.
+
+        Without this guard, a content frame whose requested width is wider than
+        the viewport is forcibly narrowed to the canvas width.  Side-packed
+        children can then be clipped with no way to pan to them.  Keeping the
+        embedded window at ``max(canvas width, requested width)`` gives compact
+        displays a horizontal fallback while retaining the normal full-width
+        look for pages that already fit.
+        """
+        if canvas_width is None:
+            try:
+                canvas_width = self.canvas.winfo_width()
+            except tk.TclError:
+                canvas_width = 0
+        try:
+            requested_width = self.content.winfo_reqwidth()
+        except (AttributeError, tk.TclError):
+            requested_width = 0
+        width = max(int(canvas_width or 0), int(requested_width or 0))
         if width:
             self.canvas.itemconfig(self._content_window, width=width)
 
@@ -130,7 +169,10 @@ class ScrollableFrame(tk.Frame):
             # Windows emits 120-step deltas; macOS commonly emits smaller
             # deltas.  At least one unit keeps a trackpad responsive.
             direction = -max(1, abs(int(delta)) // 120) if delta > 0 else max(1, abs(int(delta)) // 120)
-        self.canvas.yview_scroll(direction, "units")
+        if getattr(event, "state", 0) & 0x0001:  # Shift + wheel pans wide pages.
+            self.canvas.xview_scroll(direction, "units")
+        else:
+            self.canvas.yview_scroll(direction, "units")
         return "break"
 
 

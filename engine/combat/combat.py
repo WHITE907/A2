@@ -130,6 +130,20 @@ class Battle:
     def is_over(self) -> bool:
         return self.state is not CombatState.ONGOING
 
+    def ensure_finished(self) -> bool:
+        """Synchronise terminal state if combatants were defeated indirectly.
+
+        The normal action pipeline calls :meth:`_check_end` after every skill,
+        item, AI turn, and upkeep tick.  Some damage sources are intentionally
+        indirect (counter/reflect/status hooks), and UI/tests can observe the
+        battle between those plumbing calls.  This public engine-side guard lets
+        callers reconcile an encounter that has no living enemies before the GUI
+        offers another action.
+        """
+        if self.is_over:
+            return True
+        return self._check_end()
+
     def begin_round(self) -> None:
         """Start a new round and rebuild the speed-ordered turn queue."""
         if self.is_over:
@@ -193,7 +207,7 @@ class Battle:
 
     def player_use_skill(self, skill: Skill, targets: Sequence[Any] | None = None) -> bool:
         """Resolve the player's chosen skill.  Returns ``False`` if rejected."""
-        if not self.waiting_for_player:
+        if self.ensure_finished() or not self.waiting_for_player:
             return False
 
         chosen = list(targets or [])
@@ -215,7 +229,7 @@ class Battle:
 
     def player_use_item(self, item_manager: Any, item_id: str, target: Any | None = None) -> bool:
         """Use a consumable.  Costs the player's turn, like any other action."""
-        if not self.waiting_for_player:
+        if self.ensure_finished() or not self.waiting_for_player:
             return False
         ok, messages = item_manager.use_consumable(
             self.player, item_id, self.ctx, [target] if target else [self.player]
@@ -229,7 +243,7 @@ class Battle:
 
     def player_defend(self) -> bool:
         """Skip the turn to halve incoming damage until the next one."""
-        if not self.waiting_for_player:
+        if self.ensure_finished() or not self.waiting_for_player:
             return False
         from engine.skills.status import StatusEffect
 
@@ -255,7 +269,7 @@ class Battle:
         Chance scales with the speed difference so fleeing a much faster
         monster is genuinely risky.
         """
-        if not self.waiting_for_player:
+        if self.ensure_finished() or not self.waiting_for_player:
             return False
         if any(e.is_boss for e in self.living_enemies):
             self._say("You cannot flee from this battle!", kind="system")
@@ -284,6 +298,7 @@ class Battle:
         safety net against a content bug where nobody can damage anybody.
         """
         produced: list[int] = [len(self.log)]
+        self.ensure_finished()
         iterations = 0
         while not self.is_over and not self.waiting_for_player and iterations < max_iterations:
             actor = self.current_actor

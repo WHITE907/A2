@@ -214,6 +214,12 @@ class Widget:
     def winfo_height(self) -> int:
         return int(self.options.get("height", 100) or 100)
 
+    def winfo_reqwidth(self) -> int:
+        return int(self.options.get("width", self.winfo_width()) or self.winfo_width())
+
+    def winfo_reqheight(self) -> int:
+        return int(self.options.get("height", self.winfo_height()) or self.winfo_height())
+
     def winfo_toplevel(self) -> "Widget":
         node: Widget = self
         while isinstance(node.master, Widget):
@@ -504,6 +510,8 @@ class Canvas(Widget):
     def __init__(self, master: Any = None, **options: Any) -> None:
         super().__init__(master, **options)
         self.yview_scroll_calls: list[tuple[Any, ...]] = []
+        self.xview_scroll_calls: list[tuple[Any, ...]] = []
+        self.itemconfig_calls: list[tuple[tuple[Any, ...], dict[str, Any]]] = []
 
     def create_line(self, *args: Any, **kwargs: Any) -> int:
         return 1
@@ -518,7 +526,7 @@ class Canvas(Widget):
         return 1
 
     def itemconfig(self, *args: Any, **kwargs: Any) -> None:
-        pass
+        self.itemconfig_calls.append((args, dict(kwargs)))
 
     def bbox(self, *args: Any) -> tuple[int, int, int, int]:
         return (0, 0, 100, 100)
@@ -526,8 +534,14 @@ class Canvas(Widget):
     def yview(self, *args: Any) -> None:
         pass
 
+    def xview(self, *args: Any) -> None:
+        pass
+
     def yview_scroll(self, *args: Any) -> None:
         self.yview_scroll_calls.append(args)
+
+    def xview_scroll(self, *args: Any) -> None:
+        self.xview_scroll_calls.append(args)
 
     def delete(self, *args: Any) -> None:
         pass
