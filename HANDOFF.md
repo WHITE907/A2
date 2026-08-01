@@ -12,7 +12,7 @@ adds 50 new skills (122 total) including race-specific, class-specific, and
 general utility skills, plus a class perks system giving 66 classes unique
 passive abilities. The promotion framework is complete through tier 4 with
 73 classes, and levels 1–55 content is playable. The full suite contains
-483 tests, organised by boundary under `tests/` (data, logic, integration, UI,
+487 tests, organised by boundary under `tests/` (data, logic, integration, UI,
 and test support).
 
 The next milestone should push into **levels 56–70 content** and **tier 4→5
@@ -44,7 +44,7 @@ A single-player text RPG in Python 3.11+ and Tkinter, spec'd by
 ```bash
 python3 main.py                          # play (needs python3-tk)
 python3 main.py --check                  # validate content, no GUI
-python3 -m unittest discover -s tests    # 483 tests
+python3 -m unittest discover -s tests    # 487 tests
 ```
 
 **Current state:** v0.1.0 and v0.2.0 are merged. v0.3.0–v0.11.1 are implemented
@@ -186,7 +186,7 @@ area spawning an unknown enemy, raises `ContentError` naming the exact ids.
 
 ### Tests
 
-The suite has **483 tests** and is organised by the boundary it protects. Read
+The suite has **487 tests** and is organised by the boundary it protects. Read
 [`tests/README.md`](tests/README.md) before adding or moving tests.
 
 | Area | Location | What it protects |

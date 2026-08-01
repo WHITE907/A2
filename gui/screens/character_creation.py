@@ -26,7 +26,7 @@ class CharacterCreationWindow(tk.Toplevel):
         self.app = app
 
         theme.style_window(self, "Project Ascension - New Game")
-        theme.center_window(self, 820, 640)
+        theme.center_window(self, 900, 680)
         self.transient(app.root)
 
         self.viewport = ScrollableFrame(self, bg=theme.BG, padx=18, pady=16)
@@ -100,8 +100,11 @@ class CharacterCreationWindow(tk.Toplevel):
         )
         self.class_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(14, 0))
 
-        self.preview = StatPanel(columns, title="Details", wrap=300)
-        self.preview.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(14, 0))
+        # Keep the long race/class explanation below the three selectors.
+        # The previous four-column row exceeded the New Game window on common
+        # laptop widths, so the Details card was clipped off the right edge.
+        self.preview = StatPanel(body, title="Details", wrap=780)
+        self.preview.pack(fill=tk.BOTH, expand=True, pady=(14, 0))
 
         # Initialize sub-race list after all widgets are created
         self._on_race_selected(self.race_list.selected_value)

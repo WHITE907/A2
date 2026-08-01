@@ -43,9 +43,15 @@ Bible §18: update the changelog after versions.
   respects boss focus, preferred targets, protective healing, cleansing,
   reviving, racial skill bonuses, and skill priorities. GUI exposes all new
   controls and a skill priority list.
+- Fixed compact-display GUI clipping by giving long page viewports horizontal
+  scrolling and moving Character Creation details below its selector columns.
+- Fixed Combat Turn Order visibility by listing every actor and letting the
+  sidebar grow into the page scroll region instead of clipping lower panels.
+- Added an engine-side terminal-state reconciliation guard so Combat refreshes
+  into Victory/Continue if the final enemy was defeated indirectly.
 
 ### Tests
-- Full suite now at 483 passing tests.
+- Full suite now at 487 passing tests.
 - New coverage: rarity enchant slots, multi-enchant and variant creation,
   boss guaranteed loot and rarity weights, race passives stacking,
   family damage and heal bonuses, party bonus modifiers, perk active reasons,

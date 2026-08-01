@@ -1022,6 +1022,13 @@ class TestCombatLoop(unittest.TestCase):
         self._resolve(battle)
         self.assertTrue(battle.is_over)
 
+    def test_ensure_finished_reconciles_indirect_last_enemy_defeat(self):
+        battle = self.game.start_battle([("green_slime", 1)])
+        battle.enemies[0].current_hp = 0
+        self.assertTrue(battle.ensure_finished())
+        self.assertEqual(battle.state, CombatState.VICTORY)
+        self.assertGreater(battle.rewards.exp, 0)
+
     def test_combat_log_is_populated(self):
         battle = self.game.start_battle([("green_slime", 1)])
         self._resolve(battle)

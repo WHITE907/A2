@@ -46,10 +46,11 @@ class CombatScreen(tk.Frame):
         outer = self.viewport.content
 
         # ---------------- left: player + enemies -----------------------
-        left = tk.Frame(outer, bg=theme.BG, width=250)
+        self.left_column = left = tk.Frame(outer, bg=theme.BG, width=250)
         left.pack(side=tk.LEFT, fill=tk.Y)
-        left.pack_propagate(False)
-
+        # Let this column's requested height grow with its panels.  With
+        # pack_propagate(False), the lower Turn Order card could be clipped
+        # inside the frame and never contribute to ScrollableFrame's region.
         self.player_panel = StatPanel(left, title="You", wrap=225)
         self.player_panel.pack(fill=tk.X, anchor="n")
 
@@ -73,9 +74,8 @@ class CombatScreen(tk.Frame):
         self.log.pack(fill=tk.BOTH, expand=True)
 
         # ---------------- right: actions + targets ---------------------
-        right = tk.Frame(outer, bg=theme.BG, width=250)
+        self.right_column = right = tk.Frame(outer, bg=theme.BG, width=250)
         right.pack(side=tk.LEFT, fill=tk.Y)
-        right.pack_propagate(False)
 
         # Listbox #1 of 2 that hold simultaneous selections.
         self.action_list: SelectList["Skill | str"] = SelectList(
@@ -108,6 +108,7 @@ class CombatScreen(tk.Frame):
             self.app.show_world()
             return
         self.battle = battle
+        battle.ensure_finished()
 
         self.player_panel.set_lines(battle.player_lines())
         self.ally_panel.set_lines(battle.ally_lines())
@@ -118,7 +119,7 @@ class CombatScreen(tk.Frame):
             order = getattr(battle, "turn_order", [])
             current = getattr(battle, "current_actor", None)
             lines = ["Turn Order:"]
-            for idx, actor in enumerate(order[:8]):  # show first 8
+            for actor in order:
                 marker = ">> " if actor is current else "   "
                 name = getattr(actor, "name", str(actor))
                 # Show speed for clarity
@@ -127,9 +128,6 @@ class CombatScreen(tk.Frame):
                     lines.append(f"{marker}{name} (Spd {spd:.0f})")
                 except Exception:
                     lines.append(f"{marker}{name}")
-            # Next round indicator
-            if len(order) > 8:
-                lines.append(f"  ... +{len(order)-8} more this round")
             self.turn_panel.set_lines(lines)
         except Exception:
             self.turn_panel.set_lines(["Turn Order: (unavailable)"])

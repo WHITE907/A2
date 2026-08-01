@@ -268,15 +268,25 @@ class TestScrollableLayout(unittest.TestCase):
     def setUp(self):
         self.root = tk.Tk()
 
-    def test_scrollable_frame_owns_a_canvas_content_area_and_scrollbar(self):
+    def test_scrollable_frame_owns_a_canvas_content_area_and_scrollbars(self):
         page = ScrollableFrame(self.root)
         page.pack(fill=tk.BOTH, expand=True)
         self.assertIsInstance(page.canvas, tk.Canvas)
         self.assertIsInstance(page.content, tk.Frame)
         self.assertIsInstance(page.scrollbar, tk.Scrollbar)
+        self.assertIsInstance(page.xscrollbar, tk.Scrollbar)
 
         page.content.event_generate("<MouseWheel>", delta=-120, num=None)
         self.assertEqual(page.canvas.yview_scroll_calls[-1], (1, "units"))
+
+        page.content.event_generate("<MouseWheel>", delta=-120, num=None, state=0x0001)
+        self.assertEqual(page.canvas.xview_scroll_calls[-1], (1, "units"))
+
+    def test_scrollable_frame_preserves_wide_requested_content(self):
+        page = ScrollableFrame(self.root)
+        page.content.options["width"] = 1200
+        page._sync_content_window_width(canvas_width=500)
+        self.assertIn(((page._content_window,), {"width": 1200}), page.canvas.itemconfig_calls)
 
     def test_main_and_toplevel_screens_use_scrollable_viewports(self):
         app = make_app_with_character()
@@ -594,6 +604,24 @@ class TestCombatScreen(unittest.TestCase):
     def test_panels_show_hp(self):
         self.assertIn("HP:", self.screen.player_panel._label.options["text"])
         self.assertIn("HP", self.screen.enemy_panel._label.options["text"])
+
+    def test_turn_order_shows_every_actor_and_column_can_grow(self):
+        app = make_app_with_character()
+        app.game.start_battle([("green_slime", 1)] * 10)
+        screen = app.show_combat()
+        text = screen.turn_panel._label.options["text"]
+        self.assertNotIn("... +", text)
+        # The left column must contribute its full child height to the outer
+        # ScrollableFrame, otherwise lower cards like Turn Order are clipped.
+        self.assertIsNot(screen.left_column.options.get("_pack_propagate"), False)
+
+    def test_refresh_reconciles_defeated_last_enemy_with_continue_state(self):
+        enemy = self.app.game.battle.enemies[0]
+        enemy.current_hp = 0
+        self.assertFalse(self.app.game.battle.is_over)
+        self.screen.refresh()
+        self.assertTrue(self.app.game.battle.is_over)
+        self.assertTrue(self.screen.continue_button.winfo_ismapped())
 
     def test_attacking_damages_the_enemy_and_logs_it(self):
         enemy = self.app.game.battle.enemies[0]
