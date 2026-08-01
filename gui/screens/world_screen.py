@@ -36,9 +36,15 @@ class WorldScreen(tk.Frame):
         outer = self.viewport.content
 
         # ---------------- left: character + location -------------------
-        left = tk.Frame(outer, bg=theme.BG, width=230)
+        # Both side columns must keep pack propagation on so their requested
+        # height grows with their panels.  With pack_propagate(False) a
+        # column collapses to its minimum height and the panels stacked
+        # inside it are clipped - they never contribute to the page
+        # ScrollableFrame's region, so the hub cannot scroll down to them
+        # either.  (The combat screen's left column was rescued from the same
+        # trap; the width option still holds as the minimum column width.)
+        self.left_column = left = tk.Frame(outer, bg=theme.BG, width=230)
         left.pack(side=tk.LEFT, fill=tk.Y)
-        left.pack_propagate(False)
 
         self.character_panel = StatPanel(left, title="Character")
         self.character_panel.pack(fill=tk.X, anchor="n")
@@ -61,9 +67,8 @@ class WorldScreen(tk.Frame):
         self.log.pack(fill=tk.BOTH, expand=True, pady=(16, 0))
 
         # ---------------- right: actions -------------------------------
-        right = tk.Frame(outer, bg=theme.BG, width=190)
+        self.right_column = right = tk.Frame(outer, bg=theme.BG, width=190)
         right.pack(side=tk.LEFT, fill=tk.Y)
-        right.pack_propagate(False)
 
         theme.heading_label(right, text="Actions").pack(anchor="w", pady=(0, 6))
 
