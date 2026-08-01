@@ -5,6 +5,11 @@ Bible §18: update the changelog after versions.
 ## Unreleased - Progression, Rarity, and Reactive Builds
 
 ### Completed since v0.11.1
+- Fixed the World screen's side columns clipping their lower options: the
+  right-hand menu container (Status, Inventory, Equipment, Skills, Quests,
+  Party, Codex, Save Game, Main Menu) collapsed to its minimum height, so the
+  bottom options were missing with no way to scroll to them. Columns now grow
+  with their content and contribute to the page viewport.
 - Fixed combat targeting for self, ally, and all-ally skills.
 - Fixed Status-window refresh after allocating level-up stat points.
 - Added Common through Legendary item rarities and rarity-based equipment scaling.

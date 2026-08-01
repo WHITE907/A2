@@ -586,6 +586,32 @@ class TestWorldScreen(unittest.TestCase):
             button_labelled(self.screen, label).invoke()
             self.assertIn(key, self.app._toplevels, label)
 
+    def test_hub_menus_expose_every_option(self):
+        # Regression: the right-hand menu stack is the "Status / Inventory /
+        # other options" container on the World screen.  The full set must be
+        # wired up so no hub option is missing.
+        for key in (
+            "status",
+            "inventory",
+            "equipment",
+            "skills",
+            "quests",
+            "party",
+            "codex",
+            "save",
+            "menu",
+        ):
+            self.assertIn(key, self.screen.menus.buttons, key)
+
+    def test_world_screen_columns_grow_with_their_content(self):
+        # Regression: both side columns used pack_propagate(False), which
+        # collapses a column's requested height to its minimum.  The right
+        # column's lower options (Save Game, Main Menu) were then clipped
+        # inside the frame and never contributed to the page ScrollableFrame's
+        # region, so they were missing with no way to scroll down to them.
+        self.assertIsNot(self.screen.left_column.options.get("_pack_propagate"), False)
+        self.assertIsNot(self.screen.right_column.options.get("_pack_propagate"), False)
+
 
 # ======================================================================
 class TestCombatScreen(unittest.TestCase):
